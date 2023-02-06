@@ -5,6 +5,9 @@ namespace Database\Seeders;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
+
 class DatabaseSeeder extends Seeder
 {
     /**
@@ -20,5 +23,11 @@ class DatabaseSeeder extends Seeder
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
         // ]);
+
+
+
+        Permission::create(['name' => 'admin', 'guard_name' => 'web']);
+        Permission::create(['name' => 'vendedor', 'guard_name' => 'web']);
+        Permission::create(['name' => 'user', 'guard_name' => 'web']);
     }
 }
