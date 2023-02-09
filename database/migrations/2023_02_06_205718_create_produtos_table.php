@@ -15,6 +15,18 @@ return new class extends Migration
     {
         Schema::create('produtos', function (Blueprint $table) {
             $table->id();
+
+            $table->foreignId('fornecedor_id');
+
+            $table->string('nome');
+            $table->string('tipo');
+            $table->string('marca');
+            $table->integer('quantidadePc');
+            $table->decimal('pesoPc', 5, 2);
+            $table->decimal('precoCustoPc', 6, 2);
+            $table->decimal('precoVendaPc', 6 , 2);
+            $table->integer('estoque');
+
             $table->timestamps();
         });
     }

@@ -8,4 +8,19 @@ use Illuminate\Database\Eloquent\Model;
 class Pessoa extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'nome',
+        'email',
+        'senha',
+
+        'rua',
+        'numero',
+        'cep',
+        'bairro',
+        'cidade',
+
+        'telefone',
+        'celular',
+    ];
 }
