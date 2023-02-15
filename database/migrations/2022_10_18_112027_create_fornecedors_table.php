@@ -20,8 +20,11 @@ return new class extends Migration
             $table->integer('cnpj');
             $table->string('company_name', 45);
 
-            $table->foreignId('endereco_id')->constrained('enderecos');
-            $table->foreignId('telefone_id')->constrained('telefones');
+            $table->integer('number_phone');
+            $table->integer('number_cellphone');
+
+            //$table->foreignId('endereco_id')->constrained('enderecos');
+            //$table->foreignId('telefone_id')->constrained('telefones');
 
             $table->timestamps();
         });

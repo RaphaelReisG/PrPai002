@@ -16,10 +16,6 @@ return new class extends Migration
         Schema::create('pedidos', function (Blueprint $table) {
             $table->id();
 
-            //$table->string('idCliente');
-
-            $table->foreignId('user_id');
-
             $table->dateTime('issue_date');
             $table->dateTime('payday');
             $table->dateTime('delivery_date');

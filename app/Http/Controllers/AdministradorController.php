@@ -14,8 +14,7 @@ class AdministradorController extends Controller
      */
     public function index()
     {
-        $resultadoBuscaAdmin = Administrador::all();
-    	return View('administrador.index')->with('adminResultado',$resultadoBuscaAdmin);
+        return Administrador::all();
     }
 
     /**
@@ -25,7 +24,7 @@ class AdministradorController extends Controller
      */
     public function create()
     {
-        return View('administrador.create');
+        //
     }
 
     /**
@@ -36,9 +35,7 @@ class AdministradorController extends Controller
      */
     public function store(Request $request)
     {
-        $vetorComDados = $request->all();
-        Administrador::create($vetorComDados);
-        return redirect('/administrador');
+        Administrador::create($request->all());
     }
 
     /**
@@ -47,9 +44,9 @@ class AdministradorController extends Controller
      * @param  \App\Models\Administrador  $administrador
      * @return \Illuminate\Http\Response
      */
-    public function show(Administrador $administrador)
+    public function show($id)
     {
-        return View('administrador.show')->with('admin',$administrador);
+        return Administrador::findOrfail($id);
     }
 
     /**
@@ -60,7 +57,7 @@ class AdministradorController extends Controller
      */
     public function edit(Administrador $administrador)
     {
-        return View('administrador.edit')->with('comp',$administrador);
+        //
     }
 
     /**
@@ -70,10 +67,10 @@ class AdministradorController extends Controller
      * @param  \App\Models\Administrador  $administrador
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Administrador $administrador)
+    public function update(Request $request, $id)
     {
-        $administrador->update($request->all());
-        return redirect('/administrador');
+        $obj = Administrador::findOrfail($id);
+        $obj->update($request->all());
     }
 
     /**
@@ -82,9 +79,9 @@ class AdministradorController extends Controller
      * @param  \App\Models\Administrador  $administrador
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Administrador $administrador)
+    public function destroy( $id)
     {
-        $administrador->delete();
-        return redirect('/administrador');
+        $obj = Administrador::findOrfail($id);
+        $obj->delete();
     }
 }

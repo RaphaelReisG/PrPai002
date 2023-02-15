@@ -20,7 +20,7 @@ class Endereco extends Model
         return $this->belongsTo(Bairro::class);
     }
 
-    public function pessoa(){
-        return $this->belongsTo(Pessoa::class);
+    public function cliente(){
+        return $this->belongsTo(Cliente::class);
     }
 }

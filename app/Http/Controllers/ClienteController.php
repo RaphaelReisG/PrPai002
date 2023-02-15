@@ -14,7 +14,7 @@ class ClienteController extends Controller
      */
     public function index()
     {
-        //
+        return Cliente::all();
     }
 
     /**
@@ -35,7 +35,7 @@ class ClienteController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Cliente::create($request->all());
     }
 
     /**
@@ -44,9 +44,9 @@ class ClienteController extends Controller
      * @param  \App\Models\Cliente  $cliente
      * @return \Illuminate\Http\Response
      */
-    public function show(Cliente $cliente)
+    public function show($id)
     {
-        //
+        return Cliente::findOrfail($id);
     }
 
     /**
@@ -67,9 +67,10 @@ class ClienteController extends Controller
      * @param  \App\Models\Cliente  $cliente
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Cliente $cliente)
+    public function update(Request $request, $id)
     {
-        //
+        $obj = Cliente::findOrfail($id);
+        $obj->update($request->all());
     }
 
     /**
@@ -78,8 +79,9 @@ class ClienteController extends Controller
      * @param  \App\Models\Cliente  $cliente
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Cliente $cliente)
+    public function destroy($id)
     {
-        //
+        $obj = Cliente::findOrfail($id);
+        $obj->delete();
     }
 }

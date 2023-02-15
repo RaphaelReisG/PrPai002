@@ -23,4 +23,8 @@ class Cliente extends Usuario_sistema
     public function pedidos(){
         return $this->hasMany(Pedido::class);
     }
+
+    public function endereco(){
+        return $this->hasOne(Endereco::class);
+    }
 }

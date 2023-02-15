@@ -47,5 +47,17 @@ class User extends Authenticatable
         return $this->belongsTo(Usuario_sistema::class);
     }
 
+    public function cliente(){
+        return $this->hasOne(Cliente::class);
+    }
+
+    public function administrador(){
+        return $this->hasOne(Administrador::class);
+    }
+
+    public function vendedor(){
+        return $this->hasOne(Vendedor::class);
+    }
+
 
 }

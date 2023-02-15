@@ -10,12 +10,11 @@ class Pessoa extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name'
+        'name',
+        
+        'number_phone',
+        'number_cellphone'
     ];
-
-    public function endereco(){
-        return $this->hasOne(Endereco::class);
-    }
 
     public function telefone(){
         return $this->hasOne(Telefone::class);
