@@ -2,22 +2,18 @@
 
 namespace App\Models;
 
-use App\Models\Pessoa;
-
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Fornecedor extends Pessoa
+class Pais extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'company_name',
-        'cnpj',
-        'email'
+        'name_country'
     ];
 
-    public function marcas(){
-        return $this->hasMany(Marca::class);
+    public function estados(){
+        return $this->hasMany(Estado::class);
     }
 }

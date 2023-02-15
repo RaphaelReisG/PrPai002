@@ -4,14 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Pessoa;
 
-use App\Models\Usuario_sistema;
-
-class Vendedor extends Usuario_sistema
+class Usuario_sistema extends Pessoa
 {
     use HasFactory;
 
-    public function clientes(){
-        return $this->hasMany(Cliente::class);
+    public function user(){
+        return $this->hasOne(User::class);
     }
 }

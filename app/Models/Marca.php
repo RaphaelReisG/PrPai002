@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Pessoa extends Model
+class Marca extends Model
 {
     use HasFactory;
 
@@ -13,11 +13,11 @@ class Pessoa extends Model
         'name'
     ];
 
-    public function endereco(){
-        return $this->hasOne(Endereco::class);
+    public function fornecedor(){
+        return $this->belongsTo(Fornecedor::class);
     }
 
-    public function telefone(){
-        return $this->hasOne(Telefone::class);
+    public function produtos(){
+        return $this->hasMany(Produto::class);
     }
 }

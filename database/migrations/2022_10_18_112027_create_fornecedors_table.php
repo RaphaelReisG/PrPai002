@@ -16,17 +16,12 @@ return new class extends Migration
         Schema::create('fornecedors', function (Blueprint $table) {
             $table->id();
 
-            $table->string('nome');
             $table->string('email')->unique();
+            $table->integer('cnpj');
+            $table->string('company_name', 45);
 
-            $table->string('complemento')->nullable();
-            $table->string('numero');
-            $table->string('logradouro');
-            $table->string('cep');
-            $table->string('bairro');
-            $table->string('cidade');
-            $table->string('telefone')->nullable();
-            $table->string('celular')->nullable();
+            $table->foreignId('endereco_id')->constrained('enderecos');
+            $table->foreignId('telefone_id')->constrained('telefones');
 
             $table->timestamps();
         });

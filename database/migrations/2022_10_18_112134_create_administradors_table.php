@@ -15,6 +15,13 @@ return new class extends Migration
     {
         Schema::create('administradors', function (Blueprint $table) {
             $table->id();
+
+            $table->string('name');
+
+            //$table->foreignId('endereco_id')->constrained('enderecos');
+            //$table->foreignId('telefone_id')->constrained('telefones');
+            $table->foreignId('user_id')->constrained('users');
+
             $table->timestamps();
         });
     }

@@ -16,16 +16,15 @@ return new class extends Migration
         Schema::create('produtos', function (Blueprint $table) {
             $table->id();
 
-            $table->foreignId('fornecedor_id');
+            $table->string('name');
+            $table->string('type');
+            $table->integer('quantity');
+            $table->decimal('weight', 5, 2);
+            $table->decimal('cost_price', 6, 2);
+            $table->decimal('sale_price', 6 , 2);
+            $table->integer('stock');
 
-            $table->string('nome');
-            $table->string('tipo');
-            $table->string('marca');
-            $table->integer('quantidadePc');
-            $table->decimal('pesoPc', 5, 2);
-            $table->decimal('precoCustoPc', 6, 2);
-            $table->decimal('precoVendaPc', 6 , 2);
-            $table->integer('estoque');
+            $table->foreignId('marca_id')->constrained('marcas');
 
             $table->timestamps();
         });

@@ -8,6 +8,8 @@ use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 
+use App\Models\User;
+
 class DatabaseSeeder extends Seeder
 {
     /**
@@ -24,6 +26,7 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
 
+        User::create(['id' => 1, ]);
 
 
         Permission::create(['name' => 'admin', 'guard_name' => 'web']);

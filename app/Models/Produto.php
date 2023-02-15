@@ -10,14 +10,20 @@ class Produto extends Model
     use HasFactory;
 
     protected $fillable = [
-        'idFornecedor',
-        'nome',
-        'tipo',
-        'marca',
-        'quantidadePc',
-        'pesoPc',
-        'precoCustoPc',
-        'precoVendaPc',
-        'estoque'
+        'name',
+        'type',
+        'quantity',
+        'weight',
+        'cost_price',
+        'sale_price',
+        'stock'
     ];
+
+    public function marca(){
+        return $this->belongsTo(Marca::class);
+    }
+
+    public function pedidos(){
+        return $this->belongsToMany(Pedido::class);
+    }
 }
