@@ -14,7 +14,7 @@ class ProdutoController extends Controller
      */
     public function index()
     {
-        //
+        return Produto::all();
     }
 
     /**
@@ -35,27 +35,27 @@ class ProdutoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Produto::create($request->all());
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Produto  $produto
+     * @param  \App\Models\Produto  $administrador
      * @return \Illuminate\Http\Response
      */
-    public function show(Produto $produto)
+    public function show($id)
     {
-        //
+        return Produto::findOrfail($id);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Produto  $produto
+     * @param  \App\Models\Produto  $administrador
      * @return \Illuminate\Http\Response
      */
-    public function edit(Produto $produto)
+    public function edit(Produto $administrador)
     {
         //
     }
@@ -64,22 +64,24 @@ class ProdutoController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Produto  $produto
+     * @param  \App\Models\Produto  $administrador
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Produto $produto)
+    public function update(Request $request, $id)
     {
-        //
+        $obj = Produto::findOrfail($id);
+        $obj->update($request->all());
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Produto  $produto
+     * @param  \App\Models\Produto  $administrador
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Produto $produto)
+    public function destroy( $id)
     {
-        //
+        $obj = Produto::findOrfail($id);
+        $obj->delete();
     }
 }

@@ -14,7 +14,7 @@ class CidadeController extends Controller
      */
     public function index()
     {
-        //
+        return Cidade::all();
     }
 
     /**
@@ -35,7 +35,7 @@ class CidadeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Cidade::create($request->all());
     }
 
     /**
@@ -44,9 +44,9 @@ class CidadeController extends Controller
      * @param  \App\Models\Cidade  $cidade
      * @return \Illuminate\Http\Response
      */
-    public function show(Cidade $cidade)
+    public function show( $id)
     {
-        //
+        return Cidade::findOrfail($id);
     }
 
     /**
@@ -67,9 +67,10 @@ class CidadeController extends Controller
      * @param  \App\Models\Cidade  $cidade
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Cidade $cidade)
+    public function update(Request $request,  $id)
     {
-        //
+        $obj = Cidade::findOrfail($id);
+        $obj->update($request->all());
     }
 
     /**
@@ -78,8 +79,9 @@ class CidadeController extends Controller
      * @param  \App\Models\Cidade  $cidade
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Cidade $cidade)
+    public function destroy( $id)
     {
-        //
+        $obj = Cidade::findOrfail($id);
+        $obj->delete();
     }
 }

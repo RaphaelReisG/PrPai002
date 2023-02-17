@@ -14,7 +14,7 @@ class VendedorController extends Controller
      */
     public function index()
     {
-        //
+        return Vendedor::all();
     }
 
     /**
@@ -35,27 +35,27 @@ class VendedorController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Vendedor::create($request->all());
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Vendedor  $vendedor
+     * @param  \App\Models\Vendedor  $administrador
      * @return \Illuminate\Http\Response
      */
-    public function show(Vendedor $vendedor)
+    public function show($id)
     {
-        //
+        return Vendedor::findOrfail($id);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Vendedor  $vendedor
+     * @param  \App\Models\Vendedor  $administrador
      * @return \Illuminate\Http\Response
      */
-    public function edit(Vendedor $vendedor)
+    public function edit(Vendedor $administrador)
     {
         //
     }
@@ -64,22 +64,24 @@ class VendedorController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Vendedor  $vendedor
+     * @param  \App\Models\Vendedor  $administrador
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Vendedor $vendedor)
+    public function update(Request $request, $id)
     {
-        //
+        $obj = Vendedor::findOrfail($id);
+        $obj->update($request->all());
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Vendedor  $vendedor
+     * @param  \App\Models\Vendedor  $administrador
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Vendedor $vendedor)
+    public function destroy( $id)
     {
-        //
+        $obj = Vendedor::findOrfail($id);
+        $obj->delete();
     }
 }

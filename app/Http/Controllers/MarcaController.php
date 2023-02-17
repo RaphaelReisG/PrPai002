@@ -14,7 +14,7 @@ class MarcaController extends Controller
      */
     public function index()
     {
-        //
+        return Marca::all();
     }
 
     /**
@@ -35,7 +35,7 @@ class MarcaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Marca::create($request->all());
     }
 
     /**
@@ -44,9 +44,9 @@ class MarcaController extends Controller
      * @param  \App\Models\Marca  $marca
      * @return \Illuminate\Http\Response
      */
-    public function show(Marca $marca)
+    public function show( $id)
     {
-        //
+        return Marca::findOrfail($id);
     }
 
     /**
@@ -67,9 +67,10 @@ class MarcaController extends Controller
      * @param  \App\Models\Marca  $marca
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Marca $marca)
+    public function update(Request $request,  $id)
     {
-        //
+        $obj = Marca::findOrfail($id);
+        $obj->update($request->all());
     }
 
     /**
@@ -78,8 +79,9 @@ class MarcaController extends Controller
      * @param  \App\Models\Marca  $marca
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Marca $marca)
+    public function destroy( $id)
     {
-        //
+        $obj = Marca::findOrfail($id);
+        $obj->delete();
     }
 }

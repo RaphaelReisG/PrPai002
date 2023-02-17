@@ -14,7 +14,7 @@ class BairroController extends Controller
      */
     public function index()
     {
-        //
+        return Bairro::all();
     }
 
     /**
@@ -35,7 +35,7 @@ class BairroController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Bairro::create($request->all());
     }
 
     /**
@@ -44,9 +44,9 @@ class BairroController extends Controller
      * @param  \App\Models\Bairro  $bairro
      * @return \Illuminate\Http\Response
      */
-    public function show(Bairro $bairro)
+    public function show( $id)
     {
-        //
+        return Bairro::findOrfail($id);
     }
 
     /**
@@ -67,9 +67,10 @@ class BairroController extends Controller
      * @param  \App\Models\Bairro  $bairro
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Bairro $bairro)
+    public function update(Request $request,  $id)
     {
-        //
+        $obj = Bairro::findOrfail($id);
+        $obj->update($request->all());
     }
 
     /**
@@ -78,8 +79,9 @@ class BairroController extends Controller
      * @param  \App\Models\Bairro  $bairro
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Bairro $bairro)
+    public function destroy( $id)
     {
-        //
+        $obj = Bairro::findOrfail($id);
+        $obj->delete();
     }
 }

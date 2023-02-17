@@ -14,7 +14,7 @@ class FornecedorController extends Controller
      */
     public function index()
     {
-        //
+        return Fornecedor::all();
     }
 
     /**
@@ -35,7 +35,7 @@ class FornecedorController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Fornecedor::create($request->all());
     }
 
     /**
@@ -44,9 +44,9 @@ class FornecedorController extends Controller
      * @param  \App\Models\Fornecedor  $fornecedor
      * @return \Illuminate\Http\Response
      */
-    public function show(Fornecedor $fornecedor)
+    public function show( $id)
     {
-        //
+        return Fornecedor::findOrfail($id);
     }
 
     /**
@@ -67,9 +67,10 @@ class FornecedorController extends Controller
      * @param  \App\Models\Fornecedor  $fornecedor
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Fornecedor $fornecedor)
+    public function update(Request $request,  $id)
     {
-        //
+        $obj = Fornecedor::findOrfail($id);
+        $obj->update($request->all());
     }
 
     /**
@@ -78,8 +79,9 @@ class FornecedorController extends Controller
      * @param  \App\Models\Fornecedor  $fornecedor
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Fornecedor $fornecedor)
+    public function destroy( $id)
     {
-        //
+        $obj = Fornecedor::findOrfail($id);
+        $obj->delete();
     }
 }

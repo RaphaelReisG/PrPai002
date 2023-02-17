@@ -14,7 +14,7 @@ class PaisController extends Controller
      */
     public function index()
     {
-        //
+        return Pais::all();
     }
 
     /**
@@ -35,27 +35,27 @@ class PaisController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Pais::create($request->all());
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Pais  $pais
+     * @param  \App\Models\Pais  $administrador
      * @return \Illuminate\Http\Response
      */
-    public function show(Pais $pais)
+    public function show($id)
     {
-        //
+        return Pais::findOrfail($id);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Pais  $pais
+     * @param  \App\Models\Pais  $administrador
      * @return \Illuminate\Http\Response
      */
-    public function edit(Pais $pais)
+    public function edit(Pais $administrador)
     {
         //
     }
@@ -64,22 +64,24 @@ class PaisController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Pais  $pais
+     * @param  \App\Models\Pais  $administrador
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Pais $pais)
+    public function update(Request $request, $id)
     {
-        //
+        $obj = Pais::findOrfail($id);
+        $obj->update($request->all());
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Pais  $pais
+     * @param  \App\Models\Pais  $administrador
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Pais $pais)
+    public function destroy( $id)
     {
-        //
+        $obj = Pais::findOrfail($id);
+        $obj->delete();
     }
 }

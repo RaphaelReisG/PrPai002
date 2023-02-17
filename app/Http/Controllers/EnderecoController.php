@@ -14,7 +14,7 @@ class EnderecoController extends Controller
      */
     public function index()
     {
-        //
+        return Endereco::all();
     }
 
     /**
@@ -35,7 +35,7 @@ class EnderecoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Endereco::create($request->all());
     }
 
     /**
@@ -44,9 +44,9 @@ class EnderecoController extends Controller
      * @param  \App\Models\Endereco  $endereco
      * @return \Illuminate\Http\Response
      */
-    public function show(Endereco $endereco)
+    public function show( $id)
     {
-        //
+        return Endereco::with('bairro')->findOrfail($id);
     }
 
     /**
@@ -67,9 +67,10 @@ class EnderecoController extends Controller
      * @param  \App\Models\Endereco  $endereco
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Endereco $endereco)
+    public function update(Request $request,  $id)
     {
-        //
+        $obj = Endereco::findOrfail($id);
+        $obj->update($request->all());
     }
 
     /**
@@ -78,8 +79,9 @@ class EnderecoController extends Controller
      * @param  \App\Models\Endereco  $endereco
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Endereco $endereco)
+    public function destroy( $id)
     {
-        //
+        $obj = Endereco::findOrfail($id);
+        $obj->delete();
     }
 }

@@ -14,7 +14,7 @@ class EstadoController extends Controller
      */
     public function index()
     {
-        //
+        return Estado::all();
     }
 
     /**
@@ -35,7 +35,7 @@ class EstadoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Estado::create($request->all());
     }
 
     /**
@@ -44,9 +44,9 @@ class EstadoController extends Controller
      * @param  \App\Models\Estado  $estado
      * @return \Illuminate\Http\Response
      */
-    public function show(Estado $estado)
+    public function show( $id)
     {
-        //
+        return Estado::findOrfail($id);
     }
 
     /**
@@ -67,9 +67,10 @@ class EstadoController extends Controller
      * @param  \App\Models\Estado  $estado
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Estado $estado)
+    public function update(Request $request,  $id)
     {
-        //
+        $obj = Estado::findOrfail($id);
+        $obj->update($request->all());
     }
 
     /**
@@ -78,8 +79,9 @@ class EstadoController extends Controller
      * @param  \App\Models\Estado  $estado
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Estado $estado)
+    public function destroy( $id)
     {
-        //
+        $obj = Estado::findOrfail($id);
+        $obj->delete();
     }
 }

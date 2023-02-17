@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Cliente;
 use Illuminate\Http\Request;
 
+use App\Models\Endereco;
+
 class ClienteController extends Controller
 {
     /**
@@ -46,7 +48,7 @@ class ClienteController extends Controller
      */
     public function show($id)
     {
-        return Cliente::findOrfail($id);
+        return Cliente::with('endereco')->findOrfail($id);
     }
 
     /**
