@@ -8,6 +8,8 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
 use Spatie\Permission\Models\Role;
+
+use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Permission;
 
 use App\Models\User;
@@ -123,5 +125,10 @@ class DatabaseSeeder extends Seeder
         Permission::create(['name' => 'admin', 'guard_name' => 'web']);
         Permission::create(['name' => 'vendedor', 'guard_name' => 'web']);
         Permission::create(['name' => 'cliente', 'guard_name' => 'web']);
+
+        DB::table('model_has_permissions')->insert(['permission_id'=>1, 'model_type'=>'App\Models\User', 'model_id'=>1]);
+        DB::table('model_has_permissions')->insert(['permission_id'=>2, 'model_type'=>'App\Models\User', 'model_id'=>2]);
+        DB::table('model_has_permissions')->insert(['permission_id'=>3, 'model_type'=>'App\Models\User', 'model_id'=>3]);
+
     }
 }

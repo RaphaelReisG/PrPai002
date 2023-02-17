@@ -21,10 +21,10 @@ class Cliente extends Usuario_sistema
     }
 
     public function pedidos(){
-        return $this->hasMany(Pedido::class);
+        return $this->hasMany(Pedido::class)->with(['produtos']);
     }
 
     public function endereco(){
-        return $this->hasOne(Endereco::class);
+        return $this->hasOne(Endereco::class)->with(['bairro', 'bairro.cidade', 'bairro.cidade.estado', 'bairro.cidade.estado.pais']);
     }
 }

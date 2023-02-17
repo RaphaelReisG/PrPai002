@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cliente;
+
+use App\Models\Bairro;
+use App\Models\Estado;
+
 use Illuminate\Http\Request;
 
 use App\Models\Endereco;
@@ -48,7 +52,12 @@ class ClienteController extends Controller
      */
     public function show($id)
     {
-        return Cliente::with('endereco')->findOrfail($id);
+        $obj = Cliente::with(['endereco', 'vendedor', 'pedidos'])->findOrfail($id);
+
+
+        //$obj['endereco']['bairro_id'] = Bairro::with('cidade')->findOrfail($obj['endereco']['bairro_id']);
+        //$obj['endereco']['bairro_id']['cidade']['estado_id'] = Estado::with('pais')->findOrfail($obj['endereco']['bairro_id']['cidade']['estado_id']);
+        return $obj;
     }
 
     /**
