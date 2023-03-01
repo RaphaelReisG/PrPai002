@@ -15,8 +15,7 @@ class Produto extends Model
         'quantity',
         'weight',
         'cost_price',
-        'sale_price',
-        'stock'
+        'sale_price'
     ];
 
     public function marca(){
@@ -26,5 +25,9 @@ class Produto extends Model
     public function pedidos(){
         return $this->belongsToMany(Pedido::class)
                         ->withPivot(['qty_item', 'price_iten']);
+    }
+
+    public function estoques(){
+        return $this->hasMany(Estoque::class);
     }
 }

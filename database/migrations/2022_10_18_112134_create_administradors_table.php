@@ -20,7 +20,7 @@ return new class extends Migration
 
             //$table->foreignId('endereco_id')->constrained('enderecos');
             //$table->foreignId('telefone_id')->constrained('telefones');
-            $table->foreignId('user_id')->constrained('users');
+            //$table->foreignId('user_id')->constrained('users');
 
             $table->timestamps();
         });

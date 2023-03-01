@@ -22,7 +22,8 @@ return new class extends Migration
             $table->decimal('weight', 5, 2);
             $table->decimal('cost_price', 6, 2);
             $table->decimal('sale_price', 6 , 2);
-            $table->integer('stock');
+            //$table->integer('stock');
+
 
             $table->foreignId('marca_id')->constrained('marcas');
 

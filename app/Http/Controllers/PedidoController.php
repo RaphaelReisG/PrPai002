@@ -46,7 +46,7 @@ class PedidoController extends Controller
      */
     public function show($id)
     {
-        return Pedido::findOrfail($id);
+        return Pedido::with('produtos')->findOrfail($id);
     }
 
     /**

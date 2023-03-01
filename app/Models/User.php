@@ -43,10 +43,10 @@ class User extends Authenticatable
     ];
 
 
-    public function usuario_sistema(){
-        return $this->belongsTo(Usuario_sistema::class);
+    public function userable(){
+        return $this->morphTo();
     }
-
+/*
     public function cliente(){
         return $this->hasOne(Cliente::class);
     }
@@ -58,6 +58,7 @@ class User extends Authenticatable
     public function vendedor(){
         return $this->hasOne(Vendedor::class);
     }
+    */
 
 
 }

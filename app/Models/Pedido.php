@@ -13,12 +13,10 @@ class Pedido extends Model
         'issue_date',
         'payday',
         'delivery_date',
+        'approval_date',
         'total_price',
         'total_discount',
         'payment_method',
-        'status_payment',
-        'status_delivery',
-        'status_request',
         'observation'
     ];
 
@@ -27,6 +25,6 @@ class Pedido extends Model
     }
 
     public function produtos(){
-        return $this->belongsToMany(Produto::class);
+        return $this->belongsToMany(Produto::class)->withPivot(['qty_item', 'price_iten'])->with(['marca']);
     }
 }

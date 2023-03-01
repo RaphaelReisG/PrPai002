@@ -10,11 +10,10 @@ class Telefone extends Model
     use HasFactory;
 
     protected $fillable = [
-        'number_phone',
-        'number_cellphone'
+        'number_phone'
     ];
 
-    public function pessoa(){
-        return $this->belongsTo(Pessoa::class);
+    public function telefoneable(){
+        return $this->morphTo();
     }
 }

@@ -13,14 +13,17 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('vendedors', function (Blueprint $table) {
+        Schema::create('estoques', function (Blueprint $table) {
             $table->id();
 
-            $table->string('name');
+            $table->integer('qty_item');
+            $table->string('observation');
+            $table->string('batch');                //lote
+            $table->dateTime('expiration_date');
 
-            //$table->foreignId('endereco_id')->constrained('enderecos');
-            //$table->foreignId('telefone_id')->constrained('telefones');
-            //$table->foreignId('user_id')->constrained('users');
+            $table->foreignId('produto_id')->constrained('produtos');
+
+            $table->morphs('estoqueable');
 
             $table->timestamps();
         });
@@ -33,6 +36,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('vendedors');
+        Schema::dropIfExists('estoques');
     }
 };

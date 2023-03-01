@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
+use App\Models\Administrador;
 use Illuminate\Database\Seeder;
 
 use Illuminate\Support\Facades\Hash;
@@ -35,38 +37,37 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
 
-        User::create(['id'=> 1, 'email'=>'raphael@adminraphael.com','email_verified_at'=> '2023-02-07 13:33:19
-        ' , 'password'=>Hash::make('qwerasdf'), 'remember_token' => null, 
-        'created_at'=>'2023-02-07 13:32:43', 'updated_at'=>'2023-02-07 13:33:19']);
-        User::create(['id'=> 2, 'email'=>'raphael@vendedorraphael.com','email_verified_at'=> '2023-02-07 13:33:19
-        ' , 'password'=>Hash::make('qwerasdf'), 'remember_token' => null, 
-        'created_at'=>'2023-02-07 13:32:43', 'updated_at'=>'2023-02-07 13:33:19']);
-        User::create(['id'=> 3, 'email'=>'raphael@clienteraphael.com','email_verified_at'=> '2023-02-07 13:33:19
-        ' , 'password'=>Hash::make('qwerasdf'), 'remember_token' => null, 
-        'created_at'=>'2023-02-07 13:32:43', 'updated_at'=>'2023-02-07 13:33:19']);
 
-        Pais::create(['name_country' => 'Brasil']);
-        Pais::create(['name_country' => 'Estados Unidos']);
-        Pais::create(['name_country' => 'França']);
 
-        Pais::find(1)->estados()->create(['name_state' => 'São Paulo']);
-        Pais::find(1)->estados()->create(['name_state' => 'Paraná']);
-        Pais::find(1)->estados()->create(['name_state' => 'Rio de Janeiro']);
-        Pais::find(2)->estados()->create(['name_state' => 'Florida']);
+        $pais_brasil = Pais::create(['name_country' => 'Brasil']);
+        $pais_usa = Pais::create(['name_country' => 'Estados Unidos']);
+        $pais_fraca = Pais::create(['name_country' => 'França']);
 
-        Pais::find(1)->estados()->find(1)->cidades()->create(['name_city' => 'Itanhaém']);
-        Pais::find(1)->estados()->find(1)->cidades()->create(['name_city' => 'Mongagua']);
-        Pais::find(1)->estados()->find(1)->cidades()->create(['name_city' => 'Peruibe']);
-        Pais::find(1)->estados()->find(2)->cidades()->create(['name_city' => 'Curitiba']);
-        Pais::find(1)->estados()->find(3)->cidades()->create(['name_city' => 'Paraty']);
-        Pais::find(2)->estados()->find(4)->cidades()->create(['name_city' => 'Miami']);
+        $estado_saopaulo = $pais_brasil->estados()->create(['name_state' => 'São Paulo']);
+        $estado_parana = $pais_brasil->estados()->create(['name_state' => 'Paraná']);
+        $estado_riodejaneiro = $pais_brasil->estados()->create(['name_state' => 'Rio de Janeiro']);
+        $estado_florida = $pais_usa->estados()->create(['name_state' => 'Florida']);
 
-        Pais::find(1)->estados()->find(1)->cidades()->find(1)->bairros()->create(['name_neighborhood' => 'Belas Artes']);
-        Pais::find(1)->estados()->find(1)->cidades()->find(1)->bairros()->create(['name_neighborhood' => 'Centro']);
-        Pais::find(1)->estados()->find(1)->cidades()->find(1)->bairros()->create(['name_neighborhood' => 'Suarão']);
-        
-        Fornecedor::create(['number_phone' => 1334265254, 'number_cellphone' => 1391234567, 'company_name' => 'Mineirão','cnpj' => 1234567890,'email' => 'mineirão@mineirão.com']);
-        Fornecedor::create(['number_phone' => 1334265254, 'number_cellphone' => 1391234567, 'company_name' => 'Denise Salgados','cnpj' => 1234567891,'email' => 'denise@mdenise.com']);
+        $cidade_itanhaem = $estado_saopaulo->cidades()->create(['name_city' => 'Itanhaém']);
+        $estado_saopaulo->cidades()->create(['name_city' => 'Mongagua']);
+        $estado_saopaulo->cidades()->create(['name_city' => 'Peruibe']);
+        $estado_parana->cidades()->create(['name_city' => 'Curitiba']);
+        $estado_riodejaneiro->cidades()->create(['name_city' => 'Paraty']);
+        $estado_florida->cidades()->create(['name_city' => 'Miami']);
+
+        $cidade_itanhaem->bairros()->create(['name_neighborhood' => 'Belas Artes']);
+        $cidade_itanhaem->bairros()->create(['name_neighborhood' => 'Centro']);
+        $cidade_itanhaem->bairros()->create(['name_neighborhood' => 'Suarão']);
+
+        //Pais::find(1)->estados()->find(1)->cidades()->find(1)->bairros()->create(['name_neighborhood' => 'Belas Artes']);
+        //Pais::find(1)->estados()->find(1)->cidades()->find(1)->bairros()->create(['name_neighborhood' => 'Centro']);
+        //Pais::find(1)->estados()->find(1)->cidades()->find(1)->bairros()->create(['name_neighborhood' => 'Suarão']);
+
+        Fornecedor::create([ 'company_name' => 'Mineirão','cnpj' => 1234567890,'email' => 'mineirão@mineirão.com'])
+            ->enderecos()->create([ 'street_name' => 'Rua Dagruta', 'cep' => 11740000, 'house_number' => 10, 'complement' => 'Casa', 'bairro_id' => 2],
+            [ 'street_name' => 'Av. graça', 'cep' => 11740000, 'house_number' => 10, 'complement' => 'Casa', 'bairro_id' => 1]);
+        Fornecedor::create([ 'company_name' => 'Denise Salgados','cnpj' => 1234567891,'email' => 'denise@mdenise.com'])
+            ->enderecos()->create([ 'street_name' => 'Rua Pernambuco', 'cep' => 11740000, 'house_number' => 10, 'complement' => 'Casa', 'bairro_id' => 3]);
 
         Fornecedor::find(1)->marcas()->create(['name' => 'Mineirão']);
         Fornecedor::find(1)->marcas()->create(['name' => 'Vovó Natalia']);
@@ -78,8 +79,8 @@ class DatabaseSeeder extends Seeder
             'quantity' => 22,
             'weight' => 2,
             'cost_price' => 18,
-            'sale_price' => 22,
-            'stock' => 15
+            'sale_price' => 22
+
         ]);
 
         Fornecedor::find(2)->marcas()->find(3)->produtos()->create([
@@ -88,34 +89,76 @@ class DatabaseSeeder extends Seeder
             'quantity' => 10,
             'weight' => 2,
             'cost_price' => 24,
-            'sale_price' => 30,
-            'stock' => 10
+            'sale_price' => 30
+
         ]);
 
-        User::find(2)->vendedor()->create(['number_phone' => 1334265254, 'number_cellphone' => 1391234567, 'name' => 'Raphael Venda']);
+        Administrador::create([ 'name' => 'Raphael Admin'])->user()->create(['email'=>'raphael@adminraphael.com','email_verified_at'=> '2023-02-07 13:33:19
+                ' , 'password'=>Hash::make('qwerasdf'), 'remember_token' => null,
+                'created_at'=>'2023-02-07 13:32:43', 'updated_at'=>'2023-02-07 13:33:19']);
 
-        User::find(3)->cliente()->create(['number_phone' => 1334265254, 'number_cellphone' => 1391234567, 'name' => 'Rodolfo CLiente' , 'company_name' => 'Bar joia','cnpj' => 1234567893, 'vendedor_id' => 1]);
-        
-        User::find(1)->administrador()->create([ 'name' => 'Raphael Admin']);
+        Vendedor::create([ 'name' => 'Raphael Venda'])->user()->create(['email'=>'raphael@vendedorraphael.com','email_verified_at'=> '2023-02-07 13:33:19
+            ' , 'password'=>Hash::make('qwerasdf'), 'remember_token' => null,
+            'created_at'=>'2023-02-07 13:32:43', 'updated_at'=>'2023-02-07 13:33:19']);
 
-        Cliente::find(1)->endereco()->create([ 'street_name' => 'Rua Bahia', 'cep' => 11740000, 'house_number' => 10, 'complement' => 'Casa', 'bairro_id' => 1]);
-        
-        Cliente::find(1)->pedidos()->create([
+            /*Cliente::create([ 'name' => 'Rodolfo CLiente' , 'company_name' => 'Bar joia','cnpj' => 1234567893, 'vendedor_id' => 1])->user()->create(['email'=>'raphael@clienteraphael.com','email_verified_at'=> '2023-02-07 13:33:19
+            ' , 'password'=>Hash::make('qwerasdf'), 'remember_token' => null,
+            'created_at'=>'2023-02-07 13:32:43', 'updated_at'=>'2023-02-07 13:33:19']);*/
+
+        $cliente1 = Cliente::create(['name' => 'Rodolfo CLiente' , 'company_name' => 'Bar joia','cnpj' => 1234567893, 'vendedor_id' => 1]);
+        $cliente1->user()->create(['email'=>'raphael@clienteraphael.com','email_verified_at'=> '2023-02-07 13:33:19
+        ' , 'password'=>Hash::make('qwerasdf'), 'remember_token' => null,
+        'created_at'=>'2023-02-07 13:32:43', 'updated_at'=>'2023-02-07 13:33:19']);
+        $cliente1->enderecos()->create([ 'street_name' => 'Rua Bahia', 'cep' => 11740000, 'house_number' => 10, 'complement' => 'Casa', 'bairro_id' => 1]);
+        $cliente1->enderecos()->create([ 'street_name' => 'Rua Alexandre', 'cep' => 11740000, 'house_number' => 10, 'complement' => 'Casa', 'bairro_id' => 3]);
+        $cliente1->telefones()->create(['number_phone' => '(13)3426-5255']);
+        $cliente1->telefones()->create(['number_phone' => '(13)91234-5678']);
+        $cliente1->pedidos()->create([
             'issue_date' => '2023-02-07 13:33:19',
             'payday' => '2023-02-09 13:33:19',
             'delivery_date' => '2023-02-08 13:33:19',
+            'approval_date' => '2023-02-08 13:33:19',
             'total_price' => 52,
             'total_discount' => 0,
             'payment_method' => 'Dinheiro',
-            'status_payment' => true,
-            'status_delivery' => true,
-            'status_request' => true,
             'observation' => 'Tudo entregue junto'
-        ])->produtos()->attach([ 
+        ])->produtos()->attach([
             1 => ['qty_item' => 1, 'price_iten' => 22] ,
-            2 => ['qty_item' => 1, 'price_iten' => 30] 
-        
+            2 => ['qty_item' => 1, 'price_iten' => 30]
+
         ]);
+
+        Administrador::find(1)->estoqueable()->create([
+            'qty_item' => 10,
+            'produto_id' => 1,
+            'observation' => 'Compra fornecedor',
+            'batch' => 'A458',
+            'expiration_date' => '2023-02-08 13:33:19'
+        ]);
+        Administrador::find(1)->estoqueable()->create([
+            'qty_item' => 10,
+            'produto_id' => 2,
+            'observation' => 'Compra fornecedor',
+            'batch' => 'B458',
+            'expiration_date' => '2023-02-08 13:33:19'
+        ]);
+
+        Cliente::find(1)->estoqueable()->create([
+        'qty_item' => -1,
+        'produto_id' => 1,
+        'observation' => 'Venda',
+        'batch' => 'A458',
+        'expiration_date' => '2023-02-08 13:33:19'
+        ]);
+        Cliente::find(1)->estoqueable()->create([
+            'qty_item' => -1,
+            'produto_id' => 2,
+            'observation' => 'Venda',
+            'batch' => 'B458',
+            'expiration_date' => '2023-02-08 13:33:19'
+            ]);
+
+
 
         //Estado::create(['name_state' => 'São Paulo']);
         //Estado::create(['name_state' => 'Paraná']);

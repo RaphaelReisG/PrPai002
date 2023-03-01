@@ -2,16 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Cliente;
-
-use App\Models\Bairro;
-use App\Models\Estado;
-
+use App\Models\Estoque;
 use Illuminate\Http\Request;
 
-use App\Models\Endereco;
-
-class ClienteController extends Controller
+class EstoqueController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -20,8 +14,7 @@ class ClienteController extends Controller
      */
     public function index()
     {
-        return Cliente::all();
-        //return Cliente::with('user')->paginate(10);
+        //
     }
 
     /**
@@ -42,32 +35,27 @@ class ClienteController extends Controller
      */
     public function store(Request $request)
     {
-        Cliente::create($request->all());
+        //
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Cliente  $cliente
+     * @param  \App\Models\Estoque  $estoque
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Estoque $estoque)
     {
-        $obj = Cliente::with(['enderecos', 'vendedor', 'pedidos', 'telefones', 'user'])->findOrfail($id);
-
-
-        //$obj['endereco']['bairro_id'] = Bairro::with('cidade')->findOrfail($obj['endereco']['bairro_id']);
-        //$obj['endereco']['bairro_id']['cidade']['estado_id'] = Estado::with('pais')->findOrfail($obj['endereco']['bairro_id']['cidade']['estado_id']);
-        return $obj;
+        //
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Cliente  $cliente
+     * @param  \App\Models\Estoque  $estoque
      * @return \Illuminate\Http\Response
      */
-    public function edit(Cliente $cliente)
+    public function edit(Estoque $estoque)
     {
         //
     }
@@ -76,24 +64,22 @@ class ClienteController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Cliente  $cliente
+     * @param  \App\Models\Estoque  $estoque
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Estoque $estoque)
     {
-        $obj = Cliente::findOrfail($id);
-        $obj->update($request->all());
+        //
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Cliente  $cliente
+     * @param  \App\Models\Estoque  $estoque
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Estoque $estoque)
     {
-        $obj = Cliente::findOrfail($id);
-        $obj->delete();
+        //
     }
 }

@@ -10,13 +10,14 @@ class Pessoa extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name',
-        
-        'number_phone',
-        'number_cellphone'
+        'name'
     ];
 
-    public function telefone(){
-        return $this->hasOne(Telefone::class);
+    public function telefones(){
+        return $this->morphMany(Telefone::class, 'telefoneable');
+    }
+
+    public function enderecos(){
+        return $this->morphMany(Endereco::class, 'enderecoable')->with(['bairro', 'bairro.cidade', 'bairro.cidade.estado', 'bairro.cidade.estado.pais']);
     }
 }

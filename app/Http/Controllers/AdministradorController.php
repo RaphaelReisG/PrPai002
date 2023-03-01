@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Administrador;
 use Illuminate\Http\Request;
 
+use Illuminate\Support\Facades\Hash;
+
 class AdministradorController extends Controller
 {
     /**
@@ -15,6 +17,8 @@ class AdministradorController extends Controller
     public function index()
     {
         return Administrador::all();
+
+        //return Administrador::with('user')->paginate(1);
     }
 
     /**
@@ -35,7 +39,11 @@ class AdministradorController extends Controller
      */
     public function store(Request $request)
     {
-        Administrador::create($request->all());
+        //Administrador::create($request->all());
+        $create = Administrador::create([ 'name' => $request->name])
+                ->user()->create(['email'=> $request->email, 'password'=>Hash::make($request->password) ])
+                ->givePermissionTo('admin');
+        return $create;
     }
 
     /**
@@ -46,7 +54,7 @@ class AdministradorController extends Controller
      */
     public function show($id)
     {
-        return Administrador::findOrfail($id);
+        return Administrador::with('user')->findOrfail($id);
     }
 
     /**
@@ -69,8 +77,35 @@ class AdministradorController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $obj = Administrador::findOrfail($id);
-        $obj->update($request->all());
+        $obj = Administrador::with('user')->findOrfail($id);
+        if(isset($request->name)){
+            $alt = $obj->update($request->all());
+            if($alt == 1){
+                $resposta = ["msg" => "Sucesso"];
+            }
+            else{
+                $resposta = ["error" => "Erro ao alterar Usuario."];
+            }
+        }
+        elseif(isset($request->email) || isset($request->password)){
+            if(isset($request->password)){
+                $request->password = Hash::make($request->password);
+            }
+            $alt = $obj->user()->update($request->all());
+            if($alt == 1){
+                $resposta = ["msg" => "Sucesso"];
+            }
+            else{
+                $resposta = ["error" => "Erro ao alterar Credenciais de usuario."];
+            }
+        }
+        else{
+            $resposta = ["error" => "Nenhum valor valido encontrado."];
+        }
+
+        //$request->only()
+
+        return $resposta;
     }
 
     /**
@@ -81,7 +116,8 @@ class AdministradorController extends Controller
      */
     public function destroy( $id)
     {
-        $obj = Administrador::findOrfail($id);
+        $obj = Administrador::with('user')->findOrfail($id);
+        $obj->user()->delete();
         $obj->delete();
     }
 }

@@ -10,4 +10,8 @@ use App\Models\Usuario_sistema;
 class Administrador extends Usuario_sistema
 {
     use HasFactory;
+
+    public function estoqueable(){
+        return $this->morphMany(Estoque::class, 'estoqueable');
+    }
 }

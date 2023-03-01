@@ -11,6 +11,6 @@ class Usuario_sistema extends Pessoa
     use HasFactory;
 
     public function user(){
-        return $this->hasOne(User::class);
+        return $this->morphOne(User::class, 'userable');
     }
 }
