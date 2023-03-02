@@ -51,7 +51,7 @@
 
                                     @elsecan('admin')
 
-                                       
+
 
                                     @endcan
                                 </ul>
@@ -75,7 +75,7 @@
                                         <li><a class="dropdown-item" href="#" v-on:click="defineClasse('cliente', 'Clientes')">Clientes</a></li>
                                         <li><a class="dropdown-item" href="#" v-on:click="defineClasse('vendedor', 'Vendedores')">Vendedores</a></li>
                                         <li><a class="dropdown-item" href="#" v-on:click="defineClasse('administrador', 'Administradores')">Administradores</a></li>
-                                        
+
                                         <li><hr class="dropdown-divider"></li>
                                         <li><a class="dropdown-item" href="#" v-on:click="defineClasse('fornecedor', 'Fornecedores')">Fornecedores</a></li>
                                         <li><a class="dropdown-item" href="#" v-on:click="defineClasse('produto', 'Produtos')">Produtos</a></li>
@@ -83,17 +83,17 @@
                                     @endcan
                                 </ul>
                             </li>
-                            <!-- 
+                            <!--
                             <li class="nav-item">
                                 <a class="nav-link disabled">Link</a>
                             </li>
                             -->
-                        </ul>  
+                        </ul>
                         <!--
                         <form class="d-flex" role="search">
                             <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
                             <button class="btn btn-outline-success" type="submit">Search</button>
-                        </form> 
+                        </form>
                         <h5>
                             Usuario
                             <button type="button" class="btn btn-outline-danger">Sair</button>
@@ -111,7 +111,7 @@
                                 {{ __('Sair') }}
                             </x-responsive-nav-link>
                         </form>
-                        
+
                         <!--
                         <button style="margin-left: 5px;" type="button" class="btn btn-secondary position-relative">
                             Notificações
@@ -121,7 +121,7 @@
                             </span>
                         </button>
                         -->
-                        
+
                     </div>
                 </div>
             </nav>
@@ -204,7 +204,7 @@
                                         <input type="password" class="form-control" id="floatingPassword" placeholder="Password" v-model="modelObjetos['segredoApi']">
                                         <label for="floatingPassword">Segredo API</label>
                                     </div>
-                                </div> 
+                                </div>
                                 <!-- formulario ADMINISTRADOR -->
                                 <div v-if="nomeObjeto == 'administrador'" class="modal-body">
                                     <div class="form-floating mb-3">
@@ -332,7 +332,7 @@
                                     </div>
                                     <div v-else>
                                         <h5>API já cadastrada!</h5>
-                                        <button type="button" class="btn btn-outline-warning" v-on:click="credencialApi = '', acaoObjeto = 'Alterar'" > 
+                                        <button type="button" class="btn btn-outline-warning" v-on:click="credencialApi = '', acaoObjeto = 'Alterar'" >
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
                                                 <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
                                                 <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
@@ -348,9 +348,9 @@
                                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" v-on:click="limparModal()">Sair</button>
                                          </div>
                                     </div>
-                                </div> 
+                                </div>
 
-                                
+
                             </div>
                             <div v-else> <!-- Operação realizada com sucesso -->
                                 <div class="modal-body">
@@ -456,7 +456,7 @@
                                                                 <td>@{{ obj.status }}</td>
                                                                 <td>@{{ new Date(obj.updateTime) }}</td>
                                                                 <td>
-                                                                    <button type="button" class="btn btn-outline-secondary" v-on:click="carregaCamposEditarObjeto(nomeObjeto, index), buscaApi = false"> 
+                                                                    <button type="button" class="btn btn-outline-secondary" v-on:click="carregaCamposEditarObjeto(nomeObjeto, index), buscaApi = false">
                                                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-upload" viewBox="0 0 16 16">
                                                                             <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
                                                                             <path d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708l3-3z"/>
@@ -466,7 +466,7 @@
                                                             </tr>
                                                             <tr>
                                                                 <td colspan="12"> <!-- acordion-->
-                                                                    <div class="collapse" v-bind:id="'collapseExample'+obj.orderId" id="collapseExample"> 
+                                                                    <div class="collapse" v-bind:id="'collapseExample'+obj.orderId" id="collapseExample">
                                                                         <div class="card card-body">
                                                                             ID Order: @{{ obj.orderId }}
                                                                             <br><br>
@@ -614,7 +614,7 @@
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" v-on:click="modalErro = false">OK</button>
                             </div>
-                            
+
                         </div>
                     </div>
                 </div>
@@ -625,7 +625,7 @@
                 <div v-if="nomeObjeto == 'cliente'" class="row">
                     <table class="table">
                         <thead> <!-- CABECALHO VARIA CONFORME CLASSE -->
-                            <tr>  
+                            <tr>
                                 <th scope="col">ID</th>
                                 <th scope="col">Nome Completo</th>
                                 <th scope="col">E-mail</th>
@@ -638,7 +638,7 @@
                                 <td>@{{ obj.nome }}</td>
                                 <td>@{{ obj.email }}</td>
                                 <td>
-                                    <button type="button" class="btn btn-outline-warning" v-on:click="carregaCamposEditarObjeto(nomeObjeto, index) , acaoObjeto = 'Alterar'" data-bs-toggle="modal" data-bs-target="#modalObjeto"> 
+                                    <button type="button" class="btn btn-outline-warning" v-on:click="carregaCamposEditarObjeto(nomeObjeto, index) , acaoObjeto = 'Alterar'" data-bs-toggle="modal" data-bs-target="#modalObjeto">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
                                             <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
                                             <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
@@ -674,7 +674,7 @@
                                 <td>@{{ obj.nome }}</td>
                                 <td>@{{ obj.email }}</td>
                                 <td>
-                                    <button type="button" class="btn btn-outline-warning" v-on:click="carregaCamposEditarObjeto(nomeObjeto, index) , acaoObjeto = 'Alterar'"  data-bs-toggle="modal" data-bs-target="#modalObjeto"> 
+                                    <button type="button" class="btn btn-outline-warning" v-on:click="carregaCamposEditarObjeto(nomeObjeto, index) , acaoObjeto = 'Alterar'"  data-bs-toggle="modal" data-bs-target="#modalObjeto">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
                                             <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
                                             <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
@@ -727,7 +727,7 @@
                                     <td><input style="border: none; max-width: 145px;" readonly type="datetime-local" v-bind:value="obj.dtEntrada" value=""></td>
                                     <td><input style="border: none; max-width: 145px;" readonly type="datetime-local" v-bind:value="obj.dtSaida" value=""></td>
                                     <td>
-                                        <button type="button" class="btn btn-outline-warning" v-on:click="carregaCamposEditarObjeto(nomeObjeto, index) , acaoObjeto = 'Alterar'"  data-bs-toggle="modal" data-bs-target="#modalObjeto"> 
+                                        <button type="button" class="btn btn-outline-warning" v-on:click="carregaCamposEditarObjeto(nomeObjeto, index) , acaoObjeto = 'Alterar'"  data-bs-toggle="modal" data-bs-target="#modalObjeto">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
                                                 <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
                                                 <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
@@ -758,7 +758,7 @@
 
                 <!-- Configurações -->
                 <div v-if="titulo == 'credencialapibinance'" class="row">
-                    
+
                 </div>
             </div>
 
@@ -770,307 +770,5 @@
         </div>
     </div>
 </body>
-<script>
-    const { createApp } = Vue
-    createApp({
-    
-    data() {
-        return {
-            idUsuario: "{{ Auth::user()->id }}",
-
-            titulo: "",
-            acaoObjeto: "",
-            nomeObjeto: "",
-
-            error: null,
-            carregando: false,
-            objetos: [{}],
-            modalErro: false,
-            modalSucesso: false,
-            modelObjetos:{},
-
-            buscaApi: false,
-            apiObjetos: [{}],
-            credencialApi: [{}]
-
-        };
-    },
-    mounted(){
-        
-    },
-    methods: {
-        defineClasse(classe, titulo ){
-            this.nomeObjeto = classe;
-            this.titulo = titulo;
-            if(classe != ''){
-                this.carregarObjeto(classe);
-            }
-            
-        },
-        carregarObjeto(classe){
-            if(classe == "diario"){
-                url = '/api/diario_usuario/'+this.idUsuario;
-            }
-            else{
-                url = '/api/'+classe;
-            }
-            fetch(url).then((res) => res.json())
-                    .then((data) => this.objetos = data);
-        },
-        carregarApiBinance(){
-            this.carregando = true;
-            this.buscaApi = false;
-            if(this.modelObjetos['limite'] == null){
-                this.modelObjetos['limite'] = 0;
-            }
-            if(this.modelObjetos['startTime'] == null || this.modelObjetos['startTime'] == ''){
-                var startTime = 0;
-            }
-            else{
-                var startTime = new Date(this.modelObjetos['startTime']).getTime();
-            }   
-
-            if(this.modelObjetos['endTime'] == null || this.modelObjetos['endTime'] == ''){
-                var endTime = 0;
-            }
-            else{
-                var endTime = new Date(this.modelObjetos['endTime']).getTime();
-            } 
-
-            url = '/api/importar/'+this.modelObjetos['symbol']+'/'+this.modelObjetos['limite']+'/'+startTime+'/'+endTime;
-            fetch(url).then((res) => res.json())
-                .then((data) => this.apiObjetos = data);
-
-            this.carregando = false;
-            this.buscaApi = true;  
-        },
-        carregaCredencialApi(){
-            url = '/api/credencialapibinance/'+this.idUsuario;
-            alert(url);
-            fetch(url).then((res) => res.json())
-                    .then((data) => this.credencialApi = data);
-        },
-        escolheAcaoObjeto(acao, classe){
-            if(acao == "Criar"){
-                this.addObjeto(classe);
-            }
-            else if(acao == "Alterar"){
-                this.updateObjeto(classe);
-            }
-            else{
-                alert("deu ruim na escolha de acao");
-            }
-        },
-        addObjeto(classe){
-            this.carregando = true;
-
-            if(classe == "administrador"){
-                url = '/api/'+classe+
-                    '?nome='+this.modelObjetos['nome']+
-                    '&email='+this.modelObjetos['email']+
-                    '&senha='+this.modelObjetos['senha'];
-            }
-            else if(classe == "cliente"){
-                url = '/api/'+classe+
-                    '?nome='+this.modelObjetos['nome']+
-                    '&email='+this.modelObjetos['email']+
-                    '&senha='+this.modelObjetos['senha']+
-                    '&chaveApi='+this.modelObjetos['chaveApi']+
-                    '&segredoApi='+this.modelObjetos['segredoApi']
-                ;
-            }
-            else if(classe == "diario"){
-                url = '/api/'+classe+
-                    '?dataRegistro='+this.modelObjetos['dataRegistro']+
-                    '&setup='+this.modelObjetos['setup']+
-                    '&emocao='+this.modelObjetos['emocao']+
-                    '&compraVenda='+this.modelObjetos['compraVenda']+
-                    '&quantidade='+this.modelObjetos['quantidade']+
-                    '&pontos='+this.modelObjetos['pontos']+
-                    '&valor='+this.modelObjetos['valor']+
-                    '&taxa='+this.modelObjetos['taxa']+
-                    '&dtEntrada='+this.modelObjetos['dtEntrada']+
-                    '&dtSaida='+this.modelObjetos['dtSaida']+
-                    '&fdEmocional='+this.modelObjetos['fdEmocional']+
-                    '&fdImediato='+this.modelObjetos['fdImediato']+
-                    '&idUsuario='+this.idUsuario
-                ;
-
-                /*
-                url = '/api/'+classe+
-                    '?dataRegistro='+this.modelObjetos['dataRegistro']+
-                    '&setup='+this.modelObjetos['setup']+
-                    '&emocao='+this.modelObjetos['emocao']+
-                    '&compraVenda='+this.modelObjetos['compraVenda']+
-                    '&quantidade='+this.modelObjetos['quantidade']
-                   
-                ;*/
-                //alert(url);
-            }
-            else{
-                alert("Erro, Classe inexistente!");
-            }
-
-            fetch(url, { method: 'POST'} ).catch((e) => this.error = e);
-
-            //fetch(url, { method: 'POST'} ).then((res) => this.error = res);
-
-            //fetch(url).then((res) => res.json())
-            //.then((data) => this.objetos = data);
-
-            if(this.error == null){
-                this.limparModal();
-                this.carregando = false;
-                this.modalSucesso = true;
-            }
-            else{
-                this.carregando = false;
-                this.modalErro = true;
-                alert("Um erro foi encontrado:"+this.error);
-            }
-            this.carregarObjeto(classe);
-        },
-        carregaCamposEditarObjeto(classe, index){
-            this.modelObjetos['id'] = this.objetos[index]['id'];
-
-            this.modelObjetos['nome'] = this.objetos[index]['nome'];
-            this.modelObjetos['email'] = this.objetos[index]['email'];
-            this.modelObjetos['senha'] = this.objetos[index]['senha'];
-            this.modelObjetos['confirmaSenha'] = this.objetos[index]['senha'];
-
-            this.modelObjetos['chaveApi'] = this.objetos[index]['chaveApi'];
-            this.modelObjetos['segredoApi'] = this.objetos[index]['segredoApi'];
-
-            if(this.objetos[index]['side'] == "BUY"){
-                this.objetos[index]['compraVenda'] = "Compra";
-            }
-            else if(this.objetos[index]['side'] == "SELL"){
-                this.objetos[index]['compraVenda'] = "Venda";
-            }
-            
-
-            //this.objetos[index]['valor'] = this.objetos[index]['price'];
-            //this.objetos[index]['quantidade'] = this.objetos[index]['executedQty'];
-            //this.objetos[index]['pontos'] = this.objetos[index]['pontos'];
-            //this.objetos[index]['taxa'] = this.objetos[index]['taxa'];
-            //this.objetos[index]['dtEntrada'] = new Date(this.objetos[index]['time']);
-            //alert(this.objetos[index]['dtEntrada']);
-            //this.objetos[index]['dtSaida'] = new Date(this.objetos[index]['updateTime']);
-
-
-
-            this.modelObjetos['dataRegistro'] = this.objetos[index]['dataRegistro'];
-            this.modelObjetos['setup'] = this.objetos[index]['setup'];
-            this.modelObjetos['emocao'] = this.objetos[index]['emocao'];
-            this.modelObjetos['compraVenda'] = this.objetos[index]['compraVenda'];
-            this.modelObjetos['quantidade'] = this.objetos[index]['quantidade'];
-            this.modelObjetos['pontos'] = this.objetos[index]['pontos'];
-            this.modelObjetos['valor'] = this.objetos[index]['valor'];
-            this.modelObjetos['taxa'] = this.objetos[index]['taxa'];
-            this.modelObjetos['dtEntrada'] = this.objetos[index]['dtEntrada'];
-            this.modelObjetos['dtSaida'] = this.objetos[index]['dtSaida'];
-            this.modelObjetos['fdEmocional'] = this.objetos[index]['fdEmocional'];
-            this.modelObjetos['fdImediato'] = this.objetos[index]['fdImediato'];
-
-            
-
-            //this.modelObjetos['idUsuario'] = '{{ Auth::user()->id }}';
-        },
-        updateObjeto(classe){
-            this.carregando = true;
-
-            if(classe == "administrador"){
-                url = '/api/'+classe+'/'+this.modelObjetos['id']+'?nome='+this.modelObjetos['nome']+'&email='+this.modelObjetos['email']+'&senha='+this.modelObjetos['senha'];
-            }
-            else if(classe == "cliente"){
-                url = '/api/'+classe+'/'+this.modelObjetos['id']+'?nome='+this.modelObjetos['nome']+'&email='+this.modelObjetos['email']+'&senha='+this.modelObjetos['senha']
-                        +'&chaveApi='+this.modelObjetos['chaveApi']+
-                        '&segredoApi='+this.modelObjetos['segredoApi'];
-            }
-            else if(classe == "diario"){
-                url = '/api/'+classe+'/'+this.modelObjetos['id']+
-                    '?dataRegistro='+this.modelObjetos['dataRegistro']+
-                    '&setup='+this.modelObjetos['setup']+
-                    '&emocao='+this.modelObjetos['emocao']+
-                    '&compraVenda='+this.modelObjetos['compraVenda']+
-                    '&quantidade='+this.modelObjetos['quantidade']+
-                    '&pontos='+this.modelObjetos['pontos']+
-                    '&valor='+this.modelObjetos['valor']+
-                    '&taxa='+this.modelObjetos['taxa']+
-                    '&dtEntrada='+this.modelObjetos['dtEntrada']+
-                    '&dtSaida='+this.modelObjetos['dtSaida']+
-                    '&fdEmocional='+this.modelObjetos['fdEmocional']+
-                    '&fdImediato='+this.modelObjetos['fdImediato']
-                ;
-            }
-            else{
-                alert("Erro, Classe inexistente!");
-            }
-
-            fetch(url, { method: 'PUT'} ).catch((e) => this.error = e);
-            if(this.error == null){
-                this.limparModal();
-                this.modalSucesso = true;
-            }
-            else{
-                this.modalErro = true;
-                alert("Um erro foi encontrado:"+this.error);
-            }
-            this.carregarObjeto(classe);
-            this.carregando = false;
-        },
-        desativarObjeto(classe, id){
-            if( confirm("Tem certeza que deseja deletar? ") == true){
-
-                if(classe !== "diario"){
-                    var url = '/api/'+classe+'/'+id+'?ativo=0';
-                    //alert(url);
-                    fetch(url, { method: 'PUT'} ).catch((e) => this.error = e);
-                    if(this.error == null){
-                        //this.limparModal();
-                        //this.modalSucesso = true;
-                        alert("Desativado com sucesso");
-                    }
-                    else{
-                        //this.modalErro = true;
-                        alert("Um erro foi encontrado:"+this.error);
-                        //this.modalErro = false;
-                        //this.error = null;
-                    }
-                    this.carregarObjeto(classe);
-                }
-                else{
-                    var url = '/api/'+classe+'/'+id;
-                    //alert(url);
-                    fetch(url, { method: 'DELETE'} ).catch((e) => this.error = e);
-                    if(this.error == null){
-                        //this.limparModal();
-                        //this.modalSucesso = true;
-                        alert("Excluido com sucesso");
-                    }
-                    else{
-                        //this.modalErro = true;
-                        alert("Um erro foi encontrado:"+this.error);
-                        //this.modalErro = false;
-                        //this.error = null;
-                    }
-                    this.carregarObjeto(classe);
-                }
-                
-            }
-            else{
-                alert("Cancelado");
-            }
-        },
-        limparModal(){
-            this.modelObjetos= [];
-        },
-        mostrarConteinerObjeto(classe){
-            if(classe !== ''){
-                this.carregarObjeto(classe);
-            }
-        }
-    }
-    }).mount('#app')
-</script>
+<script src="{{ asset('js/app.js')}}"></script>
 </html>
