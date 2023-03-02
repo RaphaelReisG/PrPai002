@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Administrador;
 use Illuminate\Http\Request;
 
+use App\Http\Resources\TesteResource;
+
 use Illuminate\Support\Facades\Hash;
 
 class AdministradorController extends Controller
@@ -16,9 +18,12 @@ class AdministradorController extends Controller
      */
     public function index()
     {
-        return Administrador::all();
+        //return Administrador::all();
 
-        //return Administrador::with('user')->paginate(1);
+        return Administrador::with('user')->paginate(10);
+
+        /*$administrador = Administrador::all();
+        return TesteResource::collection($administrador);*/
     }
 
     /**
@@ -40,10 +45,16 @@ class AdministradorController extends Controller
     public function store(Request $request)
     {
         //Administrador::create($request->all());
-        $create = Administrador::create([ 'name' => $request->name])
+        /*$create = Administrador::create([ 'name' => $request->name])
                 ->user()->create(['email'=> $request->email, 'password'=>Hash::make($request->password) ])
-                ->givePermissionTo('admin');
-        return $create;
+                ->givePermissionTo('admin');*/
+
+        $request->password = Hash::make($request->password);
+
+        $administrador = Administrador::create($request->only('name'));
+        $user = $administrador->user()->create($request->only('email', 'password'))
+                ->givePermissionTo('admin');        
+        return new TesteResource($administrador, $administrador->user);
     }
 
     /**
@@ -52,9 +63,9 @@ class AdministradorController extends Controller
      * @param  \App\Models\Administrador  $administrador
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Administrador $administrador)
     {
-        return Administrador::with('user')->findOrfail($id);
+        return new TesteResource($administrador, $administrador->user);
     }
 
     /**
@@ -75,37 +86,15 @@ class AdministradorController extends Controller
      * @param  \App\Models\Administrador  $administrador
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Administrador $administrador)
     {
-        $obj = Administrador::with('user')->findOrfail($id);
-        if(isset($request->name)){
-            $alt = $obj->update($request->all());
-            if($alt == 1){
-                $resposta = ["msg" => "Sucesso"];
-            }
-            else{
-                $resposta = ["error" => "Erro ao alterar Usuario."];
-            }
+        $administrador->update($request->all());
+        if(isset($request->password)){
+            $request->password = Hash::make($request->password);
         }
-        elseif(isset($request->email) || isset($request->password)){
-            if(isset($request->password)){
-                $request->password = Hash::make($request->password);
-            }
-            $alt = $obj->user()->update($request->all());
-            if($alt == 1){
-                $resposta = ["msg" => "Sucesso"];
-            }
-            else{
-                $resposta = ["error" => "Erro ao alterar Credenciais de usuario."];
-            }
-        }
-        else{
-            $resposta = ["error" => "Nenhum valor valido encontrado."];
-        }
+        $administrador->user()->update($request->only('email', 'password'));
 
-        //$request->only()
-
-        return $resposta;
+        return new TesteResource($administrador, $administrador->user);
     }
 
     /**
@@ -114,10 +103,12 @@ class AdministradorController extends Controller
      * @param  \App\Models\Administrador  $administrador
      * @return \Illuminate\Http\Response
      */
-    public function destroy( $id)
+    public function destroy(Administrador $administrador)
     {
-        $obj = Administrador::with('user')->findOrfail($id);
-        $obj->user()->delete();
-        $obj->delete();
+        //$obj = Administrador::with('user')->findOrfail($id);
+        $administrador->user()->delete();
+        $administrador->delete();
+
+        return new TesteResource($administrador);
     }
 }
