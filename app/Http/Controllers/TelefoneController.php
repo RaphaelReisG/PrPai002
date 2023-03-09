@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Telefone;
 use Illuminate\Http\Request;
 
+use App\Http\Resources\TesteResource;
+
 class TelefoneController extends Controller
 {
     /**
@@ -14,7 +16,7 @@ class TelefoneController extends Controller
      */
     public function index()
     {
-        //
+        return Telefone::all();
     }
 
     /**
@@ -35,7 +37,7 @@ class TelefoneController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Telefone::create($request->all());
     }
 
     /**
@@ -46,7 +48,7 @@ class TelefoneController extends Controller
      */
     public function show(Telefone $telefone)
     {
-        //
+        return $telefone;
     }
 
     /**
@@ -69,7 +71,7 @@ class TelefoneController extends Controller
      */
     public function update(Request $request, Telefone $telefone)
     {
-        //
+        $telefone->update($request->all());
     }
 
     /**
@@ -80,6 +82,6 @@ class TelefoneController extends Controller
      */
     public function destroy(Telefone $telefone)
     {
-        //
+        $telefone->delete();
     }
 }

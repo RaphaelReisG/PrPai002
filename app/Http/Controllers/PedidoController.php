@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Pedido;
 use Illuminate\Http\Request;
 
+use App\Http\Resources\TesteResource;
+
 class PedidoController extends Controller
 {
     /**
@@ -44,9 +46,10 @@ class PedidoController extends Controller
      * @param  \App\Models\Pedido  $administrador
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Pedido $pedido)
     {
-        return Pedido::with('produtos')->findOrfail($id);
+        //return Pedido::with('produtos')->findOrfail($id);
+        return new TesteResource($pedido, $pedido->produtos);
     }
 
     /**
@@ -55,7 +58,7 @@ class PedidoController extends Controller
      * @param  \App\Models\Pedido  $administrador
      * @return \Illuminate\Http\Response
      */
-    public function edit(Pedido $administrador)
+    public function edit(Pedido $pedido)
     {
         //
     }
@@ -67,10 +70,10 @@ class PedidoController extends Controller
      * @param  \App\Models\Pedido  $administrador
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Pedido $pedido)
     {
-        $obj = Pedido::findOrfail($id);
-        $obj->update($request->all());
+        //$obj = Pedido::findOrfail($id);
+        $pedido->update($request->all());
     }
 
     /**
@@ -79,9 +82,9 @@ class PedidoController extends Controller
      * @param  \App\Models\Pedido  $administrador
      * @return \Illuminate\Http\Response
      */
-    public function destroy( $id)
+    public function destroy( Pedido $pedido)
     {
-        $obj = Pedido::findOrfail($id);
-        $obj->delete();
+        //$obj = Pedido::findOrfail($id);
+        $pedido->delete();
     }
 }

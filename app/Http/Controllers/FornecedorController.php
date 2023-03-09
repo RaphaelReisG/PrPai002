@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Fornecedor;
 use Illuminate\Http\Request;
 
+use App\Http\Resources\TesteResource;
+
 class FornecedorController extends Controller
 {
     /**
@@ -44,9 +46,10 @@ class FornecedorController extends Controller
      * @param  \App\Models\Fornecedor  $fornecedor
      * @return \Illuminate\Http\Response
      */
-    public function show( $id)
+    public function show( Fornecedor $fornecedor)
     {
-        return Fornecedor::findOrfail($id);
+        //return Fornecedor::findOrfail($id);
+        return new TesteResource($fornecedor, $fornecedor->marcas);
     }
 
     /**
@@ -67,10 +70,10 @@ class FornecedorController extends Controller
      * @param  \App\Models\Fornecedor  $fornecedor
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request,  $id)
+    public function update(Request $request, Fornecedor $fornecedor)
     {
-        $obj = Fornecedor::findOrfail($id);
-        $obj->update($request->all());
+        //$obj = Fornecedor::findOrfail($id);
+        $fornecedor->update($request->all());
     }
 
     /**
@@ -79,9 +82,9 @@ class FornecedorController extends Controller
      * @param  \App\Models\Fornecedor  $fornecedor
      * @return \Illuminate\Http\Response
      */
-    public function destroy( $id)
+    public function destroy( Fornecedor $fornecedor)
     {
-        $obj = Fornecedor::findOrfail($id);
-        $obj->delete();
+        //$obj = Fornecedor::findOrfail($id);
+        $fornecedor->delete();
     }
 }

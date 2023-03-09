@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Estado;
 use Illuminate\Http\Request;
 
+use App\Http\Resources\TesteResource;
+
 class EstadoController extends Controller
 {
     /**
@@ -44,9 +46,10 @@ class EstadoController extends Controller
      * @param  \App\Models\Estado  $estado
      * @return \Illuminate\Http\Response
      */
-    public function show( $id)
+    public function show(Estado $estado)
     {
-        return Estado::findOrfail($id);
+        //return Estado::findOrfail($id);
+        return new TesteResource($estado, $estado->pais);
     }
 
     /**
@@ -67,10 +70,10 @@ class EstadoController extends Controller
      * @param  \App\Models\Estado  $estado
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request,  $id)
+    public function update(Request $request,  Estado $estado)
     {
-        $obj = Estado::findOrfail($id);
-        $obj->update($request->all());
+        //$obj = Estado::findOrfail($id);
+        $estado->update($request->all());
     }
 
     /**
@@ -79,9 +82,9 @@ class EstadoController extends Controller
      * @param  \App\Models\Estado  $estado
      * @return \Illuminate\Http\Response
      */
-    public function destroy( $id)
+    public function destroy( Estado $estado)
     {
-        $obj = Estado::findOrfail($id);
-        $obj->delete();
+        //$obj = Estado::findOrfail($id);
+        $estado->delete();
     }
 }

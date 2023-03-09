@@ -17,7 +17,7 @@ class Endereco extends Model
     ];
 
     public function bairro(){
-        return $this->belongsTo(Bairro::class);
+        return $this->belongsTo(Bairro::class)->with(['cidade','cidade.estado', 'cidade.estado.pais']);
     }
 
     public function enderecoable(){

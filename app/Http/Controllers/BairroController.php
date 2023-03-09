@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Bairro;
 use Illuminate\Http\Request;
 
+use App\Http\Resources\TesteResource;
+
 class BairroController extends Controller
 {
     /**
@@ -44,9 +46,11 @@ class BairroController extends Controller
      * @param  \App\Models\Bairro  $bairro
      * @return \Illuminate\Http\Response
      */
-    public function show( $id)
+    public function show(Bairro  $bairro)
     {
-        return Bairro::findOrfail($id);
+        //$bairro = $bairro->cidade;
+        //return [$bairro->cidade ];
+        return new TesteResource($bairro, $bairro->cidade);
     }
 
     /**
@@ -67,10 +71,9 @@ class BairroController extends Controller
      * @param  \App\Models\Bairro  $bairro
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request,  $id)
+    public function update(Request $request,  Bairro $bairro)
     {
-        $obj = Bairro::findOrfail($id);
-        $obj->update($request->all());
+        $bairro->update($request->all());
     }
 
     /**
@@ -79,9 +82,9 @@ class BairroController extends Controller
      * @param  \App\Models\Bairro  $bairro
      * @return \Illuminate\Http\Response
      */
-    public function destroy( $id)
+    public function destroy(Bairro $bairro)
     {
-        $obj = Bairro::findOrfail($id);
-        $obj->delete();
+        //$obj = Bairro::findOrfail($id);
+        $bairro->delete();
     }
 }

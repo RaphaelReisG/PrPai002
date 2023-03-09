@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Pais;
 use Illuminate\Http\Request;
 
+use App\Http\Resources\TesteResource;
+
 class PaisController extends Controller
 {
     /**
@@ -44,9 +46,10 @@ class PaisController extends Controller
      * @param  \App\Models\Pais  $administrador
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Pais $pais)
     {
-        return Pais::findOrfail($id);
+        //return Pais::findOrfail($id);
+        return $pais;
     }
 
     /**
@@ -55,7 +58,7 @@ class PaisController extends Controller
      * @param  \App\Models\Pais  $administrador
      * @return \Illuminate\Http\Response
      */
-    public function edit(Pais $administrador)
+    public function edit(Pais $pais)
     {
         //
     }
@@ -67,10 +70,10 @@ class PaisController extends Controller
      * @param  \App\Models\Pais  $administrador
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Pais $pais)
     {
-        $obj = Pais::findOrfail($id);
-        $obj->update($request->all());
+        //$obj = Pais::findOrfail($id);
+        $pais->update($request->all());
     }
 
     /**
@@ -79,9 +82,9 @@ class PaisController extends Controller
      * @param  \App\Models\Pais  $administrador
      * @return \Illuminate\Http\Response
      */
-    public function destroy( $id)
+    public function destroy( Pais $pais)
     {
-        $obj = Pais::findOrfail($id);
-        $obj->delete();
+        //$obj = Pais::findOrfail($id);
+        $pais->delete();
     }
 }

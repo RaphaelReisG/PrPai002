@@ -11,6 +11,8 @@ use Illuminate\Http\Request;
 
 use App\Models\Endereco;
 
+use App\Http\Resources\TesteResource;
+
 class ClienteController extends Controller
 {
     /**
@@ -51,14 +53,16 @@ class ClienteController extends Controller
      * @param  \App\Models\Cliente  $cliente
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Cliente $cliente)
     {
-        $obj = Cliente::with(['enderecos', 'vendedor', 'pedidos', 'telefones', 'user'])->findOrfail($id);
+        //$obj = Cliente::with(['enderecos', 'vendedor', 'pedidos', 'telefones', 'user'])->findOrfail($id);
 
 
         //$obj['endereco']['bairro_id'] = Bairro::with('cidade')->findOrfail($obj['endereco']['bairro_id']);
         //$obj['endereco']['bairro_id']['cidade']['estado_id'] = Estado::with('pais')->findOrfail($obj['endereco']['bairro_id']['cidade']['estado_id']);
-        return $obj;
+        //return $obj;
+
+        return new TesteResource($cliente, $cliente->enderecos, $cliente->vendedor, $cliente->pedidos, $cliente->telefones,  $cliente->user);
     }
 
     /**
@@ -79,10 +83,18 @@ class ClienteController extends Controller
      * @param  \App\Models\Cliente  $cliente
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request,Cliente $cliente)
     {
-        $obj = Cliente::findOrfail($id);
-        $obj->update($request->all());
+        //$obj = Cliente::findOrfail($id);
+        //$obj->update($request->all());
+
+        $cliente->update($request->all());
+        if(isset($request->password)){
+            $request->password = Hash::make($request->password);
+        }
+        $cliente->user()->update($request->only('email', 'password'));
+
+        return new TesteResource($cliente, $cliente->user);
     }
 
     /**
@@ -91,9 +103,14 @@ class ClienteController extends Controller
      * @param  \App\Models\Cliente  $cliente
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(CLiente $cliente)
     {
-        $obj = Cliente::findOrfail($id);
-        $obj->delete();
+        //$obj = Cliente::findOrfail($id);
+        //$obj->delete();
+
+        $cliente->user()->delete();
+        $cliente->delete();
+
+        return new TesteResource($cliente);
     }
 }

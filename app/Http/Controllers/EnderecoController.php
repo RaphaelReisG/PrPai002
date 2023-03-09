@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Endereco;
 use Illuminate\Http\Request;
 
+use App\Http\Resources\TesteResource;
+
 class EnderecoController extends Controller
 {
     /**
@@ -44,9 +46,10 @@ class EnderecoController extends Controller
      * @param  \App\Models\Endereco  $endereco
      * @return \Illuminate\Http\Response
      */
-    public function show( $id)
+    public function show( Endereco $endereco)
     {
-        return Endereco::with('bairro')->findOrfail($id);
+        //return Endereco::with('bairro')->findOrfail($id);
+        return new TesteResource($endereco, $endereco->bairro);
     }
 
     /**
@@ -67,10 +70,18 @@ class EnderecoController extends Controller
      * @param  \App\Models\Endereco  $endereco
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request,  $id)
+    public function update(Request $request,  Endereco $endereco)
     {
-        $obj = Endereco::findOrfail($id);
-        $obj->update($request->all());
+        //$obj = Endereco::findOrfail($id);
+        //$obj->update($request->all());
+
+        $endereco->update($request->all());
+        $endereco->bairro()->update($request->only('name_neighborhood'));
+        $endereco->bairro()->cidade()->update($request->only('name_city'));
+        $endereco->bairro()->cidade()->estado()->update($request->only('name_state'));
+        $endereco->bairro()->cidade()->estado()->pais()->update($request->only('name_country'));
+
+        return new TesteResource($endereco, $endereco->bairro);
     }
 
     /**
@@ -79,9 +90,10 @@ class EnderecoController extends Controller
      * @param  \App\Models\Endereco  $endereco
      * @return \Illuminate\Http\Response
      */
-    public function destroy( $id)
+    public function destroy(Endereco $endereco)
     {
-        $obj = Endereco::findOrfail($id);
-        $obj->delete();
+        //$obj = Endereco::findOrfail($id);
+        //$obj->delete();
+        return $endereco->delete();
     }
 }

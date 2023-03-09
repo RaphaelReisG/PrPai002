@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Vendedor;
 use Illuminate\Http\Request;
 
+use App\Http\Resources\TesteResource;
+
 class VendedorController extends Controller
 {
     /**
@@ -44,9 +46,9 @@ class VendedorController extends Controller
      * @param  \App\Models\Vendedor  $administrador
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Vendedor $vendedor)
     {
-        return Vendedor::findOrfail($id);
+        return new TesteResource($vendedor, $vendedor->enderecos, $vendedor->clientes, $vendedor->telefones,  $vendedor->user);
     }
 
     /**
@@ -55,7 +57,7 @@ class VendedorController extends Controller
      * @param  \App\Models\Vendedor  $administrador
      * @return \Illuminate\Http\Response
      */
-    public function edit(Vendedor $administrador)
+    public function edit(Vendedor $vendedor)
     {
         //
     }
@@ -67,10 +69,18 @@ class VendedorController extends Controller
      * @param  \App\Models\Vendedor  $administrador
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Vendedor $vendedor)
     {
-        $obj = Vendedor::findOrfail($id);
-        $obj->update($request->all());
+        //$obj = Vendedor::findOrfail($id);
+        //$obj->update($request->all());
+
+        $vendedor->update($request->all());
+        if(isset($request->password)){
+            $request->password = Hash::make($request->password);
+        }
+        $vendedor->user()->update($request->only('email', 'password'));
+
+        return new TesteResource($vendedor, $vendedor->user);
     }
 
     /**
@@ -79,9 +89,14 @@ class VendedorController extends Controller
      * @param  \App\Models\Vendedor  $administrador
      * @return \Illuminate\Http\Response
      */
-    public function destroy( $id)
+    public function destroy( Vendedor $vendedor)
     {
-        $obj = Vendedor::findOrfail($id);
-        $obj->delete();
+        //$obj = Vendedor::findOrfail($id);
+        //$obj->delete();
+
+        $vendedor->user()->delete();
+        $vendedor->delete();
+
+        return new TesteResource($vendedor);
     }
 }

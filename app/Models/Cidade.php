@@ -14,7 +14,7 @@ class Cidade extends Model
     ];
 
     public function estado(){
-        return $this->belongsTo(Estado::class);
+        return $this->belongsTo(Estado::class)->with(['pais']);
     }
 
     public function bairros(){

@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Estoque;
 use Illuminate\Http\Request;
 
+use App\Http\Resources\TesteResource;
+
 class EstoqueController extends Controller
 {
     /**

@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Cidade;
 use Illuminate\Http\Request;
 
+use App\Http\Resources\TesteResource;
+
 class CidadeController extends Controller
 {
     /**
@@ -44,9 +46,10 @@ class CidadeController extends Controller
      * @param  \App\Models\Cidade  $cidade
      * @return \Illuminate\Http\Response
      */
-    public function show( $id)
+    public function show(Cidade $cidade)
     {
-        return Cidade::findOrfail($id);
+        //return $cidade->estado;
+        return new TesteResource($cidade, $cidade->estado);
     }
 
     /**
@@ -67,10 +70,9 @@ class CidadeController extends Controller
      * @param  \App\Models\Cidade  $cidade
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request,  $id)
+    public function update(Request $request, Cidade $cidade)
     {
-        $obj = Cidade::findOrfail($id);
-        $obj->update($request->all());
+        $cidade->update($request->all());
     }
 
     /**
@@ -79,9 +81,8 @@ class CidadeController extends Controller
      * @param  \App\Models\Cidade  $cidade
      * @return \Illuminate\Http\Response
      */
-    public function destroy( $id)
+    public function destroy(Cidade $cidade)
     {
-        $obj = Cidade::findOrfail($id);
-        $obj->delete();
+        return $cidade->delete();
     }
 }

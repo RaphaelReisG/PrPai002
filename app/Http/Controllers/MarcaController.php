@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Marca;
 use Illuminate\Http\Request;
 
+use App\Http\Resources\TesteResource;
+
 class MarcaController extends Controller
 {
     /**
@@ -44,9 +46,10 @@ class MarcaController extends Controller
      * @param  \App\Models\Marca  $marca
      * @return \Illuminate\Http\Response
      */
-    public function show( $id)
+    public function show( Marca $marca)
     {
-        return Marca::findOrfail($id);
+        //return Marca::findOrfail($id);
+        return new TesteResource($marca, $marca->produtos);
     }
 
     /**
@@ -67,10 +70,10 @@ class MarcaController extends Controller
      * @param  \App\Models\Marca  $marca
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request,  $id)
+    public function update(Request $request,  Marca $marca)
     {
-        $obj = Marca::findOrfail($id);
-        $obj->update($request->all());
+        //$obj = Marca::findOrfail($id);
+        $marca->update($request->all());
     }
 
     /**
@@ -79,9 +82,9 @@ class MarcaController extends Controller
      * @param  \App\Models\Marca  $marca
      * @return \Illuminate\Http\Response
      */
-    public function destroy( $id)
+    public function destroy( Marca $marca)
     {
-        $obj = Marca::findOrfail($id);
-        $obj->delete();
+        //$obj = Marca::findOrfail($id);
+        $marca->delete();
     }
 }

@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Produto;
 use Illuminate\Http\Request;
 
+use App\Http\Resources\TesteResource;
+
 class ProdutoController extends Controller
 {
     /**
@@ -44,9 +46,10 @@ class ProdutoController extends Controller
      * @param  \App\Models\Produto  $administrador
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Produto $produto)
     {
-        return Produto::findOrfail($id);
+        //return Produto::findOrfail($id);
+        return new TesteResource($produto, $produto->marca, $produto->estoques);
     }
 
     /**
@@ -55,7 +58,7 @@ class ProdutoController extends Controller
      * @param  \App\Models\Produto  $administrador
      * @return \Illuminate\Http\Response
      */
-    public function edit(Produto $administrador)
+    public function edit(Produto $produto)
     {
         //
     }
@@ -67,10 +70,11 @@ class ProdutoController extends Controller
      * @param  \App\Models\Produto  $administrador
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Produto $produto)
     {
-        $obj = Produto::findOrfail($id);
-        $obj->update($request->all());
+        //$obj = Produto::findOrfail($id);
+        $produto->update($request->all());
+        //$produto->marca()->update($request->all());
     }
 
     /**
@@ -79,9 +83,9 @@ class ProdutoController extends Controller
      * @param  \App\Models\Produto  $administrador
      * @return \Illuminate\Http\Response
      */
-    public function destroy( $id)
+    public function destroy( Produto $produto)
     {
-        $obj = Produto::findOrfail($id);
-        $obj->delete();
+        //$obj = Produto::findOrfail($id);
+        $produto->delete();
     }
 }
