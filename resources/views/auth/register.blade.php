@@ -11,7 +11,7 @@
 
             <!-- Name -->
             <div>
-                <x-input-label for="name" :value="__('Name')" />
+                <x-input-label for="name" :value="__('Nome completo')" />
 
                 <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus />
 
@@ -20,7 +20,7 @@
 
             <!-- Company_Name -->
             <div class="mt-4">
-                <x-input-label for="company_name" :value="__('Company name')" />
+                <x-input-label for="company_name" :value="__('Razão Social')" />
 
                 <x-text-input id="company_name" class="block mt-1 w-full" type="text" name="company_name" :value="old('company_name')" required autofocus />
 
@@ -29,7 +29,7 @@
 
             <!-- Company_Name -->
             <div class="mt-4">
-                <x-input-label for="cnpj" :value="__('Identification code')" />
+                <x-input-label for="cnpj" :value="__('CNPJ ou CPF')" />
 
                 <x-text-input id="cnpj" class="block mt-1 w-full" type="text" name="cnpj" :value="old('cnpj')" required autofocus />
 
@@ -38,7 +38,7 @@
 
             <!-- Email Address -->
             <div class="mt-4">
-                <x-input-label for="email" :value="__('Email')" />
+                <x-input-label for="email" :value="__('E-mail')" />
 
                 <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required />
 
