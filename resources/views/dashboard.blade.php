@@ -20,9 +20,9 @@
 
     <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script>
     <!-- <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script> -->
-    
 
-    
+
+
 
 </head>
 <body>
@@ -48,14 +48,14 @@
                                 </a>
                                 <ul class="dropdown-menu">
 
-                                    @can('user')
-                                        <li><a class="dropdown-item" href="#" v-on:click="defineClasse('credencialapibinance', 'API Binance')">API Binance</a></li>
-                                        <li><a class="dropdown-item" href="#" v-on:click="defineClasse('setup', 'Config Setup')">Setup</a></li>
-                                        <li><a class="dropdown-item" href="#" v-on:click="defineClasse('emocao', 'Config Emoção')">Emoções</a></li>
+                                    @can('admin')
+                                        <li><a class="dropdown-item" href="#" v-on:click="defineClasse('produto', 'Produto')">Produtos</a></li>
+                                        <li><a class="dropdown-item" href="#" v-on:click="defineClasse('fornecedor', 'Fornecedor')">Fornecedores</a></li>
+                                        <li><a class="dropdown-item" href="#" v-on:click="defineClasse('estoque', 'Estoque')">Estoque</a></li>
 
-                                    @elsecan('admin')
+                                    @elsecan('cliente')
 
-                                       
+
 
                                     @endcan
                                 </ul>
@@ -67,30 +67,30 @@
                                 <ul class="dropdown-menu">
 
                                     @can('user')
-                                        <li><a class="dropdown-item" href="#" v-on:click="defineClasse('diario', 'Diario Trader')">Gerenciar Trades</a></li>
+                                        <li><a class="dropdown-item" href="#" v-on:click="defineClasse('pedido', 'Pedidos')">Pedidos</a></li>
 
                                     @elsecan('admin')
 
                                         <li><a class="dropdown-item" href="#" v-on:click="defineClasse('cliente', 'Cliente')">Gerenciar Clientes</a></li>
                                         <li><a class="dropdown-item" href="#" v-on:click="defineClasse('administrador', 'Administrador')">Gerenciar Administradores</a></li>
-                                        
+
                                         <li><hr class="dropdown-divider"></li>
-                                        <li><a class="dropdown-item" href="#" v-on:click="defineClasse('diario', 'Diario Trader')">Gerenciar Trades</a></li>
+                                        <li><a class="dropdown-item" href="#" v-on:click="defineClasse('pedido', 'Pedidos')">Pedidos</a></li>
 
                                     @endcan
                                 </ul>
                             </li>
-                            <!-- 
+                            <!--
                             <li class="nav-item">
                                 <a class="nav-link disabled">Link</a>
                             </li>
                             -->
-                        </ul>  
+                        </ul>
                         <!--
                         <form class="d-flex" role="search">
                             <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
                             <button class="btn btn-outline-success" type="submit">Search</button>
-                        </form> 
+                        </form>
                         <h5>
                             Usuario
                             <button type="button" class="btn btn-outline-danger">Sair</button>
@@ -108,7 +108,7 @@
                                 {{ __('Sair') }}
                             </x-responsive-nav-link>
                         </form>
-                        
+
                         <!--
                         <button style="margin-left: 5px;" type="button" class="btn btn-secondary position-relative">
                             Notificações
@@ -118,7 +118,7 @@
                             </span>
                         </button>
                         -->
-                        
+
                     </div>
                 </div>
             </nav>
@@ -146,9 +146,9 @@
                         Olá Administrador, seja bem vindo ao sistema.
                     @endcan
                 </div>
-                
 
-                
+
+
 
                 <h2 v-if="titulo !== ''"> <!-- cabecalho geral -->
                     Novo
@@ -168,8 +168,8 @@
                     </button>
                 </h2>
             </div>
-            
-            
+
+
             <!-- Modal Cadastro/edicao geral -->
             <div class="modal fade" id="modalObjeto" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
@@ -185,7 +185,7 @@
                                     <input_geral nome="E-mail" tipo="email" nome_model="email"></input_geral>
                                     <senha_geral nome="Senha" nome_model="senha"></senha_geral>
                                     <senha_geral nome="Confirme a senha" nome_model="confirmaSenha"></senha_geral>
-                                </div> 
+                                </div>
                                 <!-- formulario DIARIO -->
                                 <div v-if="nomeObjeto == 'diario'" class="modal-body">
                                     <div class="row">
@@ -228,22 +228,22 @@
                                             <button_cancelar_modal rotulo="Sair"></button_cancelar_modal>
                                         </div>
                                     </div>
-                                </div> 
+                                </div>
                                 <!-- formulario SETUP -->
                                 <div v-if="nomeObjeto == 'setup'" class="modal-body">
                                     <input_geral nome="Nome Setup" tipo="text" nome_model="nomeSetup"></input_geral>
-                                </div> 
+                                </div>
                                 <!-- formulario EMOCAO -->
                                 <div v-if="nomeObjeto == 'emocao'" class="modal-body">
                                     <input_geral nome="Nome Emoção" tipo="text" nome_model="nomeEmocao"></input_geral>
-                                </div> 
+                                </div>
 
                                 <!-- Rodapé -->
                                 <div class="modal-footer" v-if="nomeObjeto != 'credencialapibinance'">
                                     <button_cancelar_modal rotulo="Cancelar"></button_cancelar_modal>
                                     <button_acao></button_acao>
                                 </div>
-                                
+
                             </div>
                             <div v-else> <!-- Operação realizada com sucesso -->
                                 <div class="modal-body">
@@ -330,7 +330,7 @@
                                                         {titulo: 'timeInForce', conteudo: 'timeInForce'},
                                                         {titulo: 'Somente Redução - reduceOnly', conteudo: 'reduceOnly'},
                                                         {titulo: 'closePosition', conteudo: 'closePosition'},
-                                                        
+
 
                                                         {titulo: 'Aposta - positionSide', conteudo: 'positionSide'},
                                                         {titulo: 'stopPrice', conteudo: 'stopPrice'},
@@ -395,7 +395,7 @@
                                                                 <td>@{{ obj.status }}</td>
                                                                 <td>@{{ new Date(obj.updateTime) }}</td>
                                                                 <td>
-                                                                    <button type="button" class="btn btn-outline-secondary" v-on:click="carregaCamposEditarObjeto(nomeObjeto, index), buscaApi = false"> 
+                                                                    <button type="button" class="btn btn-outline-secondary" v-on:click="carregaCamposEditarObjeto(nomeObjeto, index), buscaApi = false">
                                                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-upload" viewBox="0 0 16 16">
                                                                             <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
                                                                             <path d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708l3-3z"/>
@@ -405,7 +405,7 @@
                                                             </tr>
                                                             <tr>
                                                                 <td colspan="12"> <!-- acordion-->
-                                                                    <div class="collapse" v-bind:id="'collapseExample'+obj.orderId" id="collapseExample"> 
+                                                                    <div class="collapse" v-bind:id="'collapseExample'+obj.orderId" id="collapseExample">
                                                                         <div class="card card-body">
                                                                             ID Order: @{{ obj.orderId }}
                                                                             <br><br>
@@ -574,19 +574,19 @@
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" v-on:click="modalErro = false">OK</button>
                             </div>
-                            
+
                         </div>
                     </div>
                 </div>
             </div>
 
-           
+
                 <div v-if="titulo != ''">
                     <!-- Tabela Cliente -->
                     <div v-if="nomeObjeto == 'cliente' && objetos !== null" class="row">
                         <table class="table">
                             <thead> <!-- CABECALHO VARIA CONFORME CLASSE -->
-                                <tr>  
+                                <tr>
                                     <th scope="col">ID</th>
                                     <th scope="col">Nome Completo</th>
                                     <th scope="col">E-mail</th>
@@ -634,7 +634,7 @@
 
                     <!-- Tabela Diario -->
                     <div v-else-if="nomeObjeto == 'diario' && objetos !== null" class="row">
-                        
+
                             <table_acordion     :classe_atributos="[
                                                     {titulo: 'Registro', conteudo: 'created_at'},
                                                     {titulo: 'Setup', conteudo: 'setup'},
@@ -654,9 +654,9 @@
                                                 ]"
                                                >
                             </table_acordion>
-                        
-                      
-                                                
+
+
+
                     </div>
 
                     <!-- Tabela Setup -->
@@ -690,7 +690,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <!-- Enquanto Carregando -->
                     <div v-else class="text-center">
                         <br><br>
@@ -698,9 +698,9 @@
                         <h3>Carregando...</h3>
                     </div>
                 </div>
-            
 
-            
+
+
         </div>
     </div>
 </body>
