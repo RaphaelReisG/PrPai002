@@ -1,5 +1,6 @@
 {{ Auth::user()->email }}
 {{ Auth::user()->id }}
+{{ Auth::user()->userable->name }}
 
 
 
@@ -73,6 +74,7 @@
 
                                         <li><a class="dropdown-item" href="#" v-on:click="defineClasse('cliente', 'Cliente')">Gerenciar Clientes</a></li>
                                         <li><a class="dropdown-item" href="#" v-on:click="defineClasse('administrador', 'Administrador')">Gerenciar Administradores</a></li>
+                                        <li><a class="dropdown-item" href="#" v-on:click="defineClasse('vendedor', 'Vendedores')">Gerenciar Vendedores</a></li>
 
                                         <li><hr class="dropdown-divider"></li>
                                         <li><a class="dropdown-item" href="#" v-on:click="defineClasse('pedido', 'Pedidos')">Pedidos</a></li>
@@ -97,7 +99,7 @@
                         </h5>
                         -->
 
-                        Olá, {{ Auth::user()->name }} , seja bem vindo!
+                        Olá, {{ Auth::user()->userable->name }} , seja bem vindo!
 
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
@@ -584,52 +586,47 @@
                 <div v-if="titulo != ''">
                     <!-- Tabela Cliente -->
                     <div v-if="nomeObjeto == 'cliente' && objetos !== null" class="row">
-                        <table class="table">
-                            <thead> <!-- CABECALHO VARIA CONFORME CLASSE -->
-                                <tr>
-                                    <th scope="col">ID</th>
-                                    <th scope="col">Nome Completo</th>
-                                    <th scope="col">E-mail</th>
-                                    <th scope="col">Opções</th>
-                                </tr>
-                            </thead>
-                            <tbody class="table-group-divider"> <!-- CORPO VARIA CNFORME CLASSE -->
-                                <tr v-for="(obj, index) in objetos">
-                                    <th scope="row">@{{obj.id}} </th>
-                                    <td>@{{ obj.nome }}</td>
-                                    <td>@{{ obj.email }}</td>
-                                    <td>
-                                        <button_alter :objindex="index"></button_alter>
-                                        <button_delete v-bind:objid= "obj.id"></button_delete>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                        <table_acordion     :classe_atributos="[
+                                                    {titulo: 'Nome', conteudo: 'name'},
+                                                    {titulo: 'Razão Social', conteudo: 'company_name'},
+                                                    {titulo: 'CPF / CNPJ', conteudo: 'cnpj'},
+                                                    {titulo: 'Vendedor', conteudo: 'vendedor', conteudo2: 'name' },
+                                                    {titulo: 'E-mail',  conteudo: 'user', conteudo2: 'email'}
+                                                ]"
+                                                :objeto_imp="objetos"
+                                                :obj_acordion="[
+                                                    {titulo: 'Criado em', conteudo: 'created_at'}
+                                                ]"
+                                               >
+                        </table_acordion>
+                    </div>
+
+                    <!-- Tabela Vendedor -->
+                    <div v-if="nomeObjeto == 'vendedor' && objetos !== null" class="row">
+                        <table_acordion     :classe_atributos="[
+                                                    {titulo: 'Nome', conteudo: 'name'},
+                                                    {titulo: 'E-mail',  conteudo: 'user', conteudo2: 'email'}
+                                                ]"
+                                                :objeto_imp="objetos"
+                                                :obj_acordion="[
+                                                    {titulo: 'Criado em', conteudo: 'created_at'}
+                                                ]"
+                                               >
+                        </table_acordion>
                     </div>
 
                     <!-- Tabela Administradores -->
                     <div v-else-if="nomeObjeto == 'administrador' && objetos !== null" class="row">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th scope="col">ID</th>
-                                    <th scope="col">Nome Completo</th>
-                                    <th scope="col">E-mail</th>
-                                    <th scope="col">Opções</th>
-                                </tr>
-                            </thead>
-                            <tbody class="table-group-divider">
-                                <tr v-for="(obj, index) in objetos">
-                                    <th scope="row">@{{ obj.id }}</th>
-                                    <td>@{{ obj.nome }}</td>
-                                    <td>@{{ obj.email }}</td>
-                                    <td>
-                                        <button_alter :objindex="index"></button_alter>
-                                        <button_delete v-bind:objid= "obj.id"></button_delete>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                        <table_acordion     :classe_atributos="[
+                                                    {titulo: 'Nome', conteudo: 'name'},
+                                                    {titulo: 'E-mail',  conteudo: 'user', conteudo2: 'email'}
+                                                ]"
+                                                :objeto_imp="objetos"
+                                                :obj_acordion="[
+                                                    {titulo: 'Criado em', conteudo: 'created_at'}
+                                                ]"
+                                               >
+                        </table_acordion>
                     </div>
 
                     <!-- Tabela Diario -->

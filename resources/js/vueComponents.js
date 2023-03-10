@@ -113,8 +113,11 @@ Vue.component('table_acordion', {
                 <tr data-bs-toggle="collapse" v-bind:data-bs-target="'#collapseExample' + obj.id"  aria-expanded="false" v-bind:aria-controls="'collapseExample'+obj.id" aria-controls="collapseExample">
                     
                     <td v-for="valor in classe_atributos">
-                        <div v-if="valor.conteudo !== 'created_at' && valor.conteudo !== 'dtEntrada' && valor.conteudo !== 'dtSaida' ">
+                        <div v-if="valor.conteudo !== 'created_at' && valor.conteudo !== 'dtEntrada' && valor.conteudo !== 'dtSaida' && valor.conteudo2 == null ">
                             {{ obj[valor.conteudo]  }}
+                        </div>
+                        <div v-else-if="valor.conteudo2 !== null">
+                            {{ obj[valor.conteudo][valor.conteudo2]  }}
                         </div>
                         <div v-else>
                             {{ new Date(obj[valor.conteudo]).toLocaleString() }}
@@ -158,6 +161,7 @@ Vue.component('table_acordion_api', {
                     <td v-for="valor in classe_atributos">
                         <div v-if="valor.conteudo !== 'created_at' && valor.conteudo !== 'dtEntrada' && valor.conteudo !== 'dtSaida' && valor.conteudo !== 'time' ">
                             {{ obj[valor.conteudo]  }}
+                            
                         </div>
                         <div v-else>
                             {{ new Date(obj[valor.conteudo]).toLocaleString() }}

@@ -16,7 +16,7 @@ class VendedorController extends Controller
      */
     public function index()
     {
-        return Vendedor::all();
+        return Vendedor::with(['user','enderecos', 'telefones'])->paginate(10);
     }
 
     /**
