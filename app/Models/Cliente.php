@@ -12,6 +12,7 @@ class Cliente extends Usuario_sistema
     use HasFactory;
 
     protected $fillable = [
+        'name',
         'company_name',
         'cnpj'
     ];

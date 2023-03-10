@@ -18,6 +18,24 @@
                 <x-input-error :messages="$errors->get('name')" class="mt-2" />
             </div>
 
+            <!-- Company_Name -->
+            <div class="mt-4">
+                <x-input-label for="company_name" :value="__('Company name')" />
+
+                <x-text-input id="company_name" class="block mt-1 w-full" type="text" name="company_name" :value="old('company_name')" required autofocus />
+
+                <x-input-error :messages="$errors->get('company_name')" class="mt-2" />
+            </div>
+
+            <!-- Company_Name -->
+            <div class="mt-4">
+                <x-input-label for="cnpj" :value="__('Identification code')" />
+
+                <x-text-input id="cnpj" class="block mt-1 w-full" type="text" name="cnpj" :value="old('cnpj')" required autofocus />
+
+                <x-input-error :messages="$errors->get('cnpj')" class="mt-2" />
+            </div>
+
             <!-- Email Address -->
             <div class="mt-4">
                 <x-input-label for="email" :value="__('Email')" />

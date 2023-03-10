@@ -54,7 +54,7 @@
                                         <li><a class="dropdown-item" href="#" v-on:click="defineClasse('estoque', 'Estoque')">Estoque</a></li>
 
                                     @elsecan('cliente')
-
+                                        <li><a class="dropdown-item" href="#" v-on:click="defineClasse('endereco', 'Meus Endereços')">Endereço</a></li>
 
 
                                     @endcan
@@ -66,7 +66,7 @@
                                 </a>
                                 <ul class="dropdown-menu">
 
-                                    @can('user')
+                                    @can('cliente')
                                         <li><a class="dropdown-item" href="#" v-on:click="defineClasse('pedido', 'Pedidos')">Pedidos</a></li>
 
                                     @elsecan('admin')
