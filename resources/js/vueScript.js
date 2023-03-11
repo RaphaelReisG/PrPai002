@@ -10,6 +10,8 @@ var app = new Vue({
             acaoObjeto: "",
             nomeObjeto: "",
 
+            resposta: [{}],
+
             error: null,
             carregando: false,
             carregandoGeral: false,
@@ -19,8 +21,12 @@ var app = new Vue({
             modelObjetos:[{
                 id: "",
 
+                name: "", email: "",
+
+                company_name: "", cnpj: "",
+
                 setup: "", simbolo: "", emocao: "", compraVenda: "", quantidade: "", valorEntrada: "", valorSaida: "", taxa: "",  setup: "", dtEntrada: "",
-                dtSaida: "", fdEmocional: "", fdImediato: "",    
+                dtSaida: "", fdEmocional: "", fdImediato: "",
 
                 key: "", secret: "",
 
@@ -42,7 +48,7 @@ var app = new Vue({
             mostrarSenha: "password",
 
             teste:  [{}],
-            nomeSetup: "" 
+            nomeSetup: ""
     },
     methods: {
         defineClasse: function(classe, titulo ){
@@ -51,13 +57,13 @@ var app = new Vue({
             //this.limparGeral();
             this.nomeObjeto = classe;
             this.titulo = titulo;
-            
+
             if(classe != ''){
                     this.carregarObjeto(classe);
-                
-                
+
+
             }
-            
+
         },
         carregarObjeto: function(classe){
             //alert('02');
@@ -69,14 +75,15 @@ var app = new Vue({
                 url = '/api/diario_usuario/'+this.idUsuario;
             }
             else{
-                url = '/api/'+classe+'/'+this.idUsuario;
+                //url = '/api/'+classe+'/'+this.idUsuario;
+                url = '/api/'+classe;
             }
-            
+
             fetch(url).then((res) => res.json())
                     .then((data) => this.objetos = data).finally(this.carregandoGeral = false);
-            
+
             //this.carregandoGeral = false;
-            
+
         },
         carregarApiBinance: function(){
             this.carregando = true;
@@ -89,21 +96,21 @@ var app = new Vue({
             }
             else{
                 var startTime = new Date(this.modelObjetos[0]['startTime']).getTime();
-            }   
+            }
 
             if(this.modelObjetos[0]['endTime'] == null || this.modelObjetos[0]['endTime'] == ''){
                 var endTime = 0;
             }
             else{
                 var endTime = new Date(this.modelObjetos[0]['endTime']).getTime();
-            } 
+            }
 
             var url = '/api/importar/'+this.idUsuario+'/'+this.modelObjetos[0]['symbol']+'/'+this.modelObjetos[0]['limite']+'/'+startTime+'/'+endTime;
             fetch(url).then((res) => res.json())
                 .then((data) => this.apiObjetos = data);
 
             this.carregando = false;
-            this.buscaApi = true;  
+            this.buscaApi = true;
 
             alert(url);
         },
@@ -156,11 +163,10 @@ var app = new Vue({
             }
             else if(classe == "cliente"){
                 url = '/api/'+classe+
-                    '?nome='+this.modelObjetos['nome']+
-                    '&email='+this.modelObjetos['email']+
-                    '&senha='+this.modelObjetos['senha']+
-                    '&chaveApi='+this.modelObjetos['chaveApi']+
-                    '&segredoApi='+this.modelObjetos['segredoApi']
+                    '?name='+this.modelObjetos[0]['name']+
+                    '&email='+this.modelObjetos[0]['email']+
+                    '&company_name='+this.modelObjetos[0]['company_name']+
+                    '&cnpj='+this.modelObjetos[0]['cnpj']
                 ;
             }
             else if(classe == "diario"){
@@ -186,7 +192,7 @@ var app = new Vue({
                     '&emocao='+this.modelObjetos['emocao']+
                     '&compraVenda='+this.modelObjetos['compraVenda']+
                     '&quantidade='+this.modelObjetos['quantidade']
-                   
+
                 ;*/
                 //alert(url);
             }
@@ -236,9 +242,9 @@ var app = new Vue({
             this.carregaEmocao();
 
             if(this.acaoObjeto !== 'AddAPI'){
-                this.modelObjetos[0]['id'] = this.objetos[index]['id'];
+                this.modelObjetos[0]['id'] = this.objetos['data'][index]['id'];
             }
-            
+
             //alert("01 - "+index);
             if(this.acaoObjeto == 'AddAPI'){
                 if(this.apiObjetos[index]['side'] == 'BUY'){
@@ -247,7 +253,7 @@ var app = new Vue({
                 else if(this.apiObjetos[index]['side'] == 'SELL'){
                     this.modelObjetos[0]['compraVenda'] = "Venda";
                 }
-                
+
                 var data = new Date(this.apiObjetos[index]['time']);
                 data = data.toLocaleString();
 
@@ -275,7 +281,14 @@ var app = new Vue({
                 //this.modelObjetos['fdEmocional'] = this.objetos[index]['fdEmocional'];
                 //this.modelObjetos['fdImediato'] = this.objetos[index]['fdImediato'];
             }
-            
+
+            else if(this.nomeObjeto == "cliente"){
+                this.modelObjetos[0]['name'] = this.objetos['data'][index]['name'];
+                this.modelObjetos[0]['cnpj'] = this.objetos['data'][index]['cnpj'];
+                this.modelObjetos[0]['email'] = this.objetos['data'][index]['user']['email'];
+                this.modelObjetos[0]['company_name'] = this.objetos['data'][index]['company_name'];
+            }
+
             else if(this.nomeObjeto == "diario"){
                 this.modelObjetos[0]['setup'] = this.objetos[index]['setup'];
                 this.modelObjetos[0]['simbolo'] = this.objetos[index]['simbolo'];
@@ -310,21 +323,23 @@ var app = new Vue({
 
                 this.modelObjetos[0]['chaveApi'] = this.objetos[index]['chaveApi'];
                 this.modelObjetos[0]['segredoApi'] = this.objetos[index]['segredoApi'];
-            
+
             }
-            
+
         },
         updateObjeto: function(classe){
             this.carregando = true;
             var url;
-            
+
             if(classe == "administrador"){
                 url = '/api/'+classe+'/'+this.modelObjetos['id']+'?nome='+this.modelObjetos['nome']+'&email='+this.modelObjetos['email']+'&senha='+this.modelObjetos['senha'];
             }
             else if(classe == "cliente"){
-                url = '/api/'+classe+'/'+this.modelObjetos['id']+'?nome='+this.modelObjetos['nome']+'&email='+this.modelObjetos['email']+'&senha='+this.modelObjetos['senha']
-                        +'&chaveApi='+this.modelObjetos['chaveApi']+
-                        '&segredoApi='+this.modelObjetos['segredoApi'];
+                url = '/api/'+classe+'/'+this.modelObjetos[0]['id']+
+                    '?name='+this.modelObjetos[0]['name']+
+                    '&email='+this.modelObjetos[0]['email']+
+                    '&company_name='+this.modelObjetos[0]['company_name']+
+                    '&cnpj='+this.modelObjetos[0]['cnpj'];
             }
             else if(classe == "diario"){
                 url = '/api/'+classe+'/'+this.modelObjetos[0]['id']+
@@ -351,7 +366,7 @@ var app = new Vue({
                     '?nomeEmocao='+this.modelObjetos[0]['nomeEmocao']+'&user_id='+this.idUsuario;
             }
             else if(classe == "credencialapibinance"){
-        
+
                 url = '/api/'+classe+'/'+this.idUsuario+
                     '?key='+this.modelObjetos[0]['key']+'&secret='+this.modelObjetos[0]['secret'];
                     //alert(url);
@@ -362,9 +377,12 @@ var app = new Vue({
 
             alert(url);
 
-            fetch(url, { method: 'PUT'} ).catch((e) => this.error = e);
+            fetch(url, { method: 'PUT', headers: {"Content-type": "application/json"}} ).then((res) => res.json())
+            .then((data) => this.resposta = data)
+            .then(json => console.log(json))
+            .catch((e) => this.error = e);
 
-            
+
             if(this.error == null){
                 this.limparModal();
                 this.modalSucesso = true;
@@ -377,7 +395,7 @@ var app = new Vue({
             this.carregando = false;
         },
         desativarObjeto: function(classe, id){
-            if( confirm("Tem certeza que deseja deletar? ") == true){
+            if( confirm("Tem certeza que deseja deletar? "+id) == true){
                 /*
                 if(classe !== "diario"){
                     var url = '/api/'+classe+'/'+id+'?ativo=0';
@@ -414,7 +432,7 @@ var app = new Vue({
                     }
                     this.carregarObjeto(classe);
                 //}
-                
+
             }
             else{
                 alert("Cancelado");
@@ -422,7 +440,7 @@ var app = new Vue({
         },
         limparModal: function(){
             //this.modelObjetos= [{}];
-            
+
             this.modelObjetos[0]['setup'] = "";
             this.modelObjetos[0]['simbolo'] = "";
             this.modelObjetos[0]['emocao'] = "";
@@ -438,6 +456,11 @@ var app = new Vue({
             this.modelObjetos[0]['fdImediato'] = "";
             this.modelObjetos[0]['nomeEmocao'] = "";
             this.modelObjetos[0]['nomeSetup'] = "";
+
+            this.modelObjetos[0]['name'] = "";
+            this.modelObjetos[0]['company_name'] = "";
+            this.modelObjetos[0]['email'] = "";
+            this.modelObjetos[0]['cnpj'] = "";
 
             this.modelObjetos[0]['key'] = "";
             this.modelObjetos[0]['secret'] = "";
@@ -470,7 +493,7 @@ var app = new Vue({
                     this.modelObjetos[0]['compraVenda'] == "" ||
                     this.modelObjetos[0]['quantidade'] == "" ||
                     this.modelObjetos[0]['valorEntrada'] == "" ||
-                    this.modelObjetos[0]['dtEntrada'] == "" 
+                    this.modelObjetos[0]['dtEntrada'] == ""
                 ){
                     alert("erro");
                     return true;
@@ -490,7 +513,7 @@ var app = new Vue({
                 else{
                     return false;
                 }
-                
+
             }
             else if(classe == 'setup'){
                 if(
@@ -504,7 +527,7 @@ var app = new Vue({
                 }
             }
             else if(classe == 'emocao'){
-                
+
                 if(
                     this.modelObjetos[0]['nomeEmocao'] = ""
                 ){

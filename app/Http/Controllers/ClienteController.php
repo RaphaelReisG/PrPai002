@@ -3,15 +3,21 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cliente;
+use App\Models\Vendedor;
 
 use App\Models\Bairro;
 use App\Models\Estado;
 
 use Illuminate\Http\Request;
 
+use Illuminate\Support\Facades\Hash;
+
 use App\Models\Endereco;
 
 use App\Http\Resources\TesteResource;
+use Spatie\LaravelIgnition\Recorders\LogRecorder\LogMessage;
+
+use Illuminate\Support\Facades\Log;
 
 class ClienteController extends Controller
 {
@@ -44,7 +50,12 @@ class ClienteController extends Controller
      */
     public function store(Request $request)
     {
-        Cliente::create($request->all());
+        //Cliente::create($request->all());
+
+        $cliente = Vendedor::findOrfail(1)->clientes()->create($request->only('name', 'cnpj', 'company_name'));
+        $cliente->user()->create(['email'=> $request->email, 'password'=>Hash::make("123Mud@R$%")])->givePermissionTo('cliente');
+
+        return $cliente;
     }
 
     /**
@@ -83,12 +94,15 @@ class ClienteController extends Controller
      * @param  \App\Models\Cliente  $cliente
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request,Cliente $cliente)
+    public function update(Request $request, Cliente $cliente)
     {
         //$obj = Cliente::findOrfail($id);
         //$obj->update($request->all());
+        error_log("cliente nome ".$request->name);
 
-        $cliente->update($request->all());
+        info('This is some useful information.');
+
+        $cliente->update($request->only('name', 'cnpj', 'company_name'));
         if(isset($request->password)){
             $request->password = Hash::make($request->password);
         }

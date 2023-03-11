@@ -1,192 +1,192 @@
 //entrada de forms
 
-Vue.component('input_geral', {
-    props: ['nome_model', 'tipo', 'nome'],
-    template: `
-    <div class="form-floating mb-3">
-        <input :type="tipo" class="form-control" id="floatingInput"  v-model="$root.modelObjetos[0][nome_model]">
-        <label for="floatingInput">{{nome}}</label>
-    </div>
-    `
-});
-
-Vue.component('select_geral', {
-    props: ['nome_model','obj_dropdown', 'nome_atributo', 'nome'],
-    template: `
+    Vue.component('input_geral', {
+        props: ['nome_model', 'tipo', 'nome'],
+        template: `
         <div class="form-floating mb-3">
-            <select id="floatingInput" class="form-select" aria-label="Selecione" v-model="$root.modelObjetos[0][nome_model]">
-                <option v-for="(obj, index) in obj_dropdown" v-bind:value="obj_dropdown[index][nome_atributo]" > {{obj_dropdown[index][nome_atributo]}}</option>
-            </select>
+            <input :type="tipo" class="form-control" id="floatingInput"  v-model="$root.modelObjetos[0][nome_model]">
             <label for="floatingInput">{{nome}}</label>
         </div>
-    `
-});
+        `
+    });
 
-Vue.component('textarea_geral', {
-    props: ['nome_model', 'nome'],
-    template: `
-        <div class="form-floating mb-3">
-            <textarea class="form-control" placeholder="Escreva" id="floatingTextarea" v-model="$root.modelObjetos[0][nome_model]"></textarea>
-            <label for="floatingTextarea">{{nome}}</label>
-        </div>
-    `
-});
+    Vue.component('select_geral', {
+        props: ['nome_model','obj_dropdown', 'nome_atributo', 'nome'],
+        template: `
+            <div class="form-floating mb-3">
+                <select id="floatingInput" class="form-select" aria-label="Selecione" v-model="$root.modelObjetos[0][nome_model]">
+                    <option v-for="(obj, index) in obj_dropdown" v-bind:value="obj_dropdown[index][nome_atributo]" > {{obj_dropdown[index][nome_atributo]}}</option>
+                </select>
+                <label for="floatingInput">{{nome}}</label>
+            </div>
+        `
+    });
 
-Vue.component('senha_geral', {
-    props: ['nome_model', 'nome'],
-    template: `
-        <div class="input-group mb-3">
-            <input :placeholder="nome" :aria-label="nome" :type="$root.mostrarSenha" class="form-control"   v-model="$root.modelObjetos[0][nome_model]" aria-describedby="button-addon3">
-            <button v-if="$root.mostrarSenha == 'password'" v-on:click="$root.mostrarSenha = 'text'" class="btn btn-outline-secondary" type="button" id="button-addon3">Mostrar {{nome}}</button>
-            <button v-else v-on:click="$root.mostrarSenha = 'password'" class="btn btn-outline-secondary" type="button" id="button-addon3">Esconder {{nome}}</button>
-        </div>
+    Vue.component('textarea_geral', {
+        props: ['nome_model', 'nome'],
+        template: `
+            <div class="form-floating mb-3">
+                <textarea class="form-control" placeholder="Escreva" id="floatingTextarea" v-model="$root.modelObjetos[0][nome_model]"></textarea>
+                <label for="floatingTextarea">{{nome}}</label>
+            </div>
+        `
+    });
 
-        
-    `
-});
+    Vue.component('senha_geral', {
+        props: ['nome_model', 'nome'],
+        template: `
+            <div class="input-group mb-3">
+                <input :placeholder="nome" :aria-label="nome" :type="$root.mostrarSenha" class="form-control"   v-model="$root.modelObjetos[0][nome_model]" aria-describedby="button-addon3">
+                <button v-if="$root.mostrarSenha == 'password'" v-on:click="$root.mostrarSenha = 'text'" class="btn btn-outline-secondary" type="button" id="button-addon3">Mostrar {{nome}}</button>
+                <button v-else v-on:click="$root.mostrarSenha = 'password'" class="btn btn-outline-secondary" type="button" id="button-addon3">Esconder {{nome}}</button>
+            </div>
+
+
+        `
+    });
 
 
 //-------
 // Tabelas -----------------------------------------------------------------
 
-Vue.component('table_config', {
-    props: ['classe_atributos', 'objeto_imp'],
-    template: `
-        <table class="table">
-            <thead>
-                <tr>
-                    <th scope="col" v-for="atributo in classe_atributos">{{atributo.titulo}}</th>
-                    <th scope="col">Opções</th>
-                </tr>
-            </thead>
-            <tbody class="table-group-divider" v-for="(obj, index) in objeto_imp">
-                <tr data-bs-toggle="collapse" v-bind:data-bs-target="'#collapseExample'+obj.id" data-bs-target="#collapseExample" aria-expanded="false" v-bind:aria-controls="'collapseExample'+obj.id" aria-controls="collapseExample">
-                    <td v-for="valor in classe_atributos">{{ obj[valor.conteudo] }}</td>
-                    <td v-if="obj.user_id == $root.idUsuario">
-                        <button_alter :objindex="index"></button_alter>
-                        <button_delete :objid= "obj.id"></button_delete>
-                    </td>
-                    <td v-else>
-                        <p>Configuração pré definida do sistema</p>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    `
-});
+    Vue.component('table_config', {
+        props: ['classe_atributos', 'objeto_imp'],
+        template: `
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col" v-for="atributo in classe_atributos">{{atributo.titulo}}</th>
+                        <th scope="col">Opções</th>
+                    </tr>
+                </thead>
+                <tbody class="table-group-divider" v-for="(obj, index) in objeto_imp">
+                    <tr data-bs-toggle="collapse" v-bind:data-bs-target="'#collapseExample'+obj.id" data-bs-target="#collapseExample" aria-expanded="false" v-bind:aria-controls="'collapseExample'+obj.id" aria-controls="collapseExample">
+                        <td v-for="valor in classe_atributos">{{ obj[valor.conteudo] }}</td>
+                        <td v-if="obj.user_id == $root.idUsuario">
+                            <button_alter :objindex="index"></button_alter>
+                            <button_delete :objid= "obj.id"></button_delete>
+                        </td>
+                        <td v-else>
+                            <p>Configuração pré definida do sistema</p>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        `
+    });
 
-Vue.component('table_comum', {
-    props: ['classe_atributos','objeto_imp'],
-    template: `
-        <table class="table">
-            <thead>
-                <tr>
-                    <th scope="col" v-for="atributo in classe_atributos">{{atributo.titulo}}</th>
-                    <th scope="col">Opções</th>
-                </tr>
-            </thead>
-            <tbody class="table-group-divider" v-for="(obj, index) in objeto_imp">
-                <tr data-bs-toggle="collapse" v-bind:data-bs-target="'#collapseExample'+obj.id" data-bs-target="#collapseExample" aria-expanded="false" v-bind:aria-controls="'collapseExample'+obj.id" aria-controls="collapseExample">
-                    <td>{{ index+1 }}</td>
-                    <td v-for="valor in classe_atributos">{{ obj[valor.conteudo] }}</td>
-                    <td>
-                        <button_alter :objindex="index"></button_alter>
-                        <button_delete :objid= "obj.id"></button_delete>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    `
-});
+    Vue.component('table_comum', {
+        props: ['classe_atributos','objeto_imp'],
+        template: `
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col" v-for="atributo in classe_atributos">{{atributo.titulo}}</th>
+                        <th scope="col">Opções</th>
+                    </tr>
+                </thead>
+                <tbody class="table-group-divider" v-for="(obj, index) in objeto_imp">
+                    <tr data-bs-toggle="collapse" v-bind:data-bs-target="'#collapseExample'+obj.id" data-bs-target="#collapseExample" aria-expanded="false" v-bind:aria-controls="'collapseExample'+obj.id" aria-controls="collapseExample">
+                        <td>{{ index+1 }}</td>
+                        <td v-for="valor in classe_atributos">{{ obj[valor.conteudo] }}</td>
+                        <td>
+                            <button_alter :objindex="index"></button_alter>
+                            <button_delete :objid= "obj.id"></button_delete>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        `
+    });
 
-Vue.component('table_acordion', {
-    props: ['classe_atributos', 'objeto_imp', 'obj_acordion'],
-    template: `
-        <table class="table">
-            <thead>
-                <tr>
-                    <th scope="col" v-for="atributo in classe_atributos">{{atributo.titulo}}</th>
-                    <th scope="col">Opções</th>
-                </tr>
-            </thead>
-            <tbody class="table-group-divider" v-for="(obj, index) in objeto_imp">
-                <tr data-bs-toggle="collapse" v-bind:data-bs-target="'#collapseExample' + obj.id"  aria-expanded="false" v-bind:aria-controls="'collapseExample'+obj.id" aria-controls="collapseExample">
-                    
-                    <td v-for="valor in classe_atributos">
-                        <div v-if="valor.conteudo !== 'created_at' && valor.conteudo !== 'dtEntrada' && valor.conteudo !== 'dtSaida' && valor.conteudo2 == null ">
-                            {{ obj[valor.conteudo]  }}
-                        </div>
-                        <div v-else-if="valor.conteudo2 !== null">
-                            {{ obj[valor.conteudo][valor.conteudo2]  }}
-                        </div>
-                        <div v-else>
-                            {{ new Date(obj[valor.conteudo]).toLocaleString() }}
-                        </div>
-                    </td>
-                    <td>
-                        <button_alter :objindex="index"></button_alter>
-                        <button_delete :objid= "obj.id"></button_delete>
-                    </td>
-                </tr>
-                <tr >
-                    <td colspan="12">
-                        <div class="collapse" v-bind:id="'collapseExample' + obj.id" >
-                            <div class="card card-body">
-                                <div v-for="acord in obj_acordion">
-                                    {{acord.titulo}}: {{obj[acord.conteudo] }}
-                                    <br><br>
+    Vue.component('table_acordion', {
+        props: ['classe_atributos', 'objeto_imp', 'obj_acordion'],
+        template: `
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col" v-for="atributo in classe_atributos">{{atributo.titulo}}</th>
+                        <th scope="col">Opções</th>
+                    </tr>
+                </thead>
+                <tbody class="table-group-divider" v-for="(obj, index) in objeto_imp['data']">
+                    <tr data-bs-toggle="collapse" v-bind:data-bs-target="'#collapseExample' + obj.id"  aria-expanded="false" v-bind:aria-controls="'collapseExample'+obj.id" aria-controls="collapseExample">
+
+                        <td v-for="valor in classe_atributos">
+                            <div v-if="valor.conteudo !== 'created_at' && valor.conteudo !== 'dtEntrada' && valor.conteudo !== 'dtSaida' && valor.conteudo2 == null ">
+                                {{ obj[valor.conteudo]  }}
+                            </div>
+                            <div v-else-if="valor.conteudo2 !== null">
+                                {{ obj[valor.conteudo][valor.conteudo2]  }}
+                            </div>
+                            <div v-else>
+                                {{ new Date(obj[valor.conteudo]).toLocaleString() }}
+                            </div>
+                        </td>
+                        <td>
+                            <button_alter :objindex="index"></button_alter>
+                            <button_delete :objid= "obj.id"></button_delete>
+                        </td>
+                    </tr>
+                    <tr >
+                        <td colspan="12">
+                            <div class="collapse" v-bind:id="'collapseExample' + obj.id" >
+                                <div class="card card-body">
+                                    <div v-for="acord in obj_acordion">
+                                        {{acord.titulo}}: {{obj[acord.conteudo] }}
+                                        <br><br>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    `
-});
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        `
+    });
 
-Vue.component('table_acordion_api', {
-    props: ['classe_atributos', 'objeto_imp', 'obj_acordion'],
-    template: `
-        <table class="table">
-            <thead>
-                <tr>
-                    <th scope="col" v-for="atributo in classe_atributos">{{atributo.titulo}}</th>
-                    <th scope="col">Opções</th>
-                </tr>
-            </thead>
-            <tbody class="table-group-divider" v-for="(obj, index) in objeto_imp" style="font-size: 15px;">
-                <tr data-bs-toggle="collapse" v-bind:data-bs-target="'#collapseExample' + obj.orderId"  aria-expanded="false" v-bind:aria-controls="'collapseExample'+obj.id" aria-controls="collapseExample">
-                    
-                    <td v-for="valor in classe_atributos">
-                        <div v-if="valor.conteudo !== 'created_at' && valor.conteudo !== 'dtEntrada' && valor.conteudo !== 'dtSaida' && valor.conteudo !== 'time' ">
-                            {{ obj[valor.conteudo]  }}
-                            
-                        </div>
-                        <div v-else>
-                            {{ new Date(obj[valor.conteudo]).toLocaleString() }}
-                        </div>
-                    </td>
-                    <td>
-                        <button_preencher :objindex="index"></button_preencher>
-                    </td>
-                </tr>
-                <tr >
-                    <td colspan="12">
-                        <div class="collapse" v-bind:id="'collapseExample' + obj.orderId" >
-                            <div class="card card-body">
-                                <div v-for="acord in obj_acordion">
-                                    {{acord.titulo}}: {{obj[acord.conteudo] }}
-                                    <br><br>
+    Vue.component('table_acordion_api', {
+        props: ['classe_atributos', 'objeto_imp', 'obj_acordion'],
+        template: `
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col" v-for="atributo in classe_atributos">{{atributo.titulo}}</th>
+                        <th scope="col">Opções</th>
+                    </tr>
+                </thead>
+                <tbody class="table-group-divider" v-for="(obj, index) in objeto_imp" style="font-size: 15px;">
+                    <tr data-bs-toggle="collapse" v-bind:data-bs-target="'#collapseExample' + obj.orderId"  aria-expanded="false" v-bind:aria-controls="'collapseExample'+obj.id" aria-controls="collapseExample">
+
+                        <td v-for="valor in classe_atributos">
+                            <div v-if="valor.conteudo !== 'created_at' && valor.conteudo !== 'dtEntrada' && valor.conteudo !== 'dtSaida' && valor.conteudo !== 'time' ">
+                                {{ obj[valor.conteudo]  }}
+
+                            </div>
+                            <div v-else>
+                                {{ new Date(obj[valor.conteudo]).toLocaleString() }}
+                            </div>
+                        </td>
+                        <td>
+                            <button_preencher :objindex="index"></button_preencher>
+                        </td>
+                    </tr>
+                    <tr >
+                        <td colspan="12">
+                            <div class="collapse" v-bind:id="'collapseExample' + obj.orderId" >
+                                <div class="card card-body">
+                                    <div v-for="acord in obj_acordion">
+                                        {{acord.titulo}}: {{obj[acord.conteudo] }}
+                                        <br><br>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    `
-});
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        `
+    });
 
 
 
@@ -196,7 +196,7 @@ Vue.component('table_acordion_api', {
 Vue.component('button_alter', {
     props: ['objindex'],
     template: `
-        <button type="button" class="btn btn-outline-warning" v-on:click="$root.carregaCamposEditarObjeto($root.nomeObjeto, objindex) , $root.acaoObjeto = 'Alterar'"  data-bs-toggle="modal" data-bs-target="#modalObjeto"> 
+        <button type="button" class="btn btn-outline-warning" v-on:click="$root.carregaCamposEditarObjeto($root.nomeObjeto, objindex) , $root.acaoObjeto = 'Alterar'"  data-bs-toggle="modal" data-bs-target="#modalObjeto">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
                 <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
                 <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
@@ -235,7 +235,7 @@ Vue.component('button_acao', {
 Vue.component('button_preencher', {
     props: ['objindex'],
     template: `
-        <button type="button" class="btn btn-outline-secondary" v-on:click="$root.carregaCamposEditarObjeto($root.nomeObjeto, objindex), $root.buscaApi = false"> 
+        <button type="button" class="btn btn-outline-secondary" v-on:click="$root.carregaCamposEditarObjeto($root.nomeObjeto, objindex), $root.buscaApi = false">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-upload" viewBox="0 0 16 16">
                 <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
                 <path d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708l3-3z"/>
@@ -253,30 +253,30 @@ Vue.component('button_preencher', {
 Vue.component('input_texto', {
 props: ['nome_label' , 'nome_input'],
 template: `
-    <label>  
-        {{nome_label}}: 
-        <input type='text' name='' v-bind:name='nome_input' required > 
+    <label>
+        {{nome_label}}:
+        <input type='text' name='' v-bind:name='nome_input' required >
     </label>
 `
 });
 
 Vue.component('input_email', {
 template: `
-    <label for='email'> 
-        E-mail: 
-        <input type='email' name='email' required > 
+    <label for='email'>
+        E-mail:
+        <input type='email' name='email' required >
     </label>
 `
 });
 
 Vue.component('input_senha', {
 template: `
-    <label> 
-        Senha:  ;.m 
+    <label>
+        Senha:  ;.m
             +
-             
+
             +TRE
-        <input type='password' name='senha' required > 
+        <input type='password' name='senha' required >
     </label>
 `
 });
@@ -285,20 +285,20 @@ Vue.component('cadastro_senha', {
 props: ['value1'],
 template: `
     <div>
-        <label> Digite a Senha: 
-            <input type='password'  
+        <label> Digite a Senha:
+            <input type='password'
             v-bind:value="value1"
             v-on:input="$emit('input', $event.target.value)"
-            
-            name='senha_confirm1' required > 
-        </label> 
-        <br><br>
-        <label> Digite novamente a Senha:       
-            <input type='password' 
 
-            
-            
-              name='senha_confirm2' required > 
+            name='senha_confirm1' required >
+        </label>
+        <br><br>
+        <label> Digite novamente a Senha:
+            <input type='password'
+
+
+
+              name='senha_confirm2' required >
         </label>
     </div>
 `
@@ -307,7 +307,7 @@ template: `
 Vue.component('input_hidden', {
 props: ['valor'],
 template: `
-    <input type='hidden' name='codigo_formulario' value='' v-bind:value='valor' > 
+    <input type='hidden' name='codigo_formulario' value='' v-bind:value='valor' >
 `
 });
 

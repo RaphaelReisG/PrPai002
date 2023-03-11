@@ -182,7 +182,14 @@
                             </div>
                             <div v-if="modalSucesso == false"> <!-- conteudo modal -->
                                 <!-- formulario CLIENTE / ADMINISTRADOR-->
-                                <div v-if="nomeObjeto == 'cliente' || nomeObjeto == 'administrador'" class="modal-body">
+                                <div v-if="nomeObjeto == 'cliente'" class="modal-body">
+                                    <input_geral nome="Nome Completo" tipo="text" nome_model="name"></input_geral>
+                                    <input_geral nome="Razão Social" tipo="text" nome_model="company_name"></input_geral>
+                                    <input_geral nome="CPF ou CNPJ" tipo="number" nome_model="cnpj"></input_geral>
+                                    <input_geral nome="E-mail" tipo="email" nome_model="email"></input_geral>
+                                </div>
+                                <!-- formulario ADMINISTRADOR-->
+                                <div v-if="nomeObjeto == 'administrador'" class="modal-body">
                                     <input_geral nome="Nome Completo" tipo="text" nome_model="nome"></input_geral>
                                     <input_geral nome="E-mail" tipo="email" nome_model="email"></input_geral>
                                     <senha_geral nome="Senha" nome_model="senha"></senha_geral>
