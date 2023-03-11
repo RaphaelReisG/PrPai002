@@ -238,8 +238,6 @@ var app = new Vue({
         carregaCamposEditarObjeto: function(classe, index){
             this.index = index;
             //this.modelObjetos = this.objetos;
-            this.carregaSetup();
-            this.carregaEmocao();
 
             if(this.acaoObjeto !== 'AddAPI'){
                 this.modelObjetos[0]['id'] = this.objetos['data'][index]['id'];
@@ -465,8 +463,7 @@ var app = new Vue({
             this.modelObjetos[0]['key'] = "";
             this.modelObjetos[0]['secret'] = "";
 
-            this.carregaSetup();
-            this.carregaEmocao();
+
         },
         mostrarConteinerObjeto: function(classe){
             if(classe !== ''){

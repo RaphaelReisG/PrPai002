@@ -133,8 +133,17 @@
                             <div class="collapse" v-bind:id="'collapseExample' + obj.id" >
                                 <div class="card card-body">
                                     <div v-for="acord in obj_acordion">
-                                        {{acord.titulo}}: {{obj[acord.conteudo] }}
-                                        <br><br>
+
+
+                                        <div v-if="acord.conteudo !== 'created_at' && acord.conteudo !== 'dtEntrada' && acord.conteudo !== 'dtSaida' && acord.conteudo2 == null ">
+                                         fff   {{acord.titulo}}: {{obj[acord.conteudo] }}
+                                        </div>
+                                        <div v-else-if="acord.conteudo2 != null">
+                                           {{acord.titulo}}: {{ obj[acord.conteudo][acord.conteudo2]  }}
+                                        </div>
+                                        <div v-else>
+                                            {{acord.titulo }}: {{ new Date(obj[acord.conteudo]).toLocaleString() }}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
