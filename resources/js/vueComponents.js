@@ -116,8 +116,11 @@
                             <div v-if="valor.conteudo !== 'created_at' && valor.conteudo !== 'dtEntrada' && valor.conteudo !== 'dtSaida' && valor.conteudo2 == null ">
                                 {{ obj[valor.conteudo]  }}
                             </div>
-                            <div v-else-if="valor.conteudo2 !== null">
+                            <div v-else-if="valor.conteudo2 != null && valor.conteudo3 == null">
                                 {{ obj[valor.conteudo][valor.conteudo2]  }}
+                            </div>
+                            <div v-else-if="valor.conteudo3 != null">
+                                {{ obj[valor.conteudo][valor.conteudo2][valor.conteudo3]  }}
                             </div>
                             <div v-else> 
                                 {{ new Date(obj[valor.conteudo]).toLocaleString() }}
@@ -136,10 +139,13 @@
 
 
                                         <div v-if="acord.conteudo !== 'created_at' && acord.conteudo !== 'dtEntrada' && acord.conteudo !== 'dtSaida' && acord.conteudo2 == null ">
-                                         fff   {{acord.titulo}}: {{obj[acord.conteudo] }}
+                                            {{acord.titulo}}: {{obj[acord.conteudo] }}
                                         </div>
-                                        <div v-else-if="acord.conteudo2 != null">
-                                           {{acord.titulo}}: {{ obj[acord.conteudo][acord.conteudo2]  }}
+                                        <div v-else-if="acord.conteudo2 != null && acord.conteudo3 == null">
+                                            {{acord.titulo}}: {{ obj[acord.conteudo][acord.conteudo2]  }}
+                                        </div>
+                                        <div v-else-if="acord.conteudo3 != null">
+                                            {{acord.titulo}}: {{ obj[acord.conteudo][acord.conteudo2][acord.conteudo3]  }}
                                         </div>
                                         <div v-else>
                                             {{acord.titulo }}: {{ new Date(obj[acord.conteudo]).toLocaleString() }}

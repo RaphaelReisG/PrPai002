@@ -16,7 +16,8 @@ class EnderecoController extends Controller
      */
     public function index()
     {
-        return Endereco::all();
+        //return Endereco::all();
+        return Endereco::with(['enderecoable','bairro', 'bairro.cidade', 'bairro.cidade.estado', 'bairro.cidade.estado.pais' ])->paginate(10);
     }
 
     /**

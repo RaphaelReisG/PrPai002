@@ -16,7 +16,8 @@ class CidadeController extends Controller
      */
     public function index()
     {
-        return Cidade::all();
+        //return Cidade::all();
+        return Cidade::with([ 'estado', 'estado.pais' ])->paginate(10);
     }
 
     /**

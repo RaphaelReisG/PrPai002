@@ -16,7 +16,8 @@ class EstadoController extends Controller
      */
     public function index()
     {
-        return Estado::all();
+        //return Estado::all();
+        return Estado::with([ 'pais' ])->paginate(10);
     }
 
     /**
@@ -38,6 +39,7 @@ class EstadoController extends Controller
     public function store(Request $request)
     {
         Estado::create($request->all());
+        
     }
 
     /**

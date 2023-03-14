@@ -16,7 +16,8 @@ class PaisController extends Controller
      */
     public function index()
     {
-        return Pais::all();
+        //return Pais::all();
+        return Pais::paginate(10);
     }
 
     /**

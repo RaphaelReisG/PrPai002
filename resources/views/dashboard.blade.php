@@ -48,16 +48,26 @@
                                     Configurações
                                 </a>
                                 <ul class="dropdown-menu">
-
                                     @can('admin')
-                                        <li><a class="dropdown-item" href="#" v-on:click="defineClasse('produto', 'Produto')">Produtos</a></li>
-                                        <li><a class="dropdown-item" href="#" v-on:click="defineClasse('fornecedor', 'Fornecedor')">Fornecedores</a></li>
-                                        <li><a class="dropdown-item" href="#" v-on:click="defineClasse('estoque', 'Estoque')">Estoque</a></li>
-
+                                        <li><a class="dropdown-item" href="#" v-on:click="defineClasse('bairro', 'Bairros')">Bairro</a></li>
+                                        <li><a class="dropdown-item" href="#" v-on:click="defineClasse('cidade', 'Cidade')">Cidade</a></li>
+                                        <li><a class="dropdown-item" href="#" v-on:click="defineClasse('estado', 'Estado')">Estado</a></li>
+                                        <li><a class="dropdown-item" href="#" v-on:click="defineClasse('pais', 'País')">País</a></li>
+                                        <li><hr class="dropdown-divider"></li>
+                                        <li><a class="dropdown-item" href="#" v-on:click="defineClasse('endereco', 'Endereços dos clientes')">Endereços dos clientes</a></li>
+                                        <li><a class="dropdown-item" href="#" v-on:click="defineClasse('telefone', 'Telefones dos clientes')">Telefones dos clientes</a></li>
+                                        <li><hr class="dropdown-divider"></li>
+                                        <li><a class="dropdown-item" href="#" v-on:click="defineClasse('user', 'Acesso')">Acesso</a></li>
+                                    @elsecan('vendedor')
+                                        <li><a class="dropdown-item" href="#" v-on:click="defineClasse('endereco', 'Endereços dos clientes')">Endereços dos clientes</a></li>
+                                        <li><a class="dropdown-item" href="#" v-on:click="defineClasse('telefone', 'Telefones dos clientes')">Telefones dos clientes</a></li>
+                                        <li><hr class="dropdown-divider"></li>
+                                        <li><a class="dropdown-item" href="#" v-on:click="defineClasse('user', 'Acesso')">Acesso</a></li>
                                     @elsecan('cliente')
-                                        <li><a class="dropdown-item" href="#" v-on:click="defineClasse('endereco', 'Meus Endereços')">Endereço</a></li>
-
-
+                                        <li><a class="dropdown-item" href="#" v-on:click="defineClasse('endereco', 'Meus Endereços')">Meus Endereços</a></li>
+                                        <li><a class="dropdown-item" href="#" v-on:click="defineClasse('telefone', 'Meus Telefones')">Meus Telefones</a></li>
+                                        <li><hr class="dropdown-divider"></li>
+                                        <li><a class="dropdown-item" href="#" v-on:click="defineClasse('user', 'Acesso')">Acesso</a></li>
                                     @endcan
                                 </ul>
                             </li>
@@ -66,22 +76,33 @@
                                     Opções
                                 </a>
                                 <ul class="dropdown-menu">
-
-                                    @can('cliente')
-                                        <li><a class="dropdown-item" href="#" v-on:click="defineClasse('pedido', 'Pedidos')">Pedidos</a></li>
-
-                                    @elsecan('admin')
-
-                                        <li><a class="dropdown-item" href="#" v-on:click="defineClasse('cliente', 'Cliente')">Gerenciar Clientes</a></li>
+                                    @can('admin')
                                         <li><a class="dropdown-item" href="#" v-on:click="defineClasse('administrador', 'Administrador')">Gerenciar Administradores</a></li>
                                         <li><a class="dropdown-item" href="#" v-on:click="defineClasse('vendedor', 'Vendedores')">Gerenciar Vendedores</a></li>
-
-                                        <li><hr class="dropdown-divider"></li>
+                                        <li><a class="dropdown-item" href="#" v-on:click="defineClasse('cliente', 'Cliente')">Gerenciar Clientes</a></li>
+                                    @elsecan('vendedor')
+                                        <li><a class="dropdown-item" href="#" v-on:click="defineClasse('cliente', 'Cliente')">Meus Clientes</a></li>
                                         <li><a class="dropdown-item" href="#" v-on:click="defineClasse('pedido', 'Pedidos')">Pedidos</a></li>
-
+                                    @elsecan('cliente')
+                                        <li><a class="dropdown-item" href="#" v-on:click="defineClasse('pedido', 'Pedidos')">Meus Pedidos</a></li>
                                     @endcan
                                 </ul>
                             </li>
+                            @can('admin')
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Fluxo
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" href="#" v-on:click="defineClasse('fornecedor', 'Fornecedor')">Fornecedores</a></li>
+                                        <li><a class="dropdown-item" href="#" v-on:click="defineClasse('marca', 'Marcas')">Marcas</a></li>
+                                        <li><a class="dropdown-item" href="#" v-on:click="defineClasse('produto', 'Produto')">Produtos</a></li>
+                                        <li><hr class="dropdown-divider"></li>
+                                        <li><a class="dropdown-item" href="#" v-on:click="defineClasse('estoque', 'Estoque')">Estoque</a></li>
+                                        <li><a class="dropdown-item" href="#" v-on:click="defineClasse('pedido', 'Pedidos')">Pedidos</a></li>
+                                    </ul>
+                                </li>
+                            @endcan
                             <!--
                             <li class="nav-item">
                                 <a class="nav-link disabled">Link</a>
@@ -152,19 +173,17 @@
                 </div>
 
 
-
-
-                <h2 v-if="titulo !== ''"> <!-- cabecalho geral -->
-                    Novo
-                    <button_add></button_add>
-                    <button v-on:click=" limparModal(), acaoObjeto = 'Criar'" type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#modalObjeto" >
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-plus" viewBox="0 0 16 16">
-                            <path d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H1s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C9.516 10.68 8.289 10 6 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z"/>
-                            <path fill-rule="evenodd" d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5z"/>
-                        </svg>
-                        Add
-                    </button>
-                </h2>
+                <div v-if="titulo !== ''"> <!-- cabecalho geral -->
+                    <div class="row">
+                        <h2 >
+                            Novo
+                            <button_add></button_add>
+                        </h2>
+                        <div>
+                            <p>Paginação Pendente</p>
+                        </div>
+                    </div>
+                </div>
             </div>
 
 
@@ -241,7 +260,7 @@
                     </div>
 
                     <!-- Tabela Vendedor -->
-                    <div v-if="nomeObjeto == 'vendedor' && objetos !== null" class="row">
+                    <div v-else-if="nomeObjeto == 'vendedor' && objetos !== null" class="row">
                         <table_acordion     :classe_atributos="[
                                                     {titulo: 'Nome', conteudo: 'name'},
                                                     {titulo: 'E-mail',  conteudo: 'user', conteudo2: 'email'}
@@ -259,6 +278,136 @@
                         <table_acordion     :classe_atributos="[
                                                     {titulo: 'Nome', conteudo: 'name'},
                                                     {titulo: 'E-mail',  conteudo: 'user', conteudo2: 'email'}
+                                                ]"
+                                                :objeto_imp="objetos"
+                                                :obj_acordion="[
+                                                    {titulo: 'Criado em', conteudo: 'created_at'}
+                                                ]"
+                                               >
+                        </table_acordion>
+                    </div>
+
+                    <!-- Tabela Fornecedor -->
+                    <div v-else-if="nomeObjeto == 'fornecedor' && objetos !== null" class="row">
+                        <table_acordion     :classe_atributos="[
+                                                    {titulo: 'Nome Empresa', conteudo: 'company_name'},
+                                                    {titulo: 'E-mail',  conteudo: 'email'},
+                                                ]"
+                                                :objeto_imp="objetos"
+                                                :obj_acordion="[
+                                                    {titulo: 'Criado em', conteudo: 'created_at'}
+                                                ]"
+                                               >
+                        </table_acordion>
+                    </div>
+
+                    <!-- Tabela Marca -->
+                    <div v-else-if="nomeObjeto == 'marca' && objetos !== null" class="row">
+                        <table_acordion     :classe_atributos="[
+                                                    {titulo: 'Nome', conteudo: 'name'},
+                                                    {titulo: 'Fornecedor',  conteudo: 'fornecedor', conteudo2: 'company_name'}
+                                                ]"
+                                                :objeto_imp="objetos"
+                                                :obj_acordion="[
+                                                    {titulo: 'Criado em', conteudo: 'created_at'}
+                                                ]"
+                                               >
+                        </table_acordion>
+                    </div>
+
+                    <!-- Tabela Produto -->
+                    <div v-else-if="nomeObjeto == 'produto' && objetos !== null" class="row">
+                        <table_acordion     :classe_atributos="[
+                            {titulo: 'Nome', conteudo: 'name'},
+                                                    {titulo: 'Tipo', conteudo: 'type'},
+                                                    {titulo: 'Valor de Venda', conteudo: 'sale_price'},
+                                                    {titulo: 'Marca',  conteudo: 'marca', conteudo2: 'name'}
+                                                ]"
+                                                :objeto_imp="objetos"
+                                                :obj_acordion="[
+                                                    {titulo: 'Criado em', conteudo: 'created_at'},
+                                                    {titulo: 'Quantidade por Pacote', conteudo: 'quantity'},
+                                                    {titulo: 'Peso por pacote ', conteudo: 'weight'},
+                                                    {titulo: 'Preço de custo', conteudo: 'cost_price'},
+                                                    {titulo: 'Fornecedor',  conteudo: 'marca', conteudo2: 'fornecedor', conteudo3: 'company_name'}
+                                                ]"
+                                               >
+                        </table_acordion>
+                    </div>
+
+                    <!-- Tabela Bairro -->
+                    <div v-else-if="nomeObjeto == 'endereco' && objetos !== null" class="row">
+                        <table_acordion     :classe_atributos="[
+                                                    {titulo: 'Logradouro', conteudo: 'street_name'},
+                                                    {titulo: 'Bairro', conteudo: 'bairro', conteudo2: 'name_neighborhood'},
+                                                    {titulo: 'Cidade', conteudo: 'bairro', conteudo2: 'cidade', conteudo3: 'name_city'},
+                                                    {titulo: 'Tipo', conteudo: 'enderecoable_type'},
+                                                    {titulo: 'Proprietario',  conteudo: 'enderecoable', conteudo2: 'name'}
+                                                    
+                                                ]"
+                                                :objeto_imp="objetos"
+                                                :obj_acordion="[
+                                                    {titulo: 'Criado em', conteudo: 'created_at'},
+                                                    {titulo: 'Nº', conteudo: 'house_number'},
+                                                    {titulo: 'Complemento', conteudo: 'complement'},
+                                                    {titulo: 'CEP', conteudo: 'cep'}
+                                                ]"
+                                               >
+                        </table_acordion>
+                    </div>
+
+                    <!-- Tabela Bairro -->
+                    <div v-else-if="nomeObjeto == 'bairro' && objetos !== null" class="row">
+                        <table_acordion     :classe_atributos="[
+                                                    {titulo: 'Nome', conteudo: 'name_neighborhood'},
+                                                    {titulo: 'Cidade',  conteudo: 'cidade', conteudo2: 'name_city'}
+                                                    
+                                                ]"
+                                                :objeto_imp="objetos"
+                                                :obj_acordion="[
+                                                    {titulo: 'Criado em', conteudo: 'created_at'},
+                                                    {titulo: 'Estado',  conteudo: 'cidade', conteudo2: 'estado', conteudo3: 'name_state'}
+                                                ]"
+                                               >
+                        </table_acordion>
+                    </div>
+
+                    <!-- Tabela Cidade -->
+                    <div v-else-if="nomeObjeto == 'cidade' && objetos !== null" class="row">
+                        <table_acordion     :classe_atributos="[
+                                                    {titulo: 'Nome', conteudo: 'name_city'},
+                                                    {titulo: 'Estado',  conteudo: 'estado', conteudo2: 'name_state'}
+                                                    
+                                                ]"
+                                                :objeto_imp="objetos"
+                                                :obj_acordion="[
+                                                    {titulo: 'Criado em', conteudo: 'created_at'},
+                                                    {titulo: 'País',  conteudo: 'estado', conteudo2: 'pais', conteudo3: 'name_country'}
+                                                ]"
+                                               >
+                        </table_acordion>
+                    </div>
+
+                    <!-- Tabela Estado -->
+                    <div v-else-if="nomeObjeto == 'estado' && objetos !== null" class="row">
+                        <table_acordion     :classe_atributos="[
+                                                    {titulo: 'Nome', conteudo: 'name_state'},
+                                                    {titulo: 'País',  conteudo: 'pais', conteudo2: 'name_country'}
+                                                    
+                                                ]"
+                                                :objeto_imp="objetos"
+                                                :obj_acordion="[
+                                                    {titulo: 'Criado em', conteudo: 'created_at'}
+                                                ]"
+                                               >
+                        </table_acordion>
+                    </div>
+
+                    <!-- Tabela Pais -->
+                    <div v-else-if="nomeObjeto == 'pais' && objetos !== null" class="row">
+                        <table_acordion     :classe_atributos="[
+                                                    {titulo: 'Nome', conteudo: 'name_country'}
+                                                    
                                                 ]"
                                                 :objeto_imp="objetos"
                                                 :obj_acordion="[

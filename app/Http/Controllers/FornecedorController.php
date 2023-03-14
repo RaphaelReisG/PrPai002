@@ -16,7 +16,8 @@ class FornecedorController extends Controller
      */
     public function index()
     {
-        return Fornecedor::all();
+        //return Fornecedor::all();
+        return Fornecedor::with(['enderecos', 'telefones', ])->paginate(10);
     }
 
     /**

@@ -16,7 +16,8 @@ class BairroController extends Controller
      */
     public function index()
     {
-        return Bairro::all();
+        //return Bairro::all();
+        return Bairro::with(['cidade', 'cidade.estado', 'cidade.estado.pais' ])->paginate(10);
     }
 
     /**

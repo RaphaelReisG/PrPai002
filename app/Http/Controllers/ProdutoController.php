@@ -16,7 +16,8 @@ class ProdutoController extends Controller
      */
     public function index()
     {
-        return Produto::all();
+        //return Produto::all();
+        return Produto::with(['marca', 'marca.fornecedor', 'estoques' ])->paginate(10);
     }
 
     /**

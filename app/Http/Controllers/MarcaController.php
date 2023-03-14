@@ -16,7 +16,8 @@ class MarcaController extends Controller
      */
     public function index()
     {
-        return Marca::all();
+        //return Marca::all();
+        return Marca::with(['fornecedor' ])->paginate(10);
     }
 
     /**
