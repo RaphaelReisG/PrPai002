@@ -48,13 +48,19 @@ class AdministradorController extends Controller
         /*$create = Administrador::create([ 'name' => $request->name])
                 ->user()->create(['email'=> $request->email, 'password'=>Hash::make($request->password) ])
                 ->givePermissionTo('admin');*/
-
+/*
         $request->password = Hash::make($request->password);
 
         $administrador = Administrador::create($request->only('name'));
         $user = $administrador->user()->create($request->only('email', 'password'))
-                ->givePermissionTo('admin');        
+                ->givePermissionTo('admin');
         return new TesteResource($administrador, $administrador->user);
+*/
+
+        $administrador = Administrador::create($request->only('name'));
+        $administrador->user()->create(['email'=> $request->email, 'password'=>Hash::make($request->password)])->givePermissionTo('admin');
+
+        return $administrador;
     }
 
     /**
@@ -88,10 +94,11 @@ class AdministradorController extends Controller
      */
     public function update(Request $request, Administrador $administrador)
     {
-        $administrador->update($request->all());
+        $administrador->update($request->only('name'));
         if(isset($request->password)){
             $request->password = Hash::make($request->password);
         }
+
         $administrador->user()->update($request->only('email', 'password'));
 
         return new TesteResource($administrador, $administrador->user);

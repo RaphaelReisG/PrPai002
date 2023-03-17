@@ -21,7 +21,7 @@ var app = new Vue({
             modelObjetos:[{
                 id: "",
 
-                name: "", email: "",
+                name: "", email: "", senha: "", confirmaSenha: "",
 
                 company_name: "", cnpj: "",
 
@@ -138,7 +138,7 @@ var app = new Vue({
         },
         escolheAcaoObjeto: function(acao, classe){
             if(this.verificaDados(classe) == true){
-                alert("preencha os campos obrigatorios");
+                alert("preencha os campos obrigatorios corretamente.");
             }
             else{
                 if(acao == "Criar" || acao == "AddAPI"){
@@ -157,9 +157,9 @@ var app = new Vue({
             var url;
             if(classe == "administrador"){
                 url = '/api/'+classe+
-                    '?nome='+this.modelObjetos['nome']+
-                    '&email='+this.modelObjetos['email']+
-                    '&senha='+this.modelObjetos['senha'];
+                    '?name='+this.modelObjetos[0]['name']+
+                    '&email='+this.modelObjetos[0]['email']+
+                    '&senha='+this.modelObjetos[0]['senha'];
             }
             else if(classe == "cliente"){
                 url = '/api/'+classe+
@@ -168,47 +168,6 @@ var app = new Vue({
                     '&company_name='+this.modelObjetos[0]['company_name']+
                     '&cnpj='+this.modelObjetos[0]['cnpj']
                 ;
-            }
-            else if(classe == "diario"){
-                url = '/api/'+classe+
-                    '?simbolo='+this.modelObjetos[0]['simbolo']+
-                    '&setup='+this.modelObjetos[0]['setup']+
-                    '&emocao='+this.modelObjetos[0]['emocao']+
-                    '&compraVenda='+this.modelObjetos[0]['compraVenda']+
-                    '&quantidade='+this.modelObjetos[0]['quantidade']+
-                    '&valorEntrada='+this.modelObjetos[0]['valorEntrada']+
-                    '&valorSaida='+this.modelObjetos[0]['valorSaida']+
-                    '&dtEntrada='+this.modelObjetos[0]['dtEntrada']+
-                    '&dtSaida='+this.modelObjetos[0]['dtSaida']+
-                    '&fdEmocional='+this.modelObjetos[0]['fdEmocional']+
-                    '&fdImediato='+this.modelObjetos[0]['fdImediato']+
-                    '&user_id='+this.idUsuario
-                ;
-
-                /*
-                url = '/api/'+classe+
-                    '?dataRegistro='+this.modelObjetos['dataRegistro']+
-                    '&setup='+this.modelObjetos['setup']+
-                    '&emocao='+this.modelObjetos['emocao']+
-                    '&compraVenda='+this.modelObjetos['compraVenda']+
-                    '&quantidade='+this.modelObjetos['quantidade']
-
-                ;*/
-                //alert(url);
-            }
-            else if(classe == "setup"){
-                url = '/api/'+classe+
-                    '?nomeSetup='+this.modelObjetos[0]['nomeSetup']+
-                    '&user_id='+this.idUsuario;
-            }
-            else if(classe == "emocao"){
-                url = '/api/'+classe+
-                    '?nomeEmocao='+this.modelObjetos[0]['nomeEmocao']+
-                    '&user_id='+this.idUsuario;
-            }
-            else if(classe == "credencialapibinance"){
-               url = '/api/'+classe+'?key='+this.modelObjetos[0]['key']+'&secret='+this.modelObjetos[0]['secret']+
-                '&user_id='+this.idUsuario;
             }
             else{
                 alert("Erro, Classe inexistente!");
@@ -287,29 +246,13 @@ var app = new Vue({
                 this.modelObjetos[0]['company_name'] = this.objetos['data'][index]['company_name'];
             }
 
-            else if(this.nomeObjeto == "diario"){
-                this.modelObjetos[0]['setup'] = this.objetos[index]['setup'];
-                this.modelObjetos[0]['simbolo'] = this.objetos[index]['simbolo'];
-                this.modelObjetos[0]['emocao'] = this.objetos[index]['emocao'];
-                this.modelObjetos[0]['compraVenda'] = this.objetos[index]['compraVenda'];
-                this.modelObjetos[0]['quantidade'] = this.objetos[index]['quantidade'];
-                this.modelObjetos[0]['pontos'] = this.objetos[index]['pontos'];
-                this.modelObjetos[0]['valorEntrada'] = this.objetos[index]['valorEntrada'];
-                this.modelObjetos[0]['valorSaida'] = this.objetos[index]['valorSaida'];
-                this.modelObjetos[0]['taxa'] = this.objetos[index]['taxa'];
-                this.modelObjetos[0]['dtEntrada'] = this.objetos[index]['dtEntrada'];
-                this.modelObjetos[0]['dtSaida'] = this.objetos[index]['dtSaida'];
-                this.modelObjetos[0]['fdEmocional'] = this.objetos[index]['fdEmocional'];
-                this.modelObjetos[0]['fdImediato'] = this.objetos[index]['fdImediato'];
+            else if(this.nomeObjeto == "administrador"){
+                this.modelObjetos[0]['name'] = this.objetos['data'][index]['name'];
+                this.modelObjetos[0]['email'] = this.objetos['data'][index]['user']['email'];
+                this.modelObjetos[0]['company_name'] = this.objetos['data'][index]['company_name'];
+            }
 
-            }
-            else if(this.nomeObjeto == "emocao"){
-                this.modelObjetos[0]['nomeEmocao'] = this.objetos[index]['nomeEmocao'];
-            }
-            else if(this.nomeObjeto == "setup"){
-                //alert("passou aki");
-                this.modelObjetos[0]['nomeSetup'] = this.objetos[index]['nomeSetup'];
-            }
+
             else{
 
                 this.modelObjetos[0]['id'] = this.objetos[index]['id'];
@@ -330,7 +273,7 @@ var app = new Vue({
             var url;
 
             if(classe == "administrador"){
-                url = '/api/'+classe+'/'+this.modelObjetos['id']+'?nome='+this.modelObjetos['nome']+'&email='+this.modelObjetos['email']+'&senha='+this.modelObjetos['senha'];
+                url = '/api/'+classe+'/'+this.modelObjetos[0]['id']+'?name='+this.modelObjetos[0]['name']+'&email='+this.modelObjetos[0]['email'];
             }
             else if(classe == "cliente"){
                 url = '/api/'+classe+'/'+this.modelObjetos[0]['id']+
@@ -338,36 +281,6 @@ var app = new Vue({
                     '&email='+this.modelObjetos[0]['email']+
                     '&company_name='+this.modelObjetos[0]['company_name']+
                     '&cnpj='+this.modelObjetos[0]['cnpj'];
-            }
-            else if(classe == "diario"){
-                url = '/api/'+classe+'/'+this.modelObjetos[0]['id']+
-                    '?setup='+this.modelObjetos[0]['setup']+
-                    '&emocao='+this.modelObjetos[0]['emocao']+
-                    '&simbolo='+this.modelObjetos[0]['simbolo']+
-                    '&compraVenda='+this.modelObjetos[0]['compraVenda']+
-                    '&quantidade='+this.modelObjetos[0]['quantidade']+
-                    '&valorEntrada='+this.modelObjetos[0]['valorEntrada']+
-                    '&valorSaida='+this.modelObjetos[0]['valorSaida']+
-                    '&taxa='+this.modelObjetos[0]['taxa']+
-                    '&dtEntrada='+this.modelObjetos[0]['dtEntrada']+
-                    '&dtSaida='+this.modelObjetos[0]['dtSaida']+
-                    '&fdEmocional='+this.modelObjetos[0]['fdEmocional']+
-                    '&fdImediato='+this.modelObjetos[0]['fdImediato']
-                ;
-            }
-            else if(classe == "setup"){
-                url = '/api/'+classe+'/'+this.modelObjetos[0]['id']+
-                    '?nomeSetup='+this.modelObjetos[0]['nomeSetup']
-            }
-            else if(classe == "emocao"){
-                url = '/api/'+classe+'/'+this.modelObjetos[0]['id']+
-                    '?nomeEmocao='+this.modelObjetos[0]['nomeEmocao']+'&user_id='+this.idUsuario;
-            }
-            else if(classe == "credencialapibinance"){
-
-                url = '/api/'+classe+'/'+this.idUsuario+
-                    '?key='+this.modelObjetos[0]['key']+'&secret='+this.modelObjetos[0]['secret'];
-                    //alert(url);
             }
             else{
                 alert("Erro, Classe inexistente!");
@@ -463,6 +376,9 @@ var app = new Vue({
             this.modelObjetos[0]['key'] = "";
             this.modelObjetos[0]['secret'] = "";
 
+            this.modelObjetos[0]['senha'] = "";
+            this.modelObjetos[0]['confirmaSenha'] = "";
+
 
         },
         mostrarConteinerObjeto: function(classe){
@@ -482,58 +398,60 @@ var app = new Vue({
             //alert('teste2');
         },
         verificaDados: function(classe){
-            if(classe == 'diario'){
+            if(classe == 'cliente'){
                 if(
-                    this.modelObjetos[0]['setup'] == "" ||
-                    this.modelObjetos[0]['simbolo'] == "" ||
-                    this.modelObjetos[0]['emocao'] == "" ||
-                    this.modelObjetos[0]['compraVenda'] == "" ||
-                    this.modelObjetos[0]['quantidade'] == "" ||
-                    this.modelObjetos[0]['valorEntrada'] == "" ||
-                    this.modelObjetos[0]['dtEntrada'] == ""
+                    this.modelObjetos[0]['name'] == "" ||
+                    this.modelObjetos[0]['email'] == "" ||
+                    this.modelObjetos[0]['cnpj'] == "" ||
+                    this.modelObjetos[0]['company_name'] == ""
                 ){
-                    alert("erro");
+                    alert("Erro");
                     return true;
                 }
                 else{
                     return false;
                 }
             }
-            else if(classe == 'credencialapibinance'){
-                if(
-                    this.modelObjetos[0]['key'] == "" ||
-                    this.modelObjetos[0]['secret'] == ""
-                ){
-                    alert("erro");
-                    return true;
+            else if(classe == 'administrador'){
+                if(this.acaoObjeto == "Criar"){
+                    if(
+                        this.modelObjetos[0]['name'] == "" ||
+                        this.modelObjetos[0]['email'] == "" ||
+                        this.modelObjetos[0]['senha'] == "" ||
+                        this.modelObjetos[0]['confirmaSenha'] == ""
+                    ){
+                        alert("Erro");
+                        return true;
+                    }
+                    else if(this.modelObjetos[0]['senha'] !=  this.modelObjetos[0]['confirmaSenha']){
+                        alert("Erro: Senhas diferentes");
+                        return true;
+                    }
+                    else{
+                        return false;
+                    }
+                }
+                else if(this.acaoObjeto == "Alterar"){
+                    if(
+                        this.modelObjetos[0]['name'] == "" ||
+                        this.modelObjetos[0]['email'] == ""
+                    ){
+                        alert("Erro");
+                        return true;
+                    }
+                    else{
+                        return false;
+                    }
                 }
                 else{
-                    return false;
+                    alert("Erro inexplicavel");
+                    return true;
                 }
 
             }
-            else if(classe == 'setup'){
-                if(
-                    this.modelObjetos[0]['nomeSetup'] == ""
-                ){
-                    alert("erro");
-                    return true;
-                }
-                else{
-                    return false;
-                }
-            }
-            else if(classe == 'emocao'){
-
-                if(
-                    this.modelObjetos[0]['nomeEmocao'] = ""
-                ){
-                    alert("erro");
-                    return true;
-                }
-                else{
-                    return false;
-                }
+            else{
+                alert("Erro inexplicavel");
+                return true;
             }
         }
     }
