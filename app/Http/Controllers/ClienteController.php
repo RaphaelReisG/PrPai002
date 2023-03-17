@@ -100,8 +100,6 @@ class ClienteController extends Controller
         //$obj->update($request->all());
         error_log("cliente nome ".$request->name);
 
-        info('This is some useful information.');
-
         $cliente->update($request->only('name', 'cnpj', 'company_name'));
         if(isset($request->password)){
             $request->password = Hash::make($request->password);

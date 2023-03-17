@@ -175,12 +175,19 @@
 
                 <div v-if="titulo !== ''"> <!-- cabecalho geral -->
                     <div class="row">
+                        <div class="col">
                         <h2 >
-                            Novo
+
+                                Novo
                             <button_add></button_add>
+
                         </h2>
+                    </div>
+                        <div class="col">
+                            <button_buscar></button_buscar>
+                        </div>
                         <div>
-                            <p>Paginação Pendente</p>
+                            <p>Paginação Pendente | Ordenação Pendente | Busca Pendente</p>
                         </div>
                     </div>
                 </div>
