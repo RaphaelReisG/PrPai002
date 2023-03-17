@@ -13,7 +13,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
- 
+
     <title>Dashboard - Salgados</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
@@ -175,12 +175,19 @@
 
                 <div v-if="titulo !== ''"> <!-- cabecalho geral -->
                     <div class="row">
+                        <div class="col">
                         <h2 >
-                            Novo
+
+                                Novo
                             <button_add></button_add>
+
                         </h2>
+                    </div>
+                        <div class="col">
+                            <button_buscar></button_buscar>
+                        </div>
                         <div>
-                            <p>Paginação Pendente</p>
+                            <p>Paginação Pendente | Ordenação Pendente | Busca Pendente</p>
                         </div>
                     </div>
                 </div>
@@ -205,10 +212,12 @@
                                 </div>
                                 <!-- formulario ADMINISTRADOR-->
                                 <div v-if="nomeObjeto == 'administrador'" class="modal-body">
-                                    <input_geral nome="Nome Completo" tipo="text" nome_model="nome"></input_geral>
+                                    <input_geral nome="Nome Completo" tipo="text" nome_model="name"></input_geral>
                                     <input_geral nome="E-mail" tipo="email" nome_model="email"></input_geral>
+                                    <div v-if="acaoObjeto == 'Criar'">
                                     <senha_geral nome="Senha" nome_model="senha"></senha_geral>
                                     <senha_geral nome="Confirme a senha" nome_model="confirmaSenha"></senha_geral>
+                                    </div>
                                 </div>
 
                                 <!-- Rodapé -->
@@ -343,7 +352,7 @@
                                                     {titulo: 'Cidade', conteudo: 'bairro', conteudo2: 'cidade', conteudo3: 'name_city'},
                                                     {titulo: 'Tipo', conteudo: 'enderecoable_type'},
                                                     {titulo: 'Proprietario',  conteudo: 'enderecoable', conteudo2: 'name'}
-                                                    
+
                                                 ]"
                                                 :objeto_imp="objetos"
                                                 :obj_acordion="[
@@ -361,7 +370,7 @@
                         <table_acordion     :classe_atributos="[
                                                     {titulo: 'Nome', conteudo: 'name_neighborhood'},
                                                     {titulo: 'Cidade',  conteudo: 'cidade', conteudo2: 'name_city'}
-                                                    
+
                                                 ]"
                                                 :objeto_imp="objetos"
                                                 :obj_acordion="[
@@ -377,7 +386,7 @@
                         <table_acordion     :classe_atributos="[
                                                     {titulo: 'Nome', conteudo: 'name_city'},
                                                     {titulo: 'Estado',  conteudo: 'estado', conteudo2: 'name_state'}
-                                                    
+
                                                 ]"
                                                 :objeto_imp="objetos"
                                                 :obj_acordion="[
@@ -393,7 +402,7 @@
                         <table_acordion     :classe_atributos="[
                                                     {titulo: 'Nome', conteudo: 'name_state'},
                                                     {titulo: 'País',  conteudo: 'pais', conteudo2: 'name_country'}
-                                                    
+
                                                 ]"
                                                 :objeto_imp="objetos"
                                                 :obj_acordion="[
@@ -407,7 +416,7 @@
                     <div v-else-if="nomeObjeto == 'pais' && objetos !== null" class="row">
                         <table_acordion     :classe_atributos="[
                                                     {titulo: 'Nome', conteudo: 'name_country'}
-                                                    
+
                                                 ]"
                                                 :objeto_imp="objetos"
                                                 :obj_acordion="[
