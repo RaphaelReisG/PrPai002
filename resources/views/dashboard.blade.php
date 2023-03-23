@@ -43,7 +43,6 @@
                                 <a class="nav-link" v-on:click="defineClasse('', '')" aria-current="page" href="#">Home</a>
                             </li>
                             <li class="nav-item dropdown">
-                                <!-- <a class="nav-link" v-on:click="mostrarConteinerObjeto('credencialapibinance')" >Configurações</a> -->
                                 <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     Configurações
                                 </a>
@@ -146,15 +145,6 @@
                 </div>
             </nav>
         </div>
-<!--
-        <p>teste</p>
-        <div v-for="(value, name) in objetos[0]">
-            <p> ok @{{name}}</p>
-        </div>
--->
-
-
-
         <!-- Conteudo Geral CRUDs -->
         <div class="container-lg">
             <div class="row">
@@ -177,10 +167,8 @@
                     <div class="row">
                         <div class="col">
                         <h2 >
-
-                                Novo
+                            Novo
                             <button_add></button_add>
-
                         </h2>
                     </div>
                         <div class="col">
@@ -221,7 +209,7 @@
                                 </div>
 
                                 <!-- Rodapé -->
-                                <div class="modal-footer" v-if="nomeObjeto != 'credencialapibinance'">
+                                <div class="modal-footer">
                                     <button_cancelar_modal rotulo="Cancelar"></button_cancelar_modal>
                                     <button_acao></button_acao>
                                 </div>
