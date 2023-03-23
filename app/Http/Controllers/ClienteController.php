@@ -36,7 +36,7 @@ class ClienteController extends Controller
                     ->where( 'name', 'like', '%'.$request->buscarObjeto.'%')
                     ->orWhere( 'company_name', 'like', '%'.$request->buscarObjeto.'%')
                     ->orWhere( 'cnpj', 'like', '%'.$request->buscarObjeto.'%')
-                    ->paginate(1);
+                    ->paginate(4);
             }
             else{
                 error_log("com busca sem ordenacao".$request->buscarObjeto);
@@ -44,17 +44,17 @@ class ClienteController extends Controller
                     ->where( 'name', 'like', '%'.$request->buscarObjeto.'%')
                     ->orWhere( 'company_name', 'like', '%'.$request->buscarObjeto.'%')
                     ->orWhere( 'cnpj', 'like', '%'.$request->buscarObjeto.'%')
-                    ->paginate(1);
+                    ->paginate(4);
             }
         }
         else{
             if(isset($request->ordenacaoBusca)){
                 error_log("sem busca com ordenacao");
-                return Cliente::with(['user', 'vendedor', 'enderecos', 'telefones'])->orderBy($request->ordenacaoBusca)->paginate(1);
+                return Cliente::with(['user', 'vendedor', 'enderecos', 'telefones'])->orderBy($request->ordenacaoBusca)->paginate(4);
             }
             else{
                 error_log("sem busca sem ordenacao");
-                return Cliente::with(['user', 'vendedor', 'enderecos', 'telefones'])->paginate(1);
+                return Cliente::with(['user', 'vendedor', 'enderecos', 'telefones'])->paginate(4);
                 //return Cliente::with('user')->paginate(10);
             }
         }

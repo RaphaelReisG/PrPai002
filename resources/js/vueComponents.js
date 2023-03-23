@@ -112,7 +112,11 @@
             <table class="table">
                 <thead>
                     <tr>
-                        <th scope="col" v-for="atributo in classe_atributos" >{{atributo.titulo}}</th>
+                        <th scope="col" v-for="atributo in classe_atributos" >
+                            <div style="cursor: pointer;" v-on:click="$root.modelObjetos[0]['ordenacaoBusca'] = atributo.conteudo, $root.buscarObjetos() ">
+                                {{atributo.titulo }}
+                            </div>
+                        </th>
                         <th scope="col">Opções</th>
                     </tr>
                 </thead>

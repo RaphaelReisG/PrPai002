@@ -33,7 +33,8 @@ var app = new Vue({
         mostrarSenha: "password",
         resposta: '',
         respostaData: '',
-        variavelBusca: ''
+        variavelBusca: '',
+        variavelOrdenacao: ''
     },
     methods: {
         defineClasse: function(classe, titulo ){
@@ -48,21 +49,22 @@ var app = new Vue({
             this.carregandoGeral = true;
             var url;
             url = '/api/'+classe;
-            
+
             /*fetch(url).then((res) => res.json())
                     .then((data) => this.objetos = data).finally(this.carregandoGeral = false);
             */
 
 
-                    
+
 
 
             axios
                 .get(url)
                 .then(response => (this.objetos = response.data, this.resposta = response))
                 .catch(error => (this.error = error));
-            
+
             this.variavelBusca = '';
+            this.variavelOrdenacao = '';
         },
         escolheAcaoObjeto: function(acao, classe){
             if(this.verificaDados(classe) == true){
@@ -310,7 +312,7 @@ var app = new Vue({
             //this.carregandoGeral = true;
             //var url;
             //url = '/api/'+classe;
-            
+
             /*fetch(url).then((res) => res.json())
                     .then((data) => this.objetos = data).finally(this.carregandoGeral = false);
             */
@@ -320,6 +322,9 @@ var app = new Vue({
             if(this.variavelBusca !== ''){
                 url = url + '&buscarObjeto=' + this.variavelBusca;
             }
+            if(this.variavelOrdenacao !== ''){
+                url = url + '&ordenacaoBusca=' + this.variavelOrdenacao;
+            }
             axios
                 .get(url)
                 .then(response => (this.objetos = response.data, this.resposta = response))
@@ -328,33 +333,47 @@ var app = new Vue({
         buscarObjetos: function(){
             alert('clicado');
             var classe = this.nomeObjeto;
-            if(this.modelObjetos[0]['buscarObjeto'] !== ''){
-                
-                this.objetos = null;
+            var url;
+            var dados;
+            if(this.modelObjetos[0]['buscarObjeto'] !== '' &&  this.modelObjetos[0]['ordenacaoBusca'] !== '' ){
+                alert('orde e busca');
+                //this.objetos = null;
                 //this.carregandoGeral = true;
-                var url;
-                var dados;
+
                 //url = '/api/'+classe+'/busca';
                 url = '/api/'+classe+'?buscarObjeto='+this.modelObjetos[0]['buscarObjeto'];
-                dados = {
+                url = url + '&ordenacaoBusca=' + this.modelObjetos[0]['ordenacaoBusca'];
+                /*dados = {
                     buscarObjeto: this.modelObjetos[0]['buscarObjeto']
-                }
-                alert(dados.buscarObjeto);
-                /*fetch(url).then((res) => res.json())
-                        .then((data) => this.objetos = data).finally(this.carregandoGeral = false);
-                */
-                axios
-                    .get(url)
-                    .then(response => (this.objetos = response.data, this.resposta = response))
-                    .catch(error => (this.error = error));
-                if(this.error == null){
-                    this.variavelBusca = this.modelObjetos[0]['buscarObjeto'];
-                }
+                }*/
+                //alert(dados.buscarObjeto);
+
+
+            }
+            else if(this.modelObjetos[0]['buscarObjeto'] !== '' &&  this.modelObjetos[0]['ordenacaoBusca'] == ''){
+                alert('busca');
+                url = '/api/'+classe+'?buscarObjeto='+this.modelObjetos[0]['buscarObjeto'];
+            }
+            else if(this.modelObjetos[0]['buscarObjeto'] == '' &&  this.modelObjetos[0]['ordenacaoBusca'] !== ''){
+                alert('orde');
+                url = '/api/' + classe + '?ordenacaoBusca=' + this.modelObjetos[0]['ordenacaoBusca'];
             }
             else{
-                alert("campo vazio, recarregando tudo.");
+                alert("campos vazios, mas vc clicou em buscar mesmo assim, recarregando tudo.");
                 this.variavelBusca = '';
+                this.variavelOrdenacao = '';
                 this.carregarObjeto(classe);
+                return;
+            }
+
+            axios
+            .get(url)
+            .then(response => (this.objetos = response.data, this.resposta = response))
+            .catch(error => (this.error = error));
+
+            if(this.error == null){
+                this.variavelBusca = this.modelObjetos[0]['buscarObjeto'];
+                this.variavelOrdenacao = this.modelObjetos[0]['ordenacaoBusca'];
             }
 
 
@@ -362,8 +381,8 @@ var app = new Vue({
         ordenacao: function(coluna){
             alert('clicado ordenacao');
             var classe = this.nomeObjeto;
-            
-                
+
+
                 //this.objetos = null;
                 //this.carregandoGeral = true;
                 var url;

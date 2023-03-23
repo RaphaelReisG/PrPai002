@@ -225,7 +225,7 @@
                             <p>Maximo por Pagina: @{{objetos['per_page']}} | Total: @{{objetos['total']}}</p>
                         </div>
                     </div>
-                     
+
                 </div>
             </div>
 
