@@ -65,6 +65,8 @@ var app = new Vue({
 
             this.variavelBusca = '';
             this.variavelOrdenacao = '';
+            this.modelObjetos[0]['buscarObjeto'] = '';
+            this.modelObjetos[0]['ordenacaoBusca'] = '';
         },
         escolheAcaoObjeto: function(acao, classe){
             if(this.verificaDados(classe) == true){

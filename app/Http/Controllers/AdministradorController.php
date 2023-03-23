@@ -18,7 +18,7 @@ class AdministradorController extends Controller
      */
     public function index(Request $request)
     {
-        if(isset($request->buscarObjeto)){
+       /* if(isset($request->buscarObjeto)){
             error_log("com busca ".$request->buscarObjeto);
             return Administrador::with(['user'])
                 ->where( 'name', 'like', '%'.$request->buscarObjeto.'%')
@@ -29,7 +29,34 @@ class AdministradorController extends Controller
             return Administrador::with('user')->paginate(10);
 
             /*$administrador = Administrador::all();
-            return TesteResource::collection($administrador);*/
+            return TesteResource::collection($administrador);
+        }*/
+
+        if(isset($request->buscarObjeto)){
+            if(isset($request->ordenacaoBusca)){
+                error_log("com busca com ordenacao  ".$request->buscarObjeto);
+                return Administrador::with(['user'])
+                    ->orderBy($request->ordenacaoBusca)
+                    ->where( 'name', 'like', '%'.$request->buscarObjeto.'%')
+                    ->paginate(4);
+            }
+            else{
+                error_log("com busca sem ordenacao".$request->buscarObjeto);
+                return Administrador::with(['user'])
+                    ->where( 'name', 'like', '%'.$request->buscarObjeto.'%')
+                    ->paginate(4);
+            }
+        }
+        else{
+            if(isset($request->ordenacaoBusca)){
+                error_log("sem busca com ordenacao");
+                return Administrador::with(['user'])->orderBy($request->ordenacaoBusca)->paginate(4);
+            }
+            else{
+                error_log("sem busca sem ordenacao");
+                return Administrador::with(['user'])->paginate(4);
+                //return Cliente::with('user')->paginate(10);
+            }
         }
     }
 
