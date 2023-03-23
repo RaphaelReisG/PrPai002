@@ -16,14 +16,21 @@ class AdministradorController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //return Administrador::all();
+        if(isset($request->buscarObjeto)){
+            error_log("com busca ".$request->buscarObjeto);
+            return Administrador::with(['user'])
+                ->where( 'name', 'like', '%'.$request->buscarObjeto.'%')
+                ->paginate(1);
+        }
+        else{
 
-        return Administrador::with('user')->paginate(10);
+            return Administrador::with('user')->paginate(10);
 
-        /*$administrador = Administrador::all();
-        return TesteResource::collection($administrador);*/
+            /*$administrador = Administrador::all();
+            return TesteResource::collection($administrador);*/
+        }
     }
 
     /**
@@ -117,5 +124,19 @@ class AdministradorController extends Controller
         $administrador->delete();
 
         return new TesteResource($administrador);
+    }
+
+    public function buscando(Request $request)
+    {
+        error_log("passou aki na busca");
+        if(isset($request->buscarObjeto)){
+            error_log("com busca ".$request->buscarObjeto);
+            return Administrador::with(['user'])
+                ->where( 'name', 'like', '%'.$request->buscarObjeto.'%')
+                ->paginate(1);
+        }
+        else{
+            error_log("deu ruim");
+        }
     }
 }

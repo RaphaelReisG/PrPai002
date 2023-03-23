@@ -23,12 +23,17 @@ var app = new Vue({
 
             company_name: "", cnpj: "",
 
-            symbol: "", startTime: "", endTime: "", limite: ""
+            symbol: "", startTime: "", endTime: "", limite: "",
+
+            buscarObjeto: "", ordenacaoBusca: ""
 
         }],
         index: "",
 
-        mostrarSenha: "password"
+        mostrarSenha: "password",
+        resposta: '',
+        respostaData: '',
+        variavelBusca: ''
     },
     methods: {
         defineClasse: function(classe, titulo ){
@@ -44,8 +49,20 @@ var app = new Vue({
             var url;
             url = '/api/'+classe;
             
-            fetch(url).then((res) => res.json())
+            /*fetch(url).then((res) => res.json())
                     .then((data) => this.objetos = data).finally(this.carregandoGeral = false);
+            */
+
+
+                    
+
+
+            axios
+                .get(url)
+                .then(response => (this.objetos = response.data, this.resposta = response))
+                .catch(error => (this.error = error));
+            
+            this.variavelBusca = '';
         },
         escolheAcaoObjeto: function(acao, classe){
             if(this.verificaDados(classe) == true){
@@ -63,28 +80,37 @@ var app = new Vue({
                 }
             }
         },
-        addObjeto: function(classe){
+        addObjeto: async function(classe){
             this.carregando = true;
             var url;
+            var dados;
             if(classe == "administrador"){
-                url = '/api/'+classe+
-                    '?name='+this.modelObjetos[0]['name']+
-                    '&email='+this.modelObjetos[0]['email']+
-                    '&senha='+this.modelObjetos[0]['senha'];
+                url = '/api/'+classe;
+                dados = {
+                    name: this.modelObjetos[0]['name'],
+                    email: this.modelObjetos[0]['email'],
+                    senha: this.modelObjetos[0]['senha']
+                }
             }
             else if(classe == "cliente"){
-                url = '/api/'+classe+
-                    '?name='+this.modelObjetos[0]['name']+
-                    '&email='+this.modelObjetos[0]['email']+
-                    '&company_name='+this.modelObjetos[0]['company_name']+
-                    '&cnpj='+this.modelObjetos[0]['cnpj']
-                ;
+                url = '/api/'+classe;
+                dados = {
+                    name: this.modelObjetos[0]['name'],
+                    email: this.modelObjetos[0]['email'],
+                    company_name: this.modelObjetos[0]['company_name'],
+                    cnpj: this.modelObjetos[0]['cnpj']
+                }
             }
             else{
                 alert("Erro, Classe inexistente!");
             }
 
-            fetch(url, { method: 'POST'} ).catch((e) => this.error = e);
+            //fetch(url, { method: 'POST'} ).catch((e) => this.error = e);
+
+            await axios
+                .post(url, dados)
+                .then(response => (this.respostaData = response.data, this.resposta = response))
+                .catch(error => (this.error = error));
 
             alert(url);
 
@@ -135,19 +161,26 @@ var app = new Vue({
             }
 
         },
-        updateObjeto: function(classe){
+        updateObjeto: async function(classe){
             this.carregando = true;
             var url;
-
+            var dados;
             if(classe == "administrador"){
-                url = '/api/'+classe+'/'+this.modelObjetos[0]['id']+'?name='+this.modelObjetos[0]['name']+'&email='+this.modelObjetos[0]['email'];
+                url = '/api/'+classe+'/'+this.modelObjetos[0]['id'];
+                dados = {
+                    name: this.modelObjetos[0]['name'],
+                    email: this.modelObjetos[0]['email']
+                }
+
             }
             else if(classe == "cliente"){
-                url = '/api/'+classe+'/'+this.modelObjetos[0]['id']+
-                    '?name='+this.modelObjetos[0]['name']+
-                    '&email='+this.modelObjetos[0]['email']+
-                    '&company_name='+this.modelObjetos[0]['company_name']+
-                    '&cnpj='+this.modelObjetos[0]['cnpj'];
+                url = '/api/'+classe+'/'+this.modelObjetos[0]['id'];
+                dados = {
+                    name: this.modelObjetos[0]['name'],
+                    email: this.modelObjetos[0]['email'],
+                    company_name: this.modelObjetos[0]['company_name'],
+                    cnpj: this.modelObjetos[0]['cnpj']
+                }
             }
             else{
                 alert("Erro, Classe inexistente!");
@@ -155,10 +188,15 @@ var app = new Vue({
 
             alert(url);
 
-            fetch(url, { method: 'PUT', headers: {"Content-type": "application/json"}} ).then((res) => res.json())
+            /*fetch(url, { method: 'PUT', headers: {"Content-type": "application/json"}} ).then((res) => res.json())
             .then((data) => this.resposta = data)
             .then(json => console.log(json))
-            .catch((e) => this.error = e);
+            .catch((e) => this.error = e);*/
+
+            await axios
+                .put(url, dados)
+                .then(response => (this.respostaData = response.data, this.resposta = response))
+                .catch(error => (this.error = error));
 
 
             if(this.error == null){
@@ -172,10 +210,14 @@ var app = new Vue({
             this.carregarObjeto(classe);
             this.carregando = false;
         },
-        desativarObjeto: function(classe, id){
+        desativarObjeto: async function(classe, id){
             if( confirm("Tem certeza que deseja deletar? "+id) == true){
                     var url = '/api/'+classe+'/'+id;
-                    fetch(url, { method: 'DELETE'} ).catch((e) => this.error = e);
+                    //fetch(url, { method: 'DELETE'} ).catch((e) => this.error = e);
+                    await axios
+                        .delete(url)
+                        .then(response => (this.respostaData = response.data, this.resposta = response))
+                        .catch(error => (this.error = error));
                     if(this.error == null){
                         alert("Excluido com sucesso");
                     }
@@ -262,6 +304,77 @@ var app = new Vue({
                 alert("Erro inexplicavel");
                 return true;
             }
+        },
+        paginacao: function(url){
+            //this.objetos = null;
+            //this.carregandoGeral = true;
+            //var url;
+            //url = '/api/'+classe;
+            
+            /*fetch(url).then((res) => res.json())
+                    .then((data) => this.objetos = data).finally(this.carregandoGeral = false);
+            */
+            alert(url);
+            this.objetos = null;
+
+            if(this.variavelBusca !== ''){
+                url = url + '&buscarObjeto=' + this.variavelBusca;
+            }
+            axios
+                .get(url)
+                .then(response => (this.objetos = response.data, this.resposta = response))
+                .catch(error => (this.error = error));
+        },
+        buscarObjetos: function(){
+            alert('clicado');
+            var classe = this.nomeObjeto;
+            if(this.modelObjetos[0]['buscarObjeto'] !== ''){
+                
+                this.objetos = null;
+                //this.carregandoGeral = true;
+                var url;
+                var dados;
+                //url = '/api/'+classe+'/busca';
+                url = '/api/'+classe+'?buscarObjeto='+this.modelObjetos[0]['buscarObjeto'];
+                dados = {
+                    buscarObjeto: this.modelObjetos[0]['buscarObjeto']
+                }
+                alert(dados.buscarObjeto);
+                /*fetch(url).then((res) => res.json())
+                        .then((data) => this.objetos = data).finally(this.carregandoGeral = false);
+                */
+                axios
+                    .get(url)
+                    .then(response => (this.objetos = response.data, this.resposta = response))
+                    .catch(error => (this.error = error));
+                if(this.error == null){
+                    this.variavelBusca = this.modelObjetos[0]['buscarObjeto'];
+                }
+            }
+            else{
+                alert("campo vazio, recarregando tudo.");
+                this.variavelBusca = '';
+                this.carregarObjeto(classe);
+            }
+
+
+        },
+        ordenacao: function(coluna){
+            alert('clicado ordenacao');
+            var classe = this.nomeObjeto;
+            
+                
+                //this.objetos = null;
+                //this.carregandoGeral = true;
+                var url;
+
+                url = '/api/'+classe+'?ordenacaoBusca='+coluna;
+
+                axios
+                    .get(url)
+                    .then(response => (this.objetos = response.data, this.resposta = response))
+                    .catch(error => (this.error = error));
+
         }
     }
 })

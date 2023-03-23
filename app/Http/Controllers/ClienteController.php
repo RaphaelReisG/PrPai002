@@ -26,10 +26,38 @@ class ClienteController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return Cliente::with(['user', 'vendedor', 'enderecos', 'telefones'])->paginate(1);
-        //return Cliente::with('user')->paginate(10);
+        if(isset($request->buscarObjeto)){
+            if(isset($request->ordenacaoBusca)){
+                error_log("com busca com ordenacao  ".$request->buscarObjeto);
+                return Cliente::with(['user', 'vendedor', 'enderecos', 'telefones'])
+                    ->orderBy($request->ordenacaoBusca)
+                    ->where( 'name', 'like', '%'.$request->buscarObjeto.'%')
+                    ->orWhere( 'company_name', 'like', '%'.$request->buscarObjeto.'%')
+                    ->orWhere( 'cnpj', 'like', '%'.$request->buscarObjeto.'%')
+                    ->paginate(1);
+            }
+            else{
+                error_log("com busca sem ordenacao".$request->buscarObjeto);
+                return Cliente::with(['user', 'vendedor', 'enderecos', 'telefones'])
+                    ->where( 'name', 'like', '%'.$request->buscarObjeto.'%')
+                    ->orWhere( 'company_name', 'like', '%'.$request->buscarObjeto.'%')
+                    ->orWhere( 'cnpj', 'like', '%'.$request->buscarObjeto.'%')
+                    ->paginate(1);
+            }
+        }
+        else{
+            if(isset($request->ordenacaoBusca)){
+                error_log("sem busca com ordenacao");
+                return Cliente::with(['user', 'vendedor', 'enderecos', 'telefones'])->orderBy($request->ordenacaoBusca)->paginate(1);
+            }
+            else{
+                error_log("sem busca sem ordenacao");
+                return Cliente::with(['user', 'vendedor', 'enderecos', 'telefones'])->paginate(1);
+                //return Cliente::with('user')->paginate(10);
+            }
+        }
     }
 
     /**
@@ -124,5 +152,21 @@ class ClienteController extends Controller
         $cliente->delete();
 
         return new TesteResource($cliente);
+    }
+
+    public function buscando(Request $request)
+    {
+        error_log("passou aki na busca");
+        if(isset($request->buscarObjeto)){
+            error_log("com busca ".$request->buscarObjeto);
+            return Cliente::with(['user', 'vendedor', 'enderecos', 'telefones'])
+                ->where( 'name', 'like', '%'.$request->buscarObjeto.'%')
+                ->orWhere( 'company_name', 'like', '%'.$request->buscarObjeto.'%')
+                ->orWhere( 'cnpj', 'like', '%'.$request->buscarObjeto.'%')
+                ->paginate(1);
+        }
+        else{
+            error_log("deu ruim");
+        }
     }
 }

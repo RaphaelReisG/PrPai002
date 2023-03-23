@@ -112,7 +112,7 @@
             <table class="table">
                 <thead>
                     <tr>
-                        <th scope="col" v-for="atributo in classe_atributos">{{atributo.titulo}}</th>
+                        <th scope="col" v-for="atributo in classe_atributos" >{{atributo.titulo}}</th>
                         <th scope="col">Opções</th>
                     </tr>
                 </thead>
@@ -269,8 +269,8 @@ Vue.component('button_add', {
 Vue.component('button_buscar', {
     template: `
         <div class="input-group mb-3">
-                <input style="max-width: 300px;" :placeholder="nome" :aria-label="nome" :type="text" class="form-control"   v-model="$root.modelObjetos[0][$root.buscarObjeto]" aria-describedby="button-addon4">
-                <button class="btn btn-outline-secondary" type="button" id="button-addon4">
+                <input style="max-width: 300px;" type="text" class="form-control" v-model="$root.modelObjetos[0]['buscarObjeto']" aria-describedby="button-addon4">
+                <button class="btn btn-outline-secondary" type="button" id="button-addon4" v-on:click="$root.buscarObjetos()">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
                         <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
                     </svg>
@@ -297,65 +297,4 @@ Vue.component('button_preencher', {
 
 // FIm -------------------------------------------------------------------------------------------------------------------
 //------------------------------------------------------------------------------------------------
-
-Vue.component('input_texto', {
-props: ['nome_label' , 'nome_input'],
-template: `
-    <label>
-        {{nome_label}}:
-        <input type='text' name='' v-bind:name='nome_input' required >
-    </label>
-`
-});
-
-Vue.component('input_email', {
-template: `
-    <label for='email'>
-        E-mail:
-        <input type='email' name='email' required >
-    </label>
-`
-});
-
-Vue.component('input_senha', {
-template: `
-    <label>
-        Senha:  ;.m
-            +
-
-            +TRE
-        <input type='password' name='senha' required >
-    </label>
-`
-});
-
-Vue.component('cadastro_senha', {
-props: ['value1'],
-template: `
-    <div>
-        <label> Digite a Senha:
-            <input type='password'
-            v-bind:value="value1"
-            v-on:input="$emit('input', $event.target.value)"
-
-            name='senha_confirm1' required >
-        </label>
-        <br><br>
-        <label> Digite novamente a Senha:
-            <input type='password'
-
-
-
-              name='senha_confirm2' required >
-        </label>
-    </div>
-`
-});
-
-Vue.component('input_hidden', {
-props: ['valor'],
-template: `
-    <input type='hidden' name='codigo_formulario' value='' v-bind:value='valor' >
-`
-});
 

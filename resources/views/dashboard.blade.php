@@ -175,29 +175,57 @@
                             <button_buscar></button_buscar>
                         </div>
                         <div>
-                            <p>Paginação Pendente | Ordenação Pendente | Busca Pendente</p>
-                            <nav aria-label="...">
+                            <p> Ordenação Pendente</p>
+                            <nav aria-label="..."> <!-- paginação -->
                                 <ul class="pagination">
+                                    <li class="page-item" v-if="objetos['current_page'] > 1">
+                                        <a class="page-link" href="#" v-on:click="paginacao(objetos['first_page_url'])">Primeiro</a>
+                                    </li>
+                                    <li class="page-item disabled" v-else>
+                                        <a class="page-link" href="#">Primeiro</a>
+                                    </li>
+                                    <li class="page-item" v-if="objetos['current_page'] > 1" >
+                                        <a class="page-link" href="#" v-on:click="paginacao(objetos['prev_page_url'])">&laquo; Anterior</a>
+                                    </li>
+                                    <li class="page-item disabled" v-else>
+                                        <a class="page-link" href="#" tabindex="-1">&laquo; Anterior</a>
+                                    </li>
+                                    <li class="page-item" v-if="objetos['current_page'] > 2">
+                                        <a class="page-link" href="#" v-on:click="paginacao(objetos['links'][objetos['current_page'] - 2]['url'])">@{{objetos['current_page'] - 2}}</a>
+                                    </li>
+                                    <li class="page-item" v-if="objetos['current_page'] > 1">
+                                        <a class="page-link" href="#" v-on:click="paginacao(objetos['links'][objetos['current_page'] - 1]['url'])">@{{objetos['current_page'] - 1}}</a>
+                                    </li>
 
-                                  <li class="page-item disabled">
-                                    <a class="page-link" href="#" tabindex="-1">Anterior</a>
-                                  </li>
+                                    <li class="page-item active">
+                                        <a class="page-link" href="#">@{{objetos['current_page']}} <span class="sr-only"></span></a>
+                                    </li>
 
-                                  <li class="page-item"><a class="page-link" href="#">1</a></li>
+                                    <li class="page-item" v-if="(objetos['current_page'] + 1) <= objetos['last_page']">
+                                        <a class="page-link" href="#" v-on:click="paginacao(objetos['links'][objetos['current_page'] + 1]['url'])">@{{objetos['current_page'] + 1}}</a>
+                                    </li>
+                                    <li class="page-item" v-if="(objetos['current_page'] + 2) <= objetos['last_page']">
+                                        <a class="page-link" href="#" v-on:click="paginacao(objetos['links'][objetos['current_page'] + 2]['url'])">@{{objetos['current_page'] + 2}}</a>
+                                    </li>
 
-                                  <li class="page-item active">
-                                    <a class="page-link" href="#">2 <span class="sr-only">(atual)</span></a>
-                                  </li>
-
-                                  <li class="page-item"><a class="page-link" href="#">3</a></li>
-
-                                  <li class="page-item">
-                                    <a class="page-link" href="#">Próximo</a>
-                                  </li>
+                                    <li class="page-item" v-if="(objetos['current_page'] + 1) <= objetos['last_page']">
+                                        <a class="page-link" href="#" v-on:click="paginacao(objetos['next_page_url'])">Próximo &raquo;</a>
+                                    </li>
+                                    <li class="page-item disabled" v-else>
+                                        <a class="page-link" href="#">Próximo &raquo;</a>
+                                    </li>
+                                    <li class="page-item" v-if="(objetos['current_page'] + 1) <= objetos['last_page']">
+                                        <a class="page-link" href="#" v-on:click="paginacao(objetos['last_page_url'])">Ultimo</a>
+                                    </li>
+                                    <li class="page-item disabled" v-else>
+                                        <a class="page-link" href="#">Ultimo</a>
+                                    </li>
                                 </ul>
-                              </nav>
+                            </nav>
+                            <p>Maximo por Pagina: @{{objetos['per_page']}} | Total: @{{objetos['total']}}</p>
                         </div>
                     </div>
+                     
                 </div>
             </div>
 
