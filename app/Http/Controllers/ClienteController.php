@@ -28,7 +28,7 @@ class ClienteController extends Controller
      */
     public function index()
     {
-        return Cliente::with(['user', 'vendedor', 'enderecos', 'telefones'])->paginate(10);
+        return Cliente::with(['user', 'vendedor', 'enderecos', 'telefones'])->paginate(1);
         //return Cliente::with('user')->paginate(10);
     }
 

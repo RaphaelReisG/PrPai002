@@ -1,3 +1,10 @@
+// paaginação
+
+
+
+
+
+// -------
 //entrada de forms
 
     Vue.component('input_geral', {
