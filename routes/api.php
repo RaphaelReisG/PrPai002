@@ -16,6 +16,7 @@ use App\Http\Controllers\PaisController;
 use App\Http\Controllers\PedidoController;
 use App\Http\Controllers\ProdutoController;
 use App\Http\Controllers\VendedorController;
+use App\Http\Controllers\TelefoneController;
 
 /*
 |--------------------------------------------------------------------------
@@ -47,3 +48,4 @@ Route::apiResource('pais', PaisController::class);
 Route::apiResource('pedido', PedidoController::class);
 Route::apiResource('produto', ProdutoController::class);
 Route::apiResource('vendedor', VendedorController::class);
+Route::apiResource('telefone', TelefoneController::class);

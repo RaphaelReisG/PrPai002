@@ -4,9 +4,16 @@ var app = new Vue({
     el: '#app',
     data: {
         idUsuario: "{{ Auth::user()->id }}",
+        tipoUsuario: '',
         titulo: "",
         acaoObjeto: "",
         nomeObjeto: "",
+
+        tiposPessoa: [
+            {tipo: 'App\\Models\\Cliente', label: 'Cliente'},
+            {tipo: 'App\\Models\\Vendedor', label: 'Vendedor'},
+            {tipo: 'App\\Models\\Fornecedor', label: 'Fornecedor'},
+        ],
 
         resposta: [{}],
 
@@ -23,7 +30,7 @@ var app = new Vue({
 
             company_name: "", cnpj: "",
 
-            symbol: "", startTime: "", endTime: "", limite: "",
+            number_phone: "",
 
             buscarObjeto: "", ordenacaoBusca: ""
 
@@ -54,9 +61,31 @@ var app = new Vue({
                     .then((data) => this.objetos = data).finally(this.carregandoGeral = false);
             */
 
+            axios
+                .get(url)
+                .then(response => (this.objetos = response.data, this.resposta = response))
+                .catch(error => (this.error = error));
+
+            this.variavelBusca = '';
+            this.variavelOrdenacao = '';
+            this.modelObjetos[0]['buscarObjeto'] = '';
+            this.modelObjetos[0]['ordenacaoBusca'] = '';
+        },
+        carregaMeusTelefones: function(classe, titulo, tipo){
+            this.nomeObjeto = classe;
+            this.titulo = titulo;
+
+            this.objetos = null;
+            this.carregandoGeral = true;
+            var url;
 
 
 
+            url = '/api/'+tipo+'/'+this.idUsuario;
+
+            /*fetch(url).then((res) => res.json())
+                    .then((data) => this.objetos = data).finally(this.carregandoGeral = false);
+            */
 
             axios
                 .get(url)
@@ -103,6 +132,14 @@ var app = new Vue({
                     email: this.modelObjetos[0]['email'],
                     company_name: this.modelObjetos[0]['company_name'],
                     cnpj: this.modelObjetos[0]['cnpj']
+                }
+            }
+            else if(classe == "telefone"){
+                url = '/api/'+classe;
+                dados = {
+                    number_phone: this.modelObjetos[0]['number_phone'],
+                    tipoUsuario: this.tipoUsuario,
+                    idUsuario: this.idUsuario
                 }
             }
             else{
@@ -241,6 +278,8 @@ var app = new Vue({
             this.modelObjetos[0]['email'] = "";
             this.modelObjetos[0]['cnpj'] = "";
 
+            this.modelObjetos[0]['number_phone'] = "";
+
             this.modelObjetos[0]['senha'] = "";
             this.modelObjetos[0]['confirmaSenha'] = "";
 
@@ -304,6 +343,18 @@ var app = new Vue({
                 }
 
             }
+            else if(classe == 'telefone'){
+                    if(
+                        this.modelObjetos[0]['number_phone'] == ""
+                    ){
+                        alert("Erro");
+                        return true;
+                    }
+                    else{
+                        return false;
+                    }
+            }
+
             else{
                 alert("Erro inexplicavel");
                 return true;

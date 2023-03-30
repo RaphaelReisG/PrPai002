@@ -1,8 +1,58 @@
 // paaginação
 
+    Vue.component('paginacao', {
+        template: `
+            <div>
+                <nav aria-label="...">
+                    <ul class="pagination">
+                        <li class="page-item" v-if="$root.objetos['current_page'] > 1">
+                            <a class="page-link" href="#" v-on:click="$root.paginacao($root.objetos['first_page_url'])">Primeiro</a>
+                        </li>
+                        <li class="page-item disabled" v-else>
+                            <a class="page-link" href="#">Primeiro</a>
+                        </li>
+                        <li class="page-item" v-if="$root.objetos['current_page'] > 1" >
+                            <a class="page-link" href="#" v-on:click="$root.paginacao($root.objetos['prev_page_url'])">&laquo; Anterior</a>
+                        </li>
+                        <li class="page-item disabled" v-else>
+                            <a class="page-link" href="#" tabindex="-1">&laquo; Anterior</a>
+                        </li>
+                        <li class="page-item" v-if="$root.objetos['current_page'] > 2">
+                            <a class="page-link" href="#" v-on:click="$root.paginacao($root.objetos['links'][$root.objetos['current_page'] - 2]['url'])">{{$root.objetos['current_page'] - 2}}</a>
+                        </li>
+                        <li class="page-item" v-if="$root.objetos['current_page'] > 1">
+                            <a class="page-link" href="#" v-on:click="$root.paginacao($root.objetos['links'][$root.objetos['current_page'] - 1]['url'])">{{$root.objetos['current_page'] - 1}}</a>
+                        </li>
 
+                        <li class="page-item active">
+                            <a class="page-link"  href="#">{{$root.objetos['current_page']}} <span class="sr-only"></span></a>
+                        </li>
 
+                        <li class="page-item" v-if="($root.objetos['current_page'] + 1) <= $root.objetos['last_page']">
+                            <a class="page-link" href="#" v-on:click="$root.paginacao($root.objetos['links'][$root.objetos['current_page'] + 1]['url'])">{{$root.objetos['current_page'] + 1}}</a>
+                        </li>
+                        <li class="page-item" v-if="($root.objetos['current_page'] + 2) <= $root.objetos['last_page']">
+                            <a class="page-link" href="#" v-on:click="$root.paginacao($root.objetos['links'][$root.objetos['current_page'] + 2]['url'])">{{$root.objetos['current_page'] + 2}}</a>
+                        </li>
 
+                        <li class="page-item" v-if="($root.objetos['current_page'] + 1) <= $root.objetos['last_page']">
+                            <a class="page-link" href="#" v-on:click="$root.paginacao($root.objetos['next_page_url'])">Próximo &raquo;</a>
+                        </li>
+                        <li class="page-item disabled" v-else>
+                            <a class="page-link" href="#">Próximo &raquo;</a>
+                        </li>
+                        <li class="page-item" v-if="($root.objetos['current_page'] + 1) <= $root.objetos['last_page']">
+                            <a class="page-link" href="#" v-on:click="$root.paginacao($root.objetos['last_page_url'])">Ultimo</a>
+                        </li>
+                        <li class="page-item disabled" v-else>
+                            <a class="page-link" href="#">Ultimo</a>
+                        </li>
+                    </ul>
+                </nav>
+                <p>Maximo por Pagina: {{$root.objetos['per_page']}} | Total: {{$root.objetos['total']}}</p>
+            </div>
+        `
+    });
 
 // -------
 //entrada de forms
@@ -171,6 +221,71 @@
         `
     });
 
+    Vue.component('table_acordion2', {
+        props: ['classe_atributos', 'objeto_imp', 'obj_acordion'],
+        template: `
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col" v-for="atributo in classe_atributos" >
+                            <div style="cursor: pointer;" v-on:click="$root.modelObjetos[0]['ordenacaoBusca'] = atributo.conteudo, $root.buscarObjetos() ">
+                                {{atributo.titulo }}
+                            </div>
+                        </th>
+                        <th scope="col">Opções</th>
+                    </tr>
+                </thead>
+                <tbody class="table-group-divider" v-for="(obj, index) in objeto_imp">
+                    <tr data-bs-toggle="collapse" v-bind:data-bs-target="'#collapseExample' + obj.id"  aria-expanded="false" v-bind:aria-controls="'collapseExample'+obj.id" aria-controls="collapseExample">
+
+                        <td v-for="valor in classe_atributos">
+                            <div v-if="valor.conteudo !== 'created_at' && valor.conteudo !== 'dtEntrada' && valor.conteudo !== 'dtSaida' && valor.conteudo2 == null ">
+                                {{ obj[valor.conteudo]  }}
+                            </div>
+                            <div v-else-if="valor.conteudo2 != null && valor.conteudo3 == null">
+                                {{ obj[valor.conteudo][valor.conteudo2]  }}
+                            </div>
+                            <div v-else-if="valor.conteudo3 != null">
+                                {{ obj[valor.conteudo][valor.conteudo2][valor.conteudo3]  }}
+                            </div>
+                            <div v-else>
+                                {{ new Date(obj[valor.conteudo]).toLocaleString() }}
+                            </div>
+                        </td>
+                        <td>
+                            <button_alter :objindex="index"></button_alter>
+                            <button_delete :objid= "obj.id"></button_delete>
+                        </td>
+                    </tr>
+                    <tr >
+                        <td colspan="12">
+                            <div class="collapse" v-bind:id="'collapseExample' + obj.id" >
+                                <div class="card card-body">
+                                    <div v-for="acord in obj_acordion">
+
+
+                                        <div v-if="acord.conteudo !== 'created_at' && acord.conteudo !== 'dtEntrada' && acord.conteudo !== 'dtSaida' && acord.conteudo2 == null ">
+                                            {{acord.titulo}}: {{obj[acord.conteudo] }}
+                                        </div>
+                                        <div v-else-if="acord.conteudo2 != null && acord.conteudo3 == null">
+                                            {{acord.titulo}}: {{ obj[acord.conteudo][acord.conteudo2]  }}
+                                        </div>
+                                        <div v-else-if="acord.conteudo3 != null">
+                                            {{acord.titulo}}: {{ obj[acord.conteudo][acord.conteudo2][acord.conteudo3]  }}
+                                        </div>
+                                        <div v-else>
+                                            {{acord.titulo }}: {{ new Date(obj[acord.conteudo]).toLocaleString() }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        `
+    });
+
     Vue.component('table_acordion_api', {
         props: ['classe_atributos', 'objeto_imp', 'obj_acordion'],
         template: `
@@ -214,7 +329,10 @@
         `
     });
 
+// ----------
+// Meus dados
 
+//----------
 
 
 // Botoes --------------------------------------------------------------

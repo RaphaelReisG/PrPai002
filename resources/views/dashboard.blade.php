@@ -1,10 +1,3 @@
-{{ Auth::user()->email }}
-{{ Auth::user()->id }}
-{{ Auth::user()->userable->name }}
-
-
-
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -28,7 +21,14 @@
 </head>
 <body>
     <div id="app">
-    {{ idUsuario = "<?php echo Auth::user()->id;?>"  }}
+        <div style="display: none">
+            {{ idUsuario = "<?php echo Auth::user()->userable->id;?>"  }}
+            {{ tipoUsuario = "<?php echo Auth::user()->userable_type;?>"  }}
+            {{ Auth::user()->email }}
+            {{ Auth::user()->id }}
+            {{ Auth::user()->userable->name }}
+            {{ Auth::user()->userable->id }}
+        </div>
         <!-- Menu -->
         <div >
             <nav class="navbar navbar-expand-lg bg-light">
@@ -53,20 +53,17 @@
                                         <li><a class="dropdown-item" href="#" v-on:click="defineClasse('estado', 'Estado')">Estado</a></li>
                                         <li><a class="dropdown-item" href="#" v-on:click="defineClasse('pais', 'País')">País</a></li>
                                         <li><hr class="dropdown-divider"></li>
-                                        <li><a class="dropdown-item" href="#" v-on:click="defineClasse('endereco', 'Endereços dos clientes')">Endereços dos clientes</a></li>
-                                        <li><a class="dropdown-item" href="#" v-on:click="defineClasse('telefone', 'Telefones dos clientes')">Telefones dos clientes</a></li>
-                                        <li><hr class="dropdown-divider"></li>
-                                        <li><a class="dropdown-item" href="#" v-on:click="defineClasse('user', 'Acesso')">Acesso</a></li>
+                                        <li><a class="dropdown-item" href="#" v-on:click="defineClasse('administrador/'+idUsuario, 'Meus dados')">Meus dados</a></li>
                                     @elsecan('vendedor')
                                         <li><a class="dropdown-item" href="#" v-on:click="defineClasse('endereco', 'Endereços dos clientes')">Endereços dos clientes</a></li>
                                         <li><a class="dropdown-item" href="#" v-on:click="defineClasse('telefone', 'Telefones dos clientes')">Telefones dos clientes</a></li>
                                         <li><hr class="dropdown-divider"></li>
-                                        <li><a class="dropdown-item" href="#" v-on:click="defineClasse('user', 'Acesso')">Acesso</a></li>
+                                        <li><a class="dropdown-item" href="#" v-on:click="defineClasse('vendedor/'+idUsuario, 'Meus dados')">Meus dados</a></li>
                                     @elsecan('cliente')
                                         <li><a class="dropdown-item" href="#" v-on:click="defineClasse('endereco', 'Meus Endereços')">Meus Endereços</a></li>
-                                        <li><a class="dropdown-item" href="#" v-on:click="defineClasse('telefone', 'Meus Telefones')">Meus Telefones</a></li>
+                                        <li><a class="dropdown-item" href="#" v-on:click="carregaMeusTelefones('telefone', 'Meus Telefones', 'cliente')">Meus Telefones</a></li>
                                         <li><hr class="dropdown-divider"></li>
-                                        <li><a class="dropdown-item" href="#" v-on:click="defineClasse('user', 'Acesso')">Acesso</a></li>
+                                        <li><a class="dropdown-item" href="#" v-on:click="defineClasse('cliente/'+idUsuario, 'Meus dados')">Meus dados</a></li>
                                     @endcan
                                 </ul>
                             </li>
@@ -79,6 +76,9 @@
                                         <li><a class="dropdown-item" href="#" v-on:click="defineClasse('administrador', 'Administrador')">Gerenciar Administradores</a></li>
                                         <li><a class="dropdown-item" href="#" v-on:click="defineClasse('vendedor', 'Vendedores')">Gerenciar Vendedores</a></li>
                                         <li><a class="dropdown-item" href="#" v-on:click="defineClasse('cliente', 'Cliente')">Gerenciar Clientes</a></li>
+                                        <li><hr class="dropdown-divider"></li>
+                                        <li><a class="dropdown-item" href="#" v-on:click="defineClasse('endereco', 'Endereços dos clientes')">Lista de endereços</a></li>
+                                        <li><a class="dropdown-item" href="#" v-on:click="defineClasse('telefone', 'Telefones dos clientes')">Lista telefonica</a></li>
                                     @elsecan('vendedor')
                                         <li><a class="dropdown-item" href="#" v-on:click="defineClasse('cliente', 'Cliente')">Meus Clientes</a></li>
                                         <li><a class="dropdown-item" href="#" v-on:click="defineClasse('pedido', 'Pedidos')">Pedidos</a></li>
@@ -124,7 +124,7 @@
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
 
-                            <x-responsive-nav-link style="margin-left: 5px; margin-bottom: -15px; " class="btn btn-secondary" :href="route('logout')"
+                            <x-responsive-nav-link style="margin-left: 5px; " class="btn btn-secondary" :href="route('logout')"
                                     onclick="event.preventDefault();
                                                 this.closest('form').submit();">
                                 {{ __('Sair') }}
@@ -162,8 +162,7 @@
                     @endcan
                 </div>
 
-
-                <div v-if="titulo !== ''"> <!-- cabecalho geral -->
+                <div v-if="titulo !== '' && titulo !== 'Meus dados'"> <!-- cabecalho geral -->
                     <div class="row">
                         <div class="col">
                         <h2 >
@@ -174,61 +173,11 @@
                         <div class="col">
                             <button_buscar></button_buscar>
                         </div>
-                        <div>
-                            <p> Ordenação Pendente</p>
-                            <nav aria-label="..."> <!-- paginação -->
-                                <ul class="pagination">
-                                    <li class="page-item" v-if="objetos['current_page'] > 1">
-                                        <a class="page-link" href="#" v-on:click="paginacao(objetos['first_page_url'])">Primeiro</a>
-                                    </li>
-                                    <li class="page-item disabled" v-else>
-                                        <a class="page-link" href="#">Primeiro</a>
-                                    </li>
-                                    <li class="page-item" v-if="objetos['current_page'] > 1" >
-                                        <a class="page-link" href="#" v-on:click="paginacao(objetos['prev_page_url'])">&laquo; Anterior</a>
-                                    </li>
-                                    <li class="page-item disabled" v-else>
-                                        <a class="page-link" href="#" tabindex="-1">&laquo; Anterior</a>
-                                    </li>
-                                    <li class="page-item" v-if="objetos['current_page'] > 2">
-                                        <a class="page-link" href="#" v-on:click="paginacao(objetos['links'][objetos['current_page'] - 2]['url'])">@{{objetos['current_page'] - 2}}</a>
-                                    </li>
-                                    <li class="page-item" v-if="objetos['current_page'] > 1">
-                                        <a class="page-link" href="#" v-on:click="paginacao(objetos['links'][objetos['current_page'] - 1]['url'])">@{{objetos['current_page'] - 1}}</a>
-                                    </li>
-
-                                    <li class="page-item active">
-                                        <a class="page-link" href="#">@{{objetos['current_page']}} <span class="sr-only"></span></a>
-                                    </li>
-
-                                    <li class="page-item" v-if="(objetos['current_page'] + 1) <= objetos['last_page']">
-                                        <a class="page-link" href="#" v-on:click="paginacao(objetos['links'][objetos['current_page'] + 1]['url'])">@{{objetos['current_page'] + 1}}</a>
-                                    </li>
-                                    <li class="page-item" v-if="(objetos['current_page'] + 2) <= objetos['last_page']">
-                                        <a class="page-link" href="#" v-on:click="paginacao(objetos['links'][objetos['current_page'] + 2]['url'])">@{{objetos['current_page'] + 2}}</a>
-                                    </li>
-
-                                    <li class="page-item" v-if="(objetos['current_page'] + 1) <= objetos['last_page']">
-                                        <a class="page-link" href="#" v-on:click="paginacao(objetos['next_page_url'])">Próximo &raquo;</a>
-                                    </li>
-                                    <li class="page-item disabled" v-else>
-                                        <a class="page-link" href="#">Próximo &raquo;</a>
-                                    </li>
-                                    <li class="page-item" v-if="(objetos['current_page'] + 1) <= objetos['last_page']">
-                                        <a class="page-link" href="#" v-on:click="paginacao(objetos['last_page_url'])">Ultimo</a>
-                                    </li>
-                                    <li class="page-item disabled" v-else>
-                                        <a class="page-link" href="#">Ultimo</a>
-                                    </li>
-                                </ul>
-                            </nav>
-                            <p>Maximo por Pagina: @{{objetos['per_page']}} | Total: @{{objetos['total']}}</p>
-                        </div>
+                        <paginacao v-if="nomeObjeto !== '' && objetos !== null && titulo !== 'Meus Telefones' "></paginacao>
                     </div>
 
                 </div>
             </div>
-
 
             <!-- Modal Cadastro/edicao geral -->
             <div class="modal fade" id="modalObjeto" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -254,6 +203,11 @@
                                     <senha_geral nome="Senha" nome_model="senha"></senha_geral>
                                     <senha_geral nome="Confirme a senha" nome_model="confirmaSenha"></senha_geral>
                                     </div>
+                                </div>
+
+                                <!-- formulario TELEFONE-->
+                                <div v-if="nomeObjeto == 'telefone'" class="modal-body">
+                                    <input_geral nome="Numero Telefone" tipo="text" nome_model="number_phone"></input_geral>
                                 </div>
 
                                 <!-- Rodapé -->
@@ -287,8 +241,8 @@
 
 
                 <div v-if="titulo != ''">
-                    <!-- Tabela Cliente -->
-                    <div v-if="nomeObjeto == 'cliente' && objetos !== null" class="row">
+                    <!-- Tabela Pedido -->
+                    <div v-if="nomeObjeto == 'pedido' && objetos !== null" class="row">
                         <table_acordion     :classe_atributos="[
                                                     {titulo: 'Nome', conteudo: 'name'},
                                                     {titulo: 'Razão Social', conteudo: 'company_name'},
@@ -300,167 +254,394 @@
                                                 :obj_acordion="[
                                                     {titulo: 'Criado em', conteudo: 'created_at'}
                                                 ]"
-                                               >
+                                            >
                         </table_acordion>
                     </div>
 
-                    <!-- Tabela Vendedor -->
-                    <div v-else-if="nomeObjeto == 'vendedor' && objetos !== null" class="row">
-                        <table_acordion     :classe_atributos="[
-                                                    {titulo: 'Nome', conteudo: 'name'},
-                                                    {titulo: 'E-mail',  conteudo: 'user', conteudo2: 'email'}
-                                                ]"
-                                                :objeto_imp="objetos"
-                                                :obj_acordion="[
-                                                    {titulo: 'Criado em', conteudo: 'created_at'}
-                                                ]"
-                                               >
-                        </table_acordion>
-                    </div>
+                    @can('admin')
+                        <!-- Tabela Cliente -->
+                        <div v-else-if="nomeObjeto == 'cliente' && objetos !== null" class="row">
+                            <table_acordion     :classe_atributos="[
+                                                        {titulo: 'Nome', conteudo: 'name'},
+                                                        {titulo: 'Razão Social', conteudo: 'company_name'},
+                                                        {titulo: 'CPF / CNPJ', conteudo: 'cnpj'},
+                                                        {titulo: 'Vendedor', conteudo: 'vendedor', conteudo2: 'name' },
+                                                        {titulo: 'E-mail',  conteudo: 'user', conteudo2: 'email'}
+                                                    ]"
+                                                    :objeto_imp="objetos"
+                                                    :obj_acordion="[
+                                                        {titulo: 'Criado em', conteudo: 'created_at'}
+                                                    ]"
+                                                >
+                            </table_acordion>
+                        </div>
 
-                    <!-- Tabela Administradores -->
-                    <div v-else-if="nomeObjeto == 'administrador' && objetos !== null" class="row">
-                        <table_acordion     :classe_atributos="[
-                                                    {titulo: 'Nome', conteudo: 'name'},
-                                                    {titulo: 'E-mail',  conteudo: 'user', conteudo2: 'email'}
-                                                ]"
-                                                :objeto_imp="objetos"
-                                                :obj_acordion="[
-                                                    {titulo: 'Criado em', conteudo: 'created_at'}
-                                                ]"
-                                               >
-                        </table_acordion>
-                    </div>
+                        <!-- Tabela Vendedor -->
+                        <div v-else-if="nomeObjeto == 'vendedor' && objetos !== null" class="row">
+                            <table_acordion     :classe_atributos="[
+                                                        {titulo: 'Nome', conteudo: 'name'},
+                                                        {titulo: 'E-mail',  conteudo: 'user', conteudo2: 'email'}
+                                                    ]"
+                                                    :objeto_imp="objetos"
+                                                    :obj_acordion="[
+                                                        {titulo: 'Criado em', conteudo: 'created_at'}
+                                                    ]"
+                                                >
+                            </table_acordion>
+                        </div>
 
-                    <!-- Tabela Fornecedor -->
-                    <div v-else-if="nomeObjeto == 'fornecedor' && objetos !== null" class="row">
-                        <table_acordion     :classe_atributos="[
-                                                    {titulo: 'Nome Empresa', conteudo: 'company_name'},
-                                                    {titulo: 'E-mail',  conteudo: 'email'},
-                                                ]"
-                                                :objeto_imp="objetos"
-                                                :obj_acordion="[
-                                                    {titulo: 'Criado em', conteudo: 'created_at'}
-                                                ]"
-                                               >
-                        </table_acordion>
-                    </div>
+                        <!-- Tabela Administradores -->
+                        <div v-else-if="nomeObjeto == 'administrador' && objetos !== null" class="row">
+                            <table_acordion     :classe_atributos="[
+                                                        {titulo: 'Nome', conteudo: 'name'},
+                                                        {titulo: 'E-mail',  conteudo: 'user', conteudo2: 'email'}
+                                                    ]"
+                                                    :objeto_imp="objetos"
+                                                    :obj_acordion="[
+                                                        {titulo: 'Criado em', conteudo: 'created_at'}
+                                                    ]"
+                                                >
+                            </table_acordion>
+                        </div>
 
-                    <!-- Tabela Marca -->
-                    <div v-else-if="nomeObjeto == 'marca' && objetos !== null" class="row">
-                        <table_acordion     :classe_atributos="[
-                                                    {titulo: 'Nome', conteudo: 'name'},
-                                                    {titulo: 'Fornecedor',  conteudo: 'fornecedor', conteudo2: 'company_name'}
-                                                ]"
-                                                :objeto_imp="objetos"
-                                                :obj_acordion="[
-                                                    {titulo: 'Criado em', conteudo: 'created_at'}
-                                                ]"
-                                               >
-                        </table_acordion>
-                    </div>
+                        <!-- Tabela Meus Dados Administradores -->
+                        <div v-else-if="nomeObjeto == ('administrador/'+idUsuario) && objetos !== null" class="row">
+                            <div class="card card-body">
+                                <div class="row">
+                                    <div class="col">
+                                        <h4>Nome:</h4>
+                                    </div>
+                                    <div class="col">
+                                        <h4>@{{objetos['data']['name']}}</h4>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <h4>E-mail:</h4>
+                                    </div>
+                                    <div class="col">
+                                        <h4>@{{objetos['data']['user']['email']}}</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
-                    <!-- Tabela Produto -->
-                    <div v-else-if="nomeObjeto == 'produto' && objetos !== null" class="row">
-                        <table_acordion     :classe_atributos="[
-                            {titulo: 'Nome', conteudo: 'name'},
-                                                    {titulo: 'Tipo', conteudo: 'type'},
-                                                    {titulo: 'Valor de Venda', conteudo: 'sale_price'},
-                                                    {titulo: 'Marca',  conteudo: 'marca', conteudo2: 'name'}
-                                                ]"
-                                                :objeto_imp="objetos"
-                                                :obj_acordion="[
-                                                    {titulo: 'Criado em', conteudo: 'created_at'},
-                                                    {titulo: 'Quantidade por Pacote', conteudo: 'quantity'},
-                                                    {titulo: 'Peso por pacote ', conteudo: 'weight'},
-                                                    {titulo: 'Preço de custo', conteudo: 'cost_price'},
-                                                    {titulo: 'Fornecedor',  conteudo: 'marca', conteudo2: 'fornecedor', conteudo3: 'company_name'}
-                                                ]"
-                                               >
-                        </table_acordion>
-                    </div>
+                        <!-- Tabela Fornecedor -->
+                        <div v-else-if="nomeObjeto == 'fornecedor' && objetos !== null" class="row">
+                            <table_acordion     :classe_atributos="[
+                                                        {titulo: 'Nome Empresa', conteudo: 'company_name'},
+                                                        {titulo: 'E-mail',  conteudo: 'email'},
+                                                    ]"
+                                                    :objeto_imp="objetos"
+                                                    :obj_acordion="[
+                                                        {titulo: 'Criado em', conteudo: 'created_at'}
+                                                    ]"
+                                                >
+                            </table_acordion>
+                        </div>
 
-                    <!-- Tabela Bairro -->
-                    <div v-else-if="nomeObjeto == 'endereco' && objetos !== null" class="row">
-                        <table_acordion     :classe_atributos="[
-                                                    {titulo: 'Logradouro', conteudo: 'street_name'},
-                                                    {titulo: 'Bairro', conteudo: 'bairro', conteudo2: 'name_neighborhood'},
-                                                    {titulo: 'Cidade', conteudo: 'bairro', conteudo2: 'cidade', conteudo3: 'name_city'},
-                                                    {titulo: 'Tipo', conteudo: 'enderecoable_type'},
-                                                    {titulo: 'Proprietario',  conteudo: 'enderecoable', conteudo2: 'name'}
+                        <!-- Tabela Marca -->
+                        <div v-else-if="nomeObjeto == 'marca' && objetos !== null" class="row">
+                            <table_acordion     :classe_atributos="[
+                                                        {titulo: 'Nome', conteudo: 'name'},
+                                                        {titulo: 'Fornecedor',  conteudo: 'fornecedor', conteudo2: 'company_name'}
+                                                    ]"
+                                                    :objeto_imp="objetos"
+                                                    :obj_acordion="[
+                                                        {titulo: 'Criado em', conteudo: 'created_at'}
+                                                    ]"
+                                                >
+                            </table_acordion>
+                        </div>
 
-                                                ]"
-                                                :objeto_imp="objetos"
-                                                :obj_acordion="[
-                                                    {titulo: 'Criado em', conteudo: 'created_at'},
-                                                    {titulo: 'Nº', conteudo: 'house_number'},
-                                                    {titulo: 'Complemento', conteudo: 'complement'},
-                                                    {titulo: 'CEP', conteudo: 'cep'}
-                                                ]"
-                                               >
-                        </table_acordion>
-                    </div>
+                        <!-- Tabela Produto -->
+                        <div v-else-if="nomeObjeto == 'produto' && objetos !== null" class="row">
+                            <table_acordion     :classe_atributos="[
+                                {titulo: 'Nome', conteudo: 'name'},
+                                                        {titulo: 'Tipo', conteudo: 'type'},
+                                                        {titulo: 'Valor de Venda', conteudo: 'sale_price'},
+                                                        {titulo: 'Marca',  conteudo: 'marca', conteudo2: 'name'}
+                                                    ]"
+                                                    :objeto_imp="objetos"
+                                                    :obj_acordion="[
+                                                        {titulo: 'Criado em', conteudo: 'created_at'},
+                                                        {titulo: 'Quantidade por Pacote', conteudo: 'quantity'},
+                                                        {titulo: 'Peso por pacote ', conteudo: 'weight'},
+                                                        {titulo: 'Preço de custo', conteudo: 'cost_price'},
+                                                        {titulo: 'Fornecedor',  conteudo: 'marca', conteudo2: 'fornecedor', conteudo3: 'company_name'}
+                                                    ]"
+                                                >
+                            </table_acordion>
+                        </div>
 
-                    <!-- Tabela Bairro -->
-                    <div v-else-if="nomeObjeto == 'bairro' && objetos !== null" class="row">
-                        <table_acordion     :classe_atributos="[
-                                                    {titulo: 'Nome', conteudo: 'name_neighborhood'},
-                                                    {titulo: 'Cidade',  conteudo: 'cidade', conteudo2: 'name_city'}
+                        <!-- Tabela Endereco -->
+                        <div v-else-if="nomeObjeto == 'endereco' && objetos !== null" class="row">
+                            <table_acordion     :classe_atributos="[
+                                                        {titulo: 'Logradouro', conteudo: 'street_name'},
+                                                        {titulo: 'Bairro', conteudo: 'bairro', conteudo2: 'name_neighborhood'},
+                                                        {titulo: 'Cidade', conteudo: 'bairro', conteudo2: 'cidade', conteudo3: 'name_city'},
+                                                        {titulo: 'Tipo', conteudo: 'enderecoable_type'},
+                                                        {titulo: 'Proprietario',  conteudo: 'enderecoable', conteudo2: 'name'},
+                                                        {titulo: 'Nome empresa',  conteudo: 'enderecoable', conteudo2: 'company_name'}
 
-                                                ]"
-                                                :objeto_imp="objetos"
-                                                :obj_acordion="[
-                                                    {titulo: 'Criado em', conteudo: 'created_at'},
-                                                    {titulo: 'Estado',  conteudo: 'cidade', conteudo2: 'estado', conteudo3: 'name_state'}
-                                                ]"
-                                               >
-                        </table_acordion>
-                    </div>
+                                                    ]"
+                                                    :objeto_imp="objetos"
+                                                    :obj_acordion="[
+                                                        {titulo: 'Criado em', conteudo: 'created_at'},
+                                                        {titulo: 'Nº', conteudo: 'house_number'},
+                                                        {titulo: 'Complemento', conteudo: 'complement'},
+                                                        {titulo: 'CEP', conteudo: 'cep'}
+                                                    ]"
+                                                >
+                            </table_acordion>
+                        </div>
 
-                    <!-- Tabela Cidade -->
-                    <div v-else-if="nomeObjeto == 'cidade' && objetos !== null" class="row">
-                        <table_acordion     :classe_atributos="[
-                                                    {titulo: 'Nome', conteudo: 'name_city'},
-                                                    {titulo: 'Estado',  conteudo: 'estado', conteudo2: 'name_state'}
+                        <!-- Tabela Bairro -->
+                        <div v-else-if="nomeObjeto == 'bairro' && objetos !== null" class="row">
+                            <table_acordion     :classe_atributos="[
+                                                        {titulo: 'Nome', conteudo: 'name_neighborhood'},
+                                                        {titulo: 'Cidade',  conteudo: 'cidade', conteudo2: 'name_city'}
 
-                                                ]"
-                                                :objeto_imp="objetos"
-                                                :obj_acordion="[
-                                                    {titulo: 'Criado em', conteudo: 'created_at'},
-                                                    {titulo: 'País',  conteudo: 'estado', conteudo2: 'pais', conteudo3: 'name_country'}
-                                                ]"
-                                               >
-                        </table_acordion>
-                    </div>
+                                                    ]"
+                                                    :objeto_imp="objetos"
+                                                    :obj_acordion="[
+                                                        {titulo: 'Criado em', conteudo: 'created_at'},
+                                                        {titulo: 'Estado',  conteudo: 'cidade', conteudo2: 'estado', conteudo3: 'name_state'}
+                                                    ]"
+                                                >
+                            </table_acordion>
+                        </div>
 
-                    <!-- Tabela Estado -->
-                    <div v-else-if="nomeObjeto == 'estado' && objetos !== null" class="row">
-                        <table_acordion     :classe_atributos="[
-                                                    {titulo: 'Nome', conteudo: 'name_state'},
-                                                    {titulo: 'País',  conteudo: 'pais', conteudo2: 'name_country'}
+                        <!-- Tabela Cidade -->
+                        <div v-else-if="nomeObjeto == 'cidade' && objetos !== null" class="row">
+                            <table_acordion     :classe_atributos="[
+                                                        {titulo: 'Nome', conteudo: 'name_city'},
+                                                        {titulo: 'Estado',  conteudo: 'estado', conteudo2: 'name_state'}
 
-                                                ]"
-                                                :objeto_imp="objetos"
-                                                :obj_acordion="[
-                                                    {titulo: 'Criado em', conteudo: 'created_at'}
-                                                ]"
-                                               >
-                        </table_acordion>
-                    </div>
+                                                    ]"
+                                                    :objeto_imp="objetos"
+                                                    :obj_acordion="[
+                                                        {titulo: 'Criado em', conteudo: 'created_at'},
+                                                        {titulo: 'País',  conteudo: 'estado', conteudo2: 'pais', conteudo3: 'name_country'}
+                                                    ]"
+                                                >
+                            </table_acordion>
+                        </div>
 
-                    <!-- Tabela Pais -->
-                    <div v-else-if="nomeObjeto == 'pais' && objetos !== null" class="row">
-                        <table_acordion     :classe_atributos="[
-                                                    {titulo: 'Nome', conteudo: 'name_country'}
+                        <!-- Tabela Estado -->
+                        <div v-else-if="nomeObjeto == 'estado' && objetos !== null" class="row">
+                            <table_acordion     :classe_atributos="[
+                                                        {titulo: 'Nome', conteudo: 'name_state'},
+                                                        {titulo: 'País',  conteudo: 'pais', conteudo2: 'name_country'}
 
-                                                ]"
-                                                :objeto_imp="objetos"
-                                                :obj_acordion="[
-                                                    {titulo: 'Criado em', conteudo: 'created_at'}
-                                                ]"
-                                               >
-                        </table_acordion>
-                    </div>
+                                                    ]"
+                                                    :objeto_imp="objetos"
+                                                    :obj_acordion="[
+                                                        {titulo: 'Criado em', conteudo: 'created_at'}
+                                                    ]"
+                                                >
+                            </table_acordion>
+                        </div>
+
+                        <!-- Tabela Pais -->
+                        <div v-else-if="nomeObjeto == 'pais' && objetos !== null" class="row">
+                            <table_acordion     :classe_atributos="[
+                                                        {titulo: 'Nome', conteudo: 'name_country'}
+
+                                                    ]"
+                                                    :objeto_imp="objetos"
+                                                    :obj_acordion="[
+                                                        {titulo: 'Criado em', conteudo: 'created_at'}
+                                                    ]"
+                                                >
+                            </table_acordion>
+                        </div>
+
+                        <!-- Tabela Telefone -->
+                        <div v-else-if="nomeObjeto == 'telefone' && objetos !== null" class="row">
+                            <table_acordion     :classe_atributos="[
+                                                        {titulo: 'Nº Telefone', conteudo: 'number_phone'},
+                                                        {titulo: 'Contato', conteudo: 'telefoneable_type'},
+                                                        {titulo: 'Nome Contato', conteudo: 'telefoneable', conteudo2: 'name'},
+                                                        {titulo: 'Nome Empresa', conteudo: 'telefoneable', conteudo2: 'company_name'}
+
+                                                    ]"
+                                                    :objeto_imp="objetos"
+                                                    :obj_acordion="[
+                                                        {titulo: 'Criado em', conteudo: 'created_at'}
+                                                    ]"
+                                                >
+                            </table_acordion>
+                        </div>
+                    @elsecan('vendedor')
+                        <!-- Tabela Cliente -->
+                        <div v-else-if="nomeObjeto == 'cliente' && objetos !== null" class="row">
+                            <table_acordion     :classe_atributos="[
+                                                        {titulo: 'Nome', conteudo: 'name'},
+                                                        {titulo: 'Razão Social', conteudo: 'company_name'},
+                                                        {titulo: 'CPF / CNPJ', conteudo: 'cnpj'},
+                                                        {titulo: 'Vendedor', conteudo: 'vendedor', conteudo2: 'name' },
+                                                        {titulo: 'E-mail',  conteudo: 'user', conteudo2: 'email'}
+                                                    ]"
+                                                    :objeto_imp="objetos"
+                                                    :obj_acordion="[
+                                                        {titulo: 'Criado em', conteudo: 'created_at'}
+                                                    ]"
+                                                >
+                            </table_acordion>
+                        </div>
+
+                        <!-- Tabela Endereco -->
+                        <div v-else-if="nomeObjeto == 'endereco' && objetos !== null" class="row">
+                            <table_acordion     :classe_atributos="[
+                                                        {titulo: 'Logradouro', conteudo: 'street_name'},
+                                                        {titulo: 'Bairro', conteudo: 'bairro', conteudo2: 'name_neighborhood'},
+                                                        {titulo: 'Cidade', conteudo: 'bairro', conteudo2: 'cidade', conteudo3: 'name_city'},
+                                                        {titulo: 'Tipo', conteudo: 'enderecoable_type'},
+                                                        {titulo: 'Proprietario',  conteudo: 'enderecoable', conteudo2: 'name'},
+                                                        {titulo: 'Nome empresa',  conteudo: 'enderecoable', conteudo2: 'company_name'}
+
+                                                    ]"
+                                                    :objeto_imp="objetos"
+                                                    :obj_acordion="[
+                                                        {titulo: 'Criado em', conteudo: 'created_at'},
+                                                        {titulo: 'Nº', conteudo: 'house_number'},
+                                                        {titulo: 'Complemento', conteudo: 'complement'},
+                                                        {titulo: 'CEP', conteudo: 'cep'}
+                                                    ]"
+                                                >
+                            </table_acordion>
+                        </div>
+
+                        <!-- Tabela Telefone -->
+                        <div v-else-if="nomeObjeto == 'telefone' && objetos !== null" class="row">
+                            <table_acordion     :classe_atributos="[
+                                                        {titulo: 'Nº Telefone', conteudo: 'number_phone'},
+                                                        {titulo: 'Contato', conteudo: 'telefoneable_type'},
+                                                        {titulo: 'Nome Contato', conteudo: 'telefoneable', conteudo2: 'name'},
+                                                        {titulo: 'Nome Empresa', conteudo: 'telefoneable', conteudo2: 'company_name'}
+
+                                                    ]"
+                                                    :objeto_imp="objetos"
+                                                    :obj_acordion="[
+                                                        {titulo: 'Criado em', conteudo: 'created_at'}
+                                                    ]"
+                                                >
+                            </table_acordion>
+                        </div>
+                    @elsecan('cliente')
+                        <!-- Tabela Meus dados Cliente -->
+                        <div v-else-if="nomeObjeto == ('cliente/'+idUsuario) && objetos !== null" class="row">
+                            <div class="card card-body">
+                                <div class="row">
+                                    <div class="col">
+                                        <h4>Nome:</h4>
+                                    </div>
+                                    <div class="col">
+                                        <h4>@{{objetos['data']['name']}}</h4>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <h4>Empresa:</h4>
+                                    </div>
+                                    <div class="col">
+                                        <h4>@{{objetos['data']['company_name']}}</h4>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <h4>CPF / CNPJ:</h4>
+                                    </div>
+                                    <div class="col">
+                                        <h4>@{{objetos['data']['cnpj']}}</h4>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <h4>E-mail:</h4>
+                                    </div>
+                                    <div class="col">
+                                        <h4>@{{objetos['data']['user']['email']}}</h4>
+                                    </div>
+                                </div>
+                            </div>
+                            <br><br>
+                            <div class="card">
+                                <div class="card card-header"> <h4>Meus Endereços</h4></div>
+                                <div class="card card-body">
+                                    <table_acordion2     :classe_atributos="[
+                                                                {titulo: 'Logradouro', conteudo: 'street_name'},
+                                                                {titulo: 'Bairro', conteudo: 'bairro', conteudo2: 'name_neighborhood'},
+                                                                {titulo: 'Cidade', conteudo: 'bairro', conteudo2: 'cidade', conteudo3: 'name_city'},
+                                                                {titulo: 'Nº', conteudo: 'house_number'}
+
+                                                            ]"
+                                                            :objeto_imp="objetos['data']['enderecos']"
+                                                            :obj_acordion="[
+                                                                {titulo: 'Criado em', conteudo: 'created_at'},
+                                                                {titulo: 'Complemento', conteudo: 'complement'},
+                                                                {titulo: 'CEP', conteudo: 'cep'}
+                                                            ]"
+                                                        >
+                                    </table_acordion2>
+                                </div>
+                            </div>
+                            <br><br>
+                            <div class="card">
+                                <div class="card card-header"> <h4>Meus Telefones</h4></div>
+                                <div class="card card-body">
+                                    <table_acordion2     :classe_atributos="[
+                                                        {titulo: 'Nº Telefone', conteudo: 'number_phone'}
+
+                                                    ]"
+                                                    :objeto_imp="objetos['data']['telefones']"
+                                                    :obj_acordion="[
+                                                        {titulo: 'Criado em', conteudo: 'created_at'}
+                                                    ]"
+                                                >
+                                    </table_acordion2>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Tabela Endereco -->
+                        <div v-else-if="nomeObjeto == 'endereco' && objetos !== null" class="row">
+                            <table_acordion     :classe_atributos="[
+                                                        {titulo: 'Logradouro', conteudo: 'street_name'},
+                                                        {titulo: 'Bairro', conteudo: 'bairro', conteudo2: 'name_neighborhood'},
+                                                        {titulo: 'Cidade', conteudo: 'bairro', conteudo2: 'cidade', conteudo3: 'name_city'},
+                                                        {titulo: 'Tipo', conteudo: 'enderecoable_type'},
+                                                        {titulo: 'Proprietario',  conteudo: 'enderecoable', conteudo2: 'name'},
+                                                        {titulo: 'Nome empresa',  conteudo: 'enderecoable', conteudo2: 'company_name'}
+
+                                                    ]"
+                                                    :objeto_imp="objetos"
+                                                    :obj_acordion="[
+                                                        {titulo: 'Criado em', conteudo: 'created_at'},
+                                                        {titulo: 'Nº', conteudo: 'house_number'},
+                                                        {titulo: 'Complemento', conteudo: 'complement'},
+                                                        {titulo: 'CEP', conteudo: 'cep'}
+                                                    ]"
+                                                >
+                            </table_acordion>
+                        </div>
+
+                        <!-- Tabela Telefone -->
+                        <div v-else-if="nomeObjeto == 'telefone' && objetos !== null" class="row">
+                            <table_acordion2     :classe_atributos="[
+                                                        {titulo: 'Nº Telefone', conteudo: 'number_phone'}
+
+                                                    ]"
+                                                    :objeto_imp="objetos['data']['telefones']"
+                                                    :obj_acordion="[
+                                                        {titulo: 'Criado em', conteudo: 'created_at'}
+                                                    ]"
+                                                >
+                            </table_acordion2>
+                        </div>
+                    @endcan
+
 
                     <!-- Enquanto Carregando -->
                     <div v-else class="text-center">
