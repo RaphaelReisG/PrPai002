@@ -159,6 +159,8 @@
                         Olá Administrador, seja bem vindo ao sistema.
                     @elsecan('vendedor')
                         Olá Vendedor, seja bem vindo ao sistema.
+                    @else
+                        Quem é você?
                     @endcan
                 </div>
 
