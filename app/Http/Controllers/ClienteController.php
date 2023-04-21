@@ -49,7 +49,7 @@ class ClienteController extends Controller
         }
         else{
             if(isset($request->ordenacaoBusca)){
-                error_log("sem busca com ordenacao");
+                error_log("sem busca com ordenacao ".$request->ordenacaoBusca);
                 return Cliente::with(['user', 'vendedor', 'enderecos', 'telefones'])
                     ->join('vendedors', 'vendedor_id', '=', 'vendedors.id' ) //a melhorar
                     ->join('users', 'clientes.id', '=', 'users.userable_id' ) //a melhorar
