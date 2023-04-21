@@ -63,11 +63,13 @@ class DatabaseSeeder extends Seeder
         //Pais::find(1)->estados()->find(1)->cidades()->find(1)->bairros()->create(['name_neighborhood' => 'Centro']);
         //Pais::find(1)->estados()->find(1)->cidades()->find(1)->bairros()->create(['name_neighborhood' => 'Suarão']);
 
-        Fornecedor::create([ 'company_name' => 'Mineirão','cnpj' => 1234567890,'email' => 'mineirão@mineirão.com'])
-            ->enderecos()->create([ 'street_name' => 'Rua Dagruta', 'cep' => 11740000, 'house_number' => 10, 'complement' => 'Casa', 'bairro_id' => 2],
-            [ 'street_name' => 'Av. graça', 'cep' => 11740000, 'house_number' => 10, 'complement' => 'Casa', 'bairro_id' => 1]);
-        Fornecedor::create([ 'company_name' => 'Denise Salgados','cnpj' => 1234567891,'email' => 'denise@mdenise.com'])
-            ->enderecos()->create([ 'street_name' => 'Rua Pernambuco', 'cep' => 11740000, 'house_number' => 10, 'complement' => 'Casa', 'bairro_id' => 3]);
+        Fornecedor::create(['company_name' => 'Mineirão', 'cnpj' => 1234567890, 'email' => 'mineirão@mineirão.com'])
+            ->enderecos()->create(
+                ['street_name' => 'Rua Dagruta', 'cep' => 11740000, 'house_number' => 10, 'complement' => 'Casa', 'bairro_id' => 2],
+                ['street_name' => 'Av. graça', 'cep' => 11740000, 'house_number' => 10, 'complement' => 'Casa', 'bairro_id' => 1]
+            );
+        Fornecedor::create(['company_name' => 'Denise Salgados', 'cnpj' => 1234567891, 'email' => 'denise@mdenise.com'])
+            ->enderecos()->create(['street_name' => 'Rua Pernambuco', 'cep' => 11740000, 'house_number' => 10, 'complement' => 'Casa', 'bairro_id' => 3]);
 
         Fornecedor::find(1)->marcas()->create(['name' => 'Mineirão']);
         Fornecedor::find(1)->marcas()->create(['name' => 'Vovó Natalia']);
@@ -75,7 +77,7 @@ class DatabaseSeeder extends Seeder
 
         Fornecedor::find(1)->marcas()->find(1)->produtos()->create([
             'name' => 'Pão de Queijo 90g',
-            'type'=> 'Para Assar',
+            'type' => 'Para Assar',
             'quantity' => 22,
             'weight' => 2,
             'cost_price' => 18,
@@ -85,7 +87,7 @@ class DatabaseSeeder extends Seeder
 
         Fornecedor::find(2)->marcas()->find(3)->produtos()->create([
             'name' => 'Coxinha de Frango',
-            'type'=> 'Para Fritar',
+            'type' => 'Para Fritar',
             'quantity' => 10,
             'weight' => 2,
             'cost_price' => 24,
@@ -93,24 +95,36 @@ class DatabaseSeeder extends Seeder
 
         ]);
 
-        Administrador::create([ 'name' => 'Raphael Admin'])->user()->create(['email'=>'raphael@adminraphael.com','email_verified_at'=> '2023-02-07 13:33:19
-                ' , 'password'=>Hash::make('qwerasdf'), 'remember_token' => null,
-                'created_at'=>'2023-02-07 13:32:43', 'updated_at'=>'2023-02-07 13:33:19']);
+        Administrador::create(['name' => 'Raphael Admin'])->user()->create([
+            'email' => 'raphael@adminraphael.com', 'email_verified_at' => '2023-02-07 13:33:19
+                ', 'password' => Hash::make('qwerasdf'), 'remember_token' => null,
+            'created_at' => '2023-02-07 13:32:43', 'updated_at' => '2023-02-07 13:33:19'
+        ]);
 
-        Vendedor::create([ 'name' => 'Raphael Venda'])->user()->create(['email'=>'raphael@vendedorraphael.com','email_verified_at'=> '2023-02-07 13:33:19
-            ' , 'password'=>Hash::make('qwerasdf'), 'remember_token' => null,
-            'created_at'=>'2023-02-07 13:32:43', 'updated_at'=>'2023-02-07 13:33:19']);
+        Administrador::create(['name' => 'Murillo Admin'])->user()->create([
+            'email' => 'murillo@adminmurillo.com', 'email_verified_at' => '2023-02-07 13:33:19
+                ', 'password' => Hash::make('qwerasdf'), 'remember_token' => null,
+            'created_at' => '2023-02-07 13:32:43', 'updated_at' => '2023-02-07 13:33:19'
+        ]);
 
-            /*Cliente::create([ 'name' => 'Rodolfo CLiente' , 'company_name' => 'Bar joia','cnpj' => 1234567893, 'vendedor_id' => 1])->user()->create(['email'=>'raphael@clienteraphael.com','email_verified_at'=> '2023-02-07 13:33:19
+        Vendedor::create(['name' => 'Raphael Venda'])->user()->create([
+            'email' => 'raphael@vendedorraphael.com', 'email_verified_at' => '2023-02-07 13:33:19
+            ', 'password' => Hash::make('qwerasdf'), 'remember_token' => null,
+            'created_at' => '2023-02-07 13:32:43', 'updated_at' => '2023-02-07 13:33:19'
+        ]);
+
+        /*Cliente::create([ 'name' => 'Rodolfo CLiente' , 'company_name' => 'Bar joia','cnpj' => 1234567893, 'vendedor_id' => 1])->user()->create(['email'=>'raphael@clienteraphael.com','email_verified_at'=> '2023-02-07 13:33:19
             ' , 'password'=>Hash::make('qwerasdf'), 'remember_token' => null,
             'created_at'=>'2023-02-07 13:32:43', 'updated_at'=>'2023-02-07 13:33:19']);*/
 
-        $cliente1 = Cliente::create(['name' => 'Rodolfo CLiente' , 'company_name' => 'Bar joia','cnpj' => 1234567893, 'vendedor_id' => 1]);
-        $cliente1->user()->create(['email'=>'raphael@clienteraphael.com','email_verified_at'=> '2023-02-07 13:33:19
-        ' , 'password'=>Hash::make('qwerasdf'), 'remember_token' => null,
-        'created_at'=>'2023-02-07 13:32:43', 'updated_at'=>'2023-02-07 13:33:19']);
-        $cliente1->enderecos()->create([ 'street_name' => 'Rua Bahia', 'cep' => 11740000, 'house_number' => 10, 'complement' => 'Casa', 'bairro_id' => 1]);
-        $cliente1->enderecos()->create([ 'street_name' => 'Rua Alexandre', 'cep' => 11740000, 'house_number' => 10, 'complement' => 'Casa', 'bairro_id' => 3]);
+        $cliente1 = Cliente::create(['name' => 'Rodolfo CLiente', 'company_name' => 'Bar joia', 'cnpj' => 1234567893, 'vendedor_id' => 1]);
+        $cliente1->user()->create([
+            'email' => 'raphael@clienteraphael.com', 'email_verified_at' => '2023-02-07 13:33:19
+        ', 'password' => Hash::make('qwerasdf'), 'remember_token' => null,
+            'created_at' => '2023-02-07 13:32:43', 'updated_at' => '2023-02-07 13:33:19'
+        ]);
+        $cliente1->enderecos()->create(['street_name' => 'Rua Bahia', 'cep' => 11740000, 'house_number' => 10, 'complement' => 'Casa', 'bairro_id' => 1]);
+        $cliente1->enderecos()->create(['street_name' => 'Rua Alexandre', 'cep' => 11740000, 'house_number' => 10, 'complement' => 'Casa', 'bairro_id' => 3]);
         $cliente1->telefones()->create(['number_phone' => '(13)3426-5255']);
         $cliente1->telefones()->create(['number_phone' => '(13)91234-5678']);
         $cliente1->pedidos()->create([
@@ -123,7 +137,7 @@ class DatabaseSeeder extends Seeder
             'payment_method' => 'Dinheiro',
             'observation' => 'Tudo entregue junto'
         ])->produtos()->attach([
-            1 => ['qty_item' => 1, 'price_iten' => 22] ,
+            1 => ['qty_item' => 1, 'price_iten' => 22],
             2 => ['qty_item' => 1, 'price_iten' => 30]
 
         ]);
@@ -144,11 +158,11 @@ class DatabaseSeeder extends Seeder
         ]);
 
         Cliente::find(1)->estoqueable()->create([
-        'qty_item' => -1,
-        'produto_id' => 1,
-        'observation' => 'Venda',
-        'batch' => 'A458',
-        'expiration_date' => '2023-02-08 13:33:19'
+            'qty_item' => -1,
+            'produto_id' => 1,
+            'observation' => 'Venda',
+            'batch' => 'A458',
+            'expiration_date' => '2023-02-08 13:33:19'
         ]);
         Cliente::find(1)->estoqueable()->create([
             'qty_item' => -1,
@@ -156,7 +170,7 @@ class DatabaseSeeder extends Seeder
             'observation' => 'Venda',
             'batch' => 'B458',
             'expiration_date' => '2023-02-08 13:33:19'
-            ]);
+        ]);
 
 
 
@@ -169,9 +183,8 @@ class DatabaseSeeder extends Seeder
         Permission::create(['name' => 'vendedor', 'guard_name' => 'web']);
         Permission::create(['name' => 'cliente', 'guard_name' => 'web']);
 
-        DB::table('model_has_permissions')->insert(['permission_id'=>1, 'model_type'=>'App\Models\User', 'model_id'=>1]);
-        DB::table('model_has_permissions')->insert(['permission_id'=>2, 'model_type'=>'App\Models\User', 'model_id'=>2]);
-        DB::table('model_has_permissions')->insert(['permission_id'=>3, 'model_type'=>'App\Models\User', 'model_id'=>3]);
-
+        DB::table('model_has_permissions')->insert(['permission_id' => 1, 'model_type' => 'App\Models\User', 'model_id' => 1]);
+        DB::table('model_has_permissions')->insert(['permission_id' => 2, 'model_type' => 'App\Models\User', 'model_id' => 2]);
+        DB::table('model_has_permissions')->insert(['permission_id' => 3, 'model_type' => 'App\Models\User', 'model_id' => 3]);
     }
 }
