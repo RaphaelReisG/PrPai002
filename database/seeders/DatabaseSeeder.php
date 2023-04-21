@@ -169,6 +169,7 @@ class DatabaseSeeder extends Seeder
 
 
         //Estado::create(['name_state' => 'São Paulo']);
+
         //Estado::create(['name_state' => 'Paraná']);
         //Estado::create(['name_state' => 'Rio de Janeiro']);
 
