@@ -50,10 +50,20 @@ class ClienteController extends Controller
         else{
             if(isset($request->ordenacaoBusca)){
                 error_log("sem busca com ordenacao ".$request->ordenacaoBusca);
+
+                /*return Cliente::with(['user', 'vendedor', 'enderecos', 'telefones'])
+                    ->orderBy($request->ordenacaoBusca)->paginate(4);*/
+
+
                 return Cliente::with(['user', 'vendedor', 'enderecos', 'telefones'])
-                    ->join('vendedors', 'vendedor_id', '=', 'vendedors.id' ) //a melhorar
+                    //->leftJoin('vendedors', 'clientes.vendedor_id', '=', 'vendedors.id' ) //a melhorar
                     ->join('users', 'clientes.id', '=', 'users.userable_id' ) //a melhorar
-                    ->orderBy($request->ordenacaoBusca)->paginate(4);
+                    ->select('clientes.*')
+                    ->groupBy('clientes.id', 'clientes.name', 'company_name', 'cnpj', 'clientes.vendedor_id', 'clientes.created_at', 'clientes.updated_at')
+                    //->distinct()
+                    ->orderBy($request->ordenacaoBusca)
+                    ->paginate(4);
+
             }
             else{
                 error_log("sem busca sem ordenacao");
