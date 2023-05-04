@@ -26,11 +26,13 @@ var app = new Vue({
         modelObjetos:[{
             id: "",
 
-            name: "", email: "", senha: "", confirmaSenha: "",
+            name: "", email: "", senha: "", confirmaSenha: "", //admin
 
-            company_name: "", cnpj: "",
+            company_name: "", cnpj: "", //clientes
 
             number_phone: "",
+
+            name_country: "",  // pais
 
             buscarObjeto: "", ordenacaoBusca: ""
 
@@ -142,6 +144,12 @@ var app = new Vue({
                     idUsuario: this.idUsuario
                 }
             }
+            else if(classe == "pais"){
+                url = '/api/'+classe;
+                dados = {
+                    name_country: this.modelObjetos[0]['name_country']
+                }
+            }
             else{
                 alert("Erro, Classe inexistente!");
             }
@@ -187,18 +195,12 @@ var app = new Vue({
                 this.modelObjetos[0]['email'] = this.objetos['data'][index]['user']['email'];
                 this.modelObjetos[0]['company_name'] = this.objetos['data'][index]['company_name'];
             }
+
+            else if(this.nomeObjeto == "pais"){
+                this.modelObjetos[0]['name_country'] = this.objetos['data'][index]['name_country'];
+            }
             else{
-
-                this.modelObjetos[0]['id'] = this.objetos[index]['id'];
-
-                this.modelObjetos[0]['nome'] = this.objetos[index]['nome'];
-                this.modelObjetos[0]['email'] = this.objetos[index]['email'];
-                this.modelObjetos[0]['senha'] = this.objetos[index]['senha'];
-                this.modelObjetos[0]['confirmaSenha'] = this.objetos[index]['senha'];
-
-                this.modelObjetos[0]['chaveApi'] = this.objetos[index]['chaveApi'];
-                this.modelObjetos[0]['segredoApi'] = this.objetos[index]['segredoApi'];
-
+                alert("Erro! CarregarCamposEditarObjeto | Classe não encontrada");
             }
 
         },
@@ -223,8 +225,15 @@ var app = new Vue({
                     cnpj: this.modelObjetos[0]['cnpj']
                 }
             }
+            else if(classe == "pais"){
+                url = '/api/'+classe+'/'+this.modelObjetos[0]['id'];
+                //alert(url);
+                dados = {
+                    name_country: this.modelObjetos[0]['name_country']
+                }
+            }
             else{
-                alert("Erro, Classe inexistente!");
+                alert("Erro, Update |  Classe inexistente!");
             }
 
             alert(url);
@@ -282,6 +291,11 @@ var app = new Vue({
 
             this.modelObjetos[0]['senha'] = "";
             this.modelObjetos[0]['confirmaSenha'] = "";
+
+            //pais
+            this.modelObjetos[0]['name_country'] = "";
+
+
 
 
         },
@@ -354,9 +368,20 @@ var app = new Vue({
                         return false;
                     }
             }
+            else if(classe == 'pais'){
+                if(
+                    this.modelObjetos[0]['name_country'] == ""
+                ){
+                    alert("Erro");
+                    return true;
+                }
+                else{
+                    return false;
+                }
+        }
 
             else{
-                alert("Erro inexplicavel");
+                alert("Erro: VerificaDados | Classe não encontrada.");
                 return true;
             }
         },

@@ -31,20 +31,24 @@ class ClienteController extends Controller
 
         $clientes = Cliente::with(['user', 'vendedor', 'enderecos', 'telefones']);
 
-    if ($request->has('buscarObjeto')) {
-        $clientes->where(function ($query) use ($request) {
-            $query->where('name', 'like', '%' . $request->buscarObjeto . '%')
-                ->orWhere('company_name', 'like', '%' . $request->buscarObjeto . '%')
-                ->orWhere('cnpj', 'like', '%' . $request->buscarObjeto . '%');
-        });
-    }
+        if ($request->has('buscarObjeto')) {
+            $clientes->where(function ($query) use ($request) {
+                $query->where('name', 'like', '%' . $request->buscarObjeto . '%')
+                    ->orWhere('company_name', 'like', '%' . $request->buscarObjeto . '%')
+                    ->orWhere('cnpj', 'like', '%' . $request->buscarObjeto . '%');
+            });
+        }
 
-    if ($request->has('ordenacaoBusca')) {
-        $clientes->orderBy($request->ordenacaoBusca);
-    }
+        if ($request->has('ordenacaoBusca')) {
+            $clientes->orderBy($request->ordenacaoBusca);
+        }
 
-    return $clientes->groupBy('clientes.id', 'clientes.name', 'company_name', 'cnpj', 'clientes.vendedor_id', 'clientes.created_at', 'clientes.updated_at')
-        ->paginate(4);
+        return $clientes
+            ->groupBy('clientes.id', 'clientes.name', 'company_name', 'cnpj', 'clientes.vendedor_id', 'clientes.created_at', 'clientes.updated_at')
+            ->paginate(4);
+
+
+
         /*
         if(isset($request->buscarObjeto)){
             if(isset($request->ordenacaoBusca)){

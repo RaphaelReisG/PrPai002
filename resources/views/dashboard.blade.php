@@ -207,6 +207,11 @@
                                     </div>
                                 </div>
 
+                                <!-- formulario PAIS-->
+                                <div v-if="nomeObjeto == 'pais'" class="modal-body">
+                                    <input_geral nome="Nome do País" tipo="text" nome_model="name_country"></input_geral>
+                                </div>
+
                                 <!-- formulario TELEFONE-->
                                 <div v-if="nomeObjeto == 'telefone'" class="modal-body">
                                     <input_geral nome="Numero Telefone" tipo="text" nome_model="number_phone"></input_geral>

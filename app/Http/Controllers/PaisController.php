@@ -9,83 +9,53 @@ use App\Http\Resources\TesteResource;
 
 class PaisController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index()
     {
         //return Pais::all();
         return Pais::paginate(10);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function create()
     {
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+
     public function store(Request $request)
     {
         Pais::create($request->all());
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Pais  $administrador
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Pais $pais)
+
+    public function show($id)
     {
-        //return Pais::findOrfail($id);
-        return $pais;
+        return Pais::findOrfail($id);
+        //return new TesteResource($pais);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Pais  $administrador
-     * @return \Illuminate\Http\Response
-     */
+
     public function edit(Pais $pais)
     {
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Pais  $administrador
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Pais $pais)
+
+    public function update(Request $request, $id)
     {
-        //$obj = Pais::findOrfail($id);
-        $pais->update($request->all());
+        $pais = Pais::findOrfail($id);
+        error_log($request->name_country);
+        error_log($pais->id);
+        $pais->update($request->only('name_country'));
+        return new TesteResource($pais);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Pais  $administrador
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy( Pais $pais)
+
+    public function destroy( $id)
     {
-        //$obj = Pais::findOrfail($id);
+        $pais = Pais::findOrfail($id);
         $pais->delete();
+        return new TesteResource($pais);
     }
 }
