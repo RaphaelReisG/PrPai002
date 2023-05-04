@@ -28,18 +28,34 @@ class ClienteController extends Controller
      */
     public function index(Request $request)
     {
+
+        $clientes = Cliente::with(['user', 'vendedor', 'enderecos', 'telefones']);
+
+    if ($request->has('buscarObjeto')) {
+        $clientes->where(function ($query) use ($request) {
+            $query->where('name', 'like', '%' . $request->buscarObjeto . '%')
+                ->orWhere('company_name', 'like', '%' . $request->buscarObjeto . '%')
+                ->orWhere('cnpj', 'like', '%' . $request->buscarObjeto . '%');
+        });
+    }
+
+    if ($request->has('ordenacaoBusca')) {
+        $clientes->orderBy($request->ordenacaoBusca);
+    }
+
+    return $clientes->groupBy('clientes.id', 'clientes.name', 'company_name', 'cnpj', 'clientes.vendedor_id', 'clientes.created_at', 'clientes.updated_at')
+        ->paginate(4);
+        /*
         if(isset($request->buscarObjeto)){
             if(isset($request->ordenacaoBusca)){
                 error_log("com busca com ordenacao  ".$request->buscarObjeto);
                 return Cliente::with(['user', 'vendedor', 'enderecos', 'telefones'])
-                    //->orderBy($request->ordenacaoBusca)
                     ->where( 'name', 'like', '%'.$request->buscarObjeto.'%')
                     ->orWhere( 'company_name', 'like', '%'.$request->buscarObjeto.'%')
                     ->orWhere( 'cnpj', 'like', '%'.$request->buscarObjeto.'%')
-                    ->join('users', 'clientes.id', '=', 'users.userable_id' ) //a melhorar
+                    ->join('users', 'clientes.id', '=', 'users.userable_id' )
                     ->select('clientes.*')
                     ->groupBy('clientes.id', 'clientes.name', 'company_name', 'cnpj', 'clientes.vendedor_id', 'clientes.created_at', 'clientes.updated_at')
-                    //->distinct()
                     ->orderBy($request->ordenacaoBusca)
                     ->paginate(4);
             }
@@ -56,16 +72,13 @@ class ClienteController extends Controller
             if(isset($request->ordenacaoBusca)){
                 error_log("sem busca com ordenacao ".$request->ordenacaoBusca);
 
-                /*return Cliente::with(['user', 'vendedor', 'enderecos', 'telefones'])
-                    ->orderBy($request->ordenacaoBusca)->paginate(4);*/
+
 
 
                 return Cliente::with(['user', 'vendedor', 'enderecos', 'telefones'])
-                    //->leftJoin('vendedors', 'clientes.vendedor_id', '=', 'vendedors.id' ) //a melhorar
-                    ->join('users', 'clientes.id', '=', 'users.userable_id' ) //a melhorar
+                    ->join('users', 'clientes.id', '=', 'users.userable_id' )
                     ->select('clientes.*')
                     ->groupBy('clientes.id', 'clientes.name', 'company_name', 'cnpj', 'clientes.vendedor_id', 'clientes.created_at', 'clientes.updated_at')
-                    //->distinct()
                     ->orderBy($request->ordenacaoBusca)
                     ->paginate(4);
 
@@ -73,9 +86,8 @@ class ClienteController extends Controller
             else{
                 error_log("sem busca sem ordenacao");
                 return Cliente::with(['user', 'vendedor', 'enderecos', 'telefones'])->paginate(4);
-                //return Cliente::with('user')->paginate(10);
             }
-        }
+        }*/
     }
 
     /**
