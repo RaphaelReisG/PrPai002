@@ -267,12 +267,12 @@
                                                         {titulo: 'Nome', conteudo: 'name', ordenacao: 'clientes.name'},
                                                         {titulo: 'Razão Social', conteudo: 'company_name', ordenacao: 'clientes.company_name'},
                                                         {titulo: 'CPF / CNPJ', conteudo: 'cnpj', ordenacao: 'clientes.cnpj'},
-                                                        {titulo: 'Vendedor', conteudo: 'vendedor', conteudo2: 'name', ordenacao: 'vendedors.name' },
                                                         {titulo: 'E-mail',  conteudo: 'user', conteudo2: 'email', ordenacao: 'users.email'}
                                                     ]"
                                                     :objeto_imp="objetos"
                                                     :obj_acordion="[
-                                                        {titulo: 'Criado em', conteudo: 'created_at'}
+                                                        {titulo: 'Criado em', conteudo: 'created_at'},
+                                                        {titulo: 'Vendedor responsável', conteudo: 'vendedor', conteudo2: 'name'}
                                                     ]"
                                                 >
                             </table_acordion>
@@ -295,8 +295,8 @@
                         <!-- Tabela Administradores -->
                         <div v-else-if="nomeObjeto == 'administrador' && objetos !== null" class="row">
                             <table_acordion     :classe_atributos="[
-                                                        {titulo: 'Nome', conteudo: 'name'},
-                                                        {titulo: 'E-mail',  conteudo: 'user', conteudo2: 'email'}
+                                                        {titulo: 'Nome', conteudo: 'name', ordenacao: 'administradors.name'},
+                                                        {titulo: 'E-mail',  conteudo: 'user', conteudo2: 'email', ordenacao: 'users.email'}
                                                     ]"
                                                     :objeto_imp="objetos"
                                                     :obj_acordion="[

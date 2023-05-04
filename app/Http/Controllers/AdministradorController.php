@@ -36,8 +36,12 @@ class AdministradorController extends Controller
             if(isset($request->ordenacaoBusca)){
                 error_log("com busca com ordenacao  ".$request->buscarObjeto);
                 return Administrador::with(['user'])
-                    ->orderBy($request->ordenacaoBusca)
+                    //->orderBy($request->ordenacaoBusca)
                     ->where( 'name', 'like', '%'.$request->buscarObjeto.'%')
+                    ->join('users', 'administradors.id', '=', 'users.userable_id' )
+                    ->select('administradors.*')
+                    ->groupBy('administradors.id', 'administradors.name', 'administradors.created_at', 'administradors.updated_at')
+                    ->orderBy($request->ordenacaoBusca)
                     ->paginate(4);
             }
             else{
@@ -50,7 +54,12 @@ class AdministradorController extends Controller
         else{
             if(isset($request->ordenacaoBusca)){
                 error_log("sem busca com ordenacao");
-                return Administrador::with(['user'])->orderBy($request->ordenacaoBusca)->paginate(4);
+                return Administrador::with(['user'])
+                    ->join('users', 'administradors.id', '=', 'users.userable_id' )
+                    ->select('administradors.*')
+                    ->groupBy('administradors.id', 'administradors.name', 'administradors.created_at', 'administradors.updated_at')
+                    ->orderBy($request->ordenacaoBusca)
+                    ->paginate(4);
             }
             else{
                 error_log("sem busca sem ordenacao");

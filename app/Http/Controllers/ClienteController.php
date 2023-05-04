@@ -32,10 +32,15 @@ class ClienteController extends Controller
             if(isset($request->ordenacaoBusca)){
                 error_log("com busca com ordenacao  ".$request->buscarObjeto);
                 return Cliente::with(['user', 'vendedor', 'enderecos', 'telefones'])
-                    ->orderBy($request->ordenacaoBusca)
+                    //->orderBy($request->ordenacaoBusca)
                     ->where( 'name', 'like', '%'.$request->buscarObjeto.'%')
                     ->orWhere( 'company_name', 'like', '%'.$request->buscarObjeto.'%')
                     ->orWhere( 'cnpj', 'like', '%'.$request->buscarObjeto.'%')
+                    ->join('users', 'clientes.id', '=', 'users.userable_id' ) //a melhorar
+                    ->select('clientes.*')
+                    ->groupBy('clientes.id', 'clientes.name', 'company_name', 'cnpj', 'clientes.vendedor_id', 'clientes.created_at', 'clientes.updated_at')
+                    //->distinct()
+                    ->orderBy($request->ordenacaoBusca)
                     ->paginate(4);
             }
             else{
