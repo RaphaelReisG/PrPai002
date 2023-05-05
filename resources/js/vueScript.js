@@ -210,9 +210,15 @@ var app = new Vue({
             else if(this.nomeObjeto == "pais"){
                 this.modelObjetos[0]['name_country'] = this.objetos['data'][index]['name_country'];
             }
+            else if(this.nomeObjeto == "estado"){
+                this.modelObjetos[0]['name_state'] = this.objetos['data'][index]['name_state'];
+                this.modelObjetos[0]['pais_id'] = this.objetos['data'][index]['pais_id'];
+            }
             else{
                 alert("Erro! CarregarCamposEditarObjeto | Classe não encontrada");
             }
+
+            this.buscaPaises();
 
         },
         updateObjeto: async function(classe){
@@ -241,6 +247,14 @@ var app = new Vue({
                 //alert(url);
                 dados = {
                     name_country: this.modelObjetos[0]['name_country']
+                }
+            }
+            else if(classe == "estado"){
+                url = '/api/'+classe+'/'+this.modelObjetos[0]['id'];
+                //alert(url);
+                dados = {
+                    name_state: this.modelObjetos[0]['name_state'],
+                    pais_id: this.modelObjetos[0]['pais_id']
                 }
             }
             else{
@@ -272,6 +286,7 @@ var app = new Vue({
             this.carregando = false;
         },
         desativarObjeto: async function(classe, id){
+            this.error = null;
             if( confirm("Tem certeza que deseja deletar? "+id) == true){
                     var url = '/api/'+classe+'/'+id;
                     //fetch(url, { method: 'DELETE'} ).catch((e) => this.error = e);
@@ -305,6 +320,10 @@ var app = new Vue({
 
             //pais
             this.modelObjetos[0]['name_country'] = "";
+
+            //estado
+            this.modelObjetos[0]['name_state'] = "";
+            this.modelObjetos[0]['pais_id'] = "";
 
 
 

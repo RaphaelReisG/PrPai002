@@ -10,7 +10,8 @@ class Estado extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name_state'
+        'name_state',
+        'pais_id'
     ];
 
     public function pais(){
