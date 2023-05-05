@@ -68,11 +68,11 @@
     });
 
     Vue.component('select_geral', {
-        props: ['nome_model','obj_dropdown', 'nome_atributo', 'nome'],
+        props: ['nome_model','obj_dropdown', 'nome_atributo', 'nome', 'id_atributo'],
         template: `
             <div class="form-floating mb-3">
                 <select id="floatingInput" class="form-select" aria-label="Selecione" v-model="$root.modelObjetos[0][nome_model]">
-                    <option v-for="(obj, index) in obj_dropdown" v-bind:value="obj_dropdown[index][nome_atributo]" > {{obj_dropdown[index][nome_atributo]}}</option>
+                    <option v-for="(obj, index) in obj_dropdown" v-bind:value="obj_dropdown[index][id_atributo]" > {{obj_dropdown[index][nome_atributo]}}</option>
                 </select>
                 <label for="floatingInput">{{nome}}</label>
             </div>

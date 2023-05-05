@@ -215,7 +215,7 @@
                                 <!-- formulario ESTADO-->
                                 <div v-if="nomeObjeto == 'estado'" class="modal-body">
                                     <input_geral nome="Nome do Estado" tipo="text" nome_model="name_state"></input_geral>
-                                    <select_geral nome_model="name_country" obj_dropdown="paises" nome_atributo="id" nome="Escolha o país"></select_geral>
+                                    <select_geral nome_model="pais_id" :obj_dropdown="paises" nome_atributo="name_country" id_atributo="id" nome="Escolha o país"></select_geral>
                                 </div>
 
                                 <!-- formulario TELEFONE-->

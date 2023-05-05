@@ -34,6 +34,8 @@ var app = new Vue({
 
             name_country: "",  // pais
 
+            name_state: "", pais_id: "", // estado
+
             buscarObjeto: "", ordenacaoBusca: ""
 
         }],
@@ -150,6 +152,13 @@ var app = new Vue({
                 url = '/api/'+classe;
                 dados = {
                     name_country: this.modelObjetos[0]['name_country']
+                }
+            }
+            else if(classe == "estado"){
+                url = '/api/'+classe;
+                dados = {
+                    name_state: this.modelObjetos[0]['name_state'],
+                    pais_id: this.modelObjetos[0]['pais_id'],
                 }
             }
             else{
@@ -380,7 +389,19 @@ var app = new Vue({
                 else{
                     return false;
                 }
-        }
+            }
+
+            else if(classe == 'estado'){
+                if(
+                    this.modelObjetos[0]['name_state'] == "" && this.modelObjetos[0]['pais_id'] == ""
+                ){
+                    alert("Erro");
+                    return true;
+                }
+                else{
+                    return false;
+                }
+            }
 
             else{
                 alert("Erro: VerificaDados | Classe não encontrada.");
