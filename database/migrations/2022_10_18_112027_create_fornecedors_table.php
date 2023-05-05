@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->integer('cnpj');
             $table->string('company_name', 45);
+            $table->string('name', 45);
 
             //$table->integer('number_phone');
             //$table->integer('number_cellphone');

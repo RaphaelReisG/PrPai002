@@ -14,10 +14,29 @@ class FornecedorController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         //return Fornecedor::all();
-        return Fornecedor::with(['enderecos', 'telefones', ])->paginate(10);
+
+        $fornecedor = Fornecedor::with(['enderecos', 'telefones']);
+
+        if ($request->has('buscarObjeto')) {
+            $fornecedor->where(function ($query) use ($request) {
+                $query->where('name', 'like', '%' . $request->buscarObjeto . '%')
+                      ->orWhere('email', 'like', '%' . $request->buscarObjeto . '%')
+                      ->orWhere('cnpj', 'like', '%' . $request->buscarObjeto . '%')
+                      ->orWhere('company_name', 'like', '%' . $request->buscarObjeto . '%')
+                      ;
+            });
+        }
+
+        if ($request->has('ordenacaoBusca')) {
+            $fornecedor->orderBy($request->ordenacaoBusca);
+        }
+
+        return $fornecedor->paginate(4);
+
+        //return Fornecedor::with(['enderecos', 'telefones', ])->paginate(10); 
     }
 
     /**
@@ -38,7 +57,7 @@ class FornecedorController extends Controller
      */
     public function store(Request $request)
     {
-        Fornecedor::create($request->all());
+        return Fornecedor::create($request->all());
     }
 
     /**
@@ -75,6 +94,7 @@ class FornecedorController extends Controller
     {
         //$obj = Fornecedor::findOrfail($id);
         $fornecedor->update($request->all());
+        return $fornecedor;
     }
 
     /**
@@ -85,7 +105,7 @@ class FornecedorController extends Controller
      */
     public function destroy( Fornecedor $fornecedor)
     {
-        //$obj = Fornecedor::findOrfail($id);
-        $fornecedor->delete();
+        $fornecedor->marcas()->delete();
+        return $fornecedor->delete();
     }
 }

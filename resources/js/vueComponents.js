@@ -55,6 +55,72 @@
     });
 
 // -------
+//menu superior
+Vue.component('menu_titulo', {
+    props: ['nome_titulo'],
+    template: `
+        <a class="navbar-brand" href="/">{{nome_titulo}}</a>
+        
+    `
+});
+
+Vue.component('menu_item', {
+    props: ['label', 'classe', 'titulo'],
+    template: `
+        <a class="nav-link" v-on:click="$root.defineClasse(classe, titulo)" aria-current="page" href="#">{{label}}</a>
+    `
+});
+
+Vue.component('menu_dropdown_item', {
+    props: ['label', 'classe', 'titulo'],
+    template: `
+        <li><a class="dropdown-item" href="#" v-on:click="$root.defineClasse(classe, titulo)">{{label}}</a></li>
+    `
+});
+
+//---------
+//modals 
+
+Vue.component('modal_header', {
+    template: `
+        <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">{{$root.acaoObjeto}} {{$root.titulo}}</h1>
+        </div>
+    `
+});
+
+Vue.component('modal_erro', {
+    template: `
+        <div>
+            <div class="modal-body">
+                <p>ALERTA ERRO! O seguinte erro foi encontrado ao realizar a operação:</p>
+                <p>Código: {{$root.error.code}}</p>
+                <p>Mensagem: {{$root.error.message}}</p>
+                <p>Mensagem Especifica: {{$root.error.response.data.message}}</p>
+                <p>Status code: {{$root.error.response.status}}</p>
+                <p>{{$root.error}}</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" v-on:click="$root.modalErro = false">OK</button>
+            </div>
+        </div>
+    `
+});
+
+Vue.component('modal_sucesso', {
+    template: `
+        <div>
+            <div class="modal-body">
+                Operação realizada com sucesso!
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" v-on:click="$root.modalSucesso = false">OK</button>
+            </div>
+        </div>
+    `
+});
+
+//--------
 //entrada de forms
 
     Vue.component('input_geral', {

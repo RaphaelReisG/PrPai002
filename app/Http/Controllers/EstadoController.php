@@ -39,7 +39,7 @@ class EstadoController extends Controller
      */
     public function store(Request $request)
     {
-        $estado = Pais::findOrfail($request->pais_id)->estado()->create($request->only('name_state'));
+        $estado = Pais::findOrfail($request->pais_id)->estados()->create($request->only('name_state'));
         // Estado::create($request->all());
         return $estado;
     }

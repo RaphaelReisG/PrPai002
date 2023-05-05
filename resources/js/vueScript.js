@@ -28,9 +28,11 @@ var app = new Vue({
 
             name: "", email: "", senha: "", confirmaSenha: "", //admin e vendedor
 
-            company_name: "", cnpj: "", //clientes
+            company_name: "", cnpj: "", vendedor_id: "", //cliente e fornecedor
 
             number_phone: "",
+
+            fornecedor_id: "", //marca
 
             name_country: "",  // pais
 
@@ -43,6 +45,7 @@ var app = new Vue({
 
         paises: [{}],
         vendedores: [{}],
+        fornecedores: [{}],
 
         mostrarSenha: "password",
         resposta: '',
@@ -146,7 +149,24 @@ var app = new Vue({
                     name: this.modelObjetos[0]['name'],
                     email: this.modelObjetos[0]['email'],
                     company_name: this.modelObjetos[0]['company_name'],
+                    cnpj: this.modelObjetos[0]['cnpj'],
+                    vendedor_id: this.modelObjetos[0]['vendedor_id']
+                }
+            }
+            else if(classe == "fornecedor"){
+                url = '/api/'+classe;
+                dados = {
+                    name: this.modelObjetos[0]['name'],
+                    email: this.modelObjetos[0]['email'],
+                    company_name: this.modelObjetos[0]['company_name'],
                     cnpj: this.modelObjetos[0]['cnpj']
+                }
+            }
+            else if(classe == "marca"){
+                url = '/api/'+classe;
+                dados = {
+                    name: this.modelObjetos[0]['name'],
+                    fornecedor_id: this.modelObjetos[0]['fornecedor_id'],
                 }
             }
             else if(classe == "telefone"){
@@ -209,6 +229,17 @@ var app = new Vue({
                 this.modelObjetos[0]['cnpj'] = this.objetos['data'][index]['cnpj'];
                 this.modelObjetos[0]['email'] = this.objetos['data'][index]['user']['email'];
                 this.modelObjetos[0]['company_name'] = this.objetos['data'][index]['company_name'];
+                this.modelObjetos[0]['vendedor_id'] = this.objetos['data'][index]['vendedor_id'];
+            }
+            if(this.nomeObjeto == "fornecedor"){
+                this.modelObjetos[0]['name'] = this.objetos['data'][index]['name'];
+                this.modelObjetos[0]['cnpj'] = this.objetos['data'][index]['cnpj'];
+                this.modelObjetos[0]['email'] = this.objetos['data'][index]['email'];
+                this.modelObjetos[0]['company_name'] = this.objetos['data'][index]['company_name'];
+            }
+            else if(this.nomeObjeto == "marca"){
+                this.modelObjetos[0]['name'] = this.objetos['data'][index]['name'];
+                this.modelObjetos[0]['fornecedor_id'] = this.objetos['data'][index]['fornecedor_id'];
             }
 
             else if(this.nomeObjeto == "administrador" || this.nomeObjeto == "vendedor"){
@@ -228,8 +259,10 @@ var app = new Vue({
                 alert("Erro! CarregarCamposEditarObjeto | Classe não encontrada");
             }
 
-            this.buscaPaises();
-            this.buscaVendedores();
+            this.error = null;
+            if(this.nomeObjeto == 'estado') {this.buscaPaises();}
+            if(this.nomeObjeto == 'cliente') { this.buscaVendedores();}
+            if(this.nomeObjeto == 'marca'){this.buscaFornecedores();}
 
         },
         updateObjeto: async function(classe){
@@ -256,7 +289,25 @@ var app = new Vue({
                     name: this.modelObjetos[0]['name'],
                     email: this.modelObjetos[0]['email'],
                     company_name: this.modelObjetos[0]['company_name'],
+                    cnpj: this.modelObjetos[0]['cnpj'],
+                    vendedor_id: this.modelObjetos[0]['vendedor_id']
+                }
+            }
+            else if(classe == "fornecedor"){
+                url = '/api/'+classe+'/'+this.modelObjetos[0]['id'];
+                dados = {
+                    name: this.modelObjetos[0]['name'],
+                    email: this.modelObjetos[0]['email'],
+                    company_name: this.modelObjetos[0]['company_name'],
                     cnpj: this.modelObjetos[0]['cnpj']
+                }
+            }
+            else if(classe == "marca"){
+                url = '/api/'+classe+'/'+this.modelObjetos[0]['id'];
+                //alert(url);
+                dados = {
+                    name: this.modelObjetos[0]['name'],
+                    fornecedor_id: this.modelObjetos[0]['fornecedor_id']
                 }
             }
             else if(classe == "pais"){
@@ -329,6 +380,7 @@ var app = new Vue({
             this.modelObjetos[0]['company_name'] = "";
             this.modelObjetos[0]['email'] = "";
             this.modelObjetos[0]['cnpj'] = "";
+            this.modelObjetos[0]['vendedor_id'] = "";
 
             this.modelObjetos[0]['number_phone'] = "";
 
@@ -342,10 +394,14 @@ var app = new Vue({
             this.modelObjetos[0]['name_state'] = "";
             this.modelObjetos[0]['pais_id'] = "";
 
+            //marca
+            this.modelObjetos[0]['fornecedor_id'] = "";
 
 
-            this.buscaPaises();
-            this.buscaVendedores();
+            this.error = null;
+            if(this.nomeObjeto == 'estado') {this.buscaPaises();}
+            if(this.nomeObjeto == 'cliente') { this.buscaVendedores();}
+            if(this.nomeObjeto == 'marca'){this.buscaFornecedores();}
         },
         limparGeral: function(){
             this.objetos = null;
@@ -359,7 +415,33 @@ var app = new Vue({
                     this.modelObjetos[0]['name'] == "" ||
                     this.modelObjetos[0]['email'] == "" ||
                     this.modelObjetos[0]['cnpj'] == "" ||
+                    this.modelObjetos[0]['company_name'] == "" ||
+                    this.modelObjetos[0]['vendedor_id'] == ""
+                ){
+                    alert("Erro");
+                    return true;
+                }
+                else{
+                    return false;
+                }
+            }
+            else if(classe == 'fornecedor'){
+                if(
+                    this.modelObjetos[0]['name'] == "" ||
+                    this.modelObjetos[0]['email'] == "" ||
+                    this.modelObjetos[0]['cnpj'] == "" ||
                     this.modelObjetos[0]['company_name'] == ""
+                ){
+                    alert("Erro");
+                    return true;
+                }
+                else{
+                    return false;
+                }
+            }
+            else if(classe == 'marca'){
+                if(
+                    this.modelObjetos[0]['name'] == "" && this.modelObjetos[0]['fornecedor_id'] == ""
                 ){
                     alert("Erro");
                     return true;
@@ -549,12 +631,25 @@ var app = new Vue({
             this.carregandoGeral = true;
             var url;
             url = '/api/vendedor';
+            //alert(url);
 
             axios
                 .get(url)
-                .then(response => (this.vendedor = response.data.data))
+                .then(response => (this.vendedores = response.data.data))
                 .catch(error => (this.error = error));
         },
+        buscaFornecedores: function() {
+            this.fornecedores = null;
+            this.carregandoGeral = true;
+            var url;
+            url = '/api/fornecedor';
+            //alert(url);
+
+            axios
+                .get(url)
+                .then(response => (this.fornecedores = response.data.data))
+                .catch(error => (this.error = error));
+        }
     }
 })
 

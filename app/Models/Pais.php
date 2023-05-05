@@ -13,7 +13,7 @@ class Pais extends Model
         'name_country'
     ];
 
-    public function estado(){
+    public function estados(){
         return $this->hasMany(Estado::class);
     }
 }

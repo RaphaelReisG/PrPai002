@@ -12,6 +12,7 @@ class Fornecedor extends Pessoa
     use HasFactory;
 
     protected $fillable = [
+        'name',
         'company_name',
         'cnpj',
         'email'

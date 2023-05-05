@@ -10,7 +10,8 @@ class Marca extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name'
+        'name',
+        'fornecedor_id'
     ];
 
     public function fornecedor(){

@@ -186,9 +186,7 @@
                 <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
                     <div class="modal-content">
                         <div v-if="modalErro == false"> <!-- conteudo-->
-                            <div class="modal-header">
-                                <h1 class="modal-title fs-5" id="exampleModalLabel">@{{acaoObjeto}} @{{titulo}}</h1>
-                            </div>
+                            <modal_header></modal_header> <!-- Cabecalho modal-->
                             <div v-if="modalSucesso == false"> <!-- conteudo modal -->
                                 <!-- formulario CLIENTE -->
                                 <div v-if="nomeObjeto == 'cliente'" class="modal-body">
@@ -197,6 +195,13 @@
                                     <input_geral nome="CPF ou CNPJ" tipo="number" nome_model="cnpj"></input_geral>
                                     <input_geral nome="E-mail" tipo="email" nome_model="email"></input_geral>
                                     <select_geral nome_model="vendedor_id" :obj_dropdown="vendedores" nome_atributo="name" id_atributo="id" nome="Defina um vendedor"></select_geral>
+                                </div>
+                                <!-- formulario FORNECEDOR -->
+                                <div v-if="nomeObjeto == 'fornecedor'" class="modal-body">
+                                    <input_geral nome="Nome contato" tipo="text" nome_model="name"></input_geral>
+                                    <input_geral nome="Razão Social" tipo="text" nome_model="company_name"></input_geral>
+                                    <input_geral nome="CNPJ" tipo="number" nome_model="cnpj"></input_geral>
+                                    <input_geral nome="E-mail" tipo="email" nome_model="email"></input_geral>
                                 </div>
                                 <!-- formulario ADMINISTRADOR-->
                                 <div v-if="nomeObjeto == 'administrador'" class="modal-body">
@@ -216,6 +221,12 @@
                                         <senha_geral nome="Senha" nome_model="senha"></senha_geral>
                                         <senha_geral nome="Confirme a senha" nome_model="confirmaSenha"></senha_geral>
                                     </div>
+                                </div>
+
+                                <!-- formulario MARCA-->
+                                <div v-if="nomeObjeto == 'marca'" class="modal-body">
+                                    <input_geral nome="Nome da marca" tipo="text" nome_model="name"></input_geral>
+                                    <select_geral nome_model="fornecedor_id" :obj_dropdown="fornecedores" nome_atributo="company_name" id_atributo="id" nome="Escolha o fornecedor"></select_geral>
                                 </div>
 
                                 <!-- formulario PAIS-->
@@ -239,25 +250,13 @@
                                     <button_cancelar_modal rotulo="Cancelar"></button_cancelar_modal>
                                     <button_acao></button_acao>
                                 </div>
-
                             </div>
                             <div v-else> <!-- Operação realizada com sucesso -->
-                                <div class="modal-body">
-                                    Operação realizada com sucesso!
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" v-on:click="modalSucesso = false">OK</button>
-                                </div>
+                                <modal_sucesso></modal_sucesso>
                             </div>
                         </div>
                         <div v-else> <!-- Erro retornado!-->
-                            <div class="modal-body">
-                                <p>ALERTA ERRO! O seguinte erro foi encontrado ao realizar a operação:</p>
-                                <p>@{{error}}</p>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" v-on:click="modalErro = false">OK</button>
-                            </div>
+                            <modal_erro></modal_erro>
                         </div>
                     </div>
                 </div>
@@ -268,18 +267,19 @@
                 <div v-if="titulo != ''">
                     <!-- Tabela Pedido -->
                     <div v-if="nomeObjeto == 'pedido' && objetos !== null" class="row">
-                        <table_acordion     :classe_atributos="[
-                                                    {titulo: 'Nome', conteudo: 'name'},
-                                                    {titulo: 'Razão Social', conteudo: 'company_name'},
-                                                    {titulo: 'CPF / CNPJ', conteudo: 'cnpj'},
-                                                    {titulo: 'Vendedor', conteudo: 'vendedor', conteudo2: 'name' },
-                                                    {titulo: 'E-mail',  conteudo: 'user', conteudo2: 'email'}
-                                                ]"
-                                                :objeto_imp="objetos"
-                                                :obj_acordion="[
-                                                    {titulo: 'Criado em', conteudo: 'created_at'}
-                                                ]"
-                                            >
+                        <table_acordion     
+                            :classe_atributos="[
+                                {titulo: 'Nome', conteudo: 'name'},
+                                {titulo: 'Razão Social', conteudo: 'company_name'},
+                                {titulo: 'CPF / CNPJ', conteudo: 'cnpj'},
+                                {titulo: 'Vendedor', conteudo: 'vendedor', conteudo2: 'name' },
+                                {titulo: 'E-mail',  conteudo: 'user', conteudo2: 'email'}
+                            ]"
+                            :objeto_imp="objetos"
+                            :obj_acordion="[
+                                {titulo: 'Criado em', conteudo: 'created_at'}
+                            ]"
+                        >
                         </table_acordion>
                     </div>
 
@@ -354,8 +354,10 @@
                         <!-- Tabela Fornecedor -->
                         <div v-else-if="nomeObjeto == 'fornecedor' && objetos !== null" class="row">
                             <table_acordion     :classe_atributos="[
-                                                        {titulo: 'Nome Empresa', conteudo: 'company_name'},
-                                                        {titulo: 'E-mail',  conteudo: 'email'},
+                                                        {titulo: 'Nome Responsavel', conteudo: 'name', ordenacao: 'fornecedors.name'},
+                                                        {titulo: 'Nome Empresa', conteudo: 'company_name', ordenacao: 'fornecedors.company_name'},
+                                                        {titulo: 'CNPJ', conteudo: 'cnpj', ordenacao: 'fornecedors.cnpj'},
+                                                        {titulo: 'E-mail',  conteudo: 'email', ordenacao: 'fornecedors.email'}
                                                     ]"
                                                     :objeto_imp="objetos"
                                                     :obj_acordion="[
@@ -368,8 +370,8 @@
                         <!-- Tabela Marca -->
                         <div v-else-if="nomeObjeto == 'marca' && objetos !== null" class="row">
                             <table_acordion     :classe_atributos="[
-                                                        {titulo: 'Nome', conteudo: 'name'},
-                                                        {titulo: 'Fornecedor',  conteudo: 'fornecedor', conteudo2: 'company_name'}
+                                                        {titulo: 'Nome', conteudo: 'name', ordenacao: 'marcas.name'},
+                                                        {titulo: 'Fornecedor',  conteudo: 'fornecedor', conteudo2: 'company_name', ordenacao: 'fornecedors.name'}
                                                     ]"
                                                     :objeto_imp="objetos"
                                                     :obj_acordion="[

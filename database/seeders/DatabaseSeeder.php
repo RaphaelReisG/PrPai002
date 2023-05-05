@@ -63,12 +63,12 @@ class DatabaseSeeder extends Seeder
         //Pais::find(1)->estados()->find(1)->cidades()->find(1)->bairros()->create(['name_neighborhood' => 'Centro']);
         //Pais::find(1)->estados()->find(1)->cidades()->find(1)->bairros()->create(['name_neighborhood' => 'Suarão']);
 
-        Fornecedor::create(['company_name' => 'Mineirão', 'cnpj' => 1234567890, 'email' => 'mineirão@mineirão.com'])
+        Fornecedor::create(['name' => 'Fulano Dono da Mineirão', 'company_name' => 'Mineirão', 'cnpj' => 1234567890, 'email' => 'mineirão@mineirão.com'])
             ->enderecos()->create(
                 ['street_name' => 'Rua Dagruta', 'cep' => 11740000, 'house_number' => 10, 'complement' => 'Casa', 'bairro_id' => 2],
                 ['street_name' => 'Av. graça', 'cep' => 11740000, 'house_number' => 10, 'complement' => 'Casa', 'bairro_id' => 1]
             );
-        Fornecedor::create(['company_name' => 'Denise Salgados', 'cnpj' => 1234567891, 'email' => 'denise@mdenise.com'])
+        Fornecedor::create(['name' => 'Ciclano vendedor da Denise Salgados', 'company_name' => 'Denise Salgados', 'cnpj' => 1234567891, 'email' => 'denise@mdenise.com'])
             ->enderecos()->create(['street_name' => 'Rua Pernambuco', 'cep' => 11740000, 'house_number' => 10, 'complement' => 'Casa', 'bairro_id' => 3]);
 
         Fornecedor::find(1)->marcas()->create(['name' => 'Mineirão']);

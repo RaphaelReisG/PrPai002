@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 
 use App\Http\Resources\TesteResource;
 
+use App\Models\Fornecedor;
+
 class MarcaController extends Controller
 {
     /**
@@ -14,10 +16,30 @@ class MarcaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         //return Marca::all();
-        return Marca::with(['fornecedor' ])->paginate(10);
+        $marca = Marca::with(['fornecedor'])
+            ->join('fornecedors', 'marcas.fornecedor_id', '=', 'fornecedors.id' )
+            ->select('marcas.*')
+            ->groupBy('marcas.id', 'marcas.name', 'marcas.fornecedor_id', 'marcas.created_at', 'marcas.updated_at');
+
+        if ($request->has('buscarObjeto')) {
+            $marca->where(function ($query) use ($request) {
+                $query->where('marcas.name', 'like', '%' . $request->buscarObjeto . '%')
+                      ->orWhere('fornecedors.name', 'like', '%' . $request->buscarObjeto . '%')
+                      ;
+            });
+        }
+
+        if ($request->has('ordenacaoBusca')) {
+            $marca->orderBy($request->ordenacaoBusca);
+        }
+
+        return $marca->paginate(4);
+
+
+        //return Marca::with(['fornecedor' ])->paginate(10);
     }
 
     /**
@@ -38,7 +60,7 @@ class MarcaController extends Controller
      */
     public function store(Request $request)
     {
-        Marca::create($request->all());
+        return $marca = Fornecedor::findOrfail($request->fornecedor_id)->marcas()->create($request->all());
     }
 
     /**
@@ -74,7 +96,7 @@ class MarcaController extends Controller
     public function update(Request $request,  Marca $marca)
     {
         //$obj = Marca::findOrfail($id);
-        $marca->update($request->all());
+        return $marca->update($request->all());
     }
 
     /**
@@ -86,6 +108,6 @@ class MarcaController extends Controller
     public function destroy( Marca $marca)
     {
         //$obj = Marca::findOrfail($id);
-        $marca->delete();
+        return $marca->delete();
     }
 }

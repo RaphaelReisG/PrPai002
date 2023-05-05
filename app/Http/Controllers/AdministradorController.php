@@ -17,7 +17,7 @@ class AdministradorController extends Controller
         $administrador = Administrador::with(['user'])
             ->join('users', 'administradors.id', '=', 'users.userable_id' )
             ->select('administradors.*')
-            ->groupBy('administradors.id', 'administradors.name', 'administradors.created_at', 'administradors.updated_at');;
+            ->groupBy('administradors.id', 'administradors.name', 'administradors.created_at', 'administradors.updated_at');
 
         if ($request->has('buscarObjeto')) {
             $administrador->where(function ($query) use ($request) {
