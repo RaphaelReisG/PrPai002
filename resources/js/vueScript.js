@@ -39,6 +39,8 @@ var app = new Vue({
         }],
         index: "",
 
+        paises: [{}],
+
         mostrarSenha: "password",
         resposta: '',
         respostaData: '',
@@ -297,7 +299,7 @@ var app = new Vue({
 
 
 
-
+            this.buscaPaises();
         },
         limparGeral: function(){
             this.objetos = null;
@@ -472,7 +474,18 @@ var app = new Vue({
                     .then(response => (this.objetos = response.data, this.resposta = response))
                     .catch(error => (this.error = error));
 
-        }
+        },
+        buscaPaises: function() {
+            this.paises = null;
+            this.carregandoGeral = true;
+            var url;
+            url = '/api/pais';
+
+            axios
+                .get(url)
+                .then(response => (this.paises = response.data.data))
+                .catch(error => (this.error = error));
+        },
     }
 })
 

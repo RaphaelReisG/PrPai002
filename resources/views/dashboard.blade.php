@@ -212,6 +212,12 @@
                                     <input_geral nome="Nome do País" tipo="text" nome_model="name_country"></input_geral>
                                 </div>
 
+                                <!-- formulario ESTADO-->
+                                <div v-if="nomeObjeto == 'estado'" class="modal-body">
+                                    <input_geral nome="Nome do Estado" tipo="text" nome_model="name_state"></input_geral>
+                                    <select_geral nome_model="name_country" obj_dropdown="paises" nome_atributo="id" nome="Escolha o país"></select_geral>
+                                </div>
+
                                 <!-- formulario TELEFONE-->
                                 <div v-if="nomeObjeto == 'telefone'" class="modal-body">
                                     <input_geral nome="Numero Telefone" tipo="text" nome_model="number_phone"></input_geral>

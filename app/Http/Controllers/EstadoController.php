@@ -6,6 +6,7 @@ use App\Models\Estado;
 use Illuminate\Http\Request;
 
 use App\Http\Resources\TesteResource;
+use App\Models\Pais;
 
 class EstadoController extends Controller
 {
@@ -38,8 +39,9 @@ class EstadoController extends Controller
      */
     public function store(Request $request)
     {
-        Estado::create($request->all());
-        
+        $estado = Pais::findOrfail($request->pais_id)->create($request->only('name_state'));
+        // Estado::create($request->all());
+        return $estado;
     }
 
     /**
