@@ -196,14 +196,25 @@
                                     <input_geral nome="Razão Social" tipo="text" nome_model="company_name"></input_geral>
                                     <input_geral nome="CPF ou CNPJ" tipo="number" nome_model="cnpj"></input_geral>
                                     <input_geral nome="E-mail" tipo="email" nome_model="email"></input_geral>
+                                    <select_geral nome_model="vendedor_id" :obj_dropdown="vendedores" nome_atributo="name" id_atributo="id" nome="Defina um vendedor"></select_geral>
                                 </div>
                                 <!-- formulario ADMINISTRADOR-->
                                 <div v-if="nomeObjeto == 'administrador'" class="modal-body">
                                     <input_geral nome="Nome Completo" tipo="text" nome_model="name"></input_geral>
                                     <input_geral nome="E-mail" tipo="email" nome_model="email"></input_geral>
                                     <div v-if="acaoObjeto == 'Criar'">
-                                    <senha_geral nome="Senha" nome_model="senha"></senha_geral>
-                                    <senha_geral nome="Confirme a senha" nome_model="confirmaSenha"></senha_geral>
+                                        <senha_geral nome="Senha" nome_model="senha"></senha_geral>
+                                        <senha_geral nome="Confirme a senha" nome_model="confirmaSenha"></senha_geral>
+                                    </div>
+                                </div>
+
+                                <!-- formulario VENDEDOR-->
+                                <div v-if="nomeObjeto == 'vendedor'" class="modal-body">
+                                    <input_geral nome="Nome Completo" tipo="text" nome_model="name"></input_geral>
+                                    <input_geral nome="E-mail" tipo="email" nome_model="email"></input_geral>
+                                    <div v-if="acaoObjeto == 'Criar'">
+                                        <senha_geral nome="Senha" nome_model="senha"></senha_geral>
+                                        <senha_geral nome="Confirme a senha" nome_model="confirmaSenha"></senha_geral>
                                     </div>
                                 </div>
 
@@ -253,6 +264,7 @@
             </div>
 
 
+            <!-- Tabelas -->
                 <div v-if="titulo != ''">
                     <!-- Tabela Pedido -->
                     <div v-if="nomeObjeto == 'pedido' && objetos !== null" class="row">
@@ -292,8 +304,8 @@
                         <!-- Tabela Vendedor -->
                         <div v-else-if="nomeObjeto == 'vendedor' && objetos !== null" class="row">
                             <table_acordion     :classe_atributos="[
-                                                        {titulo: 'Nome', conteudo: 'name'},
-                                                        {titulo: 'E-mail',  conteudo: 'user', conteudo2: 'email'}
+                                                        {titulo: 'Nome', conteudo: 'name', ordenacao: 'vendedors.name'},
+                                                        {titulo: 'E-mail',  conteudo: 'user', conteudo2: 'email', ordenacao: 'users.email'}
                                                     ]"
                                                     :objeto_imp="objetos"
                                                     :obj_acordion="[

@@ -29,13 +29,18 @@ class ClienteController extends Controller
     public function index(Request $request)
     {
 
-        $clientes = Cliente::with(['user', 'vendedor', 'enderecos', 'telefones']);
+        $clientes = Cliente::with(['user', 'vendedor', 'enderecos', 'telefones'])
+            ->join('users', 'clientes.id', '=', 'users.userable_id' )
+            //->join('vendedors', 'clientes.vendedor_id', '=', 'vendedors.id' )
+            ->select('clientes.*')
+            ->groupBy('clientes.id', 'clientes.name', 'company_name', 'cnpj', 'clientes.vendedor_id', 'clientes.created_at', 'clientes.updated_at');
 
         if ($request->has('buscarObjeto')) {
             $clientes->where(function ($query) use ($request) {
-                $query->where('name', 'like', '%' . $request->buscarObjeto . '%')
-                    ->orWhere('company_name', 'like', '%' . $request->buscarObjeto . '%')
-                    ->orWhere('cnpj', 'like', '%' . $request->buscarObjeto . '%');
+                $query->where('clientes.name', 'like', '%' . $request->buscarObjeto . '%')
+                    ->orWhere('clientes.company_name', 'like', '%' . $request->buscarObjeto . '%')
+                    ->orWhere('clientes.cnpj', 'like', '%' . $request->buscarObjeto . '%')
+                    ->orWhere('users.email', 'like', '%' . $request->buscarObjeto . '%');
             });
         }
 
@@ -43,9 +48,7 @@ class ClienteController extends Controller
             $clientes->orderBy($request->ordenacaoBusca);
         }
 
-        return $clientes
-            ->groupBy('clientes.id', 'clientes.name', 'company_name', 'cnpj', 'clientes.vendedor_id', 'clientes.created_at', 'clientes.updated_at')
-            ->paginate(4);
+        return $clientes->paginate(4);
 
 
 
@@ -114,7 +117,7 @@ class ClienteController extends Controller
     {
         //Cliente::create($request->all());
 
-        $cliente = Vendedor::findOrfail(1)->clientes()->create($request->only('name', 'cnpj', 'company_name'));
+        $cliente = Vendedor::findOrfail($request->vendedor_id)->clientes()->create($request->only('name', 'cnpj', 'company_name'));
         $cliente->user()->create(['email'=> $request->email, 'password'=>Hash::make("123Mud@R$%")])->givePermissionTo('cliente');
 
         return $cliente;

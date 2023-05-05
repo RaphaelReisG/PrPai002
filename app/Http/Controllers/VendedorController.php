@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 
 use App\Http\Resources\TesteResource;
 
+use Illuminate\Support\Facades\Hash;
+
 class VendedorController extends Controller
 {
     /**
@@ -14,9 +16,27 @@ class VendedorController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return Vendedor::with(['user','enderecos', 'telefones'])->paginate(10);
+        //return Vendedor::with(['user','enderecos', 'telefones'])->paginate(10);
+
+        $vendedor = Vendedor::with(['user','enderecos', 'telefones'])
+            ->join('users', 'vendedors.id', '=', 'users.userable_id' )
+            ->select('vendedors.*')
+            ->groupBy('vendedors.id', 'vendedors.name', 'vendedors.created_at', 'vendedors.updated_at');;
+
+        if ($request->has('buscarObjeto')) {
+            $vendedor->where(function ($query) use ($request) {
+                $query->where('vendedors.name', 'like', '%' . $request->buscarObjeto . '%')
+                      ->orWhere('users.email', 'like', '%' . $request->buscarObjeto . '%');
+            });
+        }
+
+        if ($request->has('ordenacaoBusca')) {
+            $vendedor->orderBy($request->ordenacaoBusca);
+        }
+
+        return $vendedor->paginate(4);
     }
 
     /**
@@ -37,7 +57,8 @@ class VendedorController extends Controller
      */
     public function store(Request $request)
     {
-        Vendedor::create($request->all());
+        $vendedor = Vendedor::create($request->only('name'));
+        $vendedor->user()->create(['email'=> $request->email, 'password'=>Hash::make($request->password)])->givePermissionTo('admin');
     }
 
     /**
@@ -94,6 +115,8 @@ class VendedorController extends Controller
         //$obj = Vendedor::findOrfail($id);
         //$obj->delete();
 
+        $vendedor->enderecos()->delete();
+        $vendedor->telefones()->delete();
         $vendedor->user()->delete();
         $vendedor->delete();
 

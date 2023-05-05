@@ -26,7 +26,7 @@ var app = new Vue({
         modelObjetos:[{
             id: "",
 
-            name: "", email: "", senha: "", confirmaSenha: "", //admin
+            name: "", email: "", senha: "", confirmaSenha: "", //admin e vendedor
 
             company_name: "", cnpj: "", //clientes
 
@@ -42,6 +42,7 @@ var app = new Vue({
         index: "",
 
         paises: [{}],
+        vendedores: [{}],
 
         mostrarSenha: "password",
         resposta: '',
@@ -131,6 +132,14 @@ var app = new Vue({
                     senha: this.modelObjetos[0]['senha']
                 }
             }
+            else if(classe == "vendedor"){
+                url = '/api/'+classe;
+                dados = {
+                    name: this.modelObjetos[0]['name'],
+                    email: this.modelObjetos[0]['email'],
+                    senha: this.modelObjetos[0]['senha']
+                }
+            }
             else if(classe == "cliente"){
                 url = '/api/'+classe;
                 dados = {
@@ -201,15 +210,16 @@ var app = new Vue({
                 this.modelObjetos[0]['email'] = this.objetos['data'][index]['user']['email'];
                 this.modelObjetos[0]['company_name'] = this.objetos['data'][index]['company_name'];
             }
-            else if(this.nomeObjeto == "administrador"){
+
+            else if(this.nomeObjeto == "administrador" || this.nomeObjeto == "vendedor"){
                 this.modelObjetos[0]['name'] = this.objetos['data'][index]['name'];
                 this.modelObjetos[0]['email'] = this.objetos['data'][index]['user']['email'];
-                this.modelObjetos[0]['company_name'] = this.objetos['data'][index]['company_name'];
             }
 
             else if(this.nomeObjeto == "pais"){
                 this.modelObjetos[0]['name_country'] = this.objetos['data'][index]['name_country'];
             }
+
             else if(this.nomeObjeto == "estado"){
                 this.modelObjetos[0]['name_state'] = this.objetos['data'][index]['name_state'];
                 this.modelObjetos[0]['pais_id'] = this.objetos['data'][index]['pais_id'];
@@ -219,6 +229,7 @@ var app = new Vue({
             }
 
             this.buscaPaises();
+            this.buscaVendedores();
 
         },
         updateObjeto: async function(classe){
@@ -231,7 +242,13 @@ var app = new Vue({
                     name: this.modelObjetos[0]['name'],
                     email: this.modelObjetos[0]['email']
                 }
-
+            }
+            else if(classe == "vendedor"){
+                url = '/api/'+classe+'/'+this.modelObjetos[0]['id'];
+                dados = {
+                    name: this.modelObjetos[0]['name'],
+                    email: this.modelObjetos[0]['email']
+                }
             }
             else if(classe == "cliente"){
                 url = '/api/'+classe+'/'+this.modelObjetos[0]['id'];
@@ -328,6 +345,7 @@ var app = new Vue({
 
 
             this.buscaPaises();
+            this.buscaVendedores();
         },
         limparGeral: function(){
             this.objetos = null;
@@ -350,7 +368,7 @@ var app = new Vue({
                     return false;
                 }
             }
-            else if(classe == 'administrador'){
+            else if(classe == 'administrador' || classe == 'vendedor'){
                 if(this.acaoObjeto == "Criar"){
                     if(
                         this.modelObjetos[0]['name'] == "" ||
@@ -524,6 +542,17 @@ var app = new Vue({
             axios
                 .get(url)
                 .then(response => (this.paises = response.data.data))
+                .catch(error => (this.error = error));
+        },
+        buscaVendedores: function() {
+            this.vendedores = null;
+            this.carregandoGeral = true;
+            var url;
+            url = '/api/vendedor';
+
+            axios
+                .get(url)
+                .then(response => (this.vendedor = response.data.data))
                 .catch(error => (this.error = error));
         },
     }

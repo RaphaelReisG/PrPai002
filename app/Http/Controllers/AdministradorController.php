@@ -14,20 +14,24 @@ class AdministradorController extends Controller
 
     public function index(Request $request)
     {
-       /* if(isset($request->buscarObjeto)){
-            error_log("com busca ".$request->buscarObjeto);
-            return Administrador::with(['user'])
-                ->where( 'name', 'like', '%'.$request->buscarObjeto.'%')
-                ->paginate(1);
+        $administrador = Administrador::with(['user'])
+            ->join('users', 'administradors.id', '=', 'users.userable_id' )
+            ->select('administradors.*')
+            ->groupBy('administradors.id', 'administradors.name', 'administradors.created_at', 'administradors.updated_at');;
+
+        if ($request->has('buscarObjeto')) {
+            $administrador->where(function ($query) use ($request) {
+                $query->where('name', 'like', '%' . $request->buscarObjeto . '%')
+                      ->orWhere('users.email', 'like', '%' . $request->buscarObjeto . '%');
+            });
         }
-        else{
 
-            return Administrador::with('user')->paginate(10);
+        if ($request->has('ordenacaoBusca')) {
+            $administrador->orderBy($request->ordenacaoBusca);
+        }
 
-            /*$administrador = Administrador::all();
-            return TesteResource::collection($administrador);
-        }*/
-
+        return $administrador->paginate(4);
+/*
         if(isset($request->buscarObjeto)){
             if(isset($request->ordenacaoBusca)){
                 error_log("com busca com ordenacao  ".$request->buscarObjeto);
@@ -62,7 +66,7 @@ class AdministradorController extends Controller
                 return Administrador::with(['user'])->paginate(4);
                 //return Cliente::with('user')->paginate(10);
             }
-        }
+        }*/
     }
 
 
@@ -74,18 +78,6 @@ class AdministradorController extends Controller
 
     public function store(Request $request)
     {
-        //Administrador::create($request->all());
-        /*$create = Administrador::create([ 'name' => $request->name])
-                ->user()->create(['email'=> $request->email, 'password'=>Hash::make($request->password) ])
-                ->givePermissionTo('admin');*/
-/*
-        $request->password = Hash::make($request->password);
-
-        $administrador = Administrador::create($request->only('name'));
-        $user = $administrador->user()->create($request->only('email', 'password'))
-                ->givePermissionTo('admin');
-        return new TesteResource($administrador, $administrador->user);
-*/
 
         $administrador = Administrador::create($request->only('name'));
         $administrador->user()->create(['email'=> $request->email, 'password'=>Hash::make($request->password)])->givePermissionTo('admin');
@@ -123,19 +115,5 @@ class AdministradorController extends Controller
         $administrador->delete();
 
         return new TesteResource($administrador);
-    }
-
-    public function buscando(Request $request)
-    {
-        error_log("passou aki na busca");
-        if(isset($request->buscarObjeto)){
-            error_log("com busca ".$request->buscarObjeto);
-            return Administrador::with(['user'])
-                ->where( 'name', 'like', '%'.$request->buscarObjeto.'%')
-                ->paginate(1);
-        }
-        else{
-            error_log("deu ruim");
-        }
     }
 }

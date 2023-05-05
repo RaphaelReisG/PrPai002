@@ -34,11 +34,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::apiResource('administrador', AdministradorController::class);
-Route::get('busca/administrador', [AdministradorController::class, 'buscando' ]);
 Route::apiResource('bairro', BairroController::class);
 Route::apiResource('cidade', CidadeController::class);
 Route::apiResource('cliente', ClienteController::class);
-Route::get('busca/cliente', [ClienteController::class, 'buscando' ]);
 Route::apiResource('endereco', EnderecoController::class);
 Route::apiResource('estado', EstadoController::class);
 Route::apiResource('estoque', EstoqueController::class);
