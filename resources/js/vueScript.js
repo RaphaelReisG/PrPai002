@@ -34,6 +34,8 @@ var app = new Vue({
 
             fornecedor_id: "", //marca
 
+            type: "", quantity: "", weight: "", cost_price: "", sale_price: "", marca_id: "", //produto
+
             name_country: "",  // pais
 
             name_state: "", pais_id: "", // estado
@@ -46,6 +48,7 @@ var app = new Vue({
         paises: [{}],
         vendedores: [{}],
         fornecedores: [{}],
+        marcas: [{}],
 
         mostrarSenha: "password",
         resposta: '',
@@ -169,6 +172,18 @@ var app = new Vue({
                     fornecedor_id: this.modelObjetos[0]['fornecedor_id'],
                 }
             }
+            else if(classe == "produto"){
+                url = '/api/'+classe;
+                dados = {
+                    name: this.modelObjetos[0]['name'],
+                    type: this.modelObjetos[0]['type'],
+                    quantity: this.modelObjetos[0]['quantity'],
+                    weight: this.modelObjetos[0]['weight'],
+                    cost_price: this.modelObjetos[0]['cost_price'],
+                    sale_price: this.modelObjetos[0]['sale_price'],
+                    marca_id: this.modelObjetos[0]['marca_id']
+                }
+            }
             else if(classe == "telefone"){
                 url = '/api/'+classe;
                 dados = {
@@ -241,6 +256,15 @@ var app = new Vue({
                 this.modelObjetos[0]['name'] = this.objetos['data'][index]['name'];
                 this.modelObjetos[0]['fornecedor_id'] = this.objetos['data'][index]['fornecedor_id'];
             }
+            else if(this.nomeObjeto == "produto"){
+                this.modelObjetos[0]['name'] = this.objetos['data'][index]['name'];
+                this.modelObjetos[0]['type'] = this.objetos['data'][index]['type'];
+                this.modelObjetos[0]['quantity'] = this.objetos['data'][index]['quantity'];
+                this.modelObjetos[0]['weight'] = this.objetos['data'][index]['weight'];
+                this.modelObjetos[0]['cost_price'] = this.objetos['data'][index]['cost_price'];
+                this.modelObjetos[0]['sale_price'] = this.objetos['data'][index]['sale_price'];
+                this.modelObjetos[0]['marca_id'] = this.objetos['data'][index]['marca_id'];
+            }
 
             else if(this.nomeObjeto == "administrador" || this.nomeObjeto == "vendedor"){
                 this.modelObjetos[0]['name'] = this.objetos['data'][index]['name'];
@@ -263,6 +287,7 @@ var app = new Vue({
             if(this.nomeObjeto == 'estado') {this.buscaPaises();}
             if(this.nomeObjeto == 'cliente') { this.buscaVendedores();}
             if(this.nomeObjeto == 'marca'){this.buscaFornecedores();}
+            if(this.nomeObjeto == 'produto'){this.buscaMarcas();}
 
         },
         updateObjeto: async function(classe){
@@ -308,6 +333,19 @@ var app = new Vue({
                 dados = {
                     name: this.modelObjetos[0]['name'],
                     fornecedor_id: this.modelObjetos[0]['fornecedor_id']
+                }
+            }
+            else if(classe == "produto"){
+                url = '/api/'+classe+'/'+this.modelObjetos[0]['id'];
+                //alert(url);
+                dados = {
+                    name: this.modelObjetos[0]['name'],
+                    type: this.modelObjetos[0]['type'],
+                    quantity: this.modelObjetos[0]['quantity'],
+                    weight: this.modelObjetos[0]['weight'],
+                    cost_price: this.modelObjetos[0]['cost_price'],
+                    sale_price: this.modelObjetos[0]['sale_price'],
+                    marca_id: this.modelObjetos[0]['marca_id']
                 }
             }
             else if(classe == "pais"){
@@ -397,11 +435,21 @@ var app = new Vue({
             //marca
             this.modelObjetos[0]['fornecedor_id'] = "";
 
+            //produto
+            this.modelObjetos[0]['name'] = "";
+            this.modelObjetos[0]['type'] = "";
+            this.modelObjetos[0]['quantity'] = "";
+            this.modelObjetos[0]['weight'] = "";
+            this.modelObjetos[0]['cost_price'] = "";
+            this.modelObjetos[0]['sale_price'] = "";
+            this.modelObjetos[0]['marca_id'] = "";
+
 
             this.error = null;
             if(this.nomeObjeto == 'estado') {this.buscaPaises();}
             if(this.nomeObjeto == 'cliente') { this.buscaVendedores();}
             if(this.nomeObjeto == 'marca'){this.buscaFornecedores();}
+            if(this.nomeObjeto == 'produto'){this.buscaMarcas();}
         },
         limparGeral: function(){
             this.objetos = null;
@@ -442,6 +490,23 @@ var app = new Vue({
             else if(classe == 'marca'){
                 if(
                     this.modelObjetos[0]['name'] == "" && this.modelObjetos[0]['fornecedor_id'] == ""
+                ){
+                    alert("Erro");
+                    return true;
+                }
+                else{
+                    return false;
+                }
+            }
+            else if(classe == 'produto'){
+                if(
+                    this.modelObjetos[0]['name'] == "" &&
+                    this.modelObjetos[0]['type'] == "" &&
+                    this.modelObjetos[0]['quantity'] == "" &&
+                    this.modelObjetos[0]['weight'] == "" &&
+                    this.modelObjetos[0]['cost_price'] == "" &&
+                    this.modelObjetos[0]['sale_price'] == "" &&
+                    this.modelObjetos[0]['marca_id'] == ""
                 ){
                     alert("Erro");
                     return true;
@@ -649,7 +714,20 @@ var app = new Vue({
                 .get(url)
                 .then(response => (this.fornecedores = response.data.data))
                 .catch(error => (this.error = error));
+        },
+        buscaMarcas: function() {
+            this.marcas = null;
+            this.carregandoGeral = true;
+            var url;
+            url = '/api/marca';
+            //alert(url);
+
+            axios
+                .get(url)
+                .then(response => (this.marcas = response.data.data))
+                .catch(error => (this.error = error));
         }
+
     }
 })
 

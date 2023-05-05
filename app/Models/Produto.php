@@ -15,7 +15,8 @@ class Produto extends Model
         'quantity',
         'weight',
         'cost_price',
-        'sale_price'
+        'sale_price',
+        'marca_id'
     ];
 
     public function marca(){
@@ -30,4 +31,11 @@ class Produto extends Model
     public function estoques(){
         return $this->hasMany(Estoque::class);
     }
+
+    /*public function totalEstoque(){
+        return $this->hasMany(Estoque::class)
+            ->sum('qty_item');
+
+        return $this->withSum('estoques', 'qty_item');
+    }*/
 }

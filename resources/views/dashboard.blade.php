@@ -229,6 +229,17 @@
                                     <select_geral nome_model="fornecedor_id" :obj_dropdown="fornecedores" nome_atributo="company_name" id_atributo="id" nome="Escolha o fornecedor"></select_geral>
                                 </div>
 
+                                <!-- formulario PRODUTO-->
+                                <div v-if="nomeObjeto == 'produto'" class="modal-body">
+                                    <select_geral nome_model="marca_id" :obj_dropdown="marcas" nome_atributo="name" id_atributo="id" nome="Escolha a marca"></select_geral>
+                                    <input_geral nome="Nome do produto" tipo="text" nome_model="name"></input_geral>
+                                    <input_geral nome="Tipo" tipo="text" nome_model="type"></input_geral>
+                                    <input_geral nome="Quantidade por pacote" tipo="number" nome_model="quantity"></input_geral>
+                                    <input_geral nome="Peso por pacote" tipo="number" nome_model="weight"></input_geral>
+                                    <input_geral nome="Preço de custo" tipo="number" nome_model="cost_price"></input_geral>
+                                    <input_geral nome="Preço de venda" tipo="number" nome_model="sale_price"></input_geral>
+                                </div>
+
                                 <!-- formulario PAIS-->
                                 <div v-if="nomeObjeto == 'pais'" class="modal-body">
                                     <input_geral nome="Nome do País" tipo="text" nome_model="name_country"></input_geral>
@@ -267,7 +278,7 @@
                 <div v-if="titulo != ''">
                     <!-- Tabela Pedido -->
                     <div v-if="nomeObjeto == 'pedido' && objetos !== null" class="row">
-                        <table_acordion     
+                        <table_acordion
                             :classe_atributos="[
                                 {titulo: 'Nome', conteudo: 'name'},
                                 {titulo: 'Razão Social', conteudo: 'company_name'},
@@ -384,10 +395,12 @@
                         <!-- Tabela Produto -->
                         <div v-else-if="nomeObjeto == 'produto' && objetos !== null" class="row">
                             <table_acordion     :classe_atributos="[
-                                {titulo: 'Nome', conteudo: 'name'},
-                                                        {titulo: 'Tipo', conteudo: 'type'},
-                                                        {titulo: 'Valor de Venda', conteudo: 'sale_price'},
-                                                        {titulo: 'Marca',  conteudo: 'marca', conteudo2: 'name'}
+                                                        {titulo: 'Nome', conteudo: 'name', ordenacao: 'produtos.name'},
+                                                        {titulo: 'Tipo', conteudo: 'type', ordenacao: 'produtos.type' },
+                                                        {titulo: 'Valor de Venda', conteudo: 'sale_price', ordenacao: 'produtos.sale_price'},
+                                                        {titulo: 'Marca',  conteudo: 'marca', conteudo2: 'name', ordenacao: 'marcas.name'},
+                                                        {titulo: 'Fornecedor',  conteudo: 'marca', conteudo2: 'fornecedor', conteudo3: 'company_name', ordenacao: 'fornecedors.name'}
+
                                                     ]"
                                                     :objeto_imp="objetos"
                                                     :obj_acordion="[
@@ -395,7 +408,7 @@
                                                         {titulo: 'Quantidade por Pacote', conteudo: 'quantity'},
                                                         {titulo: 'Peso por pacote ', conteudo: 'weight'},
                                                         {titulo: 'Preço de custo', conteudo: 'cost_price'},
-                                                        {titulo: 'Fornecedor',  conteudo: 'marca', conteudo2: 'fornecedor', conteudo3: 'company_name'}
+                                                        {titulo: 'Estoque',  conteudo: 'estoques_sum_qty_item'}
                                                     ]"
                                                 >
                             </table_acordion>

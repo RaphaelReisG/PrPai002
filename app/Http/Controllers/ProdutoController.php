@@ -6,6 +6,7 @@ use App\Models\Produto;
 use Illuminate\Http\Request;
 
 use App\Http\Resources\TesteResource;
+use App\Models\Marca;
 
 class ProdutoController extends Controller
 {
@@ -14,10 +15,39 @@ class ProdutoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         //return Produto::all();
-        return Produto::with(['marca', 'marca.fornecedor', 'estoques' ])->paginate(10);
+
+        $produto = Produto::with(['marca', 'marca.fornecedor', 'estoques'])
+            ->join('marcas', 'produtos.marca_id', '=', 'marcas.id' )
+            ->join('fornecedors', 'marcas.fornecedor_id', '=', 'fornecedors.id' )
+            ->select('produtos.*')
+            ->groupBy('produtos.id', 'produtos.name', 'produtos.type',
+                'produtos.quantity', 'produtos.weight', 'produtos.cost_price',
+                'produtos.sale_price', 'produtos.marca_id',  'produtos.created_at', 'produtos.updated_at');
+
+        if ($request->has('buscarObjeto')) {
+            $produto->where(function ($query) use ($request) {
+                $query->where('produtos.name', 'like', '%' . $request->buscarObjeto . '%')
+                      ->orWhere('produtos.type', 'like', '%' . $request->buscarObjeto . '%')
+                      ->orWhere('produtos.quantity', 'like', '%' . $request->buscarObjeto . '%')
+                      ->orWhere('produtos.weight', 'like', '%' . $request->buscarObjeto . '%')
+                      ->orWhere('produtos.cost_price', 'like', '%' . $request->buscarObjeto . '%')
+                      ->orWhere('produtos.sale_price', 'like', '%' . $request->buscarObjeto . '%')
+                      ->orWhere('marcas.name', 'like', '%' . $request->buscarObjeto . '%')
+                      ->orWhere('fornecedors.name', 'like', '%' . $request->buscarObjeto . '%')
+                      ;
+            });
+        }
+
+        if ($request->has('ordenacaoBusca')) {
+            $produto->orderBy($request->ordenacaoBusca);
+        }
+
+        return $produto->withSum('estoques', 'qty_item')->paginate(4);
+
+        //return Produto::with(['marca', 'marca.fornecedor', 'estoques' ])->withSum('estoques', 'qty_item')->paginate(10);
     }
 
     /**
@@ -38,7 +68,7 @@ class ProdutoController extends Controller
      */
     public function store(Request $request)
     {
-        Produto::create($request->all());
+        return $produto = Marca::findOrfail($request->marca_id)->produtos()->create($request->all());
     }
 
     /**
@@ -50,6 +80,7 @@ class ProdutoController extends Controller
     public function show(Produto $produto)
     {
         //return Produto::findOrfail($id);
+        //return $produto->withSum('estoques', 'qty_item')->get();
         return new TesteResource($produto, $produto->marca, $produto->estoques);
     }
 
@@ -74,7 +105,7 @@ class ProdutoController extends Controller
     public function update(Request $request, Produto $produto)
     {
         //$obj = Produto::findOrfail($id);
-        $produto->update($request->all());
+        return $produto->update($request->all());
         //$produto->marca()->update($request->all());
     }
 
@@ -87,6 +118,6 @@ class ProdutoController extends Controller
     public function destroy( Produto $produto)
     {
         //$obj = Produto::findOrfail($id);
-        $produto->delete();
+        return $produto->delete();
     }
 }
