@@ -97,7 +97,7 @@
                                         <li><a class="dropdown-item" href="#" v-on:click="defineClasse('marca', 'Marcas')">Marcas</a></li>
                                         <li><a class="dropdown-item" href="#" v-on:click="defineClasse('produto', 'Produto')">Produtos</a></li>
                                         <li><hr class="dropdown-divider"></li>
-                                        <li><a class="dropdown-item" href="#" v-on:click="defineClasse('estoque', 'Estoque')">Estoque</a></li>
+                                        <li><a class="dropdown-item" href="#" v-on:click="defineClasse('estoque', 'Movimentações do Estoque')">Estoque</a></li>
                                         <li><a class="dropdown-item" href="#" v-on:click="defineClasse('pedido', 'Pedidos')">Pedidos</a></li>
                                     </ul>
                                 </li>
@@ -280,15 +280,20 @@
                     <div v-if="nomeObjeto == 'pedido' && objetos !== null" class="row">
                         <table_acordion
                             :classe_atributos="[
-                                {titulo: 'Nome', conteudo: 'name'},
-                                {titulo: 'Razão Social', conteudo: 'company_name'},
-                                {titulo: 'CPF / CNPJ', conteudo: 'cnpj'},
-                                {titulo: 'Vendedor', conteudo: 'vendedor', conteudo2: 'name' },
-                                {titulo: 'E-mail',  conteudo: 'user', conteudo2: 'email'}
+                                {titulo: 'Data solicitação', conteudo: 'issue_date'},
+                                {titulo: 'Total', conteudo: 'total_price'},
+                                {titulo: 'Metodo de pagamento', conteudo: 'payment_method'},
+                                {titulo: 'Cliente', conteudo: 'cliente', conteudo2: 'name' },
+                                {titulo: 'Vendedor',  conteudo: 'cliente', conteudo2: 'vendedor', conteudo3: 'name'}
                             ]"
                             :objeto_imp="objetos"
                             :obj_acordion="[
-                                {titulo: 'Criado em', conteudo: 'created_at'}
+                                {titulo: 'Criado em', conteudo: 'created_at'},
+                                {titulo: 'Pedido aprovado em', conteudo: 'approval_date'},
+                                {titulo: 'Data entrega', conteudo: 'delivery_date'},
+                                {titulo: 'Data pagamento', conteudo: 'payday'},
+                                {titulo: 'Descontos', conteudo: 'total_discount'},
+                                {titulo: 'Observação', conteudo: 'observation'}
                             ]"
                         >
                         </table_acordion>
@@ -509,6 +514,28 @@
                                                     :objeto_imp="objetos"
                                                     :obj_acordion="[
                                                         {titulo: 'Criado em', conteudo: 'created_at'}
+                                                    ]"
+                                                >
+                            </table_acordion>
+                        </div>
+
+                        <!-- Tabela Estoque -->
+                        <div v-else-if="nomeObjeto == 'estoque' && objetos !== null" class="row">
+                            <table_acordion     :classe_atributos="[
+                                                        {titulo: 'Data', conteudo: 'created_at', ordenacao: ''},
+                                                        {titulo: 'Quantidade', conteudo: 'qty_item', ordenacao: '' },
+                                                        {titulo: 'Produto', conteudo: 'produto', conteudo2: 'name'},
+                                                        {titulo: 'Marca',  conteudo: 'produto', conteudo2: 'marca', conteudo3: 'name'}
+
+                                                    ]"
+                                                    :objeto_imp="objetos"
+                                                    :obj_acordion="[
+                                                        {titulo: 'Entrada/Saida',  conteudo: 'estoqueable_type'},
+                                                        {titulo: 'Responsavel',  conteudo: 'estoqueable', conteudo2: 'name'},
+
+                                                        {titulo: 'Observação', conteudo: 'observation'},
+                                                        {titulo: 'Lote ', conteudo: 'batch'},
+                                                        {titulo: 'Validade', conteudo: 'expiration_date'}
                                                     ]"
                                                 >
                             </table_acordion>
