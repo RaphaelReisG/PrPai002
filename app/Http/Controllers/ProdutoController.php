@@ -19,18 +19,19 @@ class ProdutoController extends Controller
     {
         //return Produto::all();
 
-        $produto = Produto::with(['marca', 'marca.fornecedor', 'estoques'])
+        $produto = Produto::with(['marca', 'marca.fornecedor', 'estoques', 'tipo_produto'])
             ->join('marcas', 'produtos.marca_id', '=', 'marcas.id' )
             ->join('fornecedors', 'marcas.fornecedor_id', '=', 'fornecedors.id' )
+            ->join('tipo_produtos', 'produtos.tipo_produto_id', '=', 'tipo_produtos.id' )
             ->select('produtos.*')
-            ->groupBy('produtos.id', 'produtos.name', 'produtos.type',
+            ->groupBy('produtos.id', 'produtos.name', 'produtos.tipo_produto_id',
                 'produtos.quantity', 'produtos.weight', 'produtos.cost_price',
                 'produtos.sale_price', 'produtos.marca_id',  'produtos.created_at', 'produtos.updated_at');
 
         if ($request->has('buscarObjeto')) {
             $produto->where(function ($query) use ($request) {
                 $query->where('produtos.name', 'like', '%' . $request->buscarObjeto . '%')
-                      ->orWhere('produtos.type', 'like', '%' . $request->buscarObjeto . '%')
+                      ->orWhere('tipo_produtos.name', 'like', '%' . $request->buscarObjeto . '%')
                       ->orWhere('produtos.quantity', 'like', '%' . $request->buscarObjeto . '%')
                       ->orWhere('produtos.weight', 'like', '%' . $request->buscarObjeto . '%')
                       ->orWhere('produtos.cost_price', 'like', '%' . $request->buscarObjeto . '%')

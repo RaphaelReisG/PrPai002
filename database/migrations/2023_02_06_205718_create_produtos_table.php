@@ -17,7 +17,8 @@ return new class extends Migration
             $table->id();
 
             $table->string('name');
-            $table->string('type');
+            $table->foreignId('tipo_produto_id')->constrained('tipo_produtos');
+            //$table->string('type');
             $table->integer('quantity');
             $table->decimal('weight', 5, 2);
             $table->decimal('cost_price', 6, 2);

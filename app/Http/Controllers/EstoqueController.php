@@ -16,7 +16,7 @@ class EstoqueController extends Controller
      */
     public function index()
     {
-        return $produto = Estoque::with(['produto', 'produto.marca', 'produto.marca.fornecedor', 'estoqueable'])->paginate(10);
+        return $produto = Estoque::with(['produto', 'produto.marca', 'produto.marca.fornecedor', 'estoqueable', 'tipo_movimentacao'])->paginate(10);
     }
 
     /**

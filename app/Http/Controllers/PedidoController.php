@@ -17,7 +17,7 @@ class PedidoController extends Controller
     public function index()
     {
         //return Pedido::all();
-        return Pedido::with(['produtos', 'cliente', 'vendedor'])->paginate(4);
+        return Pedido::with(['produtos', 'cliente', 'vendedor', 'metodoPagamento'])->paginate(4);
     }
 
     /**

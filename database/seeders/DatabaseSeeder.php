@@ -20,6 +20,10 @@ use App\Models\Pais;
 use App\Models\Fornecedor;
 use App\Models\Vendedor;
 use App\Models\Cliente;
+use App\Models\Tipo_produto;
+use App\Models\Tipo_movimentacao;
+use App\Models\MetodoPagamento;
+use App\Models\Pedido;
 
 class DatabaseSeeder extends Seeder
 {
@@ -75,9 +79,28 @@ class DatabaseSeeder extends Seeder
         Fornecedor::find(1)->marcas()->create(['name' => 'Vovó Natalia']);
         Fornecedor::find(2)->marcas()->create(['name' => 'Croissant & Cia']);
 
+        Tipo_produto::create(['name' => 'Cru - para assar']);
+        Tipo_produto::create(['name' => 'Cru - para fritar']);
+        Tipo_produto::create(['name' => 'Pré assado']);
+        Tipo_produto::create(['name' => 'Frito']);
+
+        Tipo_movimentacao::create(['name' => 'Compra de um fornecedor']);
+        Tipo_movimentacao::create(['name' => 'Venda para um cliente']);
+        Tipo_movimentacao::create(['name' => 'Devolução de um produto comprado']);
+        Tipo_movimentacao::create(['name' => 'Devolução de um produto vendido']);
+        Tipo_movimentacao::create(['name' => 'Ajuste de estoque']);
+
+        MetodoPagamento::create(['name' => 'Avista - Dinheiro']);
+        MetodoPagamento::create(['name' => 'Avista - PIX']);
+        MetodoPagamento::create(['name' => 'Cartão - Débito']);
+        MetodoPagamento::create(['name' => 'Cartão - Crédito']);
+        MetodoPagamento::create(['name' => 'A prazo']);
+        MetodoPagamento::create(['name' => 'Cheque']);
+
         Fornecedor::find(1)->marcas()->find(1)->produtos()->create([
             'name' => 'Pão de Queijo 90g',
-            'type' => 'Para Assar',
+            //'type' => 'Para Assar',
+            'tipo_produto_id' => 1,
             'quantity' => 22,
             'weight' => 2,
             'cost_price' => 18,
@@ -87,7 +110,8 @@ class DatabaseSeeder extends Seeder
 
         Fornecedor::find(2)->marcas()->find(3)->produtos()->create([
             'name' => 'Coxinha de Frango',
-            'type' => 'Para Fritar',
+            //'type' => 'Para Fritar',
+            'tipo_produto_id' => 2,
             'quantity' => 10,
             'weight' => 2,
             'cost_price' => 24,
@@ -122,13 +146,14 @@ class DatabaseSeeder extends Seeder
         $cliente1->telefones()->create(['number_phone' => '(13)3426-5255']);
         $cliente1->telefones()->create(['number_phone' => '(13)91234-5678']);
         $cliente1->pedidos()->create([
-            'issue_date' => '2023-02-07 13:33:19',
+            //'issue_date' => '2023-02-07 13:33:19',
             'payday' => '2023-02-09 13:33:19',
             'delivery_date' => '2023-02-08 13:33:19',
             'approval_date' => '2023-02-08 13:33:19',
             'total_price' => 52,
             'total_discount' => 0,
-            'payment_method' => 'Dinheiro',
+            //'payment_method' => 'Dinheiro',
+            'metodo_pagamento_id' => 1,
             'observation' => 'Tudo entregue junto',
             'vendedor_id' => 1
         ])->produtos()->attach([
@@ -141,31 +166,34 @@ class DatabaseSeeder extends Seeder
             'qty_item' => 10,
             'produto_id' => 1,
             'observation' => 'Compra fornecedor',
-            'batch' => 'A458',
-            'expiration_date' => '2023-02-08 13:33:19'
+            'tipo_movimentacao_id' => 1,
+            //'batch' => 'A458',
+            //'expiration_date' => '2023-02-08 13:33:19'
         ]);
         Administrador::find(1)->estoqueable()->create([
             'qty_item' => 10,
             'produto_id' => 2,
             'observation' => 'Compra fornecedor',
-            'batch' => 'B458',
-            'expiration_date' => '2023-02-08 13:33:19'
+            'tipo_movimentacao_id' => 1,
+            //'batch' => 'B458',
+            //'expiration_date' => '2023-02-08 13:33:19'
         ]);
 
-        Cliente::find(1)->estoqueable()->create([
+        Pedido::find(1)->estoqueable()->create([
             'qty_item' => -1,
             'produto_id' => 1,
             'observation' => 'Venda',
-            'batch' => 'A458',
-            'expiration_date' => '2023-02-08 13:33:19'
+            'tipo_movimentacao_id' => 2,
+            //'batch' => 'A458',
+            //'expiration_date' => '2023-02-08 13:33:19'
         ]);
-        Cliente::find(1)->estoqueable()->create([
+        /*Cliente::find(1)->estoqueable()->create([
             'qty_item' => -1,
             'produto_id' => 2,
             'observation' => 'Venda',
-            'batch' => 'B458',
-            'expiration_date' => '2023-02-08 13:33:19'
-        ]);
+            //'batch' => 'B458',
+            //'expiration_date' => '2023-02-08 13:33:19'
+        ]);*/
 
 
 

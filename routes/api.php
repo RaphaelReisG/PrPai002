@@ -12,11 +12,14 @@ use App\Http\Controllers\EstadoController;
 use App\Http\Controllers\EstoqueController;
 use App\Http\Controllers\FornecedorController;
 use App\Http\Controllers\MarcaController;
+use App\Http\Controllers\MetodoPagamentoController;
 use App\Http\Controllers\PaisController;
 use App\Http\Controllers\PedidoController;
 use App\Http\Controllers\ProdutoController;
 use App\Http\Controllers\VendedorController;
 use App\Http\Controllers\TelefoneController;
+use App\Http\Controllers\TipoMovimentacaoController;
+use App\Http\Controllers\TipoProdutoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -42,8 +45,11 @@ Route::apiResource('estado', EstadoController::class);
 Route::apiResource('estoque', EstoqueController::class);
 Route::apiResource('fornecedor', FornecedorController::class);
 Route::apiResource('marca', MarcaController::class);
+Route::apiResource('metodo_pagamento', MetodoPagamentoController::class);
 Route::apiResource('pais', PaisController::class);
 Route::apiResource('pedido', PedidoController::class);
 Route::apiResource('produto', ProdutoController::class);
 Route::apiResource('vendedor', VendedorController::class);
 Route::apiResource('telefone', TelefoneController::class);
+Route::apiResource('tipo_movimentacao', TipoMovimentacaoController::class);
+Route::apiResource('tipo_produto', TipoProdutoController::class);

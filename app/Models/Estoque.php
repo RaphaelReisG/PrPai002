@@ -9,15 +9,21 @@ class Estoque extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
+    protected $fillable = [ 
         'qty_item',
         'observation',
-        'batch',                //lote
-        'expiration_date'
+        'tipo_movimentacao_id',
+        'produto_id'
+        //'batch',                //lote
+        //'expiration_date'
     ];
 
     public function produto(){
         return $this->belongsTo(Produto::class);
+    }
+
+    public function tipo_movimentacao(){
+        return $this->belongsTo(Tipo_movimentacao::class);
     }
 
     public function estoqueable(){

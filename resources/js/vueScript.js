@@ -34,7 +34,7 @@ var app = new Vue({
 
             fornecedor_id: "", //marca
 
-            type: "", quantity: "", weight: "", cost_price: "", sale_price: "", marca_id: "", //produto
+            tipo_produto_id: "", quantity: "", weight: "", cost_price: "", sale_price: "", marca_id: "", //produto
 
             name_country: "",  // pais
 
@@ -49,6 +49,9 @@ var app = new Vue({
         vendedores: [{}],
         fornecedores: [{}],
         marcas: [{}],
+        produtos: [{}],
+        tipo_produtos: [{}],
+        tipo_movimentacaos: [{}],
 
         mostrarSenha: "password",
         resposta: '',
@@ -68,7 +71,8 @@ var app = new Vue({
             this.objetos = null;
             this.carregandoGeral = true;
             var url;
-            url = '/api/'+classe;
+            const paginacao = 10;
+            url = '/api/'+classe+'?paginacao='+paginacao;
 
             /*fetch(url).then((res) => res.json())
                     .then((data) => this.objetos = data).finally(this.carregandoGeral = false);
@@ -176,12 +180,18 @@ var app = new Vue({
                 url = '/api/'+classe;
                 dados = {
                     name: this.modelObjetos[0]['name'],
-                    type: this.modelObjetos[0]['type'],
+                    tipo_produto_id: this.modelObjetos[0]['tipo_produto_id'],
                     quantity: this.modelObjetos[0]['quantity'],
                     weight: this.modelObjetos[0]['weight'],
                     cost_price: this.modelObjetos[0]['cost_price'],
                     sale_price: this.modelObjetos[0]['sale_price'],
                     marca_id: this.modelObjetos[0]['marca_id']
+                }
+            }
+            else if(classe == "tipo_produto" || classe == "tipo_movimentacao" || classe == "metodo_pagamento"){
+                url = '/api/'+classe;
+                dados = {
+                    name: this.modelObjetos[0]['name']
                 }
             }
             else if(classe == "telefone"){
@@ -258,7 +268,7 @@ var app = new Vue({
             }
             else if(this.nomeObjeto == "produto"){
                 this.modelObjetos[0]['name'] = this.objetos['data'][index]['name'];
-                this.modelObjetos[0]['type'] = this.objetos['data'][index]['type'];
+                this.modelObjetos[0]['tipo_produto_id'] = this.objetos['data'][index]['tipo_produto_id'];
                 this.modelObjetos[0]['quantity'] = this.objetos['data'][index]['quantity'];
                 this.modelObjetos[0]['weight'] = this.objetos['data'][index]['weight'];
                 this.modelObjetos[0]['cost_price'] = this.objetos['data'][index]['cost_price'];
@@ -269,6 +279,10 @@ var app = new Vue({
             else if(this.nomeObjeto == "administrador" || this.nomeObjeto == "vendedor"){
                 this.modelObjetos[0]['name'] = this.objetos['data'][index]['name'];
                 this.modelObjetos[0]['email'] = this.objetos['data'][index]['user']['email'];
+            }
+
+            else if(this.nomeObjeto == "tipo_produto" || this.nomeObjeto == "tipo_movimentacao" || this.nomeObjeto == "metodo_pagamento"){
+                this.modelObjetos[0]['name'] = this.objetos['data'][index]['name'];
             }
 
             else if(this.nomeObjeto == "pais"){
@@ -288,6 +302,9 @@ var app = new Vue({
             if(this.nomeObjeto == 'cliente') { this.buscaVendedores();}
             if(this.nomeObjeto == 'marca'){this.buscaFornecedores();}
             if(this.nomeObjeto == 'produto'){this.buscaMarcas();}
+            if(this.nomeObjeto == 'produto'){this.buscaTipo_produtos();}
+            if(this.nomeObjeto == 'estoque'){this.buscaTipo_movimentacaos();}
+            if(this.nomeObjeto == 'estoque'){this.buscaProdutos();}
 
         },
         updateObjeto: async function(classe){
@@ -340,12 +357,19 @@ var app = new Vue({
                 //alert(url);
                 dados = {
                     name: this.modelObjetos[0]['name'],
-                    type: this.modelObjetos[0]['type'],
+                    tipo_produto_id: this.modelObjetos[0]['tipo_produto_id'],
                     quantity: this.modelObjetos[0]['quantity'],
                     weight: this.modelObjetos[0]['weight'],
                     cost_price: this.modelObjetos[0]['cost_price'],
                     sale_price: this.modelObjetos[0]['sale_price'],
                     marca_id: this.modelObjetos[0]['marca_id']
+                }
+            }
+            else if(classe == "tipo_produto" || classe == "tipo_movimentacao" || classe == "metodo_pagamento"){
+                url = '/api/'+classe+'/'+this.modelObjetos[0]['id'];
+                //alert(url);
+                dados = {
+                    name: this.modelObjetos[0]['name']
                 }
             }
             else if(classe == "pais"){
@@ -437,7 +461,7 @@ var app = new Vue({
 
             //produto
             this.modelObjetos[0]['name'] = "";
-            this.modelObjetos[0]['type'] = "";
+            this.modelObjetos[0]['tipo_produto_id'] = "";
             this.modelObjetos[0]['quantity'] = "";
             this.modelObjetos[0]['weight'] = "";
             this.modelObjetos[0]['cost_price'] = "";
@@ -450,6 +474,9 @@ var app = new Vue({
             if(this.nomeObjeto == 'cliente') { this.buscaVendedores();}
             if(this.nomeObjeto == 'marca'){this.buscaFornecedores();}
             if(this.nomeObjeto == 'produto'){this.buscaMarcas();}
+            if(this.nomeObjeto == 'produto'){this.buscaTipo_produtos();}
+            if(this.nomeObjeto == 'estoque'){this.buscaTipo_movimentacaos();}
+            if(this.nomeObjeto == 'estoque'){this.buscaProdutos();}
         },
         limparGeral: function(){
             this.objetos = null;
@@ -562,6 +589,17 @@ var app = new Vue({
                     else{
                         return false;
                     }
+            }
+            else if(classe == "tipo_produto" || classe == "tipo_movimentacao" || classe == "metodo_pagamento"){
+                if(
+                    this.modelObjetos[0]['name'] == ""
+                ){
+                    alert("Erro");
+                    return true;
+                }
+                else{
+                    return false;
+                }
             }
             else if(classe == 'pais'){
                 if(
@@ -725,6 +763,42 @@ var app = new Vue({
             axios
                 .get(url)
                 .then(response => (this.marcas = response.data.data))
+                .catch(error => (this.error = error));
+        },
+        buscaTipo_produtos: function() {
+            this.tipo_produtos = null;
+            this.carregandoGeral = true;
+            var url;
+            url = '/api/tipo_produto';
+            //alert(url);
+
+            axios
+                .get(url)
+                .then(response => (this.tipo_produtos = response.data.data))
+                .catch(error => (this.error = error));
+        },
+        buscaTipo_movimentacaos: function() {
+            this.tipo_movimentacaos = null;
+            this.carregandoGeral = true;
+            var url;
+            url = '/api/tipo_movimentacao';
+            //alert(url);
+
+            axios
+                .get(url)
+                .then(response => (this.tipo_movimentacaos = response.data.data))
+                .catch(error => (this.error = error));
+        },
+        buscaProdutos: function() {
+            this.tipo_movimentacaos = null;
+            this.carregandoGeral = true;
+            var url;
+            url = '/api/tipo_movimentacao';
+            //alert(url);
+
+            axios
+                .get(url)
+                .then(response => (this.tipo_movimentacaos = response.data.data))
                 .catch(error => (this.error = error));
         }
 

@@ -18,8 +18,9 @@ return new class extends Migration
 
             $table->integer('qty_item');
             $table->string('observation');
-            $table->string('batch');                //lote
-            $table->dateTime('expiration_date');
+            $table->foreignId('tipo_movimentacao_id')->constrained('tipo_movimentacaos');
+            //$table->string('batch');                //lote
+            //$table->dateTime('expiration_date');
 
             $table->foreignId('produto_id')->constrained('produtos');
 

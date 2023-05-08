@@ -25,8 +25,6 @@ class Cliente extends Usuario_sistema
         return $this->hasMany(Pedido::class)->with(['produtos']);
     }
 
-    public function estoqueable(){
-        return $this->morphMany(Estoque::class, 'estoqueable');
-    }
+    
 
 }

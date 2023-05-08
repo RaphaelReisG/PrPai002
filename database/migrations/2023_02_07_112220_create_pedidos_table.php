@@ -16,13 +16,14 @@ return new class extends Migration
         Schema::create('pedidos', function (Blueprint $table) {
             $table->id();
 
-            $table->dateTime('issue_date');
+            //$table->dateTime('issue_date');
             $table->dateTime('payday');
             $table->dateTime('delivery_date');
             $table->dateTime('approval_date');
             $table->decimal('total_price', 10, 2);
             $table->decimal('total_discount', 10, 2);
-            $table->string('payment_method');
+            $table->foreignId('metodo_pagamento_id')->constrained('metodo_pagamentos');
+            //$table->string('payment_method');
             //$table->boolean('status_payment')->default(false);
             //$table->boolean('status_delivery')->default(false);
             //$table->boolean('status_request')->default(false);

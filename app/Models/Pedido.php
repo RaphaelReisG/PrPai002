@@ -10,18 +10,22 @@ class Pedido extends Model
     use HasFactory;
 
     protected $fillable = [
-        'issue_date',
+        //'issue_date',
         'payday',
         'delivery_date',
         'approval_date',
         'total_price',
         'total_discount',
-        'payment_method',
+        'metodo_pagamento_id', 
         'observation'
     ];
 
     public function cliente(){
         return $this->belongsTo(Cliente::class);
+    }
+
+    public function metodoPagamento(){
+        return $this->belongsTo(MetodoPagamento::class);
     }
 
     public function vendedor(){
@@ -30,5 +34,9 @@ class Pedido extends Model
 
     public function produtos(){
         return $this->belongsToMany(Produto::class)->withPivot(['qty_item', 'price_iten'])->with(['marca']);
+    }
+
+    public function estoqueable(){
+        return $this->morphMany(Estoque::class, 'estoqueable');
     }
 }

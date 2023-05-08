@@ -53,6 +53,10 @@
                                         <li><a class="dropdown-item" href="#" v-on:click="defineClasse('estado', 'Estado')">Estado</a></li>
                                         <li><a class="dropdown-item" href="#" v-on:click="defineClasse('pais', 'País')">País</a></li>
                                         <li><hr class="dropdown-divider"></li>
+                                        <li><a class="dropdown-item" href="#" v-on:click="defineClasse('tipo_produto', 'Tipos de Produtos')">Tipo de produto</a></li>
+                                        <li><a class="dropdown-item" href="#" v-on:click="defineClasse('tipo_movimentacao', 'Tipos de movimentação de estoque')">Tipo de movimentação</a></li>
+                                        <li><a class="dropdown-item" href="#" v-on:click="defineClasse('metodo_pagamento', 'Metodo de pagamento')">Metodo de pagamento</a></li>
+                                        <li><hr class="dropdown-divider"></li>
                                         <li><a class="dropdown-item" href="#" v-on:click="defineClasse('administrador/'+idUsuario, 'Meus dados')">Meus dados</a></li>
                                     @elsecan('vendedor')
                                         <li><a class="dropdown-item" href="#" v-on:click="defineClasse('endereco', 'Endereços dos clientes')">Endereços dos clientes</a></li>
@@ -233,11 +237,35 @@
                                 <div v-if="nomeObjeto == 'produto'" class="modal-body">
                                     <select_geral nome_model="marca_id" :obj_dropdown="marcas" nome_atributo="name" id_atributo="id" nome="Escolha a marca"></select_geral>
                                     <input_geral nome="Nome do produto" tipo="text" nome_model="name"></input_geral>
-                                    <input_geral nome="Tipo" tipo="text" nome_model="type"></input_geral>
+                                    <!--<input_geral nome="Tipo" tipo="text" nome_model="type"></input_geral>-->
+                                    <select_geral nome_model="tipo_produto_id" :obj_dropdown="tipo_produtos" nome_atributo="name" id_atributo="id" nome="Escolha o tipo"></select_geral>
                                     <input_geral nome="Quantidade por pacote" tipo="number" nome_model="quantity"></input_geral>
                                     <input_geral nome="Peso por pacote" tipo="number" nome_model="weight"></input_geral>
                                     <input_geral nome="Preço de custo" tipo="number" nome_model="cost_price"></input_geral>
                                     <input_geral nome="Preço de venda" tipo="number" nome_model="sale_price"></input_geral>
+                                </div>
+
+                                 <!-- formulario TIPO_PRODUTO-->
+                                 <div v-if="nomeObjeto == 'tipo_produto'" class="modal-body">
+                                    <input_geral nome="Nome do tipo" tipo="text" nome_model="name"></input_geral>
+                                </div>
+
+                                <!-- formulario TIPO_MOVIMENTACAO-->
+                                <div v-if="nomeObjeto == 'tipo_movimentacao'" class="modal-body">
+                                    <input_geral nome="Nome do tipo" tipo="text" nome_model="name"></input_geral>
+                                </div>
+
+                                <!-- formulario METODO_PAGAMENTO-->
+                                <div v-if="nomeObjeto == 'metodo_pagamento'" class="modal-body">
+                                    <input_geral nome="Nome do metodo" tipo="text" nome_model="name"></input_geral>
+                                </div>
+
+                                <!-- formulario ESTOQUE-->
+                                <div v-if="nomeObjeto == 'estoque'" class="modal-body">
+                                    <select_geral nome_model="tipo_movimentacao_id" :obj_dropdown="tipo_movimentacaos" nome_atributo="name" id_atributo="id" nome="Escolha o tipo"></select_geral>
+                                    <select_geral nome_model="produto_id" :obj_dropdown="produtos" nome_atributo="name" id_atributo="id" nome="Escolha o produto"></select_geral>
+                                    <input_geral nome="Quantidade" tipo="number" nome_model="qty_item"></input_geral>
+                                    <input_geral nome="Observação" tipo="text" nome_model="observation"></input_geral>
                                 </div>
 
                                 <!-- formulario PAIS-->
@@ -280,15 +308,14 @@
                     <div v-if="nomeObjeto == 'pedido' && objetos !== null" class="row">
                         <table_acordion
                             :classe_atributos="[
-                                {titulo: 'Data solicitação', conteudo: 'issue_date'},
+                                {titulo: 'Data solicitação', conteudo: 'created_at'},
                                 {titulo: 'Total', conteudo: 'total_price'},
-                                {titulo: 'Metodo de pagamento', conteudo: 'payment_method'},
+                                {titulo: 'Metodo de pagamento', conteudo: 'metodo_pagamento', conteudo2: 'name'},
                                 {titulo: 'Cliente', conteudo: 'cliente', conteudo2: 'name' },
                                 {titulo: 'Vendedor',  conteudo: 'vendedor', conteudo2: 'name'}
                             ]"
                             :objeto_imp="objetos"
                             :obj_acordion="[
-                                {titulo: 'Criado em', conteudo: 'created_at'},
                                 {titulo: 'Pedido aprovado em', conteudo: 'approval_date'},
                                 {titulo: 'Data entrega', conteudo: 'delivery_date'},
                                 {titulo: 'Data pagamento', conteudo: 'payday'},
@@ -401,7 +428,7 @@
                         <div v-else-if="nomeObjeto == 'produto' && objetos !== null" class="row">
                             <table_acordion     :classe_atributos="[
                                                         {titulo: 'Nome', conteudo: 'name', ordenacao: 'produtos.name'},
-                                                        {titulo: 'Tipo', conteudo: 'type', ordenacao: 'produtos.type' },
+                                                        {titulo: 'Tipo', conteudo: 'tipo_produto', conteudo2: 'name' , ordenacao: 'tipo_produtos.name' },
                                                         {titulo: 'Valor de Venda', conteudo: 'sale_price', ordenacao: 'produtos.sale_price'},
                                                         {titulo: 'Marca',  conteudo: 'marca', conteudo2: 'name', ordenacao: 'marcas.name'},
                                                         {titulo: 'Fornecedor',  conteudo: 'marca', conteudo2: 'fornecedor', conteudo3: 'company_name', ordenacao: 'fornecedors.name'}
@@ -414,6 +441,48 @@
                                                         {titulo: 'Peso por pacote ', conteudo: 'weight'},
                                                         {titulo: 'Preço de custo', conteudo: 'cost_price'},
                                                         {titulo: 'Estoque',  conteudo: 'estoques_sum_qty_item'}
+                                                    ]"
+                                                >
+                            </table_acordion>
+                        </div>
+
+                        <!-- Tabela Tipo_produto -->
+                        <div v-else-if="nomeObjeto == 'tipo_produto' && objetos !== null" class="row">
+                            <table_acordion     :classe_atributos="[
+                                                        {titulo: 'Nome do tipo', conteudo: 'name', ordenacao: 'name'}
+
+                                                    ]"
+                                                    :objeto_imp="objetos"
+                                                    :obj_acordion="[
+                                                        {titulo: 'Criado em', conteudo: 'created_at'}
+                                                    ]"
+                                                >
+                            </table_acordion>
+                        </div>
+
+                        <!-- Tabela Tipo_movimentacao -->
+                        <div v-else-if="nomeObjeto == 'tipo_movimentacao' && objetos !== null" class="row">
+                            <table_acordion     :classe_atributos="[
+                                                        {titulo: 'Nome do tipo', conteudo: 'name', ordenacao: 'name'}
+
+                                                    ]"
+                                                    :objeto_imp="objetos"
+                                                    :obj_acordion="[
+                                                        {titulo: 'Criado em', conteudo: 'created_at'}
+                                                    ]"
+                                                >
+                            </table_acordion>
+                        </div>
+
+                        <!-- Tabela Tipo_produto -->
+                        <div v-else-if="nomeObjeto == 'metodo_pagamento' && objetos !== null" class="row">
+                            <table_acordion     :classe_atributos="[
+                                                        {titulo: 'Nome do metodo', conteudo: 'name', ordenacao: 'name'}
+
+                                                    ]"
+                                                    :objeto_imp="objetos"
+                                                    :obj_acordion="[
+                                                        {titulo: 'Criado em', conteudo: 'created_at'}
                                                     ]"
                                                 >
                             </table_acordion>
@@ -525,7 +594,8 @@
                                                         {titulo: 'Data', conteudo: 'created_at', ordenacao: ''},
                                                         {titulo: 'Quantidade', conteudo: 'qty_item', ordenacao: '' },
                                                         {titulo: 'Produto', conteudo: 'produto', conteudo2: 'name'},
-                                                        {titulo: 'Marca',  conteudo: 'produto', conteudo2: 'marca', conteudo3: 'name'}
+                                                        {titulo: 'Marca',  conteudo: 'produto', conteudo2: 'marca', conteudo3: 'name'},
+                                                        {titulo: 'Tipo',  conteudo: 'tipo_movimentacao', conteudo2: 'name'}
 
                                                     ]"
                                                     :objeto_imp="objetos"
@@ -533,9 +603,7 @@
                                                         {titulo: 'Entrada/Saida',  conteudo: 'estoqueable_type'},
                                                         {titulo: 'Responsavel',  conteudo: 'estoqueable', conteudo2: 'name'},
 
-                                                        {titulo: 'Observação', conteudo: 'observation'},
-                                                        {titulo: 'Lote ', conteudo: 'batch'},
-                                                        {titulo: 'Validade', conteudo: 'expiration_date'}
+                                                        {titulo: 'Observação', conteudo: 'observation'}
                                                     ]"
                                                 >
                             </table_acordion>

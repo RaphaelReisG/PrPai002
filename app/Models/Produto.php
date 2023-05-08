@@ -11,7 +11,8 @@ class Produto extends Model
 
     protected $fillable = [
         'name',
-        'type',
+        //'type',
+        'tipo_produto_id',
         'quantity',
         'weight',
         'cost_price',
@@ -23,13 +24,17 @@ class Produto extends Model
         return $this->belongsTo(Marca::class);
     }
 
+    public function tipo_produto(){
+        return $this->belongsTo(Tipo_produto::class);
+    }
+
     public function pedidos(){
         return $this->belongsToMany(Pedido::class)
                         ->withPivot(['qty_item', 'price_iten']);
     }
 
     public function estoques(){
-        return $this->hasMany(Estoque::class);
+        return $this->hasMany(Estoque::class); 
     }
 
     /*public function totalEstoque(){
