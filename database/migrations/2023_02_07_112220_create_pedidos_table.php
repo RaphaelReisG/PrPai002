@@ -29,6 +29,7 @@ return new class extends Migration
             $table->string('observation', 150);
 
             $table->foreignId('cliente_id')->constrained('clientes');
+            $table->foreignId('vendedor_id')->constrained('vendedors');
 
             $table->timestamps();
         });

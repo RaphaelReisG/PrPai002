@@ -129,7 +129,8 @@ class DatabaseSeeder extends Seeder
             'total_price' => 52,
             'total_discount' => 0,
             'payment_method' => 'Dinheiro',
-            'observation' => 'Tudo entregue junto'
+            'observation' => 'Tudo entregue junto',
+            'vendedor_id' => 1
         ])->produtos()->attach([
             1 => ['qty_item' => 1, 'price_iten' => 22],
             2 => ['qty_item' => 1, 'price_iten' => 30]

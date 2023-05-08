@@ -284,7 +284,7 @@
                                 {titulo: 'Total', conteudo: 'total_price'},
                                 {titulo: 'Metodo de pagamento', conteudo: 'payment_method'},
                                 {titulo: 'Cliente', conteudo: 'cliente', conteudo2: 'name' },
-                                {titulo: 'Vendedor',  conteudo: 'cliente', conteudo2: 'vendedor', conteudo3: 'name'}
+                                {titulo: 'Vendedor',  conteudo: 'vendedor', conteudo2: 'name'}
                             ]"
                             :objeto_imp="objetos"
                             :obj_acordion="[

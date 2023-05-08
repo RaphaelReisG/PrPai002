@@ -24,6 +24,10 @@ class Pedido extends Model
         return $this->belongsTo(Cliente::class);
     }
 
+    public function vendedor(){
+        return $this->belongsTo(Vendedor::class);
+    }
+
     public function produtos(){
         return $this->belongsToMany(Produto::class)->withPivot(['qty_item', 'price_iten'])->with(['marca']);
     }

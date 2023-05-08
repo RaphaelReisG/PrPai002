@@ -14,4 +14,8 @@ class Vendedor extends Usuario_sistema
     public function clientes(){
         return $this->hasMany(Cliente::class);
     }
+
+    public function pedidos(){
+        return $this->hasMany(Pedido::class)->with(['produtos']);
+    }
 }
