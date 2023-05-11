@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Marca;
 use Illuminate\Http\Request;
+use App\Http\Requests\marcaRequest;
 
 use App\Http\Resources\TesteResource;
 
@@ -58,7 +59,7 @@ class MarcaController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(marcaRequest $request)
     {
         return $marca = Fornecedor::findOrfail($request->fornecedor_id)->marcas()->create($request->all());
     }
@@ -93,7 +94,7 @@ class MarcaController extends Controller
      * @param  \App\Models\Marca  $marca
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request,  Marca $marca)
+    public function update(marcaRequest $request,  Marca $marca)
     {
         //$obj = Marca::findOrfail($id);
         return $marca->update($request->all());
