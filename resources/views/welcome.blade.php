@@ -15,6 +15,7 @@
         </style>
 
         <style>
+            /*Estilização da tela Inicial */
             body {
                 font-family: 'Nunito', sans-serif;
             }

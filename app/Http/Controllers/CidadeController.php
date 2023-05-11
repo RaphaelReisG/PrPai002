@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Cidade;
 use Illuminate\Http\Request;
+use App\Http\Requests\CidadeRequest;
 
 use App\Http\Resources\TesteResource;
 
@@ -36,7 +37,7 @@ class CidadeController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CidadeRequest $request)
     {
         Cidade::create($request->all());
     }
@@ -71,7 +72,7 @@ class CidadeController extends Controller
      * @param  \App\Models\Cidade  $cidade
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Cidade $cidade)
+    public function update(CidadeRequest $request, Cidade $cidade)
     {
         $cidade->update($request->all());
     }
