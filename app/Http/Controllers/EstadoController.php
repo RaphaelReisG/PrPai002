@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Estado;
 use Illuminate\Http\Request;
+use App\Http\Requests\estadoRequest;
 
 use App\Http\Resources\TesteResource;
 use App\Models\Pais;
@@ -37,7 +38,7 @@ class EstadoController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(estadoRequest $request)
     {
         $estado = Pais::findOrfail($request->pais_id)->estados()->create($request->only('name_state'));
         // Estado::create($request->all());
@@ -74,7 +75,7 @@ class EstadoController extends Controller
      * @param  \App\Models\Estado  $estado
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request,  Estado $estado)
+    public function update(estadoRequest $request,  Estado $estado)
     {
         //$obj = Estado::findOrfail($id);
         $estado->update($request->all());
