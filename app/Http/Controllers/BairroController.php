@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Bairro;
 use Illuminate\Http\Request;
+use App\Http\Requests\bairroRequest;
 
 use App\Http\Resources\TesteResource;
 
@@ -36,7 +37,7 @@ class BairroController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(bairroRequest $request)
     {
         Bairro::create($request->all());
     }
@@ -72,7 +73,7 @@ class BairroController extends Controller
      * @param  \App\Models\Bairro  $bairro
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request,  Bairro $bairro)
+    public function update(bairroRequest $request,  Bairro $bairro)
     {
         $bairro->update($request->all());
     }
