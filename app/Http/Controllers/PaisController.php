@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Pais;
 use Illuminate\Http\Request;
-
+use App\Http\Requests\paisRequest;
 use App\Http\Resources\TesteResource;
 
 class PaisController extends Controller
@@ -23,7 +23,7 @@ class PaisController extends Controller
     }
 
 
-    public function store(Request $request)
+    public function store(paisRequest $request)
     {
         Pais::create($request->all());
     }
@@ -42,7 +42,7 @@ class PaisController extends Controller
     }
 
 
-    public function update(Request $request, $id)
+    public function update(paisRequest $request, $id)
     {
         $pais = Pais::findOrfail($id);
         error_log($request->name_country);

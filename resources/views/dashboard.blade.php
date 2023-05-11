@@ -189,6 +189,7 @@
             <div class="modal fade" id="modalObjeto" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
                     <div class="modal-content">
+                        <form>
                         <div v-if="modalErro == false"> <!-- conteudo-->
                             <modal_header></modal_header> <!-- Cabecalho modal-->
                             <div v-if="modalSucesso == false"> <!-- conteudo modal -->
@@ -297,6 +298,7 @@
                         <div v-else> <!-- Erro retornado!-->
                             <modal_erro></modal_erro>
                         </div>
+                        </form>
                     </div>
                 </div>
             </div>

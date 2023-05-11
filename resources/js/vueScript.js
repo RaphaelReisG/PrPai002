@@ -516,7 +516,7 @@ var app = new Vue({
             }
             else if(classe == 'marca'){
                 if(
-                    this.modelObjetos[0]['name'] == "" && this.modelObjetos[0]['fornecedor_id'] == ""
+                    this.modelObjetos[0]['name'] == "" || this.modelObjetos[0]['fornecedor_id'] == ""
                 ){
                     alert("Erro");
                     return true;
@@ -527,12 +527,12 @@ var app = new Vue({
             }
             else if(classe == 'produto'){
                 if(
-                    this.modelObjetos[0]['name'] == "" &&
-                    this.modelObjetos[0]['type'] == "" &&
-                    this.modelObjetos[0]['quantity'] == "" &&
-                    this.modelObjetos[0]['weight'] == "" &&
-                    this.modelObjetos[0]['cost_price'] == "" &&
-                    this.modelObjetos[0]['sale_price'] == "" &&
+                    this.modelObjetos[0]['name'] == "" ||
+                    this.modelObjetos[0]['type'] == "" ||
+                    this.modelObjetos[0]['quantity'] == "" ||
+                    this.modelObjetos[0]['weight'] == "" ||
+                    this.modelObjetos[0]['cost_price'] == "" ||
+                    this.modelObjetos[0]['sale_price'] == "" ||
                     this.modelObjetos[0]['marca_id'] == ""
                 ){
                     alert("Erro");
@@ -615,7 +615,7 @@ var app = new Vue({
 
             else if(classe == 'estado'){
                 if(
-                    this.modelObjetos[0]['name_state'] == "" && this.modelObjetos[0]['pais_id'] == ""
+                    this.modelObjetos[0]['name_state'] == "" || this.modelObjetos[0]['pais_id'] == ""
                 ){
                     alert("Erro");
                     return true;

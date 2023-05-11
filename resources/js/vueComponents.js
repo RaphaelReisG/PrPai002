@@ -60,7 +60,7 @@ Vue.component('menu_titulo', {
     props: ['nome_titulo'],
     template: `
         <a class="navbar-brand" href="/">{{nome_titulo}}</a>
-        
+
     `
 });
 
@@ -79,7 +79,7 @@ Vue.component('menu_dropdown_item', {
 });
 
 //---------
-//modals 
+//modals
 
 Vue.component('modal_header', {
     template: `
@@ -127,7 +127,7 @@ Vue.component('modal_sucesso', {
         props: ['nome_model', 'tipo', 'nome'],
         template: `
         <div class="form-floating mb-3">
-            <input :type="tipo" class="form-control" id="floatingInput"  v-model="$root.modelObjetos[0][nome_model]">
+            <input :type="tipo" class="form-control" id="floatingInput"  v-model="$root.modelObjetos[0][nome_model]" required>
             <label for="floatingInput">{{nome}}</label>
         </div>
         `
@@ -137,7 +137,7 @@ Vue.component('modal_sucesso', {
         props: ['nome_model','obj_dropdown', 'nome_atributo', 'nome', 'id_atributo'],
         template: `
             <div class="form-floating mb-3">
-                <select id="floatingInput" class="form-select" aria-label="Selecione" v-model="$root.modelObjetos[0][nome_model]">
+                <select id="floatingInput" class="form-select" aria-label="Selecione" v-model="$root.modelObjetos[0][nome_model]" required>
                     <option v-for="(obj, index) in obj_dropdown" v-bind:value="obj_dropdown[index][id_atributo]" > {{obj_dropdown[index][nome_atributo]}}</option>
                 </select>
                 <label for="floatingInput">{{nome}}</label>
@@ -159,7 +159,7 @@ Vue.component('modal_sucesso', {
         props: ['nome_model', 'nome'],
         template: `
             <div class="input-group mb-3">
-                <input :placeholder="nome" :aria-label="nome" :type="$root.mostrarSenha" class="form-control"   v-model="$root.modelObjetos[0][nome_model]" aria-describedby="button-addon3">
+                <input :placeholder="nome" :aria-label="nome" :type="$root.mostrarSenha" class="form-control"   v-model="$root.modelObjetos[0][nome_model]" aria-describedby="button-addon3" required>
                 <button v-if="$root.mostrarSenha == 'password'" v-on:click="$root.mostrarSenha = 'text'" class="btn btn-outline-secondary" type="button" id="button-addon3">Mostrar {{nome}}</button>
                 <button v-else v-on:click="$root.mostrarSenha = 'password'" class="btn btn-outline-secondary" type="button" id="button-addon3">Esconder {{nome}}</button>
             </div>
@@ -435,7 +435,7 @@ Vue.component('button_cancelar_modal', {
 
 Vue.component('button_acao', {
     template: `
-        <button type="button" class="btn btn-primary" v-on:click="$root.escolheAcaoObjeto($root.acaoObjeto, $root.nomeObjeto)">
+        <button type="submit" class="btn btn-primary" v-on:click="$root.escolheAcaoObjeto($root.acaoObjeto, $root.nomeObjeto)">
             <span v-if="$root.carregando == true" class="spinner-border spinner-border-sm" role="status" aria-hidden="true" ></span>
             {{$root.acaoObjeto}}
         </button>
