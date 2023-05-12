@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Tipo_produto;
 use Illuminate\Http\Request;
+use App\Http\Requests\TipoProdutoRequest;
 
 class TipoProdutoController extends Controller
 {
@@ -47,7 +48,7 @@ class TipoProdutoController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(TipoProdutoRequest $request)
     {
         return $tipo_produto = Tipo_produto::create($request->all());
     }
@@ -81,7 +82,7 @@ class TipoProdutoController extends Controller
      * @param  \App\Models\Tipo_produto  $tipo_produto
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Tipo_produto $tipo_produto)
+    public function update(TipoProdutoRequest $request, Tipo_produto $tipo_produto)
     {
         return $tipo_produto->update($request->all());
     }
