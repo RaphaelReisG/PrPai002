@@ -7,6 +7,7 @@ use App\Models\Cliente;
 use App\Models\Vendedor;
 use App\Models\Fornecedor;
 use Illuminate\Http\Request;
+use App\Http\Requests\TelefoneRequest;
 
 use App\Http\Resources\TesteResource;
 
@@ -39,7 +40,7 @@ class TelefoneController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(TelefoneRequest $request)
     {
 
         if($request->tipoUsuario == "AppModelsCliente"){
@@ -88,7 +89,7 @@ class TelefoneController extends Controller
      */
     public function update(Request $request, Telefone $telefone)
     {
-        $telefone->update($request->all());
+        $telefone->update($TelefoneRequest->all());
     }
 
     /**
