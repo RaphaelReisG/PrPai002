@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Produto;
 use Illuminate\Http\Request;
+use App\Http\Requests\ProdutoRequest;
 
 use App\Http\Resources\TesteResource;
 use App\Models\Marca;
@@ -67,7 +68,7 @@ class ProdutoController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ProdutoRequest $request)
     {
         return $produto = Marca::findOrfail($request->marca_id)->produtos()->create($request->all());
     }
@@ -103,7 +104,7 @@ class ProdutoController extends Controller
      * @param  \App\Models\Produto  $administrador
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Produto $produto)
+    public function update(ProdutoRequest $request, Produto $produto)
     {
         //$obj = Produto::findOrfail($id);
         return $produto->update($request->all());
