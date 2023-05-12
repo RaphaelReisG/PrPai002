@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Administrador;
 use Illuminate\Http\Request;
+use App\Http\Requests\AdministradorRequest;
 
 use App\Http\Resources\TesteResource;
 
@@ -76,7 +77,7 @@ class AdministradorController extends Controller
     }
 
 
-    public function store(Request $request)
+    public function store(AdministradorRequest $request)
     {
 
         $administrador = Administrador::create($request->only('name'));
@@ -96,7 +97,7 @@ class AdministradorController extends Controller
         //
     }
 
-    public function update(Request $request, Administrador $administrador)
+    public function update(AdministradorRequest $request, Administrador $administrador)
     {
         $administrador->update($request->only('name'));
         if(isset($request->password)){
