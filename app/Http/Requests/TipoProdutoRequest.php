@@ -37,7 +37,7 @@ class TipoProdutoRequest extends FormRequest
     {
         return [
             'name.required' => 'O nome do produto é obrigatório',
-            'name.max' => 'Máximo 45 caracteres no nome',
+            'name.max' => 'Máximo 45 caracteres no nome do tipo do produto',
 
             /*'estado_id.required' => 'O ID da cidade é obrigatório',
             'estado_id.integer' => 'O estado deve ser inteiro'

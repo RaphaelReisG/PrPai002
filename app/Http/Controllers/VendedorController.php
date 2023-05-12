@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Vendedor;
 use Illuminate\Http\Request;
+use App\Http\Requests\VendedorRequest;
 
 use App\Http\Resources\TesteResource;
 
@@ -55,7 +56,7 @@ class VendedorController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(VendedorRequest $request)
     {
         $vendedor = Vendedor::create($request->only('name'));
         $vendedor->user()->create(['email'=> $request->email, 'password'=>Hash::make($request->password)])->givePermissionTo('admin');
@@ -90,7 +91,7 @@ class VendedorController extends Controller
      * @param  \App\Models\Vendedor  $administrador
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Vendedor $vendedor)
+    public function update(VendedorRequest $request, Vendedor $vendedor)
     {
         //$obj = Vendedor::findOrfail($id);
         //$obj->update($request->all());

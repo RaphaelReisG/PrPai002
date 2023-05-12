@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class AdministradorRequest extends FormRequest
+class VendedorRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -36,10 +36,13 @@ class AdministradorRequest extends FormRequest
     public function messages()
     {
         return [
-            'name.required' => 'O Nome do Admin é obrigatório',
-            'name.max' => 'Máximo 45 caracteres no nome do Admin',
-            
-            /*'modelo.required' => 'Mdelo é obrigatório',
+            'name.required' => 'O nome do vendedor deve ser preenchido',
+            'name.max' => 'Máximo 45 caracteres no nome do vendedor',
+
+            /*'estado_id.required' => 'O ID da cidade é obrigatório',
+            'estado_id.integer' => 'O estado deve ser inteiro'
+
+            'modelo.required' => 'Mdelo é obrigatório',
             'modelo.max' => 'modelo máximo 50 caracteres',
 
             'ano.min' => 'Ano deve ser maior que 1900',

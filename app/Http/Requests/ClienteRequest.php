@@ -37,8 +37,8 @@ class ClienteRequest extends FormRequest
     public function messages()
     {
         return [
-            'name.required' => 'Nome é obrigatório',
-            'name.max' => 'O nome deve ter no máximo 45 caracteres',
+            'name.required' => 'Nome do cliente é obrigatório',
+            'name.max' => 'O nome do cliente deve ter no máximo 45 caracteres', 
 
             'company_name.required' => 'O nome da empresa não poe estar em branco',
             'company_name.max' => 'Máximo de 45 caracteres no nome da empresa',
