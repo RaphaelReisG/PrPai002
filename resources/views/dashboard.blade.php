@@ -187,7 +187,7 @@
 
             <!-- Modal Cadastro/edicao geral -->
             <div class="modal fade" id="modalObjeto" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
+                <div class="modal-dialog modal-dialog-centered modal-xl">
                     <div class="modal-content">
                         <form>
                         <div v-if="modalErro == false"> <!-- conteudo-->

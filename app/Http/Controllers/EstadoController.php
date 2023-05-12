@@ -16,10 +16,35 @@ class EstadoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         //return Estado::all();
-        return Estado::with([ 'pais' ])->paginate(10);
+        //return Estado::with([ 'pais' ])->paginate(10);
+
+        $estado = Estado::with([ 'pais' ])
+        ->join('pais', 'estados.pais_id', '=', 'pais.id' )
+        //->join('vendedors', 'clientes.vendedor_id', '=', 'vendedors.id' )
+        ->select('estados.*')
+        ->groupBy('estados.id', 'estados.name', 'estados.created_at', 'estados.updated_at');
+
+
+        if ($request->has('buscarObjeto')) {
+            $estado->where(function ($query) use ($request) {
+                $query->where('estados.name', 'like', '%' . $request->buscarObjeto . '%')
+                ->orWhere('pais.name', 'like', '%' . $request->buscarObjeto . '%');
+            });
+        }
+
+        if ($request->has('ordenacaoBusca')) {
+            $estado->orderBy($request->ordenacaoBusca);
+        }
+
+        if ($request->has('paginacao')) {
+            return $estado->get();
+            //error_log('passou aki');
+        }
+
+        return $estado->paginate(10);
     }
 
     /**
