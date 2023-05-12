@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Fornecedor;
 use Illuminate\Http\Request;
+use App\Http\Requests\FornecedorRequest;
 
 use App\Http\Resources\TesteResource;
 
@@ -55,7 +56,7 @@ class FornecedorController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(FornecedorRequest $request)
     {
         return Fornecedor::create($request->all());
     }
@@ -90,7 +91,7 @@ class FornecedorController extends Controller
      * @param  \App\Models\Fornecedor  $fornecedor
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Fornecedor $fornecedor)
+    public function update(FornecedorRequest $request, Fornecedor $fornecedor)
     {
         //$obj = Fornecedor::findOrfail($id);
         $fornecedor->update($request->all());

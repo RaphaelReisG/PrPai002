@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
 
             $table->string('email')->unique();
-            $table->integer('cnpj');
+            $table->unsignedBigInteger('cnpj');
             $table->string('company_name', 45);
             $table->string('name', 45);
 
