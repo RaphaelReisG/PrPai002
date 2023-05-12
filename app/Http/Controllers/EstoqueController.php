@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Estoque;
+use App\Models\Administrador;
 use Illuminate\Http\Request;
 
 use App\Http\Resources\TesteResource;
@@ -37,7 +38,9 @@ class EstoqueController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        if($request->requisitante == 'administrador'){
+            return $estoque = Administrador::findOrfail($request->requisitante_id)->estoqueable()->create($request->all());
+        }
     }
 
     /**
@@ -71,7 +74,7 @@ class EstoqueController extends Controller
      */
     public function update(Request $request, Estoque $estoque)
     {
-        //
+        return $estoque->update($request->all());
     }
 
     /**

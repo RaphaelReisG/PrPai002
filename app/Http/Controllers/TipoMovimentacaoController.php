@@ -13,7 +13,7 @@ class TipoMovimentacaoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request) 
+    public function index(Request $request)
     {
         $tipo_movimentacao = Tipo_movimentacao::with(['estoques']);
 
@@ -28,11 +28,11 @@ class TipoMovimentacaoController extends Controller
         }
 
         if ($request->has('paginacao')) {
-            return $tipo_movimentacao->paginate($request->paginacao);
+            return $tipo_movimentacao->get();
             error_log('passou aki');
         }
 
-        return $tipo_movimentacao->get();
+        return $tipo_movimentacao->paginate(10);
     }
 
     /**

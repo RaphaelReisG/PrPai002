@@ -71,8 +71,9 @@ var app = new Vue({
             this.objetos = null;
             this.carregandoGeral = true;
             var url;
-            const paginacao = 10;
-            url = '/api/'+classe+'?paginacao='+paginacao;
+            //const paginacao = 10;
+            //url = '/api/'+classe+'?paginacao='+paginacao;
+            url = '/api/'+classe;
 
             /*fetch(url).then((res) => res.json())
                     .then((data) => this.objetos = data).finally(this.carregandoGeral = false);
@@ -781,24 +782,26 @@ var app = new Vue({
             this.tipo_movimentacaos = null;
             this.carregandoGeral = true;
             var url;
-            url = '/api/tipo_movimentacao';
+            const paginacao = false;
+            url = '/api/tipo_movimentacao'+'?paginacao=false';
             //alert(url);
 
             axios
                 .get(url)
-                .then(response => (this.tipo_movimentacaos = response.data.data))
+                .then(response => (this.tipo_movimentacaos = response.data))
                 .catch(error => (this.error = error));
         },
         buscaProdutos: function() {
-            this.tipo_movimentacaos = null;
+            this.produtos = null;
             this.carregandoGeral = true;
             var url;
-            url = '/api/tipo_movimentacao';
+            const paginacao = false;
+            url = '/api/produto'+'?paginacao=false';
             //alert(url);
 
             axios
                 .get(url)
-                .then(response => (this.tipo_movimentacaos = response.data.data))
+                .then(response => (this.produtos = response.data))
                 .catch(error => (this.error = error));
         }
 

@@ -47,6 +47,11 @@ class ProdutoController extends Controller
             $produto->orderBy($request->ordenacaoBusca);
         }
 
+        if ($request->has('paginacao')) {
+            return $produto->get();
+            //error_log('passou aki');
+        }
+
         return $produto->withSum('estoques', 'qty_item')->paginate(4);
 
         //return Produto::with(['marca', 'marca.fornecedor', 'estoques' ])->withSum('estoques', 'qty_item')->paginate(10);
