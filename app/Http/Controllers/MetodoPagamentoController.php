@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\MetodoPagamento;
 use Illuminate\Http\Request;
+use App\Http\Requests\MetodoPagamentoRequest;
 
 class MetodoPagamentoController extends Controller
 {
@@ -45,7 +46,7 @@ class MetodoPagamentoController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(MetodoPagamentoRequest $request)
     {
         return $metodoPagamento = MetodoPagamento::create($request->all());
     }
@@ -79,7 +80,7 @@ class MetodoPagamentoController extends Controller
      * @param  \App\Models\MetodoPagamento  $metodoPagamento
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, MetodoPagamento $metodoPagamento)
+    public function update(MetodoPagamentoRequest $request, MetodoPagamento $metodoPagamento)
     {
         return $metodoPagamento->update($request->all());
     }
