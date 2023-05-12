@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Endereco;
+use App\Models\Cliente;
+use App\Models\Vendedor;
+use App\Models\Fornecedor;
+use App\Models\Cidade;
 use Illuminate\Http\Request;
 
 use App\Http\Resources\TesteResource;
@@ -38,7 +42,22 @@ class EnderecoController extends Controller
      */
     public function store(Request $request)
     {
-        Endereco::create($request->all());
+        //Endereco::create($request->all());
+
+        $bairro = Cidade::findOrFail($request->city_id)->bairros()->firstOrCreate($request->name_neighborhood)->id;
+        $request->neighborhood_id = $bairro;
+
+        if($request->tipoUsuario == "AppModelsCliente"){
+            //error_log("telefone, passou cliente aki");
+            return Cliente::find($request->enderecoable_id)->enderecos()->create($request->all());
+        }else if($request->tipoUsuario == "AppModelsVendedor"){
+            return Vendedor::find($request->enderecoable_id)->enderecos()->create($request->all());
+        }else if($request->tipoUsuario == "AppModelsFornecedor"){
+            return Fornecedor::find($request->enderecoable_id)->enderecos()->create($request->all());
+        }
+        else{
+            error_log("Tipo usuario para add telefone não encontrado.");
+        }
     }
 
     /**
@@ -76,13 +95,16 @@ class EnderecoController extends Controller
         //$obj = Endereco::findOrfail($id);
         //$obj->update($request->all());
 
-        $endereco->update($request->all());
-        $endereco->bairro()->update($request->only('name_neighborhood'));
+        $bairro = Cidade::findOrFail($request->city_id)->bairros()->firstOrCreate($request->name_neighborhood)->id;
+        $request->neighborhood_id = $bairro;
+
+        return $endereco->update($request->all());
+        /*$endereco->bairro()->update($request->only('name_neighborhood'));
         $endereco->bairro()->cidade()->update($request->only('name_city'));
         $endereco->bairro()->cidade()->estado()->update($request->only('name_state'));
-        $endereco->bairro()->cidade()->estado()->pais()->update($request->only('name_country'));
+        $endereco->bairro()->cidade()->estado()->pais()->update($request->only('name_country'));*/
 
-        return new TesteResource($endereco, $endereco->bairro);
+        
     }
 
     /**

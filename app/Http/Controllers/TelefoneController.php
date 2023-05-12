@@ -18,10 +18,35 @@ class TelefoneController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         //return Telefone::all();
         return Telefone::with(['telefoneable'])->paginate(10);
+
+        $telefone = Telefone::with([ 'telefoneable' ])
+        ->join('telefoneable', 'telefones.telefoneable_id', '=', 'telefoneable.id' )
+        //->join('vendedors', 'clientes.vendedor_id', '=', 'vendedors.id' )
+        ->select('telefones.*')
+        ->groupBy('telefones.id', 'telefones.number_phone', 'telefones.telefoneable_id', 'telefones.telefoneable_type', 'telefones.created_at', 'telefones.updated_at');
+
+
+        if ($request->has('buscarObjeto')) {
+            $telefone->where(function ($query) use ($request) {
+                $query->where('telefones.number_phone', 'like', '%' . $request->buscarObjeto . '%')
+                ->orWhere('telefoneable.name', 'like', '%' . $request->buscarObjeto . '%');
+            });
+        }
+
+        if ($request->has('ordenacaoBusca')) {
+            $telefone->orderBy($request->ordenacaoBusca);
+        }
+
+        if ($request->has('paginacao')) {
+            return $telefone->get();
+            //error_log('passou aki');
+        }
+
+        return $telefone->paginate(10);
     }
 
     /**
@@ -35,27 +60,26 @@ class TelefoneController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created resource in storage. 
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(TelefoneRequest $request)
     {
-
         if($request->tipoUsuario == "AppModelsCliente"){
-            error_log("telefone, passou cliente aki");
-            return Cliente::find($request->idUsuario)->telefones()->create($request->only('number_phone'));
+            //error_log("telefone, passou cliente aki");
+            return Cliente::find($request->telefoneable_id)->telefones()->create($request->only('number_phone'));
         }else if($request->tipoUsuario == "AppModelsVendedor"){
-
+            return Vendedor::find($request->telefoneable_id)->telefones()->create($request->only('number_phone'));
         }else if($request->tipoUsuario == "AppModelsFornecedor"){
-
+            return Fornecedor::find($request->telefoneable_id)->telefones()->create($request->only('number_phone'));
         }
         else{
             error_log("Tipo usuario para add telefone não encontrado.");
         }
 
-        Telefone::create($request->all());
+        //Telefone::create($request->all());
     }
 
     /**
@@ -67,6 +91,7 @@ class TelefoneController extends Controller
     public function show(Telefone $telefone)
     {
         return $telefone;
+        return new TesteResource($telefone, $telefone->telefoneable);
     }
 
     /**
@@ -87,9 +112,9 @@ class TelefoneController extends Controller
      * @param  \App\Models\Telefone  $telefone
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Telefone $telefone)
+    public function update(TelefoneRequest $request, Telefone $telefone)
     {
-        $telefone->update($TelefoneRequest->all());
+        return $telefone->update($request->all());
     }
 
     /**
@@ -100,6 +125,6 @@ class TelefoneController extends Controller
      */
     public function destroy(Telefone $telefone)
     {
-        $telefone->delete();
+        return $telefone->delete();
     }
 }

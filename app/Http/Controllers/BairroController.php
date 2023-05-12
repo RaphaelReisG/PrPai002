@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Bairro;
+use App\Models\Cidade;
 use Illuminate\Http\Request;
 use App\Http\Requests\bairroRequest;
 
@@ -15,10 +16,40 @@ class BairroController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         //return Bairro::all();
         return Bairro::with(['cidade', 'cidade.estado', 'cidade.estado.pais' ])->paginate(10);
+    
+        $bairro = Bairro::with(['cidade', 'cidade.estado', 'cidade.estado.pais'])
+        ->join('cidades', 'bairros.cidade_id', '=', 'cidades.id' )
+        ->join('estados', 'cidades.estado_id', '=', 'estado.id' )
+        ->join('pais', 'estados.pais_id', '=', 'pais.id' )
+        //->join('vendedors', 'clientes.vendedor_id', '=', 'vendedors.id' )
+        ->select('bairros.*')
+        ->groupBy('bairros.id', 'bairros.name_neighborhood', 'bairros.cidade_id', 'bairros.created_at', 'bairros.updated_at');
+
+
+        if ($request->has('buscarObjeto')) {
+            $bairro->where(function ($query) use ($request) {
+                $query->where('bairros.name_neighborhood', 'like', '%' . $request->buscarObjeto . '%')
+                ->orWhere('cidades.name_city', 'like', '%' . $request->buscarObjeto . '%')
+                ->orWhere('estados.name_state', 'like', '%' . $request->buscarObjeto . '%')
+                ->orWhere('pais.name_country', 'like', '%' . $request->buscarObjeto . '%');
+            });
+        }
+
+        if ($request->has('ordenacaoBusca')) {
+            $bairro->orderBy($request->ordenacaoBusca);
+        }
+
+        if ($request->has('paginacao')) {
+            return $bairro->get();
+            //error_log('passou aki');
+        }
+
+        return $bairro->paginate(10);
+    
     }
 
     /**
@@ -39,7 +70,8 @@ class BairroController extends Controller
      */
     public function store(bairroRequest $request)
     {
-        Bairro::create($request->all());
+        //Bairro::create($request->all());
+        return $bairro = Cidade::findOrfail($request->cidade_id)->bairros()->create($request->all());
     }
 
     /**
@@ -75,7 +107,7 @@ class BairroController extends Controller
      */
     public function update(bairroRequest $request,  Bairro $bairro)
     {
-        $bairro->update($request->all());
+        return $bairro->update($request->all());
     }
 
     /**
@@ -87,6 +119,6 @@ class BairroController extends Controller
     public function destroy(Bairro $bairro)
     {
         //$obj = Bairro::findOrfail($id);
-        $bairro->delete();
+        return $bairro->delete();
     }
 }

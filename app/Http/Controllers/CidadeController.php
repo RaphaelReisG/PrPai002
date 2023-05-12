@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cidade;
+use App\Models\Estado;
 use Illuminate\Http\Request;
 use App\Http\Requests\CidadeRequest;
 
@@ -15,10 +16,37 @@ class CidadeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         //return Cidade::all();
-        return Cidade::with([ 'estado', 'estado.pais' ])->paginate(10);
+        //return Cidade::with([ 'estado', 'estado.pais' ])->paginate(10);
+
+        $cidade = Cidade::with([ 'estado',  'estado.pais'])
+        ->join('estados', 'cidades.estado_id', '=', 'estado.id' )
+        ->join('pais', 'estados.pais_id', '=', 'pais.id' )
+        //->join('vendedors', 'clientes.vendedor_id', '=', 'vendedors.id' )
+        ->select('cidades.*')
+        ->groupBy('cidades.id', 'cidades.name_city', 'cidades.estado_id', 'cidades.created_at', 'cidades.updated_at');
+
+
+        if ($request->has('buscarObjeto')) {
+            $cidade->where(function ($query) use ($request) {
+                $query->where('cidades.name_city', 'like', '%' . $request->buscarObjeto . '%')
+                ->orWhere('estados.name_state', 'like', '%' . $request->buscarObjeto . '%')
+                ->orWhere('pais.name_country', 'like', '%' . $request->buscarObjeto . '%');
+            });
+        }
+
+        if ($request->has('ordenacaoBusca')) {
+            $cidade->orderBy($request->ordenacaoBusca);
+        }
+
+        if ($request->has('paginacao')) {
+            return $cidade->get();
+            //error_log('passou aki');
+        }
+
+        return $cidade->paginate(10);
     }
 
     /**
@@ -39,7 +67,11 @@ class CidadeController extends Controller
      */
     public function store(CidadeRequest $request)
     {
-        Cidade::create($request->all());
+        //Cidade::create($request->all());
+
+        $cidade = Estado::findOrfail($request->estado_id)->cidades()->create($request->all());
+        // Estado::create($request->all());
+        return $cidade;
     }
 
     /**
@@ -74,7 +106,7 @@ class CidadeController extends Controller
      */
     public function update(CidadeRequest $request, Cidade $cidade)
     {
-        $cidade->update($request->all());
+        return $cidade->update($request->all());
     }
 
     /**

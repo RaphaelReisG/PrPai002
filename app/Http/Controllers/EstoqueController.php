@@ -39,7 +39,7 @@ class EstoqueController extends Controller
     public function store(Request $request)
     {
         if($request->requisitante == 'administrador'){
-            return $estoque = Administrador::findOrfail($request->requisitante_id)->estoqueable()->create($request->all());
+            return $estoque = Administrador::findOrfail($request->estoqueable_id)->estoqueable()->create($request->all());
         }
     }
 
@@ -85,6 +85,6 @@ class EstoqueController extends Controller
      */
     public function destroy(Estoque $estoque)
     {
-        //
+        return $estoque->delete();
     }
 }

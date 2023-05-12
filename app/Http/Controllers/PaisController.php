@@ -10,10 +10,31 @@ use App\Http\Resources\TesteResource;
 class PaisController extends Controller
 {
 
-    public function index()
+    public function index(Request $request)
     {
         //return Pais::all();
-        return Pais::paginate(10);
+        //return Pais::paginate(10);
+
+        $pais = Pais::with([ 'estados' ]);
+
+        if ($request->has('buscarObjeto')) {
+            $pais->where(function ($query) use ($request) {
+                $query->where('pais.name_country', 'like', '%' . $request->buscarObjeto . '%');
+            });
+        }
+
+        if ($request->has('ordenacaoBusca')) {
+            $pais->orderBy($request->ordenacaoBusca);
+        }
+
+        if ($request->has('paginacao')) {
+            return $pais->get();
+            //error_log('passou aki');
+        }
+
+        return $pais->paginate(10);
+
+
     }
 
 
