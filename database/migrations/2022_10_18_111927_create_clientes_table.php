@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('name');
 
             $table->string('company_name' , 45 );
-            $table->integer('cnpj');
+            $table->unsignedBigInteger('cnpj');
 
             //$table->integer('number_phone');
             //$table->integer('number_cellphone');

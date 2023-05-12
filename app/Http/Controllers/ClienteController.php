@@ -9,6 +9,7 @@ use App\Models\Bairro;
 use App\Models\Estado;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\ClienteRequest;
 
 use Illuminate\Support\Facades\Hash;
 
@@ -113,7 +114,7 @@ class ClienteController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ClienteRequest $request)
     {
         //Cliente::create($request->all());
 
@@ -159,7 +160,7 @@ class ClienteController extends Controller
      * @param  \App\Models\Cliente  $cliente
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Cliente $cliente)
+    public function update(ClienteRequest $request, Cliente $cliente)
     {
         //$obj = Cliente::findOrfail($id);
         //$obj->update($request->all());
