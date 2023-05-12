@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Tipo_movimentacao;
 use Illuminate\Http\Request;
+use App\Http\Requests\TipoMovimentacaoRequest;
 
 class TipoMovimentacaoController extends Controller
 {
@@ -50,7 +51,7 @@ class TipoMovimentacaoController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(TipoMovimentacaoRequest $request)
     {
         return Tipo_movimentacao::create($request->all());
     }
@@ -84,7 +85,7 @@ class TipoMovimentacaoController extends Controller
      * @param  \App\Models\Tipo_movimentacao  $tipo_movimentacao
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Tipo_movimentacao $tipo_movimentacao)
+    public function update(TipoMovimentacaoRequest $request, Tipo_movimentacao $tipo_movimentacao)
     {
         return $tipo_movimentacao->update($request->all());
     }
