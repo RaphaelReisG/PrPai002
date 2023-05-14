@@ -60,19 +60,19 @@ class TelefoneController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage. 
+     * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(TelefoneRequest $request)
     {
-        if($request->tipoUsuario == "AppModelsCliente"){
+        if($request->tipoUsuario == "cliente"){
             //error_log("telefone, passou cliente aki");
             return Cliente::find($request->telefoneable_id)->telefones()->create($request->only('number_phone'));
-        }else if($request->tipoUsuario == "AppModelsVendedor"){
+        }else if($request->tipoUsuario == "vendedor"){
             return Vendedor::find($request->telefoneable_id)->telefones()->create($request->only('number_phone'));
-        }else if($request->tipoUsuario == "AppModelsFornecedor"){
+        }else if($request->tipoUsuario == "fornecedor"){
             return Fornecedor::find($request->telefoneable_id)->telefones()->create($request->only('number_phone'));
         }
         else{

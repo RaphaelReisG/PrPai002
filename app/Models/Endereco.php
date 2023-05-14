@@ -13,7 +13,10 @@ class Endereco extends Model
         'street_name',
         'cep',
         'house_number',
-        'complement'
+        'complement',
+        'bairro_id',
+        'enderecoable_id',
+        'enderecoable_type'
     ];
 
     public function bairro(){

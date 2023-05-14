@@ -10,6 +10,7 @@ use App\Models\Cidade;
 use Illuminate\Http\Request;
 
 use App\Http\Resources\TesteResource;
+use Illuminate\Console\View\Components\Alert;
 
 class EnderecoController extends Controller
 {
@@ -44,19 +45,22 @@ class EnderecoController extends Controller
     {
         //Endereco::create($request->all());
 
-        $bairro = Cidade::findOrFail($request->city_id)->bairros()->firstOrCreate($request->name_neighborhood)->id;
-        $request->neighborhood_id = $bairro;
+        $bairro = Cidade::findOrFail($request->cidade_id)->bairros()->firstOrCreate(['name_neighborhood' => $request->name_neighborhood])->id;
+        $request->merge(['bairro_id' => $bairro]);
 
-        if($request->tipoUsuario == "AppModelsCliente"){
+        error_log($bairro);
+        error_log($request->bairro_id);
+
+        if($request->tipoUsuario == "cliente"){
             //error_log("telefone, passou cliente aki");
             return Cliente::find($request->enderecoable_id)->enderecos()->create($request->all());
-        }else if($request->tipoUsuario == "AppModelsVendedor"){
+        }else if($request->tipoUsuario == "vendedor"){
             return Vendedor::find($request->enderecoable_id)->enderecos()->create($request->all());
-        }else if($request->tipoUsuario == "AppModelsFornecedor"){
+        }else if($request->tipoUsuario == "fornecedor"){
             return Fornecedor::find($request->enderecoable_id)->enderecos()->create($request->all());
         }
         else{
-            error_log("Tipo usuario para add telefone não encontrado.");
+            error_log("Tipo usuario para add endereco não encontrado.".$request->tipoUsuario );
         }
     }
 
@@ -94,17 +98,19 @@ class EnderecoController extends Controller
     {
         //$obj = Endereco::findOrfail($id);
         //$obj->update($request->all());
-
-        $bairro = Cidade::findOrFail($request->city_id)->bairros()->firstOrCreate($request->name_neighborhood)->id;
-        $request->neighborhood_id = $bairro;
+        error_log($request->enderecoable_type);
+        $bairro = Cidade::findOrFail($request->cidade_id)->bairros()->firstOrCreate(['name_neighborhood' => $request->name_neighborhood])->id;
+        $request->merge(['bairro_id' => $bairro]);
 
         return $endereco->update($request->all());
+
+
         /*$endereco->bairro()->update($request->only('name_neighborhood'));
         $endereco->bairro()->cidade()->update($request->only('name_city'));
         $endereco->bairro()->cidade()->estado()->update($request->only('name_state'));
         $endereco->bairro()->cidade()->estado()->pais()->update($request->only('name_country'));*/
 
-        
+
     }
 
     /**

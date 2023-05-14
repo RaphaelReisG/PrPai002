@@ -10,7 +10,10 @@ class Telefone extends Model
     use HasFactory;
 
     protected $fillable = [
-        'number_phone'
+        'number_phone',
+        'telefoneable_id',
+        'telefoneable_type',
+
     ];
 
     public function telefoneable(){

@@ -10,7 +10,8 @@ class Bairro extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name_neighborhood'
+        'name_neighborhood',
+        'cidade_id'
     ];
 
     public function cidade(){

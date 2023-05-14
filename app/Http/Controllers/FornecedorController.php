@@ -35,9 +35,14 @@ class FornecedorController extends Controller
             $fornecedor->orderBy($request->ordenacaoBusca);
         }
 
-        return $fornecedor->paginate(4);
+        if ($request->has('paginacao')) {
+            return $fornecedor->get();
+            //error_log('passou aki');
+        }
 
-        //return Fornecedor::with(['enderecos', 'telefones', ])->paginate(10); 
+        return $fornecedor->paginate(10);
+
+        //return Fornecedor::with(['enderecos', 'telefones', ])->paginate(10);
     }
 
     /**

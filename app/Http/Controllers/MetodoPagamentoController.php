@@ -11,7 +11,7 @@ class MetodoPagamentoController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response 
+     * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
     {
@@ -25,6 +25,11 @@ class MetodoPagamentoController extends Controller
 
         if ($request->has('ordenacaoBusca')) {
             $metodoPagamento->orderBy($request->ordenacaoBusca);
+        }
+
+        if ($request->has('paginacao')) {
+            return $metodoPagamento->get();
+            //error_log('passou aki');
         }
 
         return $metodoPagamento->paginate(4);

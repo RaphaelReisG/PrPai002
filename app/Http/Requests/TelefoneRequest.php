@@ -24,8 +24,8 @@ class TelefoneRequest extends FormRequest
     public function rules()
     {
         return [
-            'number_phone' => 'required|numeric|max: 10',
-            'telefoneable' => 'required|integer'
+            'number_phone' => 'required|max: 20',
+            'telefoneable_id' => 'required|integer'
             /*'modelo' => 'required|max:50',
             'ano' => 'required|integer|min:1900',
             'km' => 'required|integer',
@@ -37,11 +37,11 @@ class TelefoneRequest extends FormRequest
     {
         return [
             'number_phone.required' => 'Telefone é obrigatório',
-            'number_phone.max' => 'Telefone maior que 10    ',
+            'number_phone.max' => 'Telefone maior que 20    ',
 
-            'telefoneable.required' => 'O ID para o telefone é obrigatório',
-            'telefoneable.integer' => 'O ID do telefone deve ser inteiro'
-            
+            'telefoneable_id.required' => 'O ID para o telefone é obrigatório',
+            'telefoneable_id.integer' => 'O ID do telefone deve ser inteiro'
+
 
 
             /*'modelo.required' => 'Mdelo é obrigatório',

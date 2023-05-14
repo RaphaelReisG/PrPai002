@@ -145,6 +145,18 @@ Vue.component('modal_sucesso', {
         `
     });
 
+    Vue.component('select_define', {
+        props: ['nome_model','obj_dropdown', 'nome_atributo', 'nome', 'id_atributo', 'chamaFuncao'],
+        template: `
+            <div class="form-floating mb-3">
+                <select id="floatingInput" class="form-select" aria-label="Selecione" v-model="$root.modelObjetos[0][nome_model]" v-on:change="$root[chamaFuncao]" required>
+                    <option v-for="(obj, index) in obj_dropdown" v-bind:value="obj_dropdown[index][id_atributo]" > {{obj_dropdown[index][nome_atributo]}}</option>
+                </select>
+                <label for="floatingInput">{{nome}}</label>
+            </div>
+        `
+    });
+
     Vue.component('textarea_geral', {
         props: ['nome_model', 'nome'],
         template: `
@@ -256,6 +268,74 @@ Vue.component('modal_sucesso', {
                         <td>
                             <button_alter :objindex="index"></button_alter>
                             <button_delete :objid= "obj.id"></button_delete>
+                        </td>
+                    </tr>
+                    <tr >
+                        <td colspan="12">
+                            <div class="collapse" v-bind:id="'collapseExample' + obj.id" >
+                                <div class="card card-body">
+                                    <div v-for="acord in obj_acordion">
+
+
+                                        <div v-if="acord.conteudo !== 'created_at' && acord.conteudo !== 'dtEntrada' && acord.conteudo !== 'dtSaida' && acord.conteudo2 == null ">
+                                            {{acord.titulo}}: {{obj[acord.conteudo] }}
+                                        </div>
+                                        <div v-else-if="acord.conteudo2 != null && acord.conteudo3 == null">
+                                            {{acord.titulo}}: {{ obj[acord.conteudo][acord.conteudo2]  }}
+                                        </div>
+                                        <div v-else-if="acord.conteudo3 != null">
+                                            {{acord.titulo}}: {{ obj[acord.conteudo][acord.conteudo2][acord.conteudo3]  }}
+                                        </div>
+                                        <div v-else>
+                                            {{acord.titulo }}: {{ new Date(obj[acord.conteudo]).toLocaleString() }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        `
+    });
+
+    Vue.component('table_acordion_estoque', {
+        props: ['classe_atributos', 'objeto_imp', 'obj_acordion'],
+        template: `
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col" v-for="atributo in classe_atributos" >
+                            <div style="cursor: pointer;" v-on:click="$root.modelObjetos[0]['ordenacaoBusca'] = atributo.ordenacao, $root.buscarObjetos() ">
+                                {{atributo.titulo }}
+                            </div>
+                        </th>
+                        <th scope="col">Opções</th>
+                    </tr>
+                </thead>
+                <tbody class="table-group-divider" v-for="(obj, index) in objeto_imp['data']">
+                    <tr data-bs-toggle="collapse" v-bind:data-bs-target="'#collapseExample' + obj.id"  aria-expanded="false" v-bind:aria-controls="'collapseExample'+obj.id" aria-controls="collapseExample">
+
+                        <td v-for="valor in classe_atributos">
+                            <div v-if="valor.conteudo !== 'created_at' && valor.conteudo !== 'dtEntrada' && valor.conteudo !== 'dtSaida' && valor.conteudo2 == null ">
+                                {{ obj[valor.conteudo]  }}
+                            </div>
+                            <div v-else-if="valor.conteudo2 != null && valor.conteudo3 == null">
+                                {{ obj[valor.conteudo][valor.conteudo2]  }}
+                            </div>
+                            <div v-else-if="valor.conteudo3 != null">
+                                {{ obj[valor.conteudo][valor.conteudo2][valor.conteudo3]  }}
+                            </div>
+                            <div v-else>
+                                {{ new Date(obj[valor.conteudo]).toLocaleString() }}
+                            </div>
+                        </td>
+                        <td v-if="obj['estoqueable_id'] == $root.idUsuario && obj['estoqueable']['name'] == $root.nomeUsuario">
+                            <button_alter :objindex="index"></button_alter>
+                            <button_delete :objid= "obj.id"></button_delete>
+                        </td>
+                        <td v-else>
+                            <p>Somente o proprietario pode alterar</p>
                         </td>
                     </tr>
                     <tr >

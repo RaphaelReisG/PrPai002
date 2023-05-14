@@ -33,11 +33,20 @@ class MarcaController extends Controller
             });
         }
 
+        if ($request->has('fornecedor_id')) {
+            $marca->where('marcas.fornecedor_id', '=', $request->fornecedor_id);
+        }
+
         if ($request->has('ordenacaoBusca')) {
             $marca->orderBy($request->ordenacaoBusca);
         }
 
-        return $marca->paginate(4);
+        if ($request->has('paginacao')) {
+            return $marca->get();
+            //error_log('passou aki');
+        }
+
+        return $marca->paginate(10);
 
 
         //return Marca::with(['fornecedor' ])->paginate(10);

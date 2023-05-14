@@ -22,7 +22,7 @@ class CidadeController extends Controller
         //return Cidade::with([ 'estado', 'estado.pais' ])->paginate(10);
 
         $cidade = Cidade::with([ 'estado',  'estado.pais'])
-        ->join('estados', 'cidades.estado_id', '=', 'estado.id' )
+        ->join('estados', 'cidades.estado_id', '=', 'estados.id' )
         ->join('pais', 'estados.pais_id', '=', 'pais.id' )
         //->join('vendedors', 'clientes.vendedor_id', '=', 'vendedors.id' )
         ->select('cidades.*')
@@ -35,6 +35,10 @@ class CidadeController extends Controller
                 ->orWhere('estados.name_state', 'like', '%' . $request->buscarObjeto . '%')
                 ->orWhere('pais.name_country', 'like', '%' . $request->buscarObjeto . '%');
             });
+        }
+
+        if ($request->has('estado_id')) {
+            $cidade->where('cidades.estado_id', '=', $request->estado_id);
         }
 
         if ($request->has('ordenacaoBusca')) {

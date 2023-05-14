@@ -19,11 +19,11 @@ class BairroController extends Controller
     public function index(Request $request)
     {
         //return Bairro::all();
-        return Bairro::with(['cidade', 'cidade.estado', 'cidade.estado.pais' ])->paginate(10);
-    
+        //return Bairro::with(['cidade', 'cidade.estado', 'cidade.estado.pais' ])->paginate(10);
+
         $bairro = Bairro::with(['cidade', 'cidade.estado', 'cidade.estado.pais'])
         ->join('cidades', 'bairros.cidade_id', '=', 'cidades.id' )
-        ->join('estados', 'cidades.estado_id', '=', 'estado.id' )
+        ->join('estados', 'cidades.estado_id', '=', 'estados.id' )
         ->join('pais', 'estados.pais_id', '=', 'pais.id' )
         //->join('vendedors', 'clientes.vendedor_id', '=', 'vendedors.id' )
         ->select('bairros.*')
@@ -49,7 +49,7 @@ class BairroController extends Controller
         }
 
         return $bairro->paginate(10);
-    
+
     }
 
     /**

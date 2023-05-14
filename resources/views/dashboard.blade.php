@@ -26,6 +26,7 @@
             {{ tipoUsuario = "<?php echo Auth::user()->userable_type;?>"  }}
             {{ Auth::user()->email }}
             {{ Auth::user()->id }}
+            {{ nomeUsuario = "<?php echo Auth::user()->userable->name;?>"  }}
             {{ Auth::user()->userable->name }}
             {{ Auth::user()->userable->id }}
         </div>
@@ -189,7 +190,7 @@
             <div class="modal fade" id="modalObjeto" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered modal-xl">
                     <div class="modal-content">
-                        <form>
+
                         <div v-if="modalErro == false"> <!-- conteudo-->
                             <modal_header></modal_header> <!-- Cabecalho modal-->
                             <div v-if="modalSucesso == false"> <!-- conteudo modal -->
@@ -264,6 +265,20 @@
                                 <!-- formulario ESTOQUE-->
                                 <div v-if="nomeObjeto == 'estoque'" class="modal-body">
                                     <select_geral nome_model="tipo_movimentacao_id" :obj_dropdown="tipo_movimentacaos" nome_atributo="name" id_atributo="id" nome="Escolha o tipo"></select_geral>
+                                    <div class="form-floating mb-3">
+                                        <select id="floatingInput" class="form-select" aria-label="Selecione" v-model="modelObjetos[0]['fornecedor_id']" v-on:change="buscaMarcas()" required>
+                                            <option v-for="(obj, index) in fornecedores" v-bind:value="obj.id" > @{{obj.name}}</option>
+                                        </select>
+                                        <label for="floatingInput">Escolha o fornecedor</label>
+                                    </div>
+
+                                    <div class="form-floating mb-3">
+                                        <select id="floatingInput" class="form-select" aria-label="Selecione" v-model="modelObjetos[0]['marca_id']" v-on:change="buscaProdutos()" required>
+                                            <option v-for="(obj, index) in marcas" v-bind:value="obj.id" > @{{obj.name}}</option>
+                                        </select>
+                                        <label for="floatingInput">Escolha a marca</label>
+                                    </div>
+
                                     <select_geral nome_model="produto_id" :obj_dropdown="produtos" nome_atributo="name" id_atributo="id" nome="Escolha o produto"></select_geral>
                                     <input_geral nome="Quantidade" tipo="number" nome_model="qty_item"></input_geral>
                                     <input_geral nome="Observação" tipo="text" nome_model="observation"></input_geral>
@@ -280,8 +295,77 @@
                                     <select_geral nome_model="pais_id" :obj_dropdown="paises" nome_atributo="name_country" id_atributo="id" nome="Escolha o país"></select_geral>
                                 </div>
 
+                                <!-- formulario CIDADE-->
+                                <div v-if="nomeObjeto == 'cidade'" class="modal-body">
+                                    <input_geral nome="Nome" tipo="text" nome_model="name_city"></input_geral>
+                                    <select_geral nome_model="estado_id" :obj_dropdown="estados" nome_atributo="name_state" id_atributo="id" nome="Escolha um estado"></select_geral>
+                                </div>
+
+                                <!-- formulario BAIRRO-->
+                                <div v-if="nomeObjeto == 'bairro'" class="modal-body">
+                                    <input_geral nome="Nome" tipo="text" nome_model="name_neighborhood"></input_geral>
+                                    <select_geral nome_model="cidade_id" :obj_dropdown="cidades" nome_atributo="name_city" id_atributo="id" nome="Escolha uma cidade"></select_geral>
+                                </div>
+
+                                <!-- formulario ENDERECO-->
+                                <div v-if="nomeObjeto == 'endereco'" class="modal-body">
+                                    <div class="form-floating mb-3">
+                                        <select id="floatingInput" class="form-select" aria-label="Selecione" v-model="modelObjetos[0]['pais_id']" v-on:change="buscaEstados()" required>
+                                            <option v-for="(obj, index) in paises" v-bind:value="obj.id" > @{{obj.name_country}}</option>
+                                        </select>
+                                        <label for="floatingInput">Escolha o país</label>
+                                    </div>
+
+                                    <div class="form-floating mb-3">
+                                        <select id="floatingInput" class="form-select" aria-label="Selecione" v-model="modelObjetos[0]['estado_id']" v-on:change="buscaCidades()" required>
+                                            <option v-for="(obj, index) in estados" v-bind:value="obj.id" > @{{obj.name_state}}</option>
+                                        </select>
+                                        <label for="floatingInput">Escolha o estado</label>
+                                    </div>
+
+                                    <div class="form-floating mb-3">
+                                        <select id="floatingInput" class="form-select" aria-label="Selecione" v-model="modelObjetos[0]['cidade_id']" v-on:change="buscaBairros()" required>
+                                            <option v-for="(obj, index) in cidades" v-bind:value="obj.id" > @{{obj.name_city}}</option>
+                                        </select>
+                                        <label for="floatingInput">Escolha a cidade</label>
+                                    </div>
+
+                                    <div class="form-floating mb-3">
+                                        <input type="text" class="form-control" list="listaBairro" id="floatingInput" v-model="modelObjetos[0]['name_neighborhood']" required>
+                                        <label for="floatingInput">Escolha o bairro</label>
+                                        <datalist id="listaBairro"  >
+                                            <option v-for="(obj, index) in bairros"  > @{{obj.name_neighborhood}}</option>
+                                        </datalist>
+                                    </div>
+
+                                    <div  class="form-floating mb-3">
+                                        <select id="floatingInput" class="form-select" aria-label="Selecione" v-model="modelObjetos[0]['tipoPessoa']" v-on:change="buscaPessoa()" required>
+                                            <option value="" > </option>
+                                            <option value="fornecedor" > Fornecedor </option>
+                                            <option value="vendedor" > Vendedor </option>
+                                            <option value="cliente" > Cliente </option>
+                                        </select>
+                                        <label for="floatingInput">Para que tipo de pessoa</label>
+                                    </div>
+                                    <select_geral nome_model="enderecoable_id" :obj_dropdown="pessoas" nome_atributo="name" id_atributo="id" nome="Escolha o proprietario" ></select_geral>
+                                    <input_geral nome="Logradouro" tipo="text" nome_model="street_name"></input_geral>
+                                    <input_geral nome="Numero" tipo="number" nome_model="house_number"></input_geral>
+                                    <input_geral nome="CEP" tipo="text" nome_model="cep"></input_geral>
+                                    <input_geral nome="Complemento" tipo="text" nome_model="complement"></input_geral>
+                                </div>
+
                                 <!-- formulario TELEFONE-->
                                 <div v-if="nomeObjeto == 'telefone'" class="modal-body">
+                                    <div class="form-floating mb-3">
+                                        <select id="floatingInput" class="form-select" aria-label="Selecione" v-model="modelObjetos[0]['tipoPessoa']" v-on:change="buscaPessoa()" required>
+                                            <option value="" > </option>
+                                            <option value="fornecedor" > Fornecedor </option>
+                                            <option value="vendedor" > Vendedor </option>
+                                            <option value="cliente" > Cliente </option>
+                                        </select>
+                                        <label for="floatingInput">Para que tipo de pessoa</label>
+                                    </div>
+                                    <select_geral nome_model="telefoneable_id" :obj_dropdown="pessoas" nome_atributo="name" id_atributo="id" nome="Escolha o proprietario" ></select_geral>
                                     <input_geral nome="Numero Telefone" tipo="text" nome_model="number_phone"></input_geral>
                                 </div>
 
@@ -298,7 +382,6 @@
                         <div v-else> <!-- Erro retornado!-->
                             <modal_erro></modal_erro>
                         </div>
-                        </form>
                     </div>
                 </div>
             </div>
@@ -476,7 +559,7 @@
                             </table_acordion>
                         </div>
 
-                        <!-- Tabela Tipo_produto -->
+                        <!-- Tabela Metodo_pagamento -->
                         <div v-else-if="nomeObjeto == 'metodo_pagamento' && objetos !== null" class="row">
                             <table_acordion     :classe_atributos="[
                                                         {titulo: 'Nome do metodo', conteudo: 'name', ordenacao: 'name'}
@@ -515,14 +598,15 @@
                         <!-- Tabela Bairro -->
                         <div v-else-if="nomeObjeto == 'bairro' && objetos !== null" class="row">
                             <table_acordion     :classe_atributos="[
-                                                        {titulo: 'Nome', conteudo: 'name_neighborhood'},
-                                                        {titulo: 'Cidade',  conteudo: 'cidade', conteudo2: 'name_city'}
+                                                        {titulo: 'Nome', conteudo: 'name_neighborhood', ordenacao: 'bairros.name_neighborhood' },
+                                                        {titulo: 'Cidade',  conteudo: 'cidade', conteudo2: 'name_city', ordenacao: 'cidades.name_city' },
+                                                        {titulo: 'Estado',  conteudo: 'cidade', conteudo2: 'estado', conteudo3: 'name_state', ordenacao: 'estados.name_state'}
 
                                                     ]"
                                                     :objeto_imp="objetos"
                                                     :obj_acordion="[
                                                         {titulo: 'Criado em', conteudo: 'created_at'},
-                                                        {titulo: 'Estado',  conteudo: 'cidade', conteudo2: 'estado', conteudo3: 'name_state'}
+
                                                     ]"
                                                 >
                             </table_acordion>
@@ -531,8 +615,8 @@
                         <!-- Tabela Cidade -->
                         <div v-else-if="nomeObjeto == 'cidade' && objetos !== null" class="row">
                             <table_acordion     :classe_atributos="[
-                                                        {titulo: 'Nome', conteudo: 'name_city'},
-                                                        {titulo: 'Estado',  conteudo: 'estado', conteudo2: 'name_state'}
+                                                        {titulo: 'Nome', conteudo: 'name_city', ordenacao: 'name_city'},
+                                                        {titulo: 'Estado',  conteudo: 'estado', conteudo2: 'name_state', ordenacao: 'estados.name_state'}
 
                                                     ]"
                                                     :objeto_imp="objetos"
@@ -547,8 +631,8 @@
                         <!-- Tabela Estado -->
                         <div v-else-if="nomeObjeto == 'estado' && objetos !== null" class="row">
                             <table_acordion     :classe_atributos="[
-                                                        {titulo: 'Nome', conteudo: 'name_state'},
-                                                        {titulo: 'País',  conteudo: 'pais', conteudo2: 'name_country'}
+                                                        {titulo: 'Nome', conteudo: 'name_state', ordenacao: 'name_state'},
+                                                        {titulo: 'País',  conteudo: 'pais', conteudo2: 'name_country', ordenacao: 'pais.name_country'}
 
                                                     ]"
                                                     :objeto_imp="objetos"
@@ -562,7 +646,7 @@
                         <!-- Tabela Pais -->
                         <div v-else-if="nomeObjeto == 'pais' && objetos !== null" class="row">
                             <table_acordion     :classe_atributos="[
-                                                        {titulo: 'Nome', conteudo: 'name_country'}
+                                                        {titulo: 'Nome', conteudo: 'name_country', ordenacao: 'name_country'}
 
                                                     ]"
                                                     :objeto_imp="objetos"
@@ -592,7 +676,7 @@
 
                         <!-- Tabela Estoque -->
                         <div v-else-if="nomeObjeto == 'estoque' && objetos !== null" class="row">
-                            <table_acordion     :classe_atributos="[
+                            <table_acordion_estoque     :classe_atributos="[
                                                         {titulo: 'Data', conteudo: 'created_at', ordenacao: ''},
                                                         {titulo: 'Quantidade', conteudo: 'qty_item', ordenacao: '' },
                                                         {titulo: 'Produto', conteudo: 'produto', conteudo2: 'name'},
@@ -608,7 +692,7 @@
                                                         {titulo: 'Observação', conteudo: 'observation'}
                                                     ]"
                                                 >
-                            </table_acordion>
+                            </table_acordion_estoque >
                         </div>
                     @elsecan('vendedor')
                         <!-- Tabela Cliente -->
@@ -793,6 +877,8 @@
         </div>
     </div>
 </body>
+
+
 
 @vite(['resources/js/app.js'])
 </html>

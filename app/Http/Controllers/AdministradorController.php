@@ -31,6 +31,11 @@ class AdministradorController extends Controller
             $administrador->orderBy($request->ordenacaoBusca);
         }
 
+        if ($request->has('paginacao')) {
+            return $administrador->get();
+            error_log('passou aki');
+        }
+
         return $administrador->paginate(4);
 /*
         if(isset($request->buscarObjeto)){

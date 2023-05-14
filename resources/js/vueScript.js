@@ -5,6 +5,7 @@ var app = new Vue({
     data: {
         idUsuario: "{{ Auth::user()->id }}",
         tipoUsuario: '',
+        nomeUsuario: '',
         titulo: "",
         acaoObjeto: "",
         nomeObjeto: "",
@@ -30,24 +31,36 @@ var app = new Vue({
 
             company_name: "", cnpj: "", vendedor_id: "", //cliente e fornecedor
 
-            number_phone: "",
+            number_phone: "", telefoneable_id: "", telefoneable_type: "", //telefone
 
             fornecedor_id: "", //marca
 
             tipo_produto_id: "", quantity: "", weight: "", cost_price: "", sale_price: "", marca_id: "", //produto
 
+            tipo_movimentacaos_id: "", qty_item: "", observation: "", produto_id: "", //estoque
+
             name_country: "",  // pais
 
             name_state: "", pais_id: "", // estado
 
-            buscarObjeto: "", ordenacaoBusca: ""
+            name_city: "", estado_id: "", // cidade
+
+            name_neighborhood: "", cidade_id: "", //bairro
+
+            street_name: "", house_number: "", cep: "", complement: "", enderecoable_id: "", enderecoable_type: "",
+
+            buscarObjeto: "", ordenacaoBusca: "", tipoPessoa: ""
 
         }],
         index: "",
 
         paises: [{}],
+        estados: [{}],
+        cidades: [{}],
+        bairros: [{}],
         vendedores: [{}],
         fornecedores: [{}],
+        pessoas: [{}],
         marcas: [{}],
         produtos: [{}],
         tipo_produtos: [{}],
@@ -195,14 +208,14 @@ var app = new Vue({
                     name: this.modelObjetos[0]['name']
                 }
             }
-            else if(classe == "telefone"){
+            /*else if(classe == "telefone"){
                 url = '/api/'+classe;
                 dados = {
                     number_phone: this.modelObjetos[0]['number_phone'],
                     tipoUsuario: this.tipoUsuario,
                     idUsuario: this.idUsuario
                 }
-            }
+            }*/
             else if(classe == "pais"){
                 url = '/api/'+classe;
                 dados = {
@@ -214,6 +227,52 @@ var app = new Vue({
                 dados = {
                     name_state: this.modelObjetos[0]['name_state'],
                     pais_id: this.modelObjetos[0]['pais_id'],
+                }
+            }
+            else if(classe == "cidade"){
+                url = '/api/'+classe;
+                dados = {
+                    name_city: this.modelObjetos[0]['name_city'],
+                    estado_id: this.modelObjetos[0]['estado_id'],
+                }
+            }
+            else if(classe == "bairro"){
+                url = '/api/'+classe;
+                dados = {
+                    name_neighborhood: this.modelObjetos[0]['name_neighborhood'],
+                    cidade_id: this.modelObjetos[0]['cidade_id'],
+                }
+            }
+            else if(classe == "endereco"){
+                url = '/api/'+classe;
+                dados = {
+                    name_neighborhood: this.modelObjetos[0]['name_neighborhood'],
+                    street_name: this.modelObjetos[0]['street_name'],
+                    house_number: this.modelObjetos[0]['house_number'],
+                    cep: this.modelObjetos[0]['cep'],
+                    complement: this.modelObjetos[0]['complement'],
+                    tipoUsuario: this.modelObjetos[0]['tipoPessoa'],
+                    enderecoable_id: this.modelObjetos[0]['enderecoable_id'],
+                    cidade_id: this.modelObjetos[0]['cidade_id'],
+                }
+            }
+            else if(classe == "telefone"){
+                url = '/api/'+classe;
+                dados = {
+                    number_phone: this.modelObjetos[0]['number_phone'],
+                    tipoUsuario: this.modelObjetos[0]['tipoPessoa'],
+                    telefoneable_id: this.modelObjetos[0]['telefoneable_id']
+                }
+            }
+            else if(classe == "estoque"){
+                url = '/api/'+classe;
+                dados = {
+                    qty_item: this.modelObjetos[0]['qty_item'],
+                    observation: this.modelObjetos[0]['observation'],
+                    tipo_movimentacao_id: this.modelObjetos[0]['tipo_movimentacao_id'],
+                    produto_id: this.modelObjetos[0]['produto_id'],
+                    requisitante: this.tipoUsuario,
+                    estoqueable_id: this.idUsuario
                 }
             }
             else{
@@ -245,9 +304,8 @@ var app = new Vue({
             this.index = index;
             //this.modelObjetos = this.objetos;
 
-            if(this.acaoObjeto !== 'AddAPI'){
-                this.modelObjetos[0]['id'] = this.objetos['data'][index]['id'];
-            }
+            this.modelObjetos[0]['id'] = this.objetos['data'][index]['id'];
+
 
             //alert("01 - "+index);
             if(this.nomeObjeto == "cliente"){
@@ -257,7 +315,7 @@ var app = new Vue({
                 this.modelObjetos[0]['company_name'] = this.objetos['data'][index]['company_name'];
                 this.modelObjetos[0]['vendedor_id'] = this.objetos['data'][index]['vendedor_id'];
             }
-            if(this.nomeObjeto == "fornecedor"){
+            else if(this.nomeObjeto == "fornecedor"){
                 this.modelObjetos[0]['name'] = this.objetos['data'][index]['name'];
                 this.modelObjetos[0]['cnpj'] = this.objetos['data'][index]['cnpj'];
                 this.modelObjetos[0]['email'] = this.objetos['data'][index]['email'];
@@ -276,23 +334,75 @@ var app = new Vue({
                 this.modelObjetos[0]['sale_price'] = this.objetos['data'][index]['sale_price'];
                 this.modelObjetos[0]['marca_id'] = this.objetos['data'][index]['marca_id'];
             }
-
             else if(this.nomeObjeto == "administrador" || this.nomeObjeto == "vendedor"){
                 this.modelObjetos[0]['name'] = this.objetos['data'][index]['name'];
                 this.modelObjetos[0]['email'] = this.objetos['data'][index]['user']['email'];
             }
-
             else if(this.nomeObjeto == "tipo_produto" || this.nomeObjeto == "tipo_movimentacao" || this.nomeObjeto == "metodo_pagamento"){
                 this.modelObjetos[0]['name'] = this.objetos['data'][index]['name'];
             }
-
             else if(this.nomeObjeto == "pais"){
                 this.modelObjetos[0]['name_country'] = this.objetos['data'][index]['name_country'];
             }
-
             else if(this.nomeObjeto == "estado"){
                 this.modelObjetos[0]['name_state'] = this.objetos['data'][index]['name_state'];
                 this.modelObjetos[0]['pais_id'] = this.objetos['data'][index]['pais_id'];
+            }
+            else if(this.nomeObjeto == "cidade"){
+                this.modelObjetos[0]['name_city'] = this.objetos['data'][index]['name_city'];
+                this.modelObjetos[0]['estado_id'] = this.objetos['data'][index]['estado_id'];
+            }
+            else if(this.nomeObjeto == "bairro"){
+                this.modelObjetos[0]['name_neighborhood'] = this.objetos['data'][index]['name_neighborhood'];
+                this.modelObjetos[0]['cidade_id'] = this.objetos['data'][index]['cidade_id'];
+            }
+            else if(this.nomeObjeto == "endereco"){
+                this.buscaPaises();
+                this.modelObjetos[0]['pais_id'] = this.objetos['data'][index]['bairro']['cidade']['estado']['pais_id'];
+                this.buscaEstados();
+                this.modelObjetos[0]['estado_id'] = this.objetos['data'][index]['bairro']['cidade']['estado_id'];
+                this.buscaCidades();
+                this.modelObjetos[0]['cidade_id'] = this.objetos['data'][index]['bairro']['cidade_id'];
+                this.buscaBairros();
+                this.modelObjetos[0]['name_neighborhood'] = this.objetos['data'][index]['bairro']['name_neighborhood'];
+                //alert(this.objetos['data'][index]['enderecoable_type']);
+                if(this.objetos['data'][index]['enderecoable_type'] == "App\\Models\\Fornecedor"){
+                    this.modelObjetos[0]['tipoPessoa'] = 'fornecedor';
+                }
+                else if(this.objetos['data'][index]['enderecoable_type'] == 'App\\Models\\Vendedor'){
+                    this.modelObjetos[0]['tipoPessoa'] = 'vendedor';
+                }
+                else if(this.objetos['data'][index]['enderecoable_type'] == 'App\\Models\\Cliente'){
+                    this.modelObjetos[0]['tipoPessoa'] = 'cliente';
+                }
+                else{
+                    alert('Erro CCE - Endereco | Pessoa não identificada');
+                }
+                this.modelObjetos[0]['enderecoable_type'] = this.objetos['data'][index]['enderecoable_type'];
+                this.modelObjetos[0]['enderecoable_id'] = this.objetos['data'][index]['enderecoable_id'];
+                this.buscaPessoa();
+                this.modelObjetos[0]['street_name'] = this.objetos['data'][index]['street_name'];
+                this.modelObjetos[0]['house_number'] = this.objetos['data'][index]['house_number'];
+                this.modelObjetos[0]['cep'] = this.objetos['data'][index]['cep'];
+                this.modelObjetos[0]['complement'] = this.objetos['data'][index]['complement'];
+            }
+            else if(this.nomeObjeto == "telefone"){
+                if(this.objetos['data'][index]['telefoneable_type'] == "App\\Models\\Fornecedor"){
+                    this.modelObjetos[0]['tipoPessoa'] = 'fornecedor';
+                }
+                else if(this.objetos['data'][index]['telefoneable_type'] == 'App\\Models\\Vendedor'){
+                    this.modelObjetos[0]['tipoPessoa'] = 'vendedor';
+                }
+                else if(this.objetos['data'][index]['telefoneable_type'] == 'App\\Models\\Cliente'){
+                    this.modelObjetos[0]['tipoPessoa'] = 'cliente';
+                }
+                else{
+                    alert('Erro CCE - Telefone | Pessoa não identificada');
+                }
+                this.buscaPessoa();3
+                this.modelObjetos[0]['telefoneable_type'] = this.objetos['data'][index]['telefoneable_type'];
+                this.modelObjetos[0]['telefoneable_id'] = this.objetos['data'][index]['telefoneable_id'];
+                this.modelObjetos[0]['number_phone'] = this.objetos['data'][index]['number_phone'];
             }
             else{
                 alert("Erro! CarregarCamposEditarObjeto | Classe não encontrada");
@@ -300,6 +410,8 @@ var app = new Vue({
 
             this.error = null;
             if(this.nomeObjeto == 'estado') {this.buscaPaises();}
+            if(this.nomeObjeto == 'cidade'){this.buscaEstados();}
+            if(this.nomeObjeto == 'bairro'){this.buscaCidades();}
             if(this.nomeObjeto == 'cliente') { this.buscaVendedores();}
             if(this.nomeObjeto == 'marca'){this.buscaFornecedores();}
             if(this.nomeObjeto == 'produto'){this.buscaMarcas();}
@@ -388,6 +500,69 @@ var app = new Vue({
                     pais_id: this.modelObjetos[0]['pais_id']
                 }
             }
+            else if(classe == "cidade"){
+                url = '/api/'+classe+'/'+this.modelObjetos[0]['id'];
+                //alert(url);
+                dados = {
+                    name_city: this.modelObjetos[0]['name_city'],
+                    estado_id: this.modelObjetos[0]['estado_id'],
+                }
+            }
+            else if(classe == "bairro"){
+                url = '/api/'+classe+'/'+this.modelObjetos[0]['id'];
+                //alert(url);
+                dados = {
+                    name_neighborhood: this.modelObjetos[0]['name_neighborhood'],
+                    cidade_id: this.modelObjetos[0]['cidade_id'],
+                }
+            }
+            else if(classe == "endereco"){
+                url = '/api/'+classe+'/'+this.modelObjetos[0]['id'];
+                //alert(url);
+
+                if(this.modelObjetos[0]['tipoPessoa'] == 'fornecedor'){
+                    this.modelObjetos[0]['enderecoable_type'] = "App\\Models\\Fornecedor";
+                }
+                else if(this.modelObjetos[0]['tipoPessoa'] == 'vendedor'){
+                    this.modelObjetos[0]['enderecoable_type'] = "App\\Models\\Vendedor";
+                }
+                else if(this.modelObjetos[0]['tipoPessoa'] == 'cliente'){
+                    this.modelObjetos[0]['enderecoable_type'] = "App\\Models\\Cliente";
+                }
+
+                dados = {
+                    name_neighborhood: this.modelObjetos[0]['name_neighborhood'],
+                    street_name: this.modelObjetos[0]['street_name'],
+                    house_number: this.modelObjetos[0]['house_number'],
+                    cep: this.modelObjetos[0]['cep'],
+                    complement: this.modelObjetos[0]['complement'],
+                    tipoUsuario: this.modelObjetos[0]['tipoPessoa'],
+                    enderecoable_id: this.modelObjetos[0]['enderecoable_id'],
+                    cidade_id: this.modelObjetos[0]['cidade_id'],
+                    enderecoable_type: this.modelObjetos[0]['enderecoable_type']
+                }
+            }
+            else if(classe == "telefone"){
+                url = '/api/'+classe+'/'+this.modelObjetos[0]['id'];
+                //alert(url);
+
+                if(this.modelObjetos[0]['tipoPessoa'] == 'fornecedor'){
+                    this.modelObjetos[0]['telefoneable_type'] = "App\\Models\\Fornecedor";
+                }
+                else if(this.modelObjetos[0]['tipoPessoa'] == 'vendedor'){
+                    this.modelObjetos[0]['telefoneable_type'] = "App\\Models\\Vendedor";
+                }
+                else if(this.modelObjetos[0]['tipoPessoa'] == 'cliente'){
+                    this.modelObjetos[0]['telefoneable_type'] = "App\\Models\\Cliente";
+                }
+
+                dados = {
+                    number_phone: this.modelObjetos[0]['number_phone'],
+                    tipoUsuario: this.modelObjetos[0]['tipoPessoa'],
+                    telefoneable_id: this.modelObjetos[0]['telefoneable_id'],
+                    telefoneable_type: this.modelObjetos[0]['telefoneable_type']
+                }
+            }
             else{
                 alert("Erro, Update |  Classe inexistente!");
             }
@@ -439,13 +614,13 @@ var app = new Vue({
         },
         limparModal: function(){
 
+            this.modelObjetos[0]['tipoPessoa'] = "";
+
             this.modelObjetos[0]['name'] = "";
             this.modelObjetos[0]['company_name'] = "";
             this.modelObjetos[0]['email'] = "";
             this.modelObjetos[0]['cnpj'] = "";
             this.modelObjetos[0]['vendedor_id'] = "";
-
-            this.modelObjetos[0]['number_phone'] = "";
 
             this.modelObjetos[0]['senha'] = "";
             this.modelObjetos[0]['confirmaSenha'] = "";
@@ -456,6 +631,27 @@ var app = new Vue({
             //estado
             this.modelObjetos[0]['name_state'] = "";
             this.modelObjetos[0]['pais_id'] = "";
+
+            //cidade
+            this.modelObjetos[0]['name_city'] = "";
+            this.modelObjetos[0]['estado_id'] = "";
+
+            //bairro
+            this.modelObjetos[0]['name_neighborhood'] = "";
+            this.modelObjetos[0]['cidade_id'] = "";
+
+            //endereco
+            this.modelObjetos[0]['street_name'] = "";
+            this.modelObjetos[0]['house_number'] = "";
+            this.modelObjetos[0]['cep'] = "";
+            this.modelObjetos[0]['complement'] = "";
+            this.modelObjetos[0]['tipoPessoa'] = "";
+            this.modelObjetos[0]['enderecoable_id'] = "";
+
+            //telefone
+            this.modelObjetos[0]['number_phone'] = "";
+            this.modelObjetos[0]['telefoneable_id'] = "";
+            this.modelObjetos[0]['telefoneable_type'] = "";
 
             //marca
             this.modelObjetos[0]['fornecedor_id'] = "";
@@ -470,14 +666,18 @@ var app = new Vue({
             this.modelObjetos[0]['marca_id'] = "";
 
 
+
+
             this.error = null;
-            if(this.nomeObjeto == 'estado') {this.buscaPaises();}
+            if(this.nomeObjeto == 'estado' || this.nomeObjeto == 'endereco') {this.buscaPaises();}
+            if(this.nomeObjeto == 'cidade'){this.buscaEstados();}
+            if(this.nomeObjeto == 'bairro'){this.buscaCidades();}
             if(this.nomeObjeto == 'cliente') { this.buscaVendedores();}
-            if(this.nomeObjeto == 'marca'){this.buscaFornecedores();}
+            if(this.nomeObjeto == 'marca' || this.nomeObjeto == 'estoque'){this.buscaFornecedores();}
             if(this.nomeObjeto == 'produto'){this.buscaMarcas();}
             if(this.nomeObjeto == 'produto'){this.buscaTipo_produtos();}
             if(this.nomeObjeto == 'estoque'){this.buscaTipo_movimentacaos();}
-            if(this.nomeObjeto == 'estoque'){this.buscaProdutos();}
+            //if(this.nomeObjeto == 'estoque'){this.buscaProdutos();}
         },
         limparGeral: function(){
             this.objetos = null;
@@ -613,10 +813,53 @@ var app = new Vue({
                     return false;
                 }
             }
-
             else if(classe == 'estado'){
                 if(
                     this.modelObjetos[0]['name_state'] == "" || this.modelObjetos[0]['pais_id'] == ""
+                ){
+                    alert("Erro");
+                    return true;
+                }
+                else{
+                    return false;
+                }
+            }
+            else if(classe == 'cidade'){
+                if(
+                    this.modelObjetos[0]['name_city'] == "" || this.modelObjetos[0]['estado_id'] == ""
+                ){
+                    alert("Erro");
+                    return true;
+                }
+                else{
+                    return false;
+                }
+            }
+            else if(classe == 'bairro'){
+                if(
+                    this.modelObjetos[0]['name_neighborhood'] == "" || this.modelObjetos[0]['cidade_id'] == ""
+                ){
+                    alert("Erro");
+                    return true;
+                }
+                else{
+                    return false;
+                }
+            }
+            else if(classe == 'endereco'){
+                if(
+                    this.modelObjetos[0]['street_name'] == ""
+                ){
+                    alert("Erro");
+                    return true;
+                }
+                else{
+                    return false;
+                }
+            }
+            else if(classe == 'estoque'){
+                if(
+                    this.modelObjetos[0]['qty_item'] == ""
                 ){
                     alert("Erro");
                     return true;
@@ -723,59 +966,159 @@ var app = new Vue({
             this.paises = null;
             this.carregandoGeral = true;
             var url;
-            url = '/api/pais';
+            const paginacao = '?paginacao=false';
+            //if() {var where = '&atributo='+atributo+'&valor='+valor;}
+            url = '/api/pais'+paginacao;
 
             axios
                 .get(url)
-                .then(response => (this.paises = response.data.data))
+                .then(response => (this.paises = response.data))
+                .catch(error => (this.error = error));
+        },
+        buscaEstados: function() {
+            this.estados = null;
+            this.carregandoGeral = true;
+            var url;
+            if(this.nomeObjeto == 'endereco'){
+                url = '/api/estado'+'?paginacao=false&pais_id='+this.modelObjetos[0]['pais_id'];
+                //alert('passou aki '+this.modelObjetos[0]['pais_id'])
+            }
+            else{
+                url = '/api/estado'+'?paginacao=false';
+            }
+
+
+            axios
+                .get(url)
+                .then(response => (this.estados = response.data))
+                .catch(error => (this.error = error));
+        },
+        buscaCidades: function() {
+            this.cidades = null;
+            this.carregandoGeral = true;
+            var url;
+            //url = '/api/cidade'+'?paginacao=false';
+
+            if(this.nomeObjeto == 'endereco'){
+                url = '/api/cidade'+'?paginacao=false&estado_id='+this.modelObjetos[0]['estado_id'];
+                //alert('passou aki '+this.modelObjetos[0]['pais_id'])
+            }
+            else{
+                url = '/api/cidade'+'?paginacao=false';
+            }
+
+            axios
+                .get(url)
+                .then(response => (this.cidades = response.data))
+                .catch(error => (this.error = error));
+        },
+        buscaBairros: function() {
+
+            this.bairros = null;
+            this.carregandoGeral = true;
+            var url;
+            //url = '/api/bairro'+'?paginacao=false';
+
+            if(this.nomeObjeto == 'endereco'){
+                url = '/api/bairro'+'?paginacao=false&cidade_id='+this.modelObjetos[0]['cidade_id'];
+                //alert('passou aki '+this.modelObjetos[0]['pais_id'])
+            }
+            else{
+                url = '/api/bairro'+'?paginacao=false';
+            }
+
+            axios
+                .get(url)
+                .then(response => (this.bairros = response.data))
+                .catch(error => (this.error = error));
+        },
+        buscaPessoa: function() {
+            //alert('opa')
+            this.pessoas = null;
+            this.carregandoGeral = true;
+            var url;
+            url = '/api/'+this.modelObjetos[0]['tipoPessoa']+'?paginacao=false';
+            //alert(url);
+
+            axios
+                .get(url)
+                .then(response => (this.pessoas = response.data))
                 .catch(error => (this.error = error));
         },
         buscaVendedores: function() {
             this.vendedores = null;
             this.carregandoGeral = true;
             var url;
-            url = '/api/vendedor';
+            url = '/api/vendedor'+'?paginacao=false';
             //alert(url);
 
             axios
                 .get(url)
-                .then(response => (this.vendedores = response.data.data))
+                .then(response => (this.vendedores = response.data))
                 .catch(error => (this.error = error));
         },
         buscaFornecedores: function() {
             this.fornecedores = null;
             this.carregandoGeral = true;
             var url;
-            url = '/api/fornecedor';
+            url = '/api/fornecedor'+'?paginacao=false';
             //alert(url);
 
             axios
                 .get(url)
-                .then(response => (this.fornecedores = response.data.data))
+                .then(response => (this.fornecedores = response.data))
                 .catch(error => (this.error = error));
         },
         buscaMarcas: function() {
             this.marcas = null;
             this.carregandoGeral = true;
             var url;
-            url = '/api/marca';
+            //url = '/api/marca'+'?paginacao=false';
+
+            if(this.nomeObjeto == 'estoque'){
+                url = '/api/marca'+'?paginacao=false&fornecedor_id='+this.modelObjetos[0]['fornecedor_id'];
+                //alert('passou aki '+this.modelObjetos[0]['pais_id'])
+            }
+            else{
+                url = '/api/marca'+'?paginacao=false';
+            }
             //alert(url);
 
             axios
                 .get(url)
-                .then(response => (this.marcas = response.data.data))
+                .then(response => (this.marcas = response.data))
+                .catch(error => (this.error = error));
+        },
+        buscaProdutos: function() {
+            this.produtos = null;
+            this.carregandoGeral = true;
+            var url;
+            //url = '/api/marca'+'?paginacao=false';
+            alert(this.modelObjetos[0]['marca_id'])
+            if(this.nomeObjeto == 'estoque'){
+                url = '/api/produto'+'?paginacao=false&marca_id='+this.modelObjetos[0]['marca_id'];
+                //alert('passou aki '+this.modelObjetos[0]['pais_id'])
+            }
+            else{
+                url = '/api/produto'+'?paginacao=false';
+            }
+            //alert(url);
+
+            axios
+                .get(url)
+                .then(response => (this.produtos = response.data))
                 .catch(error => (this.error = error));
         },
         buscaTipo_produtos: function() {
             this.tipo_produtos = null;
             this.carregandoGeral = true;
             var url;
-            url = '/api/tipo_produto';
+            url = '/api/tipo_produto'+'?paginacao=false';
             //alert(url);
 
             axios
                 .get(url)
-                .then(response => (this.tipo_produtos = response.data.data))
+                .then(response => (this.tipo_produtos = response.data))
                 .catch(error => (this.error = error));
         },
         buscaTipo_movimentacaos: function() {
@@ -789,19 +1132,6 @@ var app = new Vue({
             axios
                 .get(url)
                 .then(response => (this.tipo_movimentacaos = response.data))
-                .catch(error => (this.error = error));
-        },
-        buscaProdutos: function() {
-            this.produtos = null;
-            this.carregandoGeral = true;
-            var url;
-            const paginacao = false;
-            url = '/api/produto'+'?paginacao=false';
-            //alert(url);
-
-            axios
-                .get(url)
-                .then(response => (this.produtos = response.data))
                 .catch(error => (this.error = error));
         }
 

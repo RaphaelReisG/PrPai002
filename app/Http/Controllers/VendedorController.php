@@ -37,7 +37,12 @@ class VendedorController extends Controller
             $vendedor->orderBy($request->ordenacaoBusca);
         }
 
-        return $vendedor->paginate(4);
+        if ($request->has('paginacao')) {
+            return $vendedor->get();
+            //error_log('passou aki');
+        }
+
+        return $vendedor->paginate(10);
     }
 
     /**

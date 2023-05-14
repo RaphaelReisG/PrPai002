@@ -38,7 +38,8 @@ class EstoqueController extends Controller
      */
     public function store(Request $request)
     {
-        if($request->requisitante == 'administrador'){
+        if($request->requisitante == 'AppModelsAdministrador'){
+            //error_log("Estoque - opa passou aki dentro");
             return $estoque = Administrador::findOrfail($request->estoqueable_id)->estoqueable()->create($request->all());
         }
     }

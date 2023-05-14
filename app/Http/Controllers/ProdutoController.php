@@ -43,6 +43,11 @@ class ProdutoController extends Controller
             });
         }
 
+        if ($request->has('marca_id')) {
+            $produto->where('produtos.marca_id', '=', $request->marca_id);
+            error_log('passou aki no produto');
+        }
+
         if ($request->has('ordenacaoBusca')) {
             $produto->orderBy($request->ordenacaoBusca);
         }

@@ -35,6 +35,10 @@ class EstadoController extends Controller
             });
         }
 
+        if ($request->has('pais_id')) {
+            $estado->where('estados.pais_id', '=', $request->pais_id);
+        }
+
         if ($request->has('ordenacaoBusca')) {
             $estado->orderBy($request->ordenacaoBusca);
         }

@@ -49,6 +49,11 @@ class ClienteController extends Controller
             $clientes->orderBy($request->ordenacaoBusca);
         }
 
+        if ($request->has('paginacao')) {
+            return $clientes->get();
+            //error_log('passou aki');
+        }
+
         return $clientes->paginate(4);
 
 
