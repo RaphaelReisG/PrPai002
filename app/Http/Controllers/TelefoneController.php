@@ -9,6 +9,8 @@ use App\Models\Fornecedor;
 use Illuminate\Http\Request;
 use App\Http\Requests\TelefoneRequest;
 
+use Illuminate\Support\Facades\DB;
+
 use App\Http\Resources\TesteResource;
 
 class TelefoneController extends Controller
@@ -51,6 +53,17 @@ class TelefoneController extends Controller
                 //->orWhere('vendedors.name', 'like', '%' . $request->buscarObjeto . '%')
                 //->orWhere('fornecedors.name', 'like', '%' . $request->buscarObjeto . '%');
             });
+        }
+
+        if ($request->has('vendedor_id')) {
+
+            $subquery = DB::table('clientes')
+                ->select('id')
+                ->where('vendedor_id', '=', $request->vendedor_id);
+
+            $telefone->where('telefones.telefoneable_type', '=', 'App\\Models\\Cliente')
+                ->whereIn('telefones.telefoneable_id', $subquery);
+
         }
 
         if ($request->has('ordenacaoBusca')) {

@@ -9,6 +9,8 @@ use App\Models\Fornecedor;
 use App\Models\Cidade;
 use Illuminate\Http\Request;
 
+use Illuminate\Support\Facades\DB;
+
 use App\Http\Resources\TesteResource;
 use Illuminate\Console\View\Components\Alert;
 
@@ -56,6 +58,31 @@ class EnderecoController extends Controller
                 ->orWhere('estados.name_state', 'like', '%' . $request->buscarObjeto . '%')
                 ->orWhere('pais.name_country', 'like', '%' . $request->buscarObjeto . '%');
             });
+        }
+
+        if ($request->has('vendedor_id')) {
+
+            $subquery = DB::table('clientes')
+                ->select('id')
+                ->where('vendedor_id', '=', $request->vendedor_id);
+
+            $endereco->where('enderecos.enderecoable_type', '=', 'App\\Models\\Cliente')
+                ->whereIn('enderecos.enderecoable_id', $subquery);
+
+
+            
+            /*
+            $resultado = DB::table('tabela')
+                ->whereIn('campo', $subquery)
+                ->get();*/
+/*
+            $vId = $request->vendedor_id;
+
+            $endereco->whereHas('enderecoable', function ($query) {
+                $query->where('enderecoable_type', 'App\\Models\\Cliente');
+            })->whereHas('enderecoable.vendedor', function ($query) use ($vId) {
+                $query->where('vendedor_id', $vendedorId);
+            })->get();*/
         }
 
         if ($request->has('ordenacaoBusca')) {
