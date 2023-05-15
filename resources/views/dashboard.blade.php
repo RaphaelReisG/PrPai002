@@ -212,7 +212,7 @@
                                         <senha_geral nome="Confirme a senha" nome_model="confirmaSenha"></senha_geral>
                                     </div>
                                 </div>
-                                @can('admin', 'vendedor')
+                                @canAny(['admin', 'vendedor'])
                                 <!-- formulario CLIENTE -->
                                 <div v-else-if="nomeObjeto == 'cliente'" class="modal-body">
                                     @can('admin')
