@@ -194,8 +194,27 @@
                         <div v-if="modalErro == false"> <!-- conteudo-->
                             <modal_header></modal_header> <!-- Cabecalho modal-->
                             <div v-if="modalSucesso == false"> <!-- conteudo modal -->
+                                <!-- formulario PEDIDO -->
+                                <div v-if="nomeObjeto == 'pedido'" class="modal-body">
+                                    @can('admin')
+                                        <select_geral nome_model="vendedor_id" :obj_dropdown="vendedores" nome_atributo="name" id_atributo="id" nome="Defina um vendedor"></select_geral>
+                                    @elsecan('vendedor')
+                                        <div style="display: none">
+                                            {{ modelObjetos[0]['vendedor_id'] = "<?php echo Auth::user()->userable->id;?>"  }}
+                                        </div>
+                                    @endcan
+                                    <input_geral nome="Nome Completo" tipo="text" nome_model="name"></input_geral>
+                                    <input_geral nome="Razão Social" tipo="text" nome_model="company_name"></input_geral>
+                                    <input_geral nome="CPF ou CNPJ" tipo="number" nome_model="cnpj"></input_geral>
+                                    <input_geral nome="E-mail" tipo="email" nome_model="email"></input_geral>
+                                    <div v-if="acaoObjeto == 'Criar'">
+                                        <senha_geral nome="Senha" nome_model="senha"></senha_geral>
+                                        <senha_geral nome="Confirme a senha" nome_model="confirmaSenha"></senha_geral>
+                                    </div>
+                                </div>
+                                @can('admin', 'vendedor')
                                 <!-- formulario CLIENTE -->
-                                <div v-if="nomeObjeto == 'cliente'" class="modal-body">
+                                <div v-else-if="nomeObjeto == 'cliente'" class="modal-body">
                                     @can('admin')
                                         <select_geral nome_model="vendedor_id" :obj_dropdown="vendedores" nome_atributo="name" id_atributo="id" nome="Defina um vendedor"></select_geral>
                                     @elsecan('vendedor')
@@ -213,14 +232,14 @@
                                     </div>
                                 </div>
                                 <!-- formulario FORNECEDOR -->
-                                <div v-if="nomeObjeto == 'fornecedor'" class="modal-body">
+                                <div v-else-if="nomeObjeto == 'fornecedor'" class="modal-body">
                                     <input_geral nome="Nome contato" tipo="text" nome_model="name"></input_geral>
                                     <input_geral nome="Razão Social" tipo="text" nome_model="company_name"></input_geral>
                                     <input_geral nome="CNPJ" tipo="number" nome_model="cnpj"></input_geral>
                                     <input_geral nome="E-mail" tipo="email" nome_model="email"></input_geral>
                                 </div>
                                 <!-- formulario ADMINISTRADOR-->
-                                <div v-if="nomeObjeto == 'administrador'" class="modal-body">
+                                <div v-else-if="nomeObjeto == 'administrador'" class="modal-body">
                                     <input_geral nome="Nome Completo" tipo="text" nome_model="name"></input_geral>
                                     <input_geral nome="E-mail" tipo="email" nome_model="email"></input_geral>
                                     <div v-if="acaoObjeto == 'Criar'">
@@ -228,9 +247,8 @@
                                         <senha_geral nome="Confirme a senha" nome_model="confirmaSenha"></senha_geral>
                                     </div>
                                 </div>
-
                                 <!-- formulario VENDEDOR-->
-                                <div v-if="nomeObjeto == 'vendedor'" class="modal-body">
+                                <div v-else-if="nomeObjeto == 'vendedor'" class="modal-body">
                                     <input_geral nome="Nome Completo" tipo="text" nome_model="name"></input_geral>
                                     <input_geral nome="E-mail" tipo="email" nome_model="email"></input_geral>
                                     <div v-if="acaoObjeto == 'Criar'">
@@ -240,13 +258,12 @@
                                 </div>
 
                                 <!-- formulario MARCA-->
-                                <div v-if="nomeObjeto == 'marca'" class="modal-body">
+                                <div v-else-if="nomeObjeto == 'marca'" class="modal-body">
                                     <input_geral nome="Nome da marca" tipo="text" nome_model="name"></input_geral>
                                     <select_geral nome_model="fornecedor_id" :obj_dropdown="fornecedores" nome_atributo="company_name" id_atributo="id" nome="Escolha o fornecedor"></select_geral>
                                 </div>
-
                                 <!-- formulario PRODUTO-->
-                                <div v-if="nomeObjeto == 'produto'" class="modal-body">
+                                <div v-else-if="nomeObjeto == 'produto'" class="modal-body">
                                     <select_geral nome_model="marca_id" :obj_dropdown="marcas" nome_atributo="name" id_atributo="id" nome="Escolha a marca"></select_geral>
                                     <input_geral nome="Nome do produto" tipo="text" nome_model="name"></input_geral>
                                     <!--<input_geral nome="Tipo" tipo="text" nome_model="type"></input_geral>-->
@@ -256,24 +273,20 @@
                                     <input_geral nome="Preço de custo" tipo="number" nome_model="cost_price"></input_geral>
                                     <input_geral nome="Preço de venda" tipo="number" nome_model="sale_price"></input_geral>
                                 </div>
-
                                  <!-- formulario TIPO_PRODUTO-->
-                                 <div v-if="nomeObjeto == 'tipo_produto'" class="modal-body">
+                                 <div v-else-if="nomeObjeto == 'tipo_produto'" class="modal-body">
                                     <input_geral nome="Nome do tipo" tipo="text" nome_model="name"></input_geral>
                                 </div>
-
                                 <!-- formulario TIPO_MOVIMENTACAO-->
-                                <div v-if="nomeObjeto == 'tipo_movimentacao'" class="modal-body">
+                                <div v-else-if="nomeObjeto == 'tipo_movimentacao'" class="modal-body">
                                     <input_geral nome="Nome do tipo" tipo="text" nome_model="name"></input_geral>
                                 </div>
-
                                 <!-- formulario METODO_PAGAMENTO-->
-                                <div v-if="nomeObjeto == 'metodo_pagamento'" class="modal-body">
+                                <div v-else-if="nomeObjeto == 'metodo_pagamento'" class="modal-body">
                                     <input_geral nome="Nome do metodo" tipo="text" nome_model="name"></input_geral>
                                 </div>
-
                                 <!-- formulario ESTOQUE-->
-                                <div v-if="nomeObjeto == 'estoque'" class="modal-body">
+                                <div v-else-if="nomeObjeto == 'estoque'" class="modal-body">
                                     <select_geral nome_model="tipo_movimentacao_id" :obj_dropdown="tipo_movimentacaos" nome_atributo="name" id_atributo="id" nome="Escolha o tipo"></select_geral>
                                     <div class="form-floating mb-3">
                                         <select id="floatingInput" class="form-select" aria-label="Selecione" v-model="modelObjetos[0]['fornecedor_id']" v-on:change="buscaMarcas()" required>
@@ -295,30 +308,28 @@
                                 </div>
 
                                 <!-- formulario PAIS-->
-                                <div v-if="nomeObjeto == 'pais'" class="modal-body">
+                                <div v-else-if="nomeObjeto == 'pais'" class="modal-body">
                                     <input_geral nome="Nome do País" tipo="text" nome_model="name_country"></input_geral>
                                 </div>
-
                                 <!-- formulario ESTADO-->
-                                <div v-if="nomeObjeto == 'estado'" class="modal-body">
+                                <div v-else-if="nomeObjeto == 'estado'" class="modal-body">
                                     <input_geral nome="Nome do Estado" tipo="text" nome_model="name_state"></input_geral>
                                     <select_geral nome_model="pais_id" :obj_dropdown="paises" nome_atributo="name_country" id_atributo="id" nome="Escolha o país"></select_geral>
                                 </div>
-
                                 <!-- formulario CIDADE-->
-                                <div v-if="nomeObjeto == 'cidade'" class="modal-body">
+                                <div v-else-if="nomeObjeto == 'cidade'" class="modal-body">
                                     <input_geral nome="Nome" tipo="text" nome_model="name_city"></input_geral>
                                     <select_geral nome_model="estado_id" :obj_dropdown="estados" nome_atributo="name_state" id_atributo="id" nome="Escolha um estado"></select_geral>
                                 </div>
-
                                 <!-- formulario BAIRRO-->
-                                <div v-if="nomeObjeto == 'bairro'" class="modal-body">
+                                <div v-else-if="nomeObjeto == 'bairro'" class="modal-body">
                                     <input_geral nome="Nome" tipo="text" nome_model="name_neighborhood"></input_geral>
                                     <select_geral nome_model="cidade_id" :obj_dropdown="cidades" nome_atributo="name_city" id_atributo="id" nome="Escolha uma cidade"></select_geral>
                                 </div>
 
+                                
                                 <!-- formulario ENDERECO-->
-                                <div v-if="nomeObjeto == 'endereco'" class="modal-body">
+                                <div v-else-if="nomeObjeto == 'endereco'" class="modal-body">
                                     <div class="form-floating mb-3">
                                         <select id="floatingInput" class="form-select" aria-label="Selecione" v-model="modelObjetos[0]['pais_id']" v-on:change="buscaEstados()" required>
                                             <option v-for="(obj, index) in paises" v-bind:value="obj.id" > @{{obj.name_country}}</option>
@@ -351,9 +362,13 @@
                                     <div  class="form-floating mb-3">
                                         <select id="floatingInput" class="form-select" aria-label="Selecione" v-model="modelObjetos[0]['tipoPessoa']" v-on:change="buscaPessoa()" required>
                                             <option value="" > </option>
+                                            @can('admin')
                                             <option value="fornecedor" > Fornecedor </option>
                                             <option value="vendedor" > Vendedor </option>
                                             <option value="cliente" > Cliente </option>
+                                            @elsecan('vendedor')
+                                            <option value="cliente" > Cliente </option>
+                                            @endcan
                                         </select>
                                         <label for="floatingInput">Para que tipo de pessoa</label>
                                     </div>
@@ -365,19 +380,26 @@
                                 </div>
 
                                 <!-- formulario TELEFONE-->
-                                <div v-if="nomeObjeto == 'telefone'" class="modal-body">
+                                <div v-else-if="nomeObjeto == 'telefone'" class="modal-body">
+
                                     <div class="form-floating mb-3">
                                         <select id="floatingInput" class="form-select" aria-label="Selecione" v-model="modelObjetos[0]['tipoPessoa']" v-on:change="buscaPessoa()" required>
                                             <option value="" > </option>
+                                            @can('admin')
                                             <option value="fornecedor" > Fornecedor </option>
                                             <option value="vendedor" > Vendedor </option>
                                             <option value="cliente" > Cliente </option>
+                                            @elsecan('vendedor')
+                                            <option value="cliente" > Cliente </option>
+                                            @endcan
                                         </select>
                                         <label for="floatingInput">Para que tipo de pessoa</label>
                                     </div>
+
                                     <select_geral nome_model="telefoneable_id" :obj_dropdown="pessoas" nome_atributo="name" id_atributo="id" nome="Escolha o proprietario" ></select_geral>
                                     <input_geral nome="Numero Telefone" tipo="text" nome_model="number_phone"></input_geral>
                                 </div>
+                                @endcan
 
                                 <!-- Rodapé -->
                                 <div class="modal-footer">
