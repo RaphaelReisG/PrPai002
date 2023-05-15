@@ -14,7 +14,8 @@ class Cliente extends Usuario_sistema
     protected $fillable = [
         'name',
         'company_name',
-        'cnpj'
+        'cnpj',
+        'vendedor_id'
     ];
 
     public function vendedor(){
