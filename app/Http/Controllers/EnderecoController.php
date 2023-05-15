@@ -30,9 +30,9 @@ class EnderecoController extends Controller
         ->join('estados', 'cidades.estado_id', '=', 'estados.id' )
         ->join('pais', 'estados.pais_id', '=', 'pais.id' )
         //->join('enderecoable', 'enderecos.enderecoable_id', '=', 'enderecoable.id' )
-        ->join('vendedors', 'enderecos.enderecoable_id', '=', 'vendedors.id' )
-        ->join('clientes', 'enderecos.enderecoable_id', '=', 'clientes.id' )
-        ->join('fornecedors', 'enderecos.enderecoable_id', '=', 'fornecedors.id' )
+        //->join('vendedors', 'enderecos.enderecoable_id', '=', 'vendedors.id' )
+        //->join('clientes', 'enderecos.enderecoable_id', '=', 'clientes.id' ) 
+        //->join('fornecedors', 'enderecos.enderecoable_id', '=', 'fornecedors.id' )
         ->select('enderecos.*')
         ->groupBy('enderecos.id', 'enderecos.street_name', 'enderecos.complement',
             'enderecos.cep','enderecos.house_number','enderecos.bairro_id',
@@ -47,9 +47,9 @@ class EnderecoController extends Controller
                 ->orWhere('enderecos.cep', 'like', '%' . $request->buscarObjeto . '%')
 
                 ->orWhere('enderecos.enderecoable_type', 'like', '%' . $request->buscarObjeto . '%')
-                ->orWhere('clientes.name', 'like', '%' . $request->buscarObjeto . '%')
-                ->orWhere('vendedors.name', 'like', '%' . $request->buscarObjeto . '%')
-                ->orWhere('fornecedors.name', 'like', '%' . $request->buscarObjeto . '%')
+                //->orWhere('clientes.name', 'like', '%' . $request->buscarObjeto . '%')
+                //->orWhere('vendedors.name', 'like', '%' . $request->buscarObjeto . '%')
+                //->orWhere('fornecedors.name', 'like', '%' . $request->buscarObjeto . '%')
 
                 ->orWhere('bairros.name_neighborhood', 'like', '%' . $request->buscarObjeto . '%')
                 ->orWhere('cidades.name_city', 'like', '%' . $request->buscarObjeto . '%')

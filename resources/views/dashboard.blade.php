@@ -85,7 +85,7 @@
                                         <li><a class="dropdown-item" href="#" v-on:click="defineClasse('endereco', 'Endereços dos clientes')">Lista de endereços</a></li>
                                         <li><a class="dropdown-item" href="#" v-on:click="defineClasse('telefone', 'Telefones dos clientes')">Lista telefonica</a></li>
                                     @elsecan('vendedor')
-                                        <li><a class="dropdown-item" href="#" v-on:click="defineClasse('cliente', 'Cliente')">Meus Clientes</a></li>
+                                        <li><a class="dropdown-item" href="#" v-on:click="defineClasse('cliente', 'Cliente')">Clientes</a></li>
                                         <li><a class="dropdown-item" href="#" v-on:click="defineClasse('pedido', 'Pedidos')">Pedidos</a></li>
                                     @elsecan('cliente')
                                         <li><a class="dropdown-item" href="#" v-on:click="defineClasse('pedido', 'Pedidos')">Meus Pedidos</a></li>
@@ -660,10 +660,10 @@
                         <!-- Tabela Telefone -->
                         <div v-else-if="nomeObjeto == 'telefone' && objetos !== null" class="row">
                             <table_acordion     :classe_atributos="[
-                                                        {titulo: 'Nº Telefone', conteudo: 'number_phone'},
-                                                        {titulo: 'Contato', conteudo: 'telefoneable_type'},
-                                                        {titulo: 'Nome Contato', conteudo: 'telefoneable', conteudo2: 'name'},
-                                                        {titulo: 'Nome Empresa', conteudo: 'telefoneable', conteudo2: 'company_name'}
+                                                        {titulo: 'Nº Telefone', conteudo: 'number_phone', ordenacao: 'telefone.number_phone'},
+                                                        {titulo: 'Contato', conteudo: 'telefoneable_type', ordenacao: 'telefone.telefoneable_type'},
+                                                        {titulo: 'Nome Contato', conteudo: 'telefoneable', conteudo2: 'name', ordenacao: 'telefone.telefoneable_type'},
+                                                        {titulo: 'Nome Empresa', conteudo: 'telefoneable', conteudo2: 'company_name', ordenacao: 'telefone.telefoneable_type'}
 
                                                     ]"
                                                     :objeto_imp="objetos"
@@ -677,11 +677,11 @@
                         <!-- Tabela Estoque -->
                         <div v-else-if="nomeObjeto == 'estoque' && objetos !== null" class="row">
                             <table_acordion_estoque     :classe_atributos="[
-                                                        {titulo: 'Data', conteudo: 'created_at', ordenacao: ''},
-                                                        {titulo: 'Quantidade', conteudo: 'qty_item', ordenacao: '' },
-                                                        {titulo: 'Produto', conteudo: 'produto', conteudo2: 'name'},
-                                                        {titulo: 'Marca',  conteudo: 'produto', conteudo2: 'marca', conteudo3: 'name'},
-                                                        {titulo: 'Tipo',  conteudo: 'tipo_movimentacao', conteudo2: 'name'}
+                                                        {titulo: 'Data', conteudo: 'created_at', ordenacao: 'estoques.created_at'},
+                                                        {titulo: 'Quantidade', conteudo: 'qty_item', ordenacao: 'estoques.qty_item' },
+                                                        {titulo: 'Produto', conteudo: 'produto', conteudo2: 'name', ordenacao: 'produtos.name'},
+                                                        {titulo: 'Marca',  conteudo: 'produto', conteudo2: 'marca', conteudo3: 'name', ordenacao: 'marcas.name'},
+                                                        {titulo: 'Tipo',  conteudo: 'tipo_movimentacao', conteudo2: 'name', ordenacao: 'tipo_movimentacaos.name'}
 
                                                     ]"
                                                     :objeto_imp="objetos"
@@ -694,33 +694,34 @@
                                                 >
                             </table_acordion_estoque >
                         </div>
+
                     @elsecan('vendedor')
-                        <!-- Tabela Cliente -->
+                        <!-- Tabela Cliente vend-->
                         <div v-else-if="nomeObjeto == 'cliente' && objetos !== null" class="row">
-                            <table_acordion     :classe_atributos="[
-                                                        {titulo: 'Nome', conteudo: 'name'},
-                                                        {titulo: 'Razão Social', conteudo: 'company_name'},
-                                                        {titulo: 'CPF / CNPJ', conteudo: 'cnpj'},
-                                                        {titulo: 'Vendedor', conteudo: 'vendedor', conteudo2: 'name' },
-                                                        {titulo: 'E-mail',  conteudo: 'user', conteudo2: 'email'}
+                            <table_acordion_cliente_restricao     :classe_atributos="[
+                                                        {titulo: 'Nome', conteudo: 'name', ordenacao: 'clientes.name'},
+                                                        {titulo: 'Razão Social', conteudo: 'company_name', ordenacao: 'clientes.company_name'},
+                                                        {titulo: 'CPF / CNPJ', conteudo: 'cnpj', ordenacao: 'clientes.cnpj'},
+                                                        {titulo: 'E-mail',  conteudo: 'user', conteudo2: 'email', ordenacao: 'users.email'}
                                                     ]"
                                                     :objeto_imp="objetos"
                                                     :obj_acordion="[
-                                                        {titulo: 'Criado em', conteudo: 'created_at'}
+                                                        {titulo: 'Criado em', conteudo: 'created_at'},
+                                                        {titulo: 'Vendedor responsável', conteudo: 'vendedor', conteudo2: 'name'}
                                                     ]"
                                                 >
-                            </table_acordion>
+                            </table_acordion_cliente_restricao>
                         </div>
 
                         <!-- Tabela Endereco -->
                         <div v-else-if="nomeObjeto == 'endereco' && objetos !== null" class="row">
                             <table_acordion     :classe_atributos="[
-                                                        {titulo: 'Logradouro', conteudo: 'street_name'},
-                                                        {titulo: 'Bairro', conteudo: 'bairro', conteudo2: 'name_neighborhood'},
-                                                        {titulo: 'Cidade', conteudo: 'bairro', conteudo2: 'cidade', conteudo3: 'name_city'},
-                                                        {titulo: 'Tipo', conteudo: 'enderecoable_type'},
-                                                        {titulo: 'Proprietario',  conteudo: 'enderecoable', conteudo2: 'name'},
-                                                        {titulo: 'Nome empresa',  conteudo: 'enderecoable', conteudo2: 'company_name'}
+                                                        {titulo: 'Logradouro', conteudo: 'street_name', ordenacao: 'enderecos.street_name'},
+                                                        {titulo: 'Bairro', conteudo: 'bairro', conteudo2: 'name_neighborhood', ordenacao: 'bairros.name_neighborhood'},
+                                                        {titulo: 'Cidade', conteudo: 'bairro', conteudo2: 'cidade', conteudo3: 'name_city', ordenacao: 'cidades.name_city'},
+                                                        {titulo: 'Tipo', conteudo: 'enderecoable_type', ordenacao: 'enderecos.enderecoable_type'},
+                                                        {titulo: 'Proprietario',  conteudo: 'enderecoable', conteudo2: 'name', ordenacao: 'enderecoable.name'},
+                                                        {titulo: 'Nome empresa',  conteudo: 'enderecoable', conteudo2: 'company_name', ordenacao: 'enderecoable.company_name'}
 
                                                     ]"
                                                     :objeto_imp="objetos"

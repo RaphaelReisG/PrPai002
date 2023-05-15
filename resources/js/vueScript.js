@@ -924,7 +924,7 @@ var app = new Vue({
                 .catch(error => (this.error = error));
         },
         buscarObjetos: function(){
-            alert('clicado');
+            //alert('clicado');
             var classe = this.nomeObjeto;
             var url;
             var dados;

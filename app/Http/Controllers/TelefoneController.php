@@ -21,19 +21,35 @@ class TelefoneController extends Controller
     public function index(Request $request)
     {
         //return Telefone::all();
-        return Telefone::with(['telefoneable'])->paginate(10);
+        //return Telefone::with(['telefoneable'])->paginate(10);
 
-        $telefone = Telefone::with([ 'telefoneable' ])
-        ->join('telefoneable', 'telefones.telefoneable_id', '=', 'telefoneable.id' )
-        //->join('vendedors', 'clientes.vendedor_id', '=', 'vendedors.id' )
-        ->select('telefones.*')
-        ->groupBy('telefones.id', 'telefones.number_phone', 'telefones.telefoneable_id', 'telefones.telefoneable_type', 'telefones.created_at', 'telefones.updated_at');
+        $telefone = Telefone::with([ 'telefoneable' ]);
+        /*->join('clientes', function ($join) {
+            $join->on('telefones.telefoneable_id', '=', 'clientes.id')
+                ->where('telefones.telefoneable_type', '=', "App\Models\Cliente");
+        })
+        ->join('vendedors', function ($join) {
+            $join->on('telefones.telefoneable_id', '=', 'vendedors.id')
+                ->where('telefones.telefoneable_type', '=', "App\Models\Vendedor");
+        })
+        ->join('fornecedors', function ($join) {
+            $join->on('telefones.telefoneable_id', '=', 'fornecedors.id')
+                ->where('telefones.telefoneable_type', '=', "App\Models\Fornecedor");
+        })*/
+        //->join('vendedors', 'telefones.telefoneable_id', '=', 'vendedors.id' )
+        //->join('clientes', 'telefones.telefoneable_id', '=', 'clientes.id' )
+        //->join('fornecedors', 'telefones.telefoneable_id', '=', 'fornecedors.id' )
+        //->select('telefones.*')
+        //->groupBy('telefones.id', 'telefones.number_phone', 'telefones.telefoneable_id', 'telefones.telefoneable_type', 'telefones.created_at', 'telefones.updated_at');
 
 
         if ($request->has('buscarObjeto')) {
             $telefone->where(function ($query) use ($request) {
                 $query->where('telefones.number_phone', 'like', '%' . $request->buscarObjeto . '%')
-                ->orWhere('telefoneable.name', 'like', '%' . $request->buscarObjeto . '%');
+                ->orWhere('telefones.telefoneable_type', 'like', '%' . $request->buscarObjeto . '%');
+                //->orWhere('clientes.name', 'like', '%' . $request->buscarObjeto . '%')
+                //->orWhere('vendedors.name', 'like', '%' . $request->buscarObjeto . '%')
+                //->orWhere('fornecedors.name', 'like', '%' . $request->buscarObjeto . '%');
             });
         }
 

@@ -45,6 +45,10 @@ class ClienteController extends Controller
             });
         }
 
+        if ($request->has('vendedor_id')) {
+            $clientes->where('clientes.vendedor_id', '=', $request->vendedor_id);
+        }
+
         if ($request->has('ordenacaoBusca')) {
             $clientes->orderBy($request->ordenacaoBusca);
         }
