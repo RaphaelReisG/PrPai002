@@ -165,7 +165,7 @@
                     @elsecan('vendedor')
                         Olá Vendedor, seja bem vindo ao sistema.
                     @else
-                        Quem é você?
+                        Você não tem nenhuma permissão.
                     @endcan
                 </div>
 
@@ -196,11 +196,17 @@
                             <div v-if="modalSucesso == false"> <!-- conteudo modal -->
                                 <!-- formulario CLIENTE -->
                                 <div v-if="nomeObjeto == 'cliente'" class="modal-body">
+                                    @can('admin')
+                                        <select_geral nome_model="vendedor_id" :obj_dropdown="vendedores" nome_atributo="name" id_atributo="id" nome="Defina um vendedor"></select_geral>
+                                    @elsecan('vendedor')
+                                        <div style="display: none">
+                                            {{ modelObjetos[0]['vendedor_id'] = "<?php echo Auth::user()->userable->id;?>"  }}
+                                        </div>
+                                    @endcan
                                     <input_geral nome="Nome Completo" tipo="text" nome_model="name"></input_geral>
                                     <input_geral nome="Razão Social" tipo="text" nome_model="company_name"></input_geral>
                                     <input_geral nome="CPF ou CNPJ" tipo="number" nome_model="cnpj"></input_geral>
                                     <input_geral nome="E-mail" tipo="email" nome_model="email"></input_geral>
-                                    <select_geral nome_model="vendedor_id" :obj_dropdown="vendedores" nome_atributo="name" id_atributo="id" nome="Defina um vendedor"></select_geral>
                                     <div v-if="acaoObjeto == 'Criar'">
                                         <senha_geral nome="Senha" nome_model="senha"></senha_geral>
                                         <senha_geral nome="Confirme a senha" nome_model="confirmaSenha"></senha_geral>
