@@ -404,6 +404,17 @@ var app = new Vue({
                 this.modelObjetos[0]['telefoneable_id'] = this.objetos['data'][index]['telefoneable_id'];
                 this.modelObjetos[0]['number_phone'] = this.objetos['data'][index]['number_phone'];
             }
+            else if(this.nomeObjeto == "estoque"){
+                this.buscaFornecedores();
+                this.modelObjetos[0]['fornecedor_id'] = this.objetos['data'][index]['produto']['marca']['fornecedor_id'];
+                this.buscaMarcas();
+                this.modelObjetos[0]['marca_id'] = this.objetos['data'][index]['produto']['marca_id'];
+                this.buscaProdutos();
+                this.modelObjetos[0]['produto_id'] = this.objetos['data'][index]['produto_id'];
+                this.modelObjetos[0]['qty_item'] = this.objetos['data'][index]['qty_item'];
+                this.modelObjetos[0]['observation'] = this.objetos['data'][index]['observation'];
+                this.modelObjetos[0]['tipo_movimentacao_id'] = this.objetos['data'][index]['tipo_movimentacao_id'];
+            }
             else{
                 alert("Erro! CarregarCamposEditarObjeto | Classe não encontrada");
             }
@@ -417,7 +428,6 @@ var app = new Vue({
             if(this.nomeObjeto == 'produto'){this.buscaMarcas();}
             if(this.nomeObjeto == 'produto'){this.buscaTipo_produtos();}
             if(this.nomeObjeto == 'estoque'){this.buscaTipo_movimentacaos();}
-            if(this.nomeObjeto == 'estoque'){this.buscaProdutos();}
 
         },
         updateObjeto: async function(classe){
@@ -563,6 +573,18 @@ var app = new Vue({
                     telefoneable_type: this.modelObjetos[0]['telefoneable_type']
                 }
             }
+            else if(classe == "estoque"){
+                url = '/api/'+classe+'/'+this.modelObjetos[0]['id'];
+                //alert(url);
+                dados = {
+                    qty_item: this.modelObjetos[0]['qty_item'],
+                    observation: this.modelObjetos[0]['observation'],
+                    tipo_movimentacao_id: this.modelObjetos[0]['tipo_movimentacao_id'],
+                    produto_id: this.modelObjetos[0]['produto_id'],
+                    //requisitante: this.tipoUsuario,
+                    //estoqueable_id: this.idUsuario
+                }
+            }
             else{
                 alert("Erro, Update |  Classe inexistente!");
             }
@@ -665,7 +687,11 @@ var app = new Vue({
             this.modelObjetos[0]['sale_price'] = "";
             this.modelObjetos[0]['marca_id'] = "";
 
-
+            //estoque
+            this.modelObjetos[0]['tipo_movimentacao_id'] = "";
+            this.modelObjetos[0]['produto_id'] = "";
+            this.modelObjetos[0]['qty_item'] = "";
+            this.modelObjetos[0]['observation'] = "";
 
 
             this.error = null;

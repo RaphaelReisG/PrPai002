@@ -9,7 +9,7 @@ class Estoque extends Model
 {
     use HasFactory;
 
-    protected $fillable = [ 
+    protected $fillable = [
         'qty_item',
         'observation',
         'tipo_movimentacao_id',
