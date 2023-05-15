@@ -576,12 +576,12 @@
                         <!-- Tabela Endereco -->
                         <div v-else-if="nomeObjeto == 'endereco' && objetos !== null" class="row">
                             <table_acordion     :classe_atributos="[
-                                                        {titulo: 'Logradouro', conteudo: 'street_name'},
-                                                        {titulo: 'Bairro', conteudo: 'bairro', conteudo2: 'name_neighborhood'},
-                                                        {titulo: 'Cidade', conteudo: 'bairro', conteudo2: 'cidade', conteudo3: 'name_city'},
-                                                        {titulo: 'Tipo', conteudo: 'enderecoable_type'},
-                                                        {titulo: 'Proprietario',  conteudo: 'enderecoable', conteudo2: 'name'},
-                                                        {titulo: 'Nome empresa',  conteudo: 'enderecoable', conteudo2: 'company_name'}
+                                                        {titulo: 'Logradouro', conteudo: 'street_name', ordenacao: 'enderecos.street_name'},
+                                                        {titulo: 'Bairro', conteudo: 'bairro', conteudo2: 'name_neighborhood', ordenacao: 'bairros.name_neighborhood'},
+                                                        {titulo: 'Cidade', conteudo: 'bairro', conteudo2: 'cidade', conteudo3: 'name_city', ordenacao: 'cidades.name_city'},
+                                                        {titulo: 'Tipo', conteudo: 'enderecoable_type', ordenacao: 'enderecos.enderecoable_type'},
+                                                        {titulo: 'Proprietario',  conteudo: 'enderecoable', conteudo2: 'name', ordenacao: 'enderecoable.name'},
+                                                        {titulo: 'Nome empresa',  conteudo: 'enderecoable', conteudo2: 'company_name', ordenacao: 'enderecoable.company_name'}
 
                                                     ]"
                                                     :objeto_imp="objetos"

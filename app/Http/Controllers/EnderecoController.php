@@ -19,10 +19,56 @@ class EnderecoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         //return Endereco::all();
-        return Endereco::with(['enderecoable','bairro', 'bairro.cidade', 'bairro.cidade.estado', 'bairro.cidade.estado.pais' ])->paginate(10);
+        //return Endereco::with(['enderecoable','bairro', 'bairro.cidade', 'bairro.cidade.estado', 'bairro.cidade.estado.pais' ])->paginate(10);
+
+        $endereco = Endereco::with(['enderecoable','bairro', 'bairro.cidade', 'bairro.cidade.estado', 'bairro.cidade.estado.pais'])
+        ->join('bairros', 'enderecos.bairro_id', '=', 'bairros.id' )
+        ->join('cidades', 'bairros.cidade_id', '=', 'cidades.id' )
+        ->join('estados', 'cidades.estado_id', '=', 'estados.id' )
+        ->join('pais', 'estados.pais_id', '=', 'pais.id' )
+        //->join('enderecoable', 'enderecos.enderecoable_id', '=', 'enderecoable.id' )
+        ->join('vendedors', 'enderecos.enderecoable_id', '=', 'vendedors.id' )
+        ->join('clientes', 'enderecos.enderecoable_id', '=', 'clientes.id' )
+        ->join('fornecedors', 'enderecos.enderecoable_id', '=', 'fornecedors.id' )
+        ->select('enderecos.*')
+        ->groupBy('enderecos.id', 'enderecos.street_name', 'enderecos.complement',
+            'enderecos.cep','enderecos.house_number','enderecos.bairro_id',
+            'enderecos.enderecoable_type','enderecos.enderecoable_id', 'enderecos.created_at', 'enderecos.updated_at');
+
+
+        if ($request->has('buscarObjeto')) {
+            $endereco->where(function ($query) use ($request) {
+                $query->where('enderecos.street_name', 'like', '%' . $request->buscarObjeto . '%')
+                ->orWhere('enderecos.complement', 'like', '%' . $request->buscarObjeto . '%')
+                ->orWhere('enderecos.house_number', 'like', '%' . $request->buscarObjeto . '%')
+                ->orWhere('enderecos.cep', 'like', '%' . $request->buscarObjeto . '%')
+
+                ->orWhere('enderecos.enderecoable_type', 'like', '%' . $request->buscarObjeto . '%')
+                ->orWhere('clientes.name', 'like', '%' . $request->buscarObjeto . '%')
+                ->orWhere('vendedors.name', 'like', '%' . $request->buscarObjeto . '%')
+                ->orWhere('fornecedors.name', 'like', '%' . $request->buscarObjeto . '%')
+
+                ->orWhere('bairros.name_neighborhood', 'like', '%' . $request->buscarObjeto . '%')
+                ->orWhere('cidades.name_city', 'like', '%' . $request->buscarObjeto . '%')
+                ->orWhere('estados.name_state', 'like', '%' . $request->buscarObjeto . '%')
+                ->orWhere('pais.name_country', 'like', '%' . $request->buscarObjeto . '%');
+            });
+        }
+
+        if ($request->has('ordenacaoBusca')) {
+            $endereco->orderBy($request->ordenacaoBusca);
+        }
+
+        if ($request->has('paginacao')) {
+            return $endereco->get();
+            //error_log('passou aki');
+        }
+
+        return $endereco->paginate(10);
+
     }
 
     /**
