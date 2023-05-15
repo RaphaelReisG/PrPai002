@@ -171,7 +171,8 @@ var app = new Vue({
                     email: this.modelObjetos[0]['email'],
                     company_name: this.modelObjetos[0]['company_name'],
                     cnpj: this.modelObjetos[0]['cnpj'],
-                    vendedor_id: this.modelObjetos[0]['vendedor_id']
+                    vendedor_id: this.modelObjetos[0]['vendedor_id'],
+                    senha: this.modelObjetos[0]['senha']
                 }
             }
             else if(classe == "fornecedor"){
@@ -718,9 +719,15 @@ var app = new Vue({
                     this.modelObjetos[0]['email'] == "" ||
                     this.modelObjetos[0]['cnpj'] == "" ||
                     this.modelObjetos[0]['company_name'] == "" ||
-                    this.modelObjetos[0]['vendedor_id'] == ""
+                    this.modelObjetos[0]['vendedor_id'] == "" ||
+                    this.modelObjetos[0]['senha'] == "" ||
+                        this.modelObjetos[0]['confirmaSenha'] == ""
                 ){
                     alert("Erro");
+                    return true;
+                }
+                else if(this.modelObjetos[0]['senha'] !=  this.modelObjetos[0]['confirmaSenha']){
+                    alert("Erro: Senhas diferentes");
                     return true;
                 }
                 else{

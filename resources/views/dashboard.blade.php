@@ -201,6 +201,10 @@
                                     <input_geral nome="CPF ou CNPJ" tipo="number" nome_model="cnpj"></input_geral>
                                     <input_geral nome="E-mail" tipo="email" nome_model="email"></input_geral>
                                     <select_geral nome_model="vendedor_id" :obj_dropdown="vendedores" nome_atributo="name" id_atributo="id" nome="Defina um vendedor"></select_geral>
+                                    <div v-if="acaoObjeto == 'Criar'">
+                                        <senha_geral nome="Senha" nome_model="senha"></senha_geral>
+                                        <senha_geral nome="Confirme a senha" nome_model="confirmaSenha"></senha_geral>
+                                    </div>
                                 </div>
                                 <!-- formulario FORNECEDOR -->
                                 <div v-if="nomeObjeto == 'fornecedor'" class="modal-body">

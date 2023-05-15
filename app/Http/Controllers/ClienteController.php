@@ -127,8 +127,9 @@ class ClienteController extends Controller
     {
         //Cliente::create($request->all());
 
-        $cliente = Vendedor::findOrfail($request->vendedor_id)->clientes()->create($request->only('name', 'cnpj', 'company_name'));
-        $cliente->user()->create(['email'=> $request->email, 'password'=>Hash::make("123Mud@R$%")])->givePermissionTo('cliente');
+        //$cliente = Vendedor::findOrfail($request->vendedor_id)->clientes()->create($request->only('name', 'cnpj', 'company_name'));
+        $cliente = Cliente::create($request->only('name', 'cnpj', 'company_name', 'vendedor_id'));
+        $cliente->user()->create(['email'=> $request->email, 'password'=>Hash::make($request->senha)])->givePermissionTo('cliente');
 
         return $cliente;
     }
