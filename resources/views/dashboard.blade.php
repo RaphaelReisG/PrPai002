@@ -444,6 +444,31 @@
                     </div>
 
                     @can('admin')
+                        <!-- Tabela Meus Dados Administradores -->
+                        <div v-else-if="nomeObjeto == ('administrador/'+idUsuario) && objetos !== null" class="row">
+                            <div class="card card-body">
+                                <div class="row">
+                                    <div class="col">
+                                        <h4>Nome:</h4>
+                                    </div>
+                                    <div class="col">
+                                        <h4>@{{objetos['data']['name']}}</h4>
+                                    </div>
+                                    <div class="col">
+                                        <button_alter></button_alter>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <h4>E-mail:</h4>
+                                    </div>
+                                    <div class="col">
+                                        <h4>@{{objetos['data']['user']['email']}}</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                         <!-- Tabela Cliente -->
                         <div v-else-if="nomeObjeto == 'cliente' && objetos !== null" class="row">
                             <table_acordion     :classe_atributos="[
@@ -487,28 +512,6 @@
                                                     ]"
                                                 >
                             </table_acordion>
-                        </div>
-
-                        <!-- Tabela Meus Dados Administradores -->
-                        <div v-else-if="nomeObjeto == ('administrador/'+idUsuario) && objetos !== null" class="row">
-                            <div class="card card-body">
-                                <div class="row">
-                                    <div class="col">
-                                        <h4>Nome:</h4>
-                                    </div>
-                                    <div class="col">
-                                        <h4>@{{objetos['data']['name']}}</h4>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col">
-                                        <h4>E-mail:</h4>
-                                    </div>
-                                    <div class="col">
-                                        <h4>@{{objetos['data']['user']['email']}}</h4>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
 
                         <!-- Tabela Fornecedor -->
