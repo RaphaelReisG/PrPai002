@@ -59,6 +59,7 @@ var app = new Vue({
         cidades: [{}],
         bairros: [{}],
         vendedores: [{}],
+        clientes: [{}],
         fornecedores: [{}],
         pessoas: [{}],
         marcas: [{}],
@@ -436,6 +437,11 @@ var app = new Vue({
             if(this.nomeObjeto == 'produto'){this.buscaMarcas();}
             if(this.nomeObjeto == 'produto'){this.buscaTipo_produtos();}
             if(this.nomeObjeto == 'estoque'){this.buscaTipo_movimentacaos();}
+            if(this.tipoUsuario == 'AppModelsVendedor'){
+                if(this.nomeObjeto == 'endereco' || this.nomeObjeto == 'telefone'){
+                    this.buscaClientes();
+                }
+            }
 
         },
         updateObjeto: async function(classe){
@@ -711,6 +717,11 @@ var app = new Vue({
             if(this.nomeObjeto == 'produto'){this.buscaMarcas();}
             if(this.nomeObjeto == 'produto'){this.buscaTipo_produtos();}
             if(this.nomeObjeto == 'estoque'){this.buscaTipo_movimentacaos();}
+            if(this.tipoUsuario == 'AppModelsVendedor'){
+                if(this.nomeObjeto == 'endereco' || this.nomeObjeto == 'telefone'){
+                    this.buscaClientes();
+                }
+            }
             //if(this.nomeObjeto == 'estoque'){this.buscaProdutos();}
         },
         limparGeral: function(){
@@ -1091,6 +1102,18 @@ var app = new Vue({
             axios
                 .get(url)
                 .then(response => (this.pessoas = response.data))
+                .catch(error => (this.error = error));
+        },
+        buscaClientes: function() {
+            this.clientes = null;
+            this.carregandoGeral = true;
+            var url;
+            url = '/api/cliente'+'?paginacao=false'+'&vendedor_id=' + this.idUsuario;
+            //alert(url);
+
+            axios
+                .get(url)
+                .then(response => (this.clientes = response.data))
                 .catch(error => (this.error = error));
         },
         buscaVendedores: function() {
