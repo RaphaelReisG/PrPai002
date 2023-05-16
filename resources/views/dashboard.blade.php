@@ -213,6 +213,11 @@
                                     </div>
                                 </div>
                                 @can('admin')
+                                    <!-- formulario MEUS DADOS - ADMINISTRADOR-->
+                                    <div v-else-if="nomeObjeto == 'administrador/'+idUsuario" class="modal-body">
+                                        <input_geral nome="Nome Completo" tipo="text" nome_model="name"></input_geral>
+                                        <input_geral nome="E-mail" tipo="email" nome_model="email"></input_geral>
+                                    </div>
                                     <!-- formulario ADMINISTRADOR-->
                                     <div v-else-if="nomeObjeto == 'administrador'" class="modal-body">
                                         <input_geral nome="Nome Completo" tipo="text" nome_model="name"></input_geral>
@@ -455,7 +460,7 @@
                                         <h4>@{{objetos['data']['name']}}</h4>
                                     </div>
                                     <div class="col">
-                                        <button_alter></button_alter>
+                                        <button_alter_meus_dados></button_alter_meus_dados>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -464,6 +469,8 @@
                                     </div>
                                     <div class="col">
                                         <h4>@{{objetos['data']['user']['email']}}</h4>
+                                    </div>
+                                    <div class="col">
                                     </div>
                                 </div>
                             </div>

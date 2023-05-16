@@ -313,7 +313,12 @@ var app = new Vue({
             this.index = index;
             //this.modelObjetos = this.objetos;
 
+            if(this.index == 'meusDados'){
+                this.modelObjetos[0]['id'] = this.objetos['data']['id'];
+            }
+            else{
             this.modelObjetos[0]['id'] = this.objetos['data'][index]['id'];
+            }
 
 
             //alert("01 - "+index);
@@ -346,6 +351,10 @@ var app = new Vue({
             else if(this.nomeObjeto == "administrador" || this.nomeObjeto == "vendedor"){
                 this.modelObjetos[0]['name'] = this.objetos['data'][index]['name'];
                 this.modelObjetos[0]['email'] = this.objetos['data'][index]['user']['email'];
+            }
+            else if(this.nomeObjeto == "administrador/"+this.idUsuario || this.nomeObjeto == "vendedor"){
+                this.modelObjetos[0]['name'] = this.objetos['data']['name'];
+                this.modelObjetos[0]['email'] = this.objetos['data']['user']['email'];
             }
             else if(this.nomeObjeto == "tipo_produto" || this.nomeObjeto == "tipo_movimentacao" || this.nomeObjeto == "metodo_pagamento"){
                 this.modelObjetos[0]['name'] = this.objetos['data'][index]['name'];
@@ -450,6 +459,13 @@ var app = new Vue({
             var dados;
             if(classe == "administrador"){
                 url = '/api/'+classe+'/'+this.modelObjetos[0]['id'];
+                dados = {
+                    name: this.modelObjetos[0]['name'],
+                    email: this.modelObjetos[0]['email']
+                }
+            }
+            else if(classe == "administrador/"+this.idUsuario){
+                url = '/api/'+classe;
                 dados = {
                     name: this.modelObjetos[0]['name'],
                     email: this.modelObjetos[0]['email']
@@ -829,6 +845,21 @@ var app = new Vue({
                     alert("Erro inexplicavel");
                     return true;
                 }
+
+            }
+            else if(classe == 'administrador/'+this.idUsuario ){
+
+                    if(
+                        this.modelObjetos[0]['name'] == "" ||
+                        this.modelObjetos[0]['email'] == ""
+                    ){
+                        alert("Erro");
+                        return true;
+                    }
+                    else{
+                        return false;
+                    }
+
 
             }
             else if(classe == 'telefone'){
