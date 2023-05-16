@@ -33,7 +33,7 @@ class EnderecoController extends Controller
         ->join('pais', 'estados.pais_id', '=', 'pais.id' )
         //->join('enderecoable', 'enderecos.enderecoable_id', '=', 'enderecoable.id' )
         //->join('vendedors', 'enderecos.enderecoable_id', '=', 'vendedors.id' )
-        //->join('clientes', 'enderecos.enderecoable_id', '=', 'clientes.id' ) 
+        //->join('clientes', 'enderecos.enderecoable_id', '=', 'clientes.id' )
         //->join('fornecedors', 'enderecos.enderecoable_id', '=', 'fornecedors.id' )
         ->select('enderecos.*')
         ->groupBy('enderecos.id', 'enderecos.street_name', 'enderecos.complement',
@@ -68,21 +68,6 @@ class EnderecoController extends Controller
 
             $endereco->where('enderecos.enderecoable_type', '=', 'App\\Models\\Cliente')
                 ->whereIn('enderecos.enderecoable_id', $subquery);
-
-
-            
-            /*
-            $resultado = DB::table('tabela')
-                ->whereIn('campo', $subquery)
-                ->get();*/
-/*
-            $vId = $request->vendedor_id;
-
-            $endereco->whereHas('enderecoable', function ($query) {
-                $query->where('enderecoable_type', 'App\\Models\\Cliente');
-            })->whereHas('enderecoable.vendedor', function ($query) use ($vId) {
-                $query->where('vendedor_id', $vendedorId);
-            })->get();*/
         }
 
         if ($request->has('ordenacaoBusca')) {

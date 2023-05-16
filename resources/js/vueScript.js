@@ -88,6 +88,13 @@ var app = new Vue({
             //url = '/api/'+classe+'?paginacao='+paginacao;
             url = '/api/'+classe;
 
+            if(this.tipoUsuario == 'AppModelsVendedor'){
+                alert('opa, vendedor');
+                if(classe == 'endereco' || classe == 'telefone'){
+                    url = url + '?vendedor_id=' + this.idUsuario;
+                }
+            }
+
             /*fetch(url).then((res) => res.json())
                     .then((data) => this.objetos = data).finally(this.carregandoGeral = false);
             */
@@ -1070,8 +1077,16 @@ var app = new Vue({
             this.pessoas = null;
             this.carregandoGeral = true;
             var url;
+            alert(this.modelObjetos[0]['tipoPessoa']);
             url = '/api/'+this.modelObjetos[0]['tipoPessoa']+'?paginacao=false';
-            //alert(url);
+            alert(url);
+
+            if(this.tipoUsuario == 'AppModelsVendedor'){
+                alert('opa, vendedor de novo');
+                if(this.nomeObjeto == 'endereco' || this.nomeObjeto == 'telefone'){
+                    url = url + '&vendedor_id=' + this.idUsuario;
+                }
+            }
 
             axios
                 .get(url)
