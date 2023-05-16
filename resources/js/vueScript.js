@@ -352,9 +352,16 @@ var app = new Vue({
                 this.modelObjetos[0]['name'] = this.objetos['data'][index]['name'];
                 this.modelObjetos[0]['email'] = this.objetos['data'][index]['user']['email'];
             }
-            else if(this.nomeObjeto == "administrador/"+this.idUsuario || this.nomeObjeto == "vendedor"){
+            else if(this.nomeObjeto == "administrador/"+this.idUsuario || this.nomeObjeto == "vendedor/"+this.idUsuario){
                 this.modelObjetos[0]['name'] = this.objetos['data']['name'];
                 this.modelObjetos[0]['email'] = this.objetos['data']['user']['email'];
+            }
+            else if(this.nomeObjeto == "cliente/"+this.idUsuario ){
+                this.modelObjetos[0]['name'] = this.objetos['data']['name'];
+                this.modelObjetos[0]['cnpj'] = this.objetos['data']['cnpj'];
+                this.modelObjetos[0]['email'] = this.objetos['data']['user']['email'];
+                this.modelObjetos[0]['company_name'] = this.objetos['data']['company_name'];
+                this.modelObjetos[0]['vendedor_id'] = this.objetos['data']['vendedor_id'];
             }
             else if(this.nomeObjeto == "tipo_produto" || this.nomeObjeto == "tipo_movimentacao" || this.nomeObjeto == "metodo_pagamento"){
                 this.modelObjetos[0]['name'] = this.objetos['data'][index]['name'];
@@ -478,8 +485,25 @@ var app = new Vue({
                     email: this.modelObjetos[0]['email']
                 }
             }
+            else if(classe == "vendedor/"+this.idUsuario){
+                url = '/api/'+classe;
+                dados = {
+                    name: this.modelObjetos[0]['name'],
+                    email: this.modelObjetos[0]['email']
+                }
+            }
             else if(classe == "cliente"){
                 url = '/api/'+classe+'/'+this.modelObjetos[0]['id'];
+                dados = {
+                    name: this.modelObjetos[0]['name'],
+                    email: this.modelObjetos[0]['email'],
+                    company_name: this.modelObjetos[0]['company_name'],
+                    cnpj: this.modelObjetos[0]['cnpj'],
+                    vendedor_id: this.modelObjetos[0]['vendedor_id']
+                }
+            }
+            else if(classe == "cliente/"+this.idUsuario){
+                url = '/api/'+classe;
                 dados = {
                     name: this.modelObjetos[0]['name'],
                     email: this.modelObjetos[0]['email'],
@@ -755,7 +779,7 @@ var app = new Vue({
                     this.modelObjetos[0]['company_name'] == "" ||
                     this.modelObjetos[0]['vendedor_id'] == "" ||
                     this.modelObjetos[0]['senha'] == "" ||
-                        this.modelObjetos[0]['confirmaSenha'] == ""
+                    this.modelObjetos[0]['confirmaSenha'] == ""
                 ){
                     alert("Erro");
                     return true;
@@ -847,7 +871,7 @@ var app = new Vue({
                 }
 
             }
-            else if(classe == 'administrador/'+this.idUsuario ){
+            else if(classe == 'administrador/'+this.idUsuario || classe == 'vendedor/'+this.idUsuario ){
 
                     if(
                         this.modelObjetos[0]['name'] == "" ||
@@ -862,6 +886,24 @@ var app = new Vue({
 
 
             }
+            else if(classe == 'cliente/'+this.idUsuario  ){
+
+                if(
+                    this.modelObjetos[0]['name'] == "" ||
+                    this.modelObjetos[0]['email'] == "" ||
+                    this.modelObjetos[0]['cnpj'] == "" ||
+                    this.modelObjetos[0]['company_name'] == "" ||
+                    this.modelObjetos[0]['vendedor_id'] == ""
+                ){
+                    alert("Erro");
+                    return true;
+                }
+                else{
+                    return false;
+                }
+
+
+        }
             else if(classe == 'telefone'){
                     if(
                         this.modelObjetos[0]['number_phone'] == "" ||

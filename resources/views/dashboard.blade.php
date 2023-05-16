@@ -405,6 +405,22 @@
                                         <input_geral nome="Numero Telefone" tipo="text" nome_model="number_phone"></input_geral>
                                     </div>
                                 @endcan
+                                @can('vendedor')
+                                    <!-- formulario MEUS DADOS - VENDEDOR-->
+                                    <div v-else-if="nomeObjeto == 'vendedor/'+idUsuario" class="modal-body">
+                                        <input_geral nome="Nome Completo" tipo="text" nome_model="name"></input_geral>
+                                        <input_geral nome="E-mail" tipo="email" nome_model="email"></input_geral>
+                                    </div>
+                                @endcan
+                                @can('cliente')
+                                    <!-- formulario MEUS DADOS - CLIENTE-->
+                                    <div v-else-if="nomeObjeto == 'cliente/'+idUsuario" class="modal-body">
+                                        <input_geral nome="Nome Completo" tipo="text" nome_model="name"></input_geral>
+                                        <input_geral nome="Razão Social" tipo="text" nome_model="company_name"></input_geral>
+                                        <input_geral nome="CPF ou CNPJ" tipo="number" nome_model="cnpj"></input_geral>
+                                        <input_geral nome="E-mail" tipo="email" nome_model="email"></input_geral>
+                                    </div>
+                                @endcan
 
                                 <!-- Rodapé -->
                                 <div class="modal-footer">
@@ -738,6 +754,69 @@
                         </div>
 
                     @elsecan('vendedor')
+                        <!-- Tabela Meus Dados VENDEDOR -->
+                        <div v-else-if="nomeObjeto == ('vendedor/'+idUsuario) && objetos !== null" class="row">
+                            <div class="card card-body">
+                                <div class="row">
+                                    <div class="col">
+                                        <h4>Nome:</h4>
+                                    </div>
+                                    <div class="col">
+                                        <h4>@{{objetos['data']['name']}}</h4>
+                                    </div>
+                                    <div class="col">
+                                        <button_alter_meus_dados></button_alter_meus_dados>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <h4>E-mail:</h4>
+                                    </div>
+                                    <div class="col">
+                                        <h4>@{{objetos['data']['user']['email']}}</h4>
+                                    </div>
+                                    <div class="col">
+                                    </div>
+                                </div>
+                            </div>
+                            <br><br>
+                            <div class="card">
+                                <div class="card card-header"> <h4>Meus Endereços</h4></div>
+                                <div class="card card-body">
+                                    <table_acordion2     :classe_atributos="[
+                                            {titulo: 'Logradouro', conteudo: 'street_name'},
+                                            {titulo: 'Bairro', conteudo: 'bairro', conteudo2: 'name_neighborhood'},
+                                            {titulo: 'Cidade', conteudo: 'bairro', conteudo2: 'cidade', conteudo3: 'name_city'},
+                                            {titulo: 'Nº', conteudo: 'house_number'}
+
+                                        ]"
+                                        :objeto_imp="objetos['data']['enderecos']"
+                                        :obj_acordion="[
+                                            {titulo: 'Criado em', conteudo: 'created_at'},
+                                            {titulo: 'Complemento', conteudo: 'complement'},
+                                            {titulo: 'CEP', conteudo: 'cep'}
+                                        ]"
+                                    >
+                                    </table_acordion2>
+                                </div>
+                            </div>
+                            <br><br>
+                            <div class="card">
+                                <div class="card card-header"> <h4>Meus Telefones</h4></div>
+                                <div class="card card-body">
+                                    <table_acordion2     :classe_atributos="[
+                                            {titulo: 'Nº Telefone', conteudo: 'number_phone'}
+
+                                        ]"
+                                        :objeto_imp="objetos['data']['telefones']"
+                                        :obj_acordion="[
+                                            {titulo: 'Criado em', conteudo: 'created_at'}
+                                        ]"
+                                    >
+                                    </table_acordion2>
+                                </div>
+                            </div>
+                        </div>
                         <!-- Tabela Cliente vend-->
                         <div v-else-if="nomeObjeto == 'cliente' && objetos !== null" class="row">
                             <table_acordion_cliente_restricao     :classe_atributos="[
@@ -804,6 +883,9 @@
                                     <div class="col">
                                         <h4>@{{objetos['data']['name']}}</h4>
                                     </div>
+                                    <div class="col">
+                                        <button_alter_meus_dados></button_alter_meus_dados>
+                                    </div>
                                 </div>
                                 <div class="row">
                                     <div class="col">
@@ -811,6 +893,8 @@
                                     </div>
                                     <div class="col">
                                         <h4>@{{objetos['data']['company_name']}}</h4>
+                                    </div>
+                                    <div class="col">
                                     </div>
                                 </div>
                                 <div class="row">
@@ -820,6 +904,8 @@
                                     <div class="col">
                                         <h4>@{{objetos['data']['cnpj']}}</h4>
                                     </div>
+                                    <div class="col">
+                                    </div>
                                 </div>
                                 <div class="row">
                                     <div class="col">
@@ -827,6 +913,8 @@
                                     </div>
                                     <div class="col">
                                         <h4>@{{objetos['data']['user']['email']}}</h4>
+                                    </div>
+                                    <div class="col">
                                     </div>
                                 </div>
                             </div>
