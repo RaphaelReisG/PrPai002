@@ -64,7 +64,7 @@ class VendedorController extends Controller
     public function store(VendedorRequest $request)
     {
         $vendedor = Vendedor::create($request->only('name'));
-        $vendedor->user()->create(['email'=> $request->email, 'password'=>Hash::make($request->password)])->givePermissionTo('admin');
+        $vendedor->user()->create(['email'=> $request->email, 'password'=>Hash::make($request->password)])->givePermissionTo('vendedor');
     }
 
     /**

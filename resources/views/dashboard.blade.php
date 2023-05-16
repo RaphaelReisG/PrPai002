@@ -159,7 +159,7 @@
             <div class="row">
                 <div v-if="titulo == ''">
                     @can('cliente')
-                        Olá cliente seja bem vindo e fique a vontade para explorar a sua ferramenta de diario de trade.
+                        Olá cliente seja bem vindo ao sistema.
                     @elsecan('admin')
                         Olá Administrador, seja bem vindo ao sistema.
                     @elsecan('vendedor')

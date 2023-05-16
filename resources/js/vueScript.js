@@ -161,7 +161,7 @@ var app = new Vue({
                 dados = {
                     name: this.modelObjetos[0]['name'],
                     email: this.modelObjetos[0]['email'],
-                    senha: this.modelObjetos[0]['senha']
+                    password: this.modelObjetos[0]['senha']
                 }
             }
             else if(classe == "vendedor"){
@@ -169,7 +169,7 @@ var app = new Vue({
                 dados = {
                     name: this.modelObjetos[0]['name'],
                     email: this.modelObjetos[0]['email'],
-                    senha: this.modelObjetos[0]['senha']
+                    password: this.modelObjetos[0]['senha']
                 }
             }
             else if(classe == "cliente"){
@@ -180,7 +180,7 @@ var app = new Vue({
                     company_name: this.modelObjetos[0]['company_name'],
                     cnpj: this.modelObjetos[0]['cnpj'],
                     vendedor_id: this.modelObjetos[0]['vendedor_id'],
-                    senha: this.modelObjetos[0]['senha']
+                    password: this.modelObjetos[0]['senha']
                 }
             }
             else if(classe == "fornecedor"){
