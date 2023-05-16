@@ -833,7 +833,8 @@ var app = new Vue({
             }
             else if(classe == 'telefone'){
                     if(
-                        this.modelObjetos[0]['number_phone'] == ""
+                        this.modelObjetos[0]['number_phone'] == "" ||
+                        this.modelObjetos[0]['telefoneable_id'] == ""
                     ){
                         alert("Erro");
                         return true;
@@ -899,7 +900,11 @@ var app = new Vue({
             }
             else if(classe == 'endereco'){
                 if(
-                    this.modelObjetos[0]['street_name'] == ""
+                    this.modelObjetos[0]['street_name'] == "" ||
+                    this.modelObjetos[0]['bairro_id'] == "" ||
+                    this.modelObjetos[0]['enderecoable_id'] == "" ||
+                    this.modelObjetos[0]['house_number'] == "" ||
+                    this.modelObjetos[0]['cep'] == ""
                 ){
                     alert("Erro");
                     return true;
@@ -910,6 +915,9 @@ var app = new Vue({
             }
             else if(classe == 'estoque'){
                 if(
+                    this.modelObjetos[0]['qty_item'] == "" ||
+                    this.modelObjetos[0]['tipo_movimentacao_id'] == "" ||
+                    this.modelObjetos[0]['produto_id'] == "" ||
                     this.modelObjetos[0]['qty_item'] == ""
                 ){
                     alert("Erro");
