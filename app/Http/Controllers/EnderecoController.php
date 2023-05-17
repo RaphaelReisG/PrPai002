@@ -8,6 +8,7 @@ use App\Models\Vendedor;
 use App\Models\Fornecedor;
 use App\Models\Cidade;
 use Illuminate\Http\Request;
+use App\Http\Requests\EnderecoRequest;
 
 use Illuminate\Support\Facades\DB;
 
@@ -99,7 +100,7 @@ class EnderecoController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(EnderecoRequest $request)
     {
         //Endereco::create($request->all());
 
@@ -152,7 +153,7 @@ class EnderecoController extends Controller
      * @param  \App\Models\Endereco  $endereco
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request,  Endereco $endereco)
+    public function update(EnderecoRequest $request,  Endereco $endereco)
     {
         //$obj = Endereco::findOrfail($id);
         //$obj->update($request->all());
