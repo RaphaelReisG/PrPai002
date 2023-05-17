@@ -17,7 +17,9 @@ class Pedido extends Model
         'total_price',
         'total_discount',
         'metodo_pagamento_id', 
-        'observation'
+        'observation',
+        'cliente_id',
+        'vendedor_id'
     ];
 
     public function cliente(){

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Pedido;
+use App\Models\Produto;
 use Illuminate\Http\Request;
 
 use App\Http\Resources\TesteResource;
@@ -38,7 +39,24 @@ class PedidoController extends Controller
      */
     public function store(Request $request)
     {
-        Pedido::create($request->all());
+        //$pedido = Pedido::create($request->all()); 
+        //$pedido->pivot();
+
+        $pedido = Pedido::create($request->all()); 
+
+        // Obtenha os produtos selecionados do formulário
+        $produtosSelecionados = $request->produtos;
+
+        // Anexe os produtos ao pedido e insira os valores da tabela pivot
+        foreach ($produtosSelecionados as $produtoSelecionado) {
+            $produto = Produto::find($produtoSelecionado['id']);
+
+            // Use o método attach para associar o produto ao pedido e definir os valores da tabela pivot
+            $pedido->produtos()->attach($produto, [
+                'qty_item' => $produtoSelecionado['qty_item'],
+                'price_iten' => $produtoSelecionado['price_iten'],
+            ]);
+        }
     }
 
     /**
