@@ -54,6 +54,60 @@
         `
     });
 
+    Vue.component('paginacao_produto', {
+        template: `
+            <div>
+                <nav aria-label="...">
+                    <ul class="pagination">
+                        <li class="page-item" v-if="$root.meuProduto['current_page'] > 1">
+                            <a class="page-link" href="#" v-on:click="$root.paginacao_produto($root.meuProduto['first_page_url'])">Primeiro</a>
+                        </li>
+                        <li class="page-item disabled" v-else>
+                            <a class="page-link" href="#">Primeiro</a>
+                        </li>
+                        <li class="page-item" v-if="$root.meuProduto['current_page'] > 1" >
+                            <a class="page-link" href="#" v-on:click="$root.paginacao_produto($root.meuProduto['prev_page_url'])">&laquo; Anterior</a>
+                        </li>
+                        <li class="page-item disabled" v-else>
+                            <a class="page-link" href="#" tabindex="-1">&laquo; Anterior</a>
+                        </li>
+                        <li class="page-item" v-if="$root.meuProduto['current_page'] > 2">
+                            <a class="page-link" href="#" v-on:click="$root.paginacao_produto($root.meuProduto['links'][$root.meuProduto['current_page'] - 2]['url'])">{{$root.meuProduto['current_page'] - 2}}</a>
+                        </li>
+                        <li class="page-item" v-if="$root.meuProduto['current_page'] > 1">
+                            <a class="page-link" href="#" v-on:click="$root.paginacao_produto($root.meuProduto['links'][$root.meuProduto['current_page'] - 1]['url'])">{{$root.meuProduto['current_page'] - 1}}</a>
+                        </li>
+
+                        <li class="page-item active">
+                            <a class="page-link"  href="#">{{$root.meuProduto['current_page']}} <span class="sr-only"></span></a>
+                        </li>
+
+                        <li class="page-item" v-if="($root.meuProduto['current_page'] + 1) <= $root.meuProduto['last_page']">
+                            <a class="page-link" href="#" v-on:click="$root.paginacao_produto($root.meuProduto['links'][$root.meuProduto['current_page'] + 1]['url'])">{{$root.meuProduto['current_page'] + 1}}</a>
+                        </li>
+                        <li class="page-item" v-if="($root.meuProduto['current_page'] + 2) <= $root.meuProduto['last_page']">
+                            <a class="page-link" href="#" v-on:click="$root.paginacao_produto($root.meuProduto['links'][$root.meuProduto['current_page'] + 2]['url'])">{{$root.meuProduto['current_page'] + 2}}</a>
+                        </li>
+
+                        <li class="page-item" v-if="($root.meuProduto['current_page'] + 1) <= $root.meuProduto['last_page']">
+                            <a class="page-link" href="#" v-on:click="$root.paginacao_produto($root.meuProduto['next_page_url'])">Próximo &raquo;</a>
+                        </li>
+                        <li class="page-item disabled" v-else>
+                            <a class="page-link" href="#">Próximo &raquo;</a>
+                        </li>
+                        <li class="page-item" v-if="($root.meuProduto['current_page'] + 1) <= $root.meuProduto['last_page']">
+                            <a class="page-link" href="#" v-on:click="$root.paginacao_produto($root.meuProduto['last_page_url'])">Ultimo</a>
+                        </li>
+                        <li class="page-item disabled" v-else>
+                            <a class="page-link" href="#">Ultimo</a>
+                        </li>
+                    </ul>
+                </nav>
+                <p>Maximo por Pagina: {{$root.meuProduto['per_page']}} | Total: {{$root.meuProduto['total']}}</p>
+            </div>
+        `
+    });
+
 // -------
 //menu superior
 Vue.component('menu_titulo', {
@@ -228,6 +282,43 @@ Vue.component('modal_sucesso', {
                             <button_alter :objindex="index"></button_alter>
                             <button_delete :objid= "obj.id"></button_delete>
                         </td>
+                    </tr>
+                </tbody>
+            </table>
+        `
+    });
+
+    Vue.component('table_comum_busca_produtos', {
+        props: ['classe_atributos','objeto_imp'],
+        template: `
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Opções</th>
+                        <th scope="col" v-for="atributo in classe_atributos">{{atributo.titulo}}</th>
+                    </tr>
+                </thead>
+                <tbody class="table-group-divider" v-for="(obj, index) in objeto_imp">
+                    <tr>
+                        <td>
+                            +
+                            <button_add_produto :objindex="index"></button_add_produto>
+                        </td>
+                        <td v-for="valor in classe_atributos">
+                        
+                            <div v-if="valor.conteudo2 == null ">
+                                {{ obj[valor.conteudo]  }}
+                            </div>
+                            <div v-else-if="valor.conteudo2 != null && valor.conteudo3 == null">
+                                {{ obj[valor.conteudo][valor.conteudo2]  }}
+                            </div>
+                            <div v-else-if="valor.conteudo3 != null">
+                                {{ obj[valor.conteudo][valor.conteudo2][valor.conteudo3]  }}
+                            </div>
+                            <div v-else>
+                            </div>
+                        </td>
+                        
                     </tr>
                 </tbody>
             </table>
@@ -503,6 +594,74 @@ Vue.component('modal_sucesso', {
         `
     });
 
+    Vue.component('table_acordion_pedidos', {
+        props: ['classe_atributos', 'objeto_imp', 'obj_acordion'],
+        template: `
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col" v-for="atributo in classe_atributos" >
+                            <div style="cursor: pointer;" v-on:click="$root.modelObjetos[0]['ordenacaoBusca'] = atributo.ordenacao, $root.buscarObjetos() ">
+                                {{atributo.titulo }}
+                            </div>
+                        </th>
+                        <th scope="col">Opções</th>
+                    </tr>
+                </thead>
+                <tbody class="table-group-divider" v-for="(obj, index) in objeto_imp['data']">
+                    <tr data-bs-toggle="collapse" v-bind:data-bs-target="'#collapseExample' + obj.id"  aria-expanded="false" v-bind:aria-controls="'collapseExample'+obj.id" aria-controls="collapseExample">
+
+                        <td v-for="valor in classe_atributos">
+                            <div v-if="valor.conteudo !== 'created_at' && valor.conteudo !== 'dtEntrada' && valor.conteudo !== 'dtSaida' && valor.conteudo2 == null ">
+                                {{ obj[valor.conteudo]  }}
+                            </div>
+                            <div v-else-if="valor.conteudo2 != null && valor.conteudo3 == null">
+                                {{ obj[valor.conteudo][valor.conteudo2]  }}
+                            </div>
+                            <div v-else-if="valor.conteudo3 != null">
+                                {{ obj[valor.conteudo][valor.conteudo2][valor.conteudo3]  }}
+                            </div>
+                            <div v-else>
+                                {{ new Date(obj[valor.conteudo]).toLocaleString() }}
+                            </div>
+                        </td>
+                        <td>
+                            <button_alter :objindex="index"></button_alter>
+                            <button_delete :objid= "obj.id"></button_delete>
+                        </td>
+                    </tr>
+                    <tr >
+                        <td colspan="12">
+                            <div class="collapse" v-bind:id="'collapseExample' + obj.id" >
+                                <div class="card card-body">
+                                    <div v-for="acord in obj_acordion">
+                                        <div v-if="acord.conteudo !== 'created_at' && acord.conteudo !== 'dtEntrada' && acord.conteudo !== 'dtSaida' && acord.conteudo2 == null ">
+                                            {{acord.titulo}}: {{obj[acord.conteudo] }}
+                                        </div>
+                                        <div v-else-if="acord.conteudo2 != null && acord.conteudo3 == null">
+                                            {{acord.titulo}}: {{ obj[acord.conteudo][acord.conteudo2]  }}
+                                        </div>
+                                        <div v-else-if="acord.conteudo3 != null">
+                                            {{acord.titulo}}: {{ obj[acord.conteudo][acord.conteudo2][acord.conteudo3]  }}
+                                        </div>
+                                        <div v-else>
+                                            {{acord.titulo }}: {{ new Date(obj[acord.conteudo]).toLocaleString() }}
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <h5>Itens do pedido</h5>
+                                    <div v-for="item in objeto_imp['data'][index]['produtos']">
+                                        nome: {{item.name}} marca: {{item.marca.name}} qtd: {{item.pivot.qty_item}} preço R$ {{item.pivot.price_iten}}
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        `
+    });
+
     Vue.component('table_acordion2', {
         props: ['classe_atributos', 'objeto_imp', 'obj_acordion'],
         template: `
@@ -631,6 +790,18 @@ Vue.component('button_alter', {
     `
 });
 
+Vue.component('button_add_produto', {
+    props: ['objindex'],
+    template: `
+        <button type="button" class="btn btn-outline-warning" v-on:click="$root.addProdutoCarrinho(objindex)" >
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
+            </svg>
+        </button>
+    `
+});
+
 Vue.component('button_alter_meus_dados', {
     template: `
         <button type="button" class="btn btn-outline-warning" v-on:click="$root.carregaCamposEditarObjeto($root.nomeObjeto, 'meusDados') , $root.acaoObjeto = 'Alterar'"  data-bs-toggle="modal" data-bs-target="#modalObjeto">
@@ -686,6 +857,20 @@ Vue.component('button_buscar', {
         <div class="input-group mb-3">
                 <input style="max-width: 300px;" type="text" class="form-control" v-model="$root.modelObjetos[0]['buscarObjeto']" aria-describedby="button-addon4">
                 <button class="btn btn-outline-secondary" type="button" id="button-addon4" v-on:click="$root.buscarObjetos()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                    </svg>
+                    Buscar
+                </button>
+        </div>
+    `
+});
+
+Vue.component('button_buscar_produto', {
+    template: `
+        <div class="input-group mb-3">
+                <input style="max-width: 300px;" type="text" class="form-control" v-model="$root.modelObjetos[0]['buscarObjetoProduto']" aria-describedby="button-addon4">
+                <button class="btn btn-outline-secondary" type="button" id="button-addon4" v-on:click="$root.buscarMeuProduto()">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
                         <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
                     </svg>

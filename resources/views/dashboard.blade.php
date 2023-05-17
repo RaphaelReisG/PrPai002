@@ -180,7 +180,7 @@
                         <div class="col">
                             <button_buscar></button_buscar>
                         </div>
-                        <paginacao v-if="nomeObjeto !== '' && objetos !== null && titulo !== 'Meus Telefones' "></paginacao>
+                        <paginacao v-if="nomeObjeto !== '' && objetos !== null"></paginacao>
                     </div>
 
                 </div>
@@ -196,21 +196,33 @@
                             <div v-if="modalSucesso == false"> <!-- conteudo modal -->
                                 <!-- formulario PEDIDO -->
                                 <div v-if="nomeObjeto == 'pedido'" class="modal-body">
-                                    @can('admin')
+                                    <div class="row">
                                         <select_geral nome_model="vendedor_id" :obj_dropdown="vendedores" nome_atributo="name" id_atributo="id" nome="Defina um vendedor"></select_geral>
-                                    @elsecan('vendedor')
-                                        <div style="display: none">
-                                            {{ modelObjetos[0]['vendedor_id'] = "<?php echo Auth::user()->userable->id;?>"  }}
-                                        </div>
-                                    @endcan
-                                    <input_geral nome="Nome Completo" tipo="text" nome_model="name"></input_geral>
-                                    <input_geral nome="Razão Social" tipo="text" nome_model="company_name"></input_geral>
-                                    <input_geral nome="CPF ou CNPJ" tipo="number" nome_model="cnpj"></input_geral>
-                                    <input_geral nome="E-mail" tipo="email" nome_model="email"></input_geral>
-                                    <div v-if="acaoObjeto == 'Criar'">
-                                        <senha_geral nome="Senha" nome_model="senha"></senha_geral>
-                                        <senha_geral nome="Confirme a senha" nome_model="confirmaSenha"></senha_geral>
+                                        <select_geral nome_model="cliente_id" :obj_dropdown="clientes" nome_atributo="name" id_atributo="id" nome="Defina um cliente"></select_geral>
+                                        <select_geral nome_model="metodo_pagamento_id" :obj_dropdown="metodo_pagamentos" nome_atributo="name" id_atributo="id" nome="Qual a forma de pagamento"></select_geral>
+                                        <input_geral nome="Observações" tipo="text" nome_model="observation"></input_geral>
                                     </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <button_buscar_produto></button_buscar_produto>
+                                        </div>
+                                        <paginacao_produto v-if="nomeObjeto !== '' && meuProduto !== null"></paginacao_produto>
+                                    </div>
+
+                                    <div class="row">
+                                        <table_comum_busca_produtos     :classe_atributos="[
+                                                {titulo: 'Nome', conteudo: 'name', ordenacao: 'produtos.name'},
+                                                {titulo: 'Tipo', conteudo: 'tipo_produto', conteudo2: 'name'},
+                                                {titulo: 'Preço (pc)', conteudo: 'sale_price'},
+                                                {titulo: 'Qtd (pc)', conteudo: 'quantity'},
+                                                {titulo: 'Peso (pc)', conteudo: 'weight'},
+                                                {titulo: 'Marca',  conteudo: 'marca', conteudo2: 'name'}
+                                            ]"
+                                            :objeto_imp="meuProduto['data']"
+                                        >
+                                        </table_comum_busca_produtos>
+                                    </div>
+                                    
                                 </div>
                                 @can('admin')
                                     <!-- formulario MEUS DADOS - ADMINISTRADOR-->
@@ -444,7 +456,7 @@
                 <div v-if="titulo != ''">
                     <!-- Tabela Pedido -->
                     <div v-if="nomeObjeto == 'pedido' && objetos !== null" class="row">
-                        <table_acordion
+                        <table_acordion_pedidos
                             :classe_atributos="[
                                 {titulo: 'Data solicitação', conteudo: 'created_at'},
                                 {titulo: 'Total', conteudo: 'total_price'},
@@ -461,7 +473,7 @@
                                 {titulo: 'Observação', conteudo: 'observation'}
                             ]"
                         >
-                        </table_acordion>
+                        </table_acordion_pedidos>
                     </div>
 
                     @can('admin')

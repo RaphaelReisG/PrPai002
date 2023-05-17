@@ -49,7 +49,7 @@ var app = new Vue({
 
             street_name: "", house_number: "", cep: "", complement: "", enderecoable_id: "", enderecoable_type: "",
 
-            buscarObjeto: "", ordenacaoBusca: "", tipoPessoa: ""
+            buscarObjeto: "", ordenacaoBusca: "", tipoPessoa: "", buscarObjetoProduto: "",
 
         }],
         index: "",
@@ -66,6 +66,16 @@ var app = new Vue({
         produtos: [{}],
         tipo_produtos: [{}],
         tipo_movimentacaos: [{}],
+        metodo_pagamentos: [{}],
+
+        meuProduto: [{}],
+        meuCarrinho: [{
+            name: '',
+            marca: '',
+            id: '',
+            qty_item: '',
+            price_item: ''
+        }],
 
         mostrarSenha: "password",
         resposta: '',
@@ -460,6 +470,7 @@ var app = new Vue({
             if(this.nomeObjeto == 'produto'){this.buscaMarcas();}
             if(this.nomeObjeto == 'produto'){this.buscaTipo_produtos();}
             if(this.nomeObjeto == 'estoque'){this.buscaTipo_movimentacaos();}
+            if(this.nomeObjeto == 'pedido'){this.buscaMetodo_pagamentos();}
             if(this.tipoUsuario == 'AppModelsVendedor'){
                 if(this.nomeObjeto == 'endereco' || this.nomeObjeto == 'telefone'){
                     this.buscaClientes();
@@ -764,6 +775,7 @@ var app = new Vue({
             if(this.nomeObjeto == 'produto'){this.buscaMarcas();}
             if(this.nomeObjeto == 'produto'){this.buscaTipo_produtos();}
             if(this.nomeObjeto == 'estoque'){this.buscaTipo_movimentacaos();}
+            if(this.nomeObjeto == 'pedido'){this.buscaMetodo_pagamentos();}
             if(this.tipoUsuario == 'AppModelsVendedor'){
                 if(this.nomeObjeto == 'endereco' || this.nomeObjeto == 'telefone'){
                     this.buscaClientes();
@@ -1036,6 +1048,29 @@ var app = new Vue({
                 .then(response => (this.objetos = response.data, this.resposta = response))
                 .catch(error => (this.error = error));
         },
+        paginacao_produto: function(url){
+            //this.objetos = null;
+            //this.carregandoGeral = true;
+            //var url;
+            //url = '/api/'+classe;
+
+            /*fetch(url).then((res) => res.json())
+                    .then((data) => this.objetos = data).finally(this.carregandoGeral = false);
+            */
+            alert(url);
+            this.meuProduto = null;
+
+            if(this.variavelBusca !== ''){
+                url = url + '&buscarObjeto=' + this.variavelBusca;
+            }
+            if(this.variavelOrdenacao !== ''){
+                url = url + '&ordenacaoBusca=' + this.variavelOrdenacao;
+            }
+            axios
+                .get(url)
+                .then(response => (this.meuProduto = response.data, this.resposta = response))
+                .catch(error => (this.error = error));
+        },
         buscarObjetos: function(){
             //alert('clicado');
             var classe = this.nomeObjeto;
@@ -1268,6 +1303,21 @@ var app = new Vue({
                 .then(response => (this.produtos = response.data))
                 .catch(error => (this.error = error));
         },
+        buscarMeuProduto: function() {
+            this.meuProduto = null;
+            this.carregandoGeral = true;
+            var url;
+            //url = '/api/marca'+'?paginacao=false';
+            //alert(this.modelObjetos[0]['marca_id'])
+            url = '/api/produto?buscarObjeto='+this.modelObjetos[0]['buscarObjetoProduto'];
+            
+            //alert(url);
+
+            axios
+                .get(url)
+                .then(response => (this.meuProduto = response.data))
+                .catch(error => (this.error = error));
+        },
         buscaTipo_produtos: function() {
             this.tipo_produtos = null;
             this.carregandoGeral = true;
@@ -1292,6 +1342,41 @@ var app = new Vue({
                 .get(url)
                 .then(response => (this.tipo_movimentacaos = response.data))
                 .catch(error => (this.error = error));
+        },
+        buscaMetodo_pagamentos: function() {
+            this.metodo_pagamentos = null;
+            this.carregandoGeral = true;
+            var url;
+            const paginacao = false;
+            url = '/api/metodo_pagamento'+'?paginacao=false';
+            //alert(url);
+
+            axios
+                .get(url)
+                .then(response => (this.metodo_pagamentos = response.data))
+                .catch(error => (this.error = error));
+        },
+        addProdutoCarrinho: function(index){
+            alert('novo add'+index+this.meuProduto['data'][index]['marca']['name']);
+            var novoProduto = {
+                
+                name: this.meuProduto['data'][index]['id'],
+                marca: this.meuProduto['data'][index]['marca']['name'],
+
+                id: this.meuProduto['data'][index]['id'],
+                qty_item: 1,
+                price_item: this.meuProduto['data'][index]['sale_price']
+            };
+
+        
+
+            this.meuCarrinho.push({
+                name: this.meuProduto['data'][index]['id'],
+                marca: this.meuProduto['data'][index]['marca']['name'],
+                id: this.meuProduto['data'][index]['id'],
+                qty_item: 1,
+                price_item: this.meuProduto['data'][index]['sale_price']
+            });
         }
 
     }
