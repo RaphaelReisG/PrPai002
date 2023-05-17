@@ -96,6 +96,13 @@ var app = new Vue({
                 }
             }
 
+            if(this.tipoUsuario == 'AppModelsVendedor'){
+                alert('opa, vendedor');
+                if(classe == 'endereco' || classe == 'telefone'){
+                    url = url + '?vendedor_id=' + this.idUsuario;
+                }
+            }
+
             /*fetch(url).then((res) => res.json())
                     .then((data) => this.objetos = data).finally(this.carregandoGeral = false);
             */
