@@ -66,6 +66,17 @@ class TelefoneController extends Controller
 
         }
 
+        if ($request->has('cliente_id')) {
+
+            $subquery = DB::table('clientes')
+                ->select('id')
+                ->where('id', '=', $request->cliente_id);
+
+            $telefone->where('telefones.telefoneable_type', '=', 'App\\Models\\Cliente')
+                ->whereIn('telefones.telefoneable_id', $subquery);
+
+        }
+
         if ($request->has('ordenacaoBusca')) {
             $telefone->orderBy($request->ordenacaoBusca);
         }

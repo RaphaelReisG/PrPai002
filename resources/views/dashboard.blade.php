@@ -66,7 +66,7 @@
                                         <li><a class="dropdown-item" href="#" v-on:click="defineClasse('vendedor/'+idUsuario, 'Meus dados')">Meus dados</a></li>
                                     @elsecan('cliente')
                                         <li><a class="dropdown-item" href="#" v-on:click="defineClasse('endereco', 'Meus Endereços')">Meus Endereços</a></li>
-                                        <li><a class="dropdown-item" href="#" v-on:click="carregaMeusTelefones('telefone', 'Meus Telefones', 'cliente')">Meus Telefones</a></li>
+                                        <li><a class="dropdown-item" href="#" v-on:click="defineClasse('telefone', 'Meus Telefones')">Meus Telefones</a></li>
                                         <li><hr class="dropdown-divider"></li>
                                         <li><a class="dropdown-item" href="#" v-on:click="defineClasse('cliente/'+idUsuario, 'Meus dados')">Meus dados</a></li>
                                     @endcan
@@ -389,7 +389,8 @@
                                             <senha_geral nome="Confirme a senha" nome_model="confirmaSenha"></senha_geral>
                                         </div>
                                     </div>
-
+                                @endcan
+                                @canAny(['admin', 'vendedor', 'cliente'])
                                     <!-- formulario ENDERECO-->
                                     <div v-else-if="nomeObjeto == 'endereco'" class="modal-body">
                                         <div class="form-floating mb-3">
@@ -421,19 +422,28 @@
                                             </datalist>
                                         </div>
                                         @can('admin')
-                                        <div  class="form-floating mb-3">
-                                            <select id="floatingInput" class="form-select" aria-label="Selecione" v-model="modelObjetos[0]['tipoPessoa']" v-on:change="buscaPessoa()" required>
-                                                <option value="" > </option>
-                                                <option value="fornecedor" > Fornecedor </option>
-                                                <option value="vendedor" > Vendedor </option>
-                                                <option value="cliente" > Cliente </option>
-                                            </select>
-                                            <label for="floatingInput">Para que tipo de pessoa</label>
-                                        </div>
-                                        <select_geral nome_model="enderecoable_id" :obj_dropdown="pessoas" nome_atributo="name" id_atributo="id" nome="Escolha o proprietario" ></select_geral>
+                                            <div  class="form-floating mb-3">
+                                                <select id="floatingInput" class="form-select" aria-label="Selecione" v-model="modelObjetos[0]['tipoPessoa']" v-on:change="buscaPessoa()" required>
+                                                    <option value="" > </option>
+                                                    <option value="fornecedor" > Fornecedor </option>
+                                                    <option value="vendedor" > Vendedor </option>
+                                                    <option value="cliente" > Cliente </option>
+                                                </select>
+                                                <label for="floatingInput">Para que tipo de pessoa</label>
+                                            </div>
+                                            <select_geral nome_model="enderecoable_id" :obj_dropdown="pessoas" nome_atributo="name" id_atributo="id" nome="Escolha o proprietario" ></select_geral>
                                         @endcan
                                         @can('vendedor')
-                                        <select_geral nome_model="enderecoable_id" :obj_dropdown="clientes" nome_atributo="name" id_atributo="id" nome="Escolha o cliente" ></select_geral>
+                                            <div style="display: none">
+                                                @{{ modelObjetos[0]['tipoPessoa'] = "cliente"  }}
+                                            </div>
+                                            <select_geral nome_model="enderecoable_id" :obj_dropdown="clientes" nome_atributo="name" id_atributo="id" nome="Escolha o cliente" ></select_geral>
+                                        @endcan
+                                        @can('cliente')
+                                            <div style="display: none">
+                                                @{{ modelObjetos[0]['tipoPessoa'] = "cliente"  }}
+                                                @{{ modelObjetos[0]['enderecoable_id'] = idUsuario  }}
+                                            </div>
                                         @endcan
                                         <input_geral nome="Logradouro" tipo="text" nome_model="street_name"></input_geral>
                                         <input_geral nome="Numero" tipo="number" nome_model="house_number"></input_geral>
@@ -456,7 +466,16 @@
                                         <select_geral nome_model="telefoneable_id" :obj_dropdown="pessoas" nome_atributo="name" id_atributo="id" nome="Escolha o proprietario" ></select_geral>
                                         @endcan
                                         @can('vendedor')
-                                        <select_geral nome_model="telefoneable_id" :obj_dropdown="clientes" nome_atributo="name" id_atributo="id" nome="Escolha o cliente" ></select_geral>
+                                            <div style="display: none">
+                                                @{{ modelObjetos[0]['tipoPessoa'] = "cliente"  }}
+                                            </div>
+                                            <select_geral nome_model="telefoneable_id" :obj_dropdown="clientes" nome_atributo="name" id_atributo="id" nome="Escolha o cliente" ></select_geral>
+                                        @endcan
+                                        @can('cliente')
+                                            <div style="display: none">
+                                                @{{ modelObjetos[0]['tipoPessoa'] = "cliente"  }}
+                                                @{{ modelObjetos[0]['telefoneable_id'] = idUsuario  }}
+                                            </div>
                                         @endcan
                                         <input_geral nome="Numero Telefone" tipo="text" nome_model="number_phone"></input_geral>
                                     </div>
@@ -1035,7 +1054,7 @@
                             </table_acordion>
                         </div>
 
-                        <!-- Tabela Telefone -->
+                        <!-- Tabela Telefone 
                         <div v-else-if="nomeObjeto == 'telefone' && objetos !== null" class="row">
                             <table_acordion2     :classe_atributos="[
                                                         {titulo: 'Nº Telefone', conteudo: 'number_phone'}
@@ -1047,6 +1066,20 @@
                                                     ]"
                                                 >
                             </table_acordion2>
+                        </div> -->
+
+                        <!-- Tabela Telefone -->
+                        <div v-else-if="nomeObjeto == 'telefone' && objetos !== null" class="row">
+                            <table_acordion     :classe_atributos="[
+                                                        {titulo: 'Nº Telefone', conteudo: 'number_phone', ordenacao: 'telefone.number_phone'}
+
+                                                    ]"
+                                                    :objeto_imp="objetos"
+                                                    :obj_acordion="[
+                                                        {titulo: 'Criado em', conteudo: 'created_at'}
+                                                    ]"
+                                                >
+                            </table_acordion>
                         </div>
                     @endcan
 

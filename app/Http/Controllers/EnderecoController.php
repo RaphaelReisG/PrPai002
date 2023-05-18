@@ -71,6 +71,16 @@ class EnderecoController extends Controller
                 ->whereIn('enderecos.enderecoable_id', $subquery);
         }
 
+        if ($request->has('cliente_id')) {
+
+            $subquery = DB::table('clientes')
+                ->select('id')
+                ->where('id', '=', $request->cliente_id);
+
+            $endereco->where('enderecos.enderecoable_type', '=', 'App\\Models\\Cliente')
+                ->whereIn('enderecos.enderecoable_id', $subquery);
+        }
+
         if ($request->has('ordenacaoBusca')) {
             $endereco->orderBy($request->ordenacaoBusca);
         }

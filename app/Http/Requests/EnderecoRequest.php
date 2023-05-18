@@ -26,7 +26,7 @@ class EnderecoRequest extends FormRequest
         return [
             'street_name' => 'required|max: 45',
             'complement' => 'required|max: 45',
-            'cep' => 'required|numeric| max: 99999999999 | min: 10000000000',
+            'cep' => 'required|integer',
             'house_number' => 'required|integer',
             
 
@@ -48,8 +48,8 @@ class EnderecoRequest extends FormRequest
             'complement.max' => 'Máximo 45 caracteres para o complemento',
 
             'cep.required' => 'O CEP é obrigatório',
-            'cep.max' => 'O cep deve ser ter 11 numeros',
-            'cep.min' => 'O cep deve ser ter 11 numeros',
+            //'cep.max' => 'O cep deve ser ter 11 numeros',
+            //'cep.min' => 'O cep deve ser ter 11 numeros',
             'cep.integer' => 'O CEP deve ser inteiro',
 
             'house_number.required' => 'O número da casa é obrigatório',
