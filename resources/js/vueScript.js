@@ -68,14 +68,8 @@ var app = new Vue({
         tipo_movimentacaos: [{}],
         metodo_pagamentos: [{}],
 
-        meuProduto: [{}],
-        meuCarrinho: [{
-            name: '',
-            marca: '',
-            id: '',
-            qty_item: '',
-            price_item: ''
-        }],
+        meuProduto: [],
+        meuCarrinho: [],
 
         mostrarSenha: "password",
         resposta: '',
@@ -1310,7 +1304,7 @@ var app = new Vue({
             //url = '/api/marca'+'?paginacao=false';
             //alert(this.modelObjetos[0]['marca_id'])
             url = '/api/produto?buscarObjeto='+this.modelObjetos[0]['buscarObjetoProduto'];
-            
+
             //alert(url);
 
             axios
@@ -1357,26 +1351,16 @@ var app = new Vue({
                 .catch(error => (this.error = error));
         },
         addProdutoCarrinho: function(index){
-            alert('novo add'+index+this.meuProduto['data'][index]['marca']['name']);
-            var novoProduto = {
-                
-                name: this.meuProduto['data'][index]['id'],
-                marca: this.meuProduto['data'][index]['marca']['name'],
-
-                id: this.meuProduto['data'][index]['id'],
-                qty_item: 1,
-                price_item: this.meuProduto['data'][index]['sale_price']
-            };
-
-        
-
             this.meuCarrinho.push({
-                name: this.meuProduto['data'][index]['id'],
+                name: this.meuProduto['data'][index]['name'],
                 marca: this.meuProduto['data'][index]['marca']['name'],
                 id: this.meuProduto['data'][index]['id'],
                 qty_item: 1,
                 price_item: this.meuProduto['data'][index]['sale_price']
             });
+        },
+        removerProdutoCarrinho: function(index){
+            this.meuCarrinho.splice(index, 1);
         }
 
     }

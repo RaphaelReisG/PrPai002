@@ -197,21 +197,32 @@
                                 <!-- formulario PEDIDO -->
                                 <div v-if="nomeObjeto == 'pedido'" class="modal-body">
                                     <div class="row">
-                                        <select_geral nome_model="vendedor_id" :obj_dropdown="vendedores" nome_atributo="name" id_atributo="id" nome="Defina um vendedor"></select_geral>
-                                        <select_geral nome_model="cliente_id" :obj_dropdown="clientes" nome_atributo="name" id_atributo="id" nome="Defina um cliente"></select_geral>
-                                        <select_geral nome_model="metodo_pagamento_id" :obj_dropdown="metodo_pagamentos" nome_atributo="name" id_atributo="id" nome="Qual a forma de pagamento"></select_geral>
-                                        <input_geral nome="Observações" tipo="text" nome_model="observation"></input_geral>
+                                        <div class="col">
+                                            <select_geral nome_model="vendedor_id" :obj_dropdown="vendedores" nome_atributo="name" id_atributo="id" nome="Defina um vendedor"></select_geral>
+                                        </div>
+                                        <div class="col">
+                                            <select_geral nome_model="cliente_id" :obj_dropdown="clientes" nome_atributo="name" id_atributo="id" nome="Defina um cliente"></select_geral>
+                                        </div>
+                                        <div class="col">
+                                            <select_geral nome_model="metodo_pagamento_id" :obj_dropdown="metodo_pagamentos" nome_atributo="name" id_atributo="id" nome="Qual a forma de pagamento"></select_geral>
+                                        </div>
+                                        <div class="col">
+                                             <input_geral nome="Observações" tipo="text" nome_model="observation"></input_geral>
+                                        </div>
                                     </div>
+                                    <div class="row"><h5>Encontrar produtos</h5></div>
+                                    <div class="row"><hr></div>
                                     <div class="row">
                                         <div class="col">
-                                            <button_buscar_produto></button_buscar_produto>
+                                            <paginacao_produto></paginacao_produto>
                                         </div>
-                                        <paginacao_produto v-if="nomeObjeto !== '' && meuProduto !== null"></paginacao_produto>
+                                        <div class="col">
+                                            <button_buscar_produto ></button_buscar_produto>
+                                        </div>
                                     </div>
-
                                     <div class="row">
                                         <table_comum_busca_produtos     :classe_atributos="[
-                                                {titulo: 'Nome', conteudo: 'name', ordenacao: 'produtos.name'},
+                                                {titulo: 'Nome', conteudo: 'name'},
                                                 {titulo: 'Tipo', conteudo: 'tipo_produto', conteudo2: 'name'},
                                                 {titulo: 'Preço (pc)', conteudo: 'sale_price'},
                                                 {titulo: 'Qtd (pc)', conteudo: 'quantity'},
@@ -222,7 +233,19 @@
                                         >
                                         </table_comum_busca_produtos>
                                     </div>
-                                    
+                                    <div class="row"><h5>Meu carrinho</h5></div>
+                                    <div class="row"><hr></div>
+                                    <div class="row">
+                                        <table_comum_meu_carrinho     :classe_atributos="[
+                                                {titulo: 'Quantidade', conteudo: 'qty_item'},
+                                                {titulo: 'Nome', conteudo: 'name'},
+                                                {titulo: 'Marca', conteudo: 'marca'},
+                                                {titulo: 'Preço (pc)', conteudo: 'price_item'},
+                                            ]"
+                                            :objeto_imp="meuCarrinho"
+                                        >
+                                        </table_comum_meu_carrinho>
+                                    </div>
                                 </div>
                                 @can('admin')
                                     <!-- formulario MEUS DADOS - ADMINISTRADOR-->
