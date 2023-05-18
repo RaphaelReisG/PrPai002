@@ -157,8 +157,8 @@ class DatabaseSeeder extends Seeder
             'observation' => 'Tudo entregue junto',
             'vendedor_id' => 1
         ])->produtos()->attach([
-            1 => ['qty_item' => 1, 'price_iten' => 22],
-            2 => ['qty_item' => 1, 'price_iten' => 30]
+            1 => ['qty_item' => 1, 'price_item' => 22],
+            2 => ['qty_item' => 1, 'price_item' => 30]
 
         ]);
 

@@ -344,8 +344,14 @@ Vue.component('modal_sucesso', {
                                 {{ obj[valor.conteudo]  }}
                             </div>
                             <div v-if="valor.conteudo == 'qty_item' ">
-                                {{ obj[valor.conteudo]  }}
-                                <input style="max-width: 80px;" type="number" class="form-control"  v-model="$root.meuCarrinho[index]['qty_item']" min="1" required>
+                                <input 
+                                    style="max-width: 80px;" 
+                                    type="number" 
+                                    class="form-control"  
+                                    v-model="$root.meuCarrinho[index]['qty_item']" 
+                                    min="1" 
+                                    v-on:change="$root.atualizaTotalItem(index)"
+                                >
                             </div>
                             <div v-else-if="valor.conteudo2 != null && valor.conteudo3 == null">
                                 {{ obj[valor.conteudo][valor.conteudo2]  }}
@@ -689,7 +695,7 @@ Vue.component('modal_sucesso', {
                                     <hr>
                                     <h5>Itens do pedido</h5>
                                     <div v-for="item in objeto_imp['data'][index]['produtos']">
-                                        nome: {{item.name}} marca: {{item.marca.name}} qtd: {{item.pivot.qty_item}} preço R$ {{item.pivot.price_iten}}
+                                        nome: {{item.name}} marca: {{item.marca.name}} qtd: {{item.pivot.qty_item}} preço R$ {{item.pivot.price_item}}
                                     </div>
                                 </div>
                             </div>

@@ -37,6 +37,8 @@ var app = new Vue({
 
             tipo_produto_id: "", quantity: "", weight: "", cost_price: "", sale_price: "", marca_id: "", //produto
 
+            metodo_pagamento_id: "", cliente_id: "", payday: "", delivery_date: "", approval_date: "", total_price: 0, total_discount: 0, //pedido
+
             tipo_movimentacaos_id: "", qty_item: "", observation: "", produto_id: "", //estoque
 
             name_country: "",  // pais
@@ -94,16 +96,16 @@ var app = new Vue({
             url = '/api/'+classe;
 
             if(this.tipoUsuario == 'AppModelsVendedor'){
-                alert('opa, vendedor');
-                if(classe == 'endereco' || classe == 'telefone'){
+                //alert('opa, vendedor');
+                if(classe == 'endereco' || classe == 'telefone' || classe == 'pedido'){
                     url = url + '?vendedor_id=' + this.idUsuario;
                 }
             }
 
-            if(this.tipoUsuario == 'AppModelsVendedor'){
-                alert('opa, vendedor');
-                if(classe == 'endereco' || classe == 'telefone'){
-                    url = url + '?vendedor_id=' + this.idUsuario;
+            if(this.tipoUsuario == 'AppModelsCliente'){
+                //alert('opa, vendedor');
+                if(classe == 'endereco' || classe == 'telefone' || classe == 'pedido'){
+                    url = url + '?cliente_id=' + this.idUsuario;
                 }
             }
 
@@ -226,6 +228,18 @@ var app = new Vue({
                 url = '/api/'+classe;
                 dados = {
                     name: this.modelObjetos[0]['name']
+                }
+            }
+            else if(classe == "pedido"){
+                url = '/api/'+classe;
+                dados = {
+                    vendedor_id: this.modelObjetos[0]['vendedor_id'],
+                    cliente_id: this.modelObjetos[0]['cliente_id'],
+                    observation: this.modelObjetos[0]['observation'],
+                    metodo_pagamento_id: this.modelObjetos[0]['metodo_pagamento_id'],
+                    total_price: this.modelObjetos[0]['total_price'],
+                    total_discount: this.modelObjetos[0]['total_discount'],
+                    produtos: this.meuCarrinho
                 }
             }
             /*else if(classe == "telefone"){
@@ -359,6 +373,14 @@ var app = new Vue({
                 this.modelObjetos[0]['sale_price'] = this.objetos['data'][index]['sale_price'];
                 this.modelObjetos[0]['marca_id'] = this.objetos['data'][index]['marca_id'];
             }
+            else if(this.nomeObjeto == "pedido"){
+                this.modelObjetos[0]['cliente_id'] = this.objetos['data'][index]['cliente_id'];
+                this.modelObjetos[0]['observation'] = this.objetos['data'][index]['observation'];
+                this.modelObjetos[0]['vendedor_id'] = this.objetos['data'][index]['vendedor_id'];
+                this.modelObjetos[0]['metodo_pagamento_id'] = this.objetos['data'][index]['metodo_pagamento_id'];
+                this.modelObjetos[0]['total_discount'] = this.objetos['data'][index]['total_discount'];
+                this.modelObjetos[0]['total_price'] = this.objetos['data'][index]['total_price'];
+            }
             else if(this.nomeObjeto == "administrador" || this.nomeObjeto == "vendedor"){
                 this.modelObjetos[0]['name'] = this.objetos['data'][index]['name'];
                 this.modelObjetos[0]['email'] = this.objetos['data'][index]['user']['email'];
@@ -435,7 +457,7 @@ var app = new Vue({
                 else{
                     alert('Erro CCE - Telefone | Pessoa não identificada');
                 }
-                this.buscaPessoa();3
+                this.buscaPessoa();
                 this.modelObjetos[0]['telefoneable_type'] = this.objetos['data'][index]['telefoneable_type'];
                 this.modelObjetos[0]['telefoneable_id'] = this.objetos['data'][index]['telefoneable_id'];
                 this.modelObjetos[0]['number_phone'] = this.objetos['data'][index]['number_phone'];
@@ -465,6 +487,9 @@ var app = new Vue({
             if(this.nomeObjeto == 'produto'){this.buscaTipo_produtos();}
             if(this.nomeObjeto == 'estoque'){this.buscaTipo_movimentacaos();}
             if(this.nomeObjeto == 'pedido'){this.buscaMetodo_pagamentos();}
+            if(this.nomeObjeto == 'pedido'){this.buscaVendedores();}
+            if(this.nomeObjeto == 'pedido'){this.buscaClientes();}
+            if(this.nomeObjeto == 'pedido'){this.carregaMeuCarrinho(index);}
             if(this.tipoUsuario == 'AppModelsVendedor'){
                 if(this.nomeObjeto == 'endereco' || this.nomeObjeto == 'telefone'){
                     this.buscaClientes();
@@ -552,6 +577,18 @@ var app = new Vue({
                     cost_price: this.modelObjetos[0]['cost_price'],
                     sale_price: this.modelObjetos[0]['sale_price'],
                     marca_id: this.modelObjetos[0]['marca_id']
+                }
+            }
+            else if(classe == "pedido"){
+                url = '/api/'+classe+'/'+this.modelObjetos[0]['id'];
+                dados = {
+                    vendedor_id: this.modelObjetos[0]['vendedor_id'],
+                    cliente_id: this.modelObjetos[0]['cliente_id'],
+                    observation: this.modelObjetos[0]['observation'],
+                    metodo_pagamento_id: this.modelObjetos[0]['metodo_pagamento_id'],
+                    total_price: this.modelObjetos[0]['total_price'],
+                    total_discount: this.modelObjetos[0]['total_discount'],
+                    produtos: this.meuCarrinho
                 }
             }
             else if(classe == "tipo_produto" || classe == "tipo_movimentacao" || classe == "metodo_pagamento"){
@@ -759,6 +796,32 @@ var app = new Vue({
             this.modelObjetos[0]['qty_item'] = "";
             this.modelObjetos[0]['observation'] = "";
 
+            //pedido
+            this.modelObjetos[0]['metodo_pagamento_id'] = "";
+            this.modelObjetos[0]['cliente_id'] = "";
+            this.modelObjetos[0]['payday'] = "";
+            this.modelObjetos[0]['delivery_date'] = "";
+            this.modelObjetos[0]['approval_date'] = "";
+            this.modelObjetos[0]['total_price'] = 0;
+            this.modelObjetos[0]['total_discount'] = 0;
+
+            this.paises = [{}];
+            this.estados =  [{}];
+            this.cidades = [{}];
+            this.bairros = [{}];
+            this.vendedores = [{}];
+            this.clientes = [{}];
+            this.fornecedores = [{}];
+            this.pessoas = [{}];
+            this.marcas = [{}];
+            this.produtos = [{}];
+            this.tipo_produtos = [{}];
+            this.tipo_movimentacaos = [{}];
+            this.metodo_pagamentos = [{}];
+
+            this.meuProduto = [];
+            this.meuCarrinho = [];
+
 
             this.error = null;
             if(this.nomeObjeto == 'estado' || this.nomeObjeto == 'endereco') {this.buscaPaises();}
@@ -770,6 +833,8 @@ var app = new Vue({
             if(this.nomeObjeto == 'produto'){this.buscaTipo_produtos();}
             if(this.nomeObjeto == 'estoque'){this.buscaTipo_movimentacaos();}
             if(this.nomeObjeto == 'pedido'){this.buscaMetodo_pagamentos();}
+            if(this.nomeObjeto == 'pedido'){this.buscaVendedores();}
+            if(this.nomeObjeto == 'pedido'){this.buscaClientes();}
             if(this.tipoUsuario == 'AppModelsVendedor'){
                 if(this.nomeObjeto == 'endereco' || this.nomeObjeto == 'telefone'){
                     this.buscaClientes();
@@ -916,7 +981,7 @@ var app = new Vue({
                 }
 
 
-        }
+            }
             else if(classe == 'telefone'){
                     if(
                         this.modelObjetos[0]['number_phone'] == "" ||
@@ -1005,6 +1070,20 @@ var app = new Vue({
                     this.modelObjetos[0]['tipo_movimentacao_id'] == "" ||
                     this.modelObjetos[0]['produto_id'] == "" ||
                     this.modelObjetos[0]['qty_item'] == ""
+                ){
+                    alert("Erro");
+                    return true;
+                }
+                else{
+                    return false;
+                }
+            }
+            else if(classe == 'pedido'){
+                if(
+                    this.modelObjetos[0]['cliente_id'] == "" ||
+                    this.modelObjetos[0]['vendedor_id'] == "" ||
+                    this.modelObjetos[0]['metodo_pagamento_id'] == "" ||
+                    this.modelObjetos[0]['total_price'] <= 0
                 ){
                     alert("Erro");
                     return true;
@@ -1225,7 +1304,12 @@ var app = new Vue({
             this.clientes = null;
             this.carregandoGeral = true;
             var url;
-            url = '/api/cliente'+'?paginacao=false'+'&vendedor_id=' + this.idUsuario;
+            if(this.tipoUsuario == 'AppModelsVendedor'){
+                url = '/api/cliente'+'?paginacao=false'+'&vendedor_id=' + this.idUsuario;
+            }
+            else{
+                url = '/api/cliente'+'?paginacao=false';
+            }
             //alert(url);
 
             axios
@@ -1351,18 +1435,50 @@ var app = new Vue({
                 .catch(error => (this.error = error));
         },
         addProdutoCarrinho: function(index){
-            this.meuCarrinho.push({
-                name: this.meuProduto['data'][index]['name'],
-                marca: this.meuProduto['data'][index]['marca']['name'],
-                id: this.meuProduto['data'][index]['id'],
-                qty_item: 1,
-                price_item: this.meuProduto['data'][index]['sale_price']
-            });
+            if(this.meuCarrinho.find(item => item.id === this.meuProduto['data'][index]['id'])){
+                alert('Este item já existe no carrinho');
+            }
+            else{
+                this.meuCarrinho.push({
+                    name: this.meuProduto['data'][index]['name'],
+                    marca: this.meuProduto['data'][index]['marca']['name'],
+                    id: this.meuProduto['data'][index]['id'],
+                    qty_item: 1,
+                    price_item: this.meuProduto['data'][index]['sale_price'],
+                    total_item: this.meuProduto['data'][index]['sale_price']
+                });
+                this.modelObjetos[0]['total_price'] = this.modelObjetos[0]['total_price'] + parseFloat(this.meuCarrinho[this.meuCarrinho.length - 1]['price_item']);
+            }
         },
         removerProdutoCarrinho: function(index){
+            //this.modelObjetos[0]['total_price'] = this.modelObjetos[0]['total_price'] - (this.meuCarrinho[index]['qty_item'] * this.meuCarrinho[index]['price_item']);
             this.meuCarrinho.splice(index, 1);
+            this.atualizaTotal();
+        },
+        atualizaTotalItem(index){
+            //alert('opa'+this.meuCarrinho[index]['total_item']);
+            this.meuCarrinho[index]['total_item'] = this.meuCarrinho[index]['qty_item'] * this.meuCarrinho[index]['price_item'];
+            this.atualizaTotal();
+        },
+        atualizaTotal(){
+            this.modelObjetos[0]['total_price'] = parseFloat(this.meuCarrinho.reduce(function(total, item) {
+                    return parseFloat(total) + parseFloat(item.total_item);
+                }, 0))
+            ;
+        },
+        carregaMeuCarrinho(index){
+            //alert('carregado');
+            for(var produto of this.objetos['data'][index]['produtos']){
+                this.meuCarrinho.push({
+                    name: produto['name'],
+                    marca: produto['marca']['name'],
+                    id: produto['id'],
+                    qty_item: produto['pivot']['qty_item'],
+                    price_item: produto['pivot']['price_item'],
+                    total_item: produto['pivot']['qty_item'] * produto['pivot']['price_item']
+                });
+            }
         }
-
     }
 })
 

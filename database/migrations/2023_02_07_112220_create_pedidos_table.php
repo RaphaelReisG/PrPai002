@@ -17,9 +17,9 @@ return new class extends Migration
             $table->id();
 
             //$table->dateTime('issue_date');
-            $table->dateTime('payday');
-            $table->dateTime('delivery_date');
-            $table->dateTime('approval_date');
+            $table->dateTime('payday')->nullable();
+            $table->dateTime('delivery_date')->nullable();
+            $table->dateTime('approval_date')->nullable();
             $table->decimal('total_price', 10, 2);
             $table->decimal('total_discount', 10, 2);
             $table->foreignId('metodo_pagamento_id')->constrained('metodo_pagamentos');
@@ -27,7 +27,7 @@ return new class extends Migration
             //$table->boolean('status_payment')->default(false);
             //$table->boolean('status_delivery')->default(false);
             //$table->boolean('status_request')->default(false);
-            $table->string('observation', 150);
+            $table->string('observation', 150)->nullable();
 
             $table->foreignId('cliente_id')->constrained('clientes');
             $table->foreignId('vendedor_id')->constrained('vendedors');
@@ -43,7 +43,7 @@ return new class extends Migration
             $table->foreignId('pedido_id')->constrained('pedidos');
             $table->foreignId('produto_id')->constrained('produtos');
             $table->integer('qty_item');
-            $table->decimal('price_iten', 10, 2);
+            $table->decimal('price_item', 10, 2);
 
             $table->timestamps();
         });

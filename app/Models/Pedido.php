@@ -35,7 +35,7 @@ class Pedido extends Model
     }
 
     public function produtos(){
-        return $this->belongsToMany(Produto::class)->withPivot(['qty_item', 'price_iten'])->with(['marca']);
+        return $this->belongsToMany(Produto::class)->withPivot(['qty_item', 'price_item'])->with(['marca', 'marca.fornecedor']);
     }
 
     public function estoqueable(){

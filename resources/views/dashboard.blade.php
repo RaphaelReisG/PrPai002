@@ -197,12 +197,25 @@
                                 <!-- formulario PEDIDO -->
                                 <div v-if="nomeObjeto == 'pedido'" class="modal-body">
                                     <div class="row">
-                                        <div class="col">
-                                            <select_geral nome_model="vendedor_id" :obj_dropdown="vendedores" nome_atributo="name" id_atributo="id" nome="Defina um vendedor"></select_geral>
-                                        </div>
-                                        <div class="col">
-                                            <select_geral nome_model="cliente_id" :obj_dropdown="clientes" nome_atributo="name" id_atributo="id" nome="Defina um cliente"></select_geral>
-                                        </div>
+                                        @can('admin')
+                                            <div class="col">
+                                                <select_geral nome_model="vendedor_id" :obj_dropdown="vendedores" nome_atributo="name" id_atributo="id" nome="Defina um vendedor"></select_geral>
+                                            </div>
+                                        @elsecan('vendedor')
+                                            <div style="display: none">
+                                                {{ modelObjetos[0]['vendedor_id'] = "<?php echo Auth::user()->userable->id;?>"  }}
+                                            </div>
+                                        @elsecan('cliente')
+                                            <div style="display: none">
+                                                {{ modelObjetos[0]['vendedor_id'] = "<?php echo Auth::user()->userable->vendedor_id;?>"  }}
+                                                {{ modelObjetos[0]['cliente_id'] = "<?php echo Auth::user()->userable->id;?>"  }}
+                                            </div>
+                                        @endcan
+                                        @canAny(['admin', 'vendedor'])
+                                            <div class="col">
+                                                <select_geral nome_model="cliente_id" :obj_dropdown="clientes" nome_atributo="name" id_atributo="id" nome="Defina um cliente"></select_geral>
+                                            </div>
+                                        @endcan
                                         <div class="col">
                                             <select_geral nome_model="metodo_pagamento_id" :obj_dropdown="metodo_pagamentos" nome_atributo="name" id_atributo="id" nome="Qual a forma de pagamento"></select_geral>
                                         </div>
@@ -233,7 +246,11 @@
                                         >
                                         </table_comum_busca_produtos>
                                     </div>
-                                    <div class="row"><h5>Meu carrinho</h5></div>
+                                    <div class="row">
+                                        <div class="col"><h5>Meu carrinho</h5></div>
+                                        <div class="col"><h5>Descontos: R$ @{{modelObjetos[0]['total_discount']}}</h5></div>
+                                        <div class="col"><h5>Total: R$ @{{modelObjetos[0]['total_price']}}</h5></div>
+                                    </div>
                                     <div class="row"><hr></div>
                                     <div class="row">
                                         <table_comum_meu_carrinho     :classe_atributos="[
@@ -241,6 +258,7 @@
                                                 {titulo: 'Nome', conteudo: 'name'},
                                                 {titulo: 'Marca', conteudo: 'marca'},
                                                 {titulo: 'Preço (pc)', conteudo: 'price_item'},
+                                                {titulo: 'Subtotal', conteudo: 'total_item'},
                                             ]"
                                             :objeto_imp="meuCarrinho"
                                         >
@@ -481,11 +499,11 @@
                     <div v-if="nomeObjeto == 'pedido' && objetos !== null" class="row">
                         <table_acordion_pedidos
                             :classe_atributos="[
-                                {titulo: 'Data solicitação', conteudo: 'created_at'},
-                                {titulo: 'Total', conteudo: 'total_price'},
-                                {titulo: 'Metodo de pagamento', conteudo: 'metodo_pagamento', conteudo2: 'name'},
-                                {titulo: 'Cliente', conteudo: 'cliente', conteudo2: 'name' },
-                                {titulo: 'Vendedor',  conteudo: 'vendedor', conteudo2: 'name'}
+                                {titulo: 'Data solicitação', conteudo: 'created_at', ordenacao: 'pedidos.created_at'},
+                                {titulo: 'Total', conteudo: 'total_price', ordenacao: 'pedidos.total_price'},
+                                {titulo: 'Metodo de pagamento', conteudo: 'metodo_pagamento', conteudo2: 'name', ordenacao: 'metodo_pagamentos.name'},
+                                {titulo: 'Cliente', conteudo: 'cliente', conteudo2: 'name' , ordenacao: 'clientes.name'},
+                                {titulo: 'Vendedor',  conteudo: 'vendedor', conteudo2: 'name', ordenacao: 'vendedors.name'}
                             ]"
                             :objeto_imp="objetos"
                             :obj_acordion="[
