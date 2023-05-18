@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Pedido;
 use App\Models\Produto;
 use Illuminate\Http\Request;
+use App\Http\Requests\PedidoRequest;
 
 use App\Http\Resources\TesteResource;
 
@@ -37,7 +38,7 @@ class PedidoController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(PedidoRequest $request)
     {
         //$pedido = Pedido::create($request->all()); 
         //$pedido->pivot();
@@ -89,7 +90,7 @@ class PedidoController extends Controller
      * @param  \App\Models\Pedido  $administrador
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Pedido $pedido)
+    public function update(PedidoRequest $request, Pedido $pedido)
     {
         //$obj = Pedido::findOrfail($id);
         $pedido->update($request->all());
