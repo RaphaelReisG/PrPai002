@@ -717,7 +717,6 @@ Vue.component('modal_sucesso', {
                                 {{atributo.titulo }}
                             </div>
                         </th>
-                        <th scope="col">Opções</th>
                     </tr>
                 </thead>
                 <tbody class="table-group-divider" v-for="(obj, index) in objeto_imp">
@@ -737,18 +736,12 @@ Vue.component('modal_sucesso', {
                                 {{ new Date(obj[valor.conteudo]).toLocaleString() }}
                             </div>
                         </td>
-                        <td>
-                            <button_alter :objindex="index"></button_alter>
-                            <button_delete :objid= "obj.id"></button_delete>
-                        </td>
                     </tr>
                     <tr >
                         <td colspan="12">
                             <div class="collapse" v-bind:id="'collapseExample' + obj.id" >
                                 <div class="card card-body">
                                     <div v-for="acord in obj_acordion">
-
-
                                         <div v-if="acord.conteudo !== 'created_at' && acord.conteudo !== 'dtEntrada' && acord.conteudo !== 'dtSaida' && acord.conteudo2 == null ">
                                             {{acord.titulo}}: {{obj[acord.conteudo] }}
                                         </div>

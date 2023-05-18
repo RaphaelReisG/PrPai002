@@ -178,9 +178,13 @@ class ClienteController extends Controller
 
         $cliente->update($request->only('name', 'cnpj', 'company_name'));
         if(isset($request->password)){
-            $request->password = Hash::make($request->password);
+            //error_log("senha".$request->password);
+            //$request->password = Hash::make($request->password);
+            //error_log("senha".Hash::make($request->password));
+
+            $cliente->user()->update(['password' => Hash::make($request->password)]);
         }
-        $cliente->user()->update($request->only('email', 'password'));
+        $cliente->user()->update($request->only('email'));
 
         return new TesteResource($cliente, $cliente->user);
     }

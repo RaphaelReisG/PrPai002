@@ -103,9 +103,9 @@ class VendedorController extends Controller
 
         $vendedor->update($request->all());
         if(isset($request->password)){
-            $request->password = Hash::make($request->password);
+            $vendedor->user()->update(['password' => Hash::make($request->password)]);
         }
-        $vendedor->user()->update($request->only('email', 'password'));
+        $vendedor->user()->update($request->only('email'));
 
         return new TesteResource($vendedor, $vendedor->user);
     }

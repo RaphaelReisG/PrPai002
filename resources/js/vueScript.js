@@ -10,6 +10,8 @@ var app = new Vue({
         acaoObjeto: "",
         nomeObjeto: "",
 
+        alterarSenha: false,
+
         tiposPessoa: [
             {tipo: 'App\\Models\\Cliente', label: 'Cliente'},
             {tipo: 'App\\Models\\Vendedor', label: 'Vendedor'},
@@ -511,9 +513,19 @@ var app = new Vue({
             }
             else if(classe == "administrador/"+this.idUsuario){
                 url = '/api/'+classe;
-                dados = {
-                    name: this.modelObjetos[0]['name'],
-                    email: this.modelObjetos[0]['email']
+                if(this.modelObjetos[0]['senha'] !== null && this.modelObjetos[0]['senha'] !== '' ){
+                    dados = {
+                        name: this.modelObjetos[0]['name'],
+                        email: this.modelObjetos[0]['email'],
+                        password: this.modelObjetos[0]['senha']
+                    }
+                }
+                else{
+                    dados = {
+                        name: this.modelObjetos[0]['name'],
+                        email: this.modelObjetos[0]['email'],
+                        password: this.modelObjetos[0]['senha']
+                    }
                 }
             }
             else if(classe == "vendedor"){
@@ -525,9 +537,19 @@ var app = new Vue({
             }
             else if(classe == "vendedor/"+this.idUsuario){
                 url = '/api/'+classe;
-                dados = {
-                    name: this.modelObjetos[0]['name'],
-                    email: this.modelObjetos[0]['email']
+                if(this.modelObjetos[0]['senha'] !== null && this.modelObjetos[0]['senha'] !== '' ){
+                    
+                    dados = {
+                        name: this.modelObjetos[0]['name'],
+                        email: this.modelObjetos[0]['email'],
+                        password: this.modelObjetos[0]['senha']
+                    }
+                }else{
+                    dados = {
+                        name: this.modelObjetos[0]['name'],
+                        email: this.modelObjetos[0]['email'],
+                        password: this.modelObjetos[0]['senha']
+                    }
                 }
             }
             else if(classe == "cliente"){
@@ -542,12 +564,26 @@ var app = new Vue({
             }
             else if(classe == "cliente/"+this.idUsuario){
                 url = '/api/'+classe;
-                dados = {
-                    name: this.modelObjetos[0]['name'],
-                    email: this.modelObjetos[0]['email'],
-                    company_name: this.modelObjetos[0]['company_name'],
-                    cnpj: this.modelObjetos[0]['cnpj'],
-                    vendedor_id: this.modelObjetos[0]['vendedor_id']
+                if(this.modelObjetos[0]['senha'] !== null && this.modelObjetos[0]['senha'] !== '' ){
+                    alert('aki ' +this.modelObjetos[0]['senha']);
+                    
+                    dados = {
+                        name: this.modelObjetos[0]['name'],
+                        email: this.modelObjetos[0]['email'],
+                        company_name: this.modelObjetos[0]['company_name'],
+                        cnpj: this.modelObjetos[0]['cnpj'],
+                        vendedor_id: this.modelObjetos[0]['vendedor_id'],
+                        password: this.modelObjetos[0]['senha']
+                    }
+                }
+                else{
+                    dados = {
+                        name: this.modelObjetos[0]['name'],
+                        email: this.modelObjetos[0]['email'],
+                        company_name: this.modelObjetos[0]['company_name'],
+                        cnpj: this.modelObjetos[0]['cnpj'],
+                        vendedor_id: this.modelObjetos[0]['vendedor_id']
+                    }
                 }
             }
             else if(classe == "fornecedor"){
@@ -740,6 +776,7 @@ var app = new Vue({
         },
         limparModal: function(){
             this.paginacao = false;
+            this.alterarSenha = false;
 
             this.modelObjetos[0]['tipoPessoa'] = "";
 
@@ -957,6 +994,10 @@ var app = new Vue({
                         this.modelObjetos[0]['name'] == "" ||
                         this.modelObjetos[0]['email'] == ""
                     ){
+                        if(this.modelObjetos[0]['senha'] !=  this.modelObjetos[0]['confirmaSenha']){
+                            alert("Erro: Senhas diferentes");
+                            return true;
+                        }
                         alert("Erro");
                         return true;
                     }
@@ -975,6 +1016,10 @@ var app = new Vue({
                     this.modelObjetos[0]['company_name'] == "" ||
                     this.modelObjetos[0]['vendedor_id'] == ""
                 ){
+                    if(this.modelObjetos[0]['senha'] !=  this.modelObjetos[0]['confirmaSenha']){
+                        alert("Erro: Senhas diferentes");
+                        return true;
+                    }
                     alert("Erro");
                     return true;
                 }
@@ -985,6 +1030,10 @@ var app = new Vue({
 
             }
             else if(classe == 'telefone'){
+                    if(this.tipoUsuario == 'AppModelsCliente'){
+                        this.modelObjetos[0]['telefoneable_id'] = this.idUsuario;
+                        this.modelObjetos[0]['tipoPessoa'] = 'cliente';
+                    }
                     if(
                         this.modelObjetos[0]['number_phone'] == "" ||
                         this.modelObjetos[0]['telefoneable_id'] == ""
@@ -1052,6 +1101,10 @@ var app = new Vue({
                 }
             }
             else if(classe == 'endereco'){
+                if(this.tipoUsuario == 'AppModelsCliente'){
+                    this.modelObjetos[0]['enderecoable_id'] = this.idUsuario;
+                    this.modelObjetos[0]['tipoPessoa'] = 'cliente';
+                }
                 if(
                     this.modelObjetos[0]['street_name'] == "" ||
                     this.modelObjetos[0]['bairro_id'] == "" ||

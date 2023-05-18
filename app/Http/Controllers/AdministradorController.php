@@ -106,10 +106,10 @@ class AdministradorController extends Controller
     {
         $administrador->update($request->only('name'));
         if(isset($request->password)){
-            $request->password = Hash::make($request->password);
+            $administrador->user()->update(['password' => Hash::make($request->password)]);
         }
 
-        $administrador->user()->update($request->only('email', 'password'));
+        $administrador->user()->update($request->only('email'));
 
         return new TesteResource($administrador, $administrador->user);
     }

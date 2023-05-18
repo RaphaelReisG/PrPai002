@@ -273,6 +273,15 @@
                                     <div v-else-if="nomeObjeto == 'administrador/'+idUsuario" class="modal-body">
                                         <input_geral nome="Nome Completo" tipo="text" nome_model="name"></input_geral>
                                         <input_geral nome="E-mail" tipo="email" nome_model="email"></input_geral>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked" v-model="alterarSenha" >
+                                            <label class="form-check-label" for="flexSwitchCheckChecked">Deseja alterar a senha</label>
+                                        </div>
+                                        <hr>
+                                        <div v-if="alterarSenha == true">
+                                            <senha_geral nome="Senha" nome_model="senha"></senha_geral>
+                                            <senha_geral nome="Confirme a senha" nome_model="confirmaSenha"></senha_geral>
+                                        </div>
                                     </div>
                                     <!-- formulario ADMINISTRADOR-->
                                     <div v-else-if="nomeObjeto == 'administrador'" class="modal-body">
@@ -454,16 +463,16 @@
                                     <!-- formulario TELEFONE-->
                                     <div v-else-if="nomeObjeto == 'telefone'" class="modal-body">
                                         @can('admin')
-                                        <div class="form-floating mb-3">
-                                            <select id="floatingInput" class="form-select" aria-label="Selecione" v-model="modelObjetos[0]['tipoPessoa']" v-on:change="buscaPessoa()" required>
-                                                <option value="" > </option>
-                                                <option value="fornecedor" > Fornecedor </option>
-                                                <option value="vendedor" > Vendedor </option>
-                                                <option value="cliente" > Cliente </option>
-                                            </select>
-                                            <label for="floatingInput">Para que tipo de pessoa</label>
-                                        </div>
-                                        <select_geral nome_model="telefoneable_id" :obj_dropdown="pessoas" nome_atributo="name" id_atributo="id" nome="Escolha o proprietario" ></select_geral>
+                                            <div class="form-floating mb-3">
+                                                <select id="floatingInput" class="form-select" aria-label="Selecione" v-model="modelObjetos[0]['tipoPessoa']" v-on:change="buscaPessoa()" required>
+                                                    <option value="" > </option>
+                                                    <option value="fornecedor" > Fornecedor </option>
+                                                    <option value="vendedor" > Vendedor </option>
+                                                    <option value="cliente" > Cliente </option>
+                                                </select>
+                                                <label for="floatingInput">Para que tipo de pessoa</label>
+                                            </div>
+                                            <select_geral nome_model="telefoneable_id" :obj_dropdown="pessoas" nome_atributo="name" id_atributo="id" nome="Escolha o proprietario" ></select_geral>
                                         @endcan
                                         @can('vendedor')
                                             <div style="display: none">
@@ -485,6 +494,15 @@
                                     <div v-else-if="nomeObjeto == 'vendedor/'+idUsuario" class="modal-body">
                                         <input_geral nome="Nome Completo" tipo="text" nome_model="name"></input_geral>
                                         <input_geral nome="E-mail" tipo="email" nome_model="email"></input_geral>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked" v-model="alterarSenha" >
+                                            <label class="form-check-label" for="flexSwitchCheckChecked">Deseja alterar a senha</label>
+                                        </div>
+                                        <hr>
+                                        <div v-if="alterarSenha == true">
+                                            <senha_geral nome="Senha" nome_model="senha"></senha_geral>
+                                            <senha_geral nome="Confirme a senha" nome_model="confirmaSenha"></senha_geral>
+                                        </div>
                                     </div>
                                 @endcan
                                 @can('cliente')
@@ -494,6 +512,15 @@
                                         <input_geral nome="Razão Social" tipo="text" nome_model="company_name"></input_geral>
                                         <input_geral nome="CPF ou CNPJ" tipo="number" nome_model="cnpj"></input_geral>
                                         <input_geral nome="E-mail" tipo="email" nome_model="email"></input_geral>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked" v-model="alterarSenha" >
+                                            <label class="form-check-label" for="flexSwitchCheckChecked">Deseja alterar a senha</label>
+                                        </div>
+                                        <hr>
+                                        <div v-if="alterarSenha == true">
+                                            <senha_geral nome="Senha" nome_model="senha"></senha_geral>
+                                            <senha_geral nome="Confirme a senha" nome_model="confirmaSenha"></senha_geral>
+                                        </div>
                                     </div>
                                 @endcan
 
