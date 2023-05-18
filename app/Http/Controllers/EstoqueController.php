@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Estoque;
 use App\Models\Administrador;
 use Illuminate\Http\Request;
+use App\Http\Requests\EstoqueRequest;
+
 
 use App\Http\Resources\TesteResource;
 
@@ -77,7 +79,7 @@ class EstoqueController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(EstoqueRequest $request)
     {
         if($request->requisitante == 'AppModelsAdministrador'){
             //error_log("Estoque - opa passou aki dentro");
@@ -114,7 +116,7 @@ class EstoqueController extends Controller
      * @param  \App\Models\Estoque  $estoque
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Estoque $estoque)
+    public function update(EstoqueRequest $request, Estoque $estoque)
     {
         return $estoque->update($request->all());
     }
