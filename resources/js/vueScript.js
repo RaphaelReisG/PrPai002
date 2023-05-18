@@ -24,6 +24,7 @@ var app = new Vue({
         objetos: [{}],
         modalErro: false,
         modalSucesso: false,
+        paginacao: false,
         modelObjetos:[{
             id: "",
 
@@ -738,6 +739,7 @@ var app = new Vue({
             }
         },
         limparModal: function(){
+            this.paginacao = false;
 
             this.modelObjetos[0]['tipoPessoa'] = "";
 
@@ -1382,6 +1384,7 @@ var app = new Vue({
                 .catch(error => (this.error = error));
         },
         buscarMeuProduto: function() {
+            this.paginacao = true;
             this.meuProduto = null;
             this.carregandoGeral = true;
             var url;

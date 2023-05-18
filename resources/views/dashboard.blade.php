@@ -227,7 +227,9 @@
                                     <div class="row"><hr></div>
                                     <div class="row">
                                         <div class="col">
-                                            <paginacao_produto></paginacao_produto>
+                                            <div v-if="paginacao == true">
+                                                <paginacao_produto ></paginacao_produto>
+                                            </div>
                                         </div>
                                         <div class="col">
                                             <button_buscar_produto ></button_buscar_produto>
@@ -246,6 +248,7 @@
                                         >
                                         </table_comum_busca_produtos>
                                     </div>
+                                    <br>
                                     <div class="row">
                                         <div class="col"><h5>Meu carrinho</h5></div>
                                         <div class="col"><h5>Descontos: R$ @{{modelObjetos[0]['total_discount']}}</h5></div>
