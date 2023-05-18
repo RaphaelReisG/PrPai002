@@ -182,7 +182,6 @@
                         </div>
                         <paginacao v-if="nomeObjeto !== '' && objetos !== null"></paginacao>
                     </div>
-
                 </div>
             </div>
 
@@ -882,7 +881,8 @@
                                 </div>
                             </div>
                             <br><br>
-                            <div class="card">
+                            <hr>
+                            <div class="card card-body">
                                 <div class="card card-header"> <h4>Meus Endereços</h4></div>
                                 <div class="card card-body">
                                     <table_acordion2     :classe_atributos="[
@@ -903,7 +903,8 @@
                                 </div>
                             </div>
                             <br><br>
-                            <div class="card">
+                            <hr>
+                            <div class="card card-body">
                                 <div class="card card-header"> <h4>Meus Telefones</h4></div>
                                 <div class="card card-body">
                                     <table_acordion2     :classe_atributos="[
@@ -1021,7 +1022,9 @@
                                 </div>
                             </div>
                             <br><br>
-                            <div class="card">
+                            <hr>
+                            <br><br>
+                            <div class="card card-body">
                                 <div class="card card-header"> <h4>Meus Endereços</h4></div>
                                 <div class="card card-body">
                                     <table_acordion2     :classe_atributos="[
@@ -1042,7 +1045,9 @@
                                 </div>
                             </div>
                             <br><br>
-                            <div class="card">
+                            <hr>
+                            <br><br>
+                            <div class="card card-body">
                                 <div class="card card-header"> <h4>Meus Telefones</h4></div>
                                 <div class="card card-body">
                                     <table_acordion2     :classe_atributos="[
