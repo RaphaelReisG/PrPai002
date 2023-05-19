@@ -35,6 +35,10 @@ class FornecedorController extends Controller
             $fornecedor->orderBy($request->ordenacaoBusca);
         }
 
+        else{
+            $fornecedor->orderBy('fornecedors.name');
+        }
+
         if ($request->has('paginacao')) {
             return $fornecedor->get();
             //error_log('passou aki');
