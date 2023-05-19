@@ -58,6 +58,10 @@ class PedidoController extends Controller
             $pedido->orderBy($request->ordenacaoBusca);
         }
 
+        else{
+            $pedido->orderBy('pedidos.name');
+        }
+
         if ($request->has('paginacao')) {
             return $pedido->get();
             //error_log('passou aki');
