@@ -55,6 +55,10 @@ class EstoqueController extends Controller
             $estoque->orderBy($request->ordenacaoBusca);
         }
 
+        else{
+            $estoque->orderBy('estoques.name');
+        }
+
         if ($request->has('paginacao')) {
             return $estoque->get();
             //error_log('passou aki');
