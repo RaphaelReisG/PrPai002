@@ -27,6 +27,10 @@ class TipoMovimentacaoController extends Controller
             $tipo_movimentacao->orderBy($request->ordenacaoBusca);
         }
 
+        else{
+            $tipo_movimentacao->orderBy('tipo_movimentacaos.name');
+        }
+
         if ($request->has('paginacao')) {
             return $tipo_movimentacao->get();
             error_log('passou aki');
