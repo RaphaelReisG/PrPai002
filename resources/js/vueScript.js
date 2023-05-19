@@ -1000,22 +1000,66 @@ var app = new Vue({
         },
         verificaDados: function(classe){
             if(classe == 'cliente'){
+                var error = false;
                 if(
-                    this.modelObjetos[0]['name'] == "" ||
-                    this.modelObjetos[0]['email'] == "" ||
-                    this.modelObjetos[0]['cnpj'] == "" ||
-                    this.modelObjetos[0]['company_name'] == "" ||
-                    this.modelObjetos[0]['vendedor_id'] == "" ||
-                    this.modelObjetos[0]['senha'] == "" ||
-                    this.modelObjetos[0]['confirmaSenha'] == ""
+                    this.modelObjetos[0]['name'] == ""
                 ){
-                    alert("Erro");
+                    this.alertaCampo[0]['name'] = "Nome do Cliente é obrigatório";
+                    error = true
+                } 
+                if(this.modelObjetos[0]['name'].length > 45) {
+                    this.alertaCampo[0]['name'] = "Maximo de 45 caracteres";
+                    error = true
+                } 
+                if(this.modelObjetos[0]['email'] == "") {
+                    this.alertaCampo[0]['email'] = "Email do Cliente é obrigatório";
+                    error = true
+                } 
+                if(this.modelObjetos[0]['email'].length > 45) {
+                    this.alertaCampo[0]['email'] = "Maximo de 45 caracteres";
+                    error = true
+                } 
+                if(this.modelObjetos[0]['cnpj'] == "") {
+                    this.alertaCampo[0]['cnpj'] = "CPF ou CNPJ do Cliente é obrigatório";
+                    error = true;
+                } 
+                if(this.modelObjetos[0]['cnpj'].length < 11 || this.modelObjetos[0]['cnpj'].length > 14 ) {
+                    this.alertaCampo[0]['cnpj'] = "O CPF ou CNPJ deve estar entre 11 e 14 dígitos";
+                    error = true
+                } 
+                if(this.modelObjetos[0]['company_name'] == "") {
+                    this.alertaCampo[0]['company_name'] = "O nome da companhia é obrigatório";
+                    error = true
+                } 
+                if(this.modelObjetos[0]['company_name'].length > 45) {
+                    this.alertaCampo[0]['company_name'] = "Maximo de 45 caracteres";
+                    error = true
+                }
+                if(this.modelObjetos[0]['vendedor_id'] == "") {
+                    this.alertaCampo[0]['vendedor_id'] = "O ID do vendedor é obrigatório";
+                    error = true
+                }
+                if(this.modelObjetos[0]['vendedor_id'].length > 45) {
+                    this.alertaCampo[0]['vendedor_id'] = "Maximo de 45 caracteres";
+                    error = true
+                }
+                if(this.modelObjetos[0]['senha'] == "") {
+                    this.alertaCampo[0]['senha'] = "A senha é obrigatória";
+                    error = true
+                }
+                if(this.modelObjetos[0]['senha'] !=  this.modelObjetos[0]['confirmaSenha']){
+                    this.alertaCampo[0]['senha'] = "As senhas devem ser iguais";
+                    error = true
+                }
+                if(this.modelObjetos[0]['confirmaSenha'] == "") {
+                    this.alertaCampo[0]['confirmaSenha'] = "A confirmação da senha é obrigatória";
+                    error = true
+                }
+
+                if(error == true) {
                     return true;
                 }
-                else if(this.modelObjetos[0]['senha'] !=  this.modelObjetos[0]['confirmaSenha']){
-                    alert("Erro: Senhas diferentes");
-                    return true;
-                }
+               
                 else{
                     return false;
                 }
@@ -1688,5 +1732,3 @@ var app = new Vue({
 
     }
 })
-
-

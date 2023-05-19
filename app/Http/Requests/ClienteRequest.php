@@ -25,7 +25,7 @@ class ClienteRequest extends FormRequest
     {
         return [
             'name' => 'required|max: 45',
-            'cnpj' => 'required|numeric|max: 99999999999999 | min: 10000000000000',
+            'cnpj' => 'required|numeric|max: 99999999999999 | min: 10000000000',
             'company_name' => 'required|max: 45'
             /*'modelo' => 'required|max:50',
             'ano' => 'required|integer|min:1900',
@@ -45,7 +45,7 @@ class ClienteRequest extends FormRequest
 
             'cnpj.required' => 'O cnpj é obrigatório',
             'cnpj.max' => 'O cnpj deve ser igual à 14 caracteres',
-            'cnpj.min' => 'O cnpj deve ser igual à 14 caracteres',
+            'cnpj.min' => 'O cnpj deve ser igual à 11 caracteres',
             'cnpj.numeric' => 'O cnpj deve ser inteiro'
             
 
