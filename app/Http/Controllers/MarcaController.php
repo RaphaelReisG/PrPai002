@@ -41,6 +41,10 @@ class MarcaController extends Controller
             $marca->orderBy($request->ordenacaoBusca);
         }
 
+        else{
+            $marca->orderBy('marcas.name');
+        }
+
         if ($request->has('paginacao')) {
             return $marca->get();
             //error_log('passou aki');
