@@ -7,7 +7,7 @@
 
     <link rel="icon" href="./logo.ico" type="image/x-icon">
     <title>
-        Salgados Zilla
+        Salgado Zilla
     </title>
 
 
