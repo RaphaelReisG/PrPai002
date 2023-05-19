@@ -57,6 +57,37 @@ var app = new Vue({
             buscarObjeto: "", ordenacaoBusca: "", tipoPessoa: "", buscarObjetoProduto: "",
 
         }],
+
+        alertaCampo: [{
+            id: "",
+
+            name: "", email: "", senha: "", confirmaSenha: "", //admin e vendedor
+
+            company_name: "", cnpj: "", vendedor_id: "", //cliente e fornecedor
+
+            number_phone: "", telefoneable_id: "", telefoneable_type: "", //telefone
+
+            fornecedor_id: "", //marca
+
+            tipo_produto_id: "", quantity: "", weight: "", cost_price: "", sale_price: "", marca_id: "", //produto
+
+            metodo_pagamento_id: "", cliente_id: "", payday: "", delivery_date: "", approval_date: "", total_price: 0, total_discount: 0, //pedido
+
+            tipo_movimentacaos_id: "", qty_item: "", observation: "", produto_id: "", //estoque
+
+            name_country: "",  // pais
+
+            name_state: "", pais_id: "", // estado
+
+            name_city: "", estado_id: "", // cidade
+
+            name_neighborhood: "", cidade_id: "", //bairro
+
+            street_name: "", house_number: "", cep: "", complement: "", enderecoable_id: "", enderecoable_type: "",
+
+            buscarObjeto: "", ordenacaoBusca: "", tipoPessoa: "", buscarObjetoProduto: "",
+        }],
+
         index: "",
 
         paises: [{}],
@@ -1060,6 +1091,12 @@ var app = new Vue({
                 if(
                     this.modelObjetos[0]['name_country'] == ""
                 ){
+                    this.alertaCampo[0]['name_country'] = "Nome do País é obrigatório";
+                    alert("Erro opa ta vazio"+this.alertaCampo[0]['name_country']);
+                    return true;
+                }
+                else if(this.modelObjetos[0]['name_country'].length > 45){
+                    this.alertaCampo[0]['name_country'] = "Maximo de 45 caracteres";
                     alert("Erro");
                     return true;
                 }

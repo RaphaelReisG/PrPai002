@@ -180,9 +180,13 @@ Vue.component('modal_sucesso', {
     Vue.component('input_geral', {
         props: ['nome_model', 'tipo', 'nome'],
         template: `
-        <div class="form-floating mb-3">
-            <input :type="tipo" class="form-control" id="floatingInput"  v-model="$root.modelObjetos[0][nome_model]" required>
-            <label for="floatingInput">{{nome}}</label>
+        <div>
+            <div class="form-floating mb-3">
+                <input :type="tipo" class="form-control" id="floatingInput"  v-model="$root.modelObjetos[0][nome_model]" required>
+                <label for="floatingInput">{{nome}}</label>
+
+            </div>
+            <span class="alert alert-danger" role="alert" v-if="$root.alertaCampo[0][nome_model] !== ''"> {{$root.alertaCampo[0][nome_model]}} </span>
         </div>
         `
     });
