@@ -26,7 +26,7 @@ var app = new Vue({
         objetos: [{}],
         modalErro: false,
         modalSucesso: false,
-        paginacao: false,
+        temPaginacao: false,
         modelObjetos:[{
             id: "",
 
@@ -538,7 +538,7 @@ var app = new Vue({
             else if(classe == "vendedor/"+this.idUsuario){
                 url = '/api/'+classe;
                 if(this.modelObjetos[0]['senha'] !== null && this.modelObjetos[0]['senha'] !== '' ){
-                    
+
                     dados = {
                         name: this.modelObjetos[0]['name'],
                         email: this.modelObjetos[0]['email'],
@@ -566,7 +566,7 @@ var app = new Vue({
                 url = '/api/'+classe;
                 if(this.modelObjetos[0]['senha'] !== null && this.modelObjetos[0]['senha'] !== '' ){
                     alert('aki ' +this.modelObjetos[0]['senha']);
-                    
+
                     dados = {
                         name: this.modelObjetos[0]['name'],
                         email: this.modelObjetos[0]['email'],
@@ -775,7 +775,7 @@ var app = new Vue({
             }
         },
         limparModal: function(){
-            this.paginacao = false;
+            this.temPaginacao = false;
             this.alterarSenha = false;
 
             this.modelObjetos[0]['tipoPessoa'] = "";
@@ -1437,7 +1437,7 @@ var app = new Vue({
                 .catch(error => (this.error = error));
         },
         buscarMeuProduto: function() {
-            this.paginacao = true;
+            this.temPaginacao = true;
             this.meuProduto = null;
             this.carregandoGeral = true;
             var url;
@@ -1511,18 +1511,18 @@ var app = new Vue({
             this.meuCarrinho.splice(index, 1);
             this.atualizaTotal();
         },
-        atualizaTotalItem(index){
+        atualizaTotalItem: function(index){
             //alert('opa'+this.meuCarrinho[index]['total_item']);
             this.meuCarrinho[index]['total_item'] = this.meuCarrinho[index]['qty_item'] * this.meuCarrinho[index]['price_item'];
             this.atualizaTotal();
         },
-        atualizaTotal(){
+        atualizaTotal: function(){
             this.modelObjetos[0]['total_price'] = parseFloat(this.meuCarrinho.reduce(function(total, item) {
                     return parseFloat(total) + parseFloat(item.total_item);
                 }, 0))
             ;
         },
-        carregaMeuCarrinho(index){
+        carregaMeuCarrinho: function(index){
             //alert('carregado');
             for(var produto of this.objetos['data'][index]['produtos']){
                 this.meuCarrinho.push({
@@ -1534,7 +1534,41 @@ var app = new Vue({
                     total_item: produto['pivot']['qty_item'] * produto['pivot']['price_item']
                 });
             }
-        }
+        },
+        aprovarPedido: async function(id){
+            alert('aprova'+ new Date());
+            if( confirm("Tem certeza que deseja aprovar este pedido? "+id) == true){
+                    var url = '/api/pedido_aprovacao';
+                    //fetch(url, { method: 'DELETE'} ).catch((e) => this.error = e);
+                    var dados;
+                    dados = {
+                        id: id,
+                        approval_date: new Date()
+                    }
+                    await axios
+                        .put(url, dados)
+                        .then(response => (this.respostaData = response.data, this.resposta = response))
+                        .catch(error => (this.error = error));
+                    if(this.error == null){
+                        alert("Alterado com sucesso");
+                    }
+                    else{
+                        alert("Um erro foi encontrado:"+this.error);
+                    }
+                    this.carregarObjeto('pedido');
+            }
+            else{
+                alert("Cancelado");
+            }
+        },
+        confirmarEntrega(index){
+            alert('entrega');
+
+        },
+        confirmarPagamento(index){
+            alert('pagamento');
+        },
+
     }
 })
 

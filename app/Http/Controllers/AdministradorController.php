@@ -30,6 +30,9 @@ class AdministradorController extends Controller
         if ($request->has('ordenacaoBusca')) {
             $administrador->orderBy($request->ordenacaoBusca);
         }
+        else{
+            $administrador->orderBy('administradors.name');
+        }
 
         if ($request->has('paginacao')) {
             return $administrador->get();

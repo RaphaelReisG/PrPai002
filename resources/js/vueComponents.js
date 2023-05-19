@@ -344,12 +344,12 @@ Vue.component('modal_sucesso', {
                                 {{ obj[valor.conteudo]  }}
                             </div>
                             <div v-if="valor.conteudo == 'qty_item' ">
-                                <input 
-                                    style="max-width: 80px;" 
-                                    type="number" 
-                                    class="form-control"  
-                                    v-model="$root.meuCarrinho[index]['qty_item']" 
-                                    min="1" 
+                                <input
+                                    style="max-width: 80px;"
+                                    type="number"
+                                    class="form-control"
+                                    v-model="$root.meuCarrinho[index]['qty_item']"
+                                    min="1"
                                     v-on:change="$root.atualizaTotalItem(index)"
                                 >
                             </div>
@@ -656,7 +656,7 @@ Vue.component('modal_sucesso', {
                     <tr data-bs-toggle="collapse" v-bind:data-bs-target="'#collapseExample' + obj.id"  aria-expanded="false" v-bind:aria-controls="'collapseExample'+obj.id" aria-controls="collapseExample">
 
                         <td v-for="valor in classe_atributos">
-                            <div v-if="valor.conteudo !== 'created_at' && valor.conteudo !== 'dtEntrada' && valor.conteudo !== 'dtSaida' && valor.conteudo2 == null ">
+                            <div v-if="valor.conteudo !== 'created_at' && valor.conteudo !== 'approval_date' && valor.conteudo !== 'delivery_date' && valor.conteudo !== 'payday' && valor.conteudo2 == null ">
                                 {{ obj[valor.conteudo]  }}
                             </div>
                             <div v-else-if="valor.conteudo2 != null && valor.conteudo3 == null">
@@ -666,7 +666,26 @@ Vue.component('modal_sucesso', {
                                 {{ obj[valor.conteudo][valor.conteudo2][valor.conteudo3]  }}
                             </div>
                             <div v-else>
-                                {{ new Date(obj[valor.conteudo]).toLocaleString() }}
+                                <div v-if=" obj[valor.conteudo] == null">
+                                    <div v-if=" valor.conteudo == 'approval_date' && valor.conteudo !== 'delivery_date' && valor.conteudo !== 'payday'">
+                                        botao aprovação
+                                        <button_aprovacao :objindex="$root.objetos['data'][index]['id']"></button_aprovacao>
+                                    </div>
+                                    <div v-else-if=" valor.conteudo == 'delivery_date' ">
+                                        botao entrega
+                                        <button_entrega :objindex="index"></button_entrega>
+                                    </div>
+                                    <div v-else-if=" valor.conteudo == 'payday' ">
+                                        botao pagamento
+                                        <button_pagamento :objindex="index"></button_pagamento>
+                                    </div>
+                                    <div v-else>
+                                        Pendente
+                                    </div>
+                                </div>
+                                <div v-else>
+                                    {{ new Date(obj[valor.conteudo]).toLocaleString() }}
+                                </div>
                             </div>
                         </td>
                         <td>
@@ -679,7 +698,7 @@ Vue.component('modal_sucesso', {
                             <div class="collapse" v-bind:id="'collapseExample' + obj.id" >
                                 <div class="card card-body">
                                     <div v-for="acord in obj_acordion">
-                                        <div v-if="acord.conteudo !== 'created_at' && acord.conteudo !== 'dtEntrada' && acord.conteudo !== 'dtSaida' && acord.conteudo2 == null ">
+                                        <div v-if="acord.conteudo !== 'created_at' && acord.conteudo !== 'approval_date' && acord.conteudo !== 'delivery_date' && acord.conteudo !== 'payday' && acord.conteudo2 == null ">
                                             {{acord.titulo}}: {{obj[acord.conteudo] }}
                                         </div>
                                         <div v-else-if="acord.conteudo2 != null && acord.conteudo3 == null">
@@ -689,7 +708,12 @@ Vue.component('modal_sucesso', {
                                             {{acord.titulo}}: {{ obj[acord.conteudo][acord.conteudo2][acord.conteudo3]  }}
                                         </div>
                                         <div v-else>
-                                            {{acord.titulo }}: {{ new Date(obj[acord.conteudo]).toLocaleString() }}
+                                            <div v-if=" obj[acord.conteudo] == null">
+                                                Pendente
+                                            </div>
+                                            <div v-else>
+                                                {{acord.titulo }}: {{ new Date(obj[acord.conteudo]).toLocaleString() }}
+                                            </div>
                                         </div>
                                     </div>
                                     <hr>
@@ -854,6 +878,33 @@ Vue.component('button_delete', {
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
                 <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z"/>
             </svg>
+        </button>
+    `
+});
+
+Vue.component('button_aprovacao', {
+    props: ['objid'],
+    template: `
+        <button type="button" class="btn btn-outline-danger" v-on:click="$root.aprovarPedido(objid)">
+            A
+        </button>
+    `
+});
+
+Vue.component('button_entrega', {
+    props: ['objid'],
+    template: `
+        <button type="button" class="btn btn-outline-danger" v-on:click="$root.confirmarEntrega(objid)">
+            E
+        </button>
+    `
+});
+
+Vue.component('button_pagamento', {
+    props: ['objid'],
+    template: `
+        <button type="button" class="btn btn-outline-danger" v-on:click="$root.confirmarPagamento(objid)">
+            P
         </button>
     `
 });

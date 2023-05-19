@@ -19,7 +19,7 @@ class PedidoController extends Controller
     public function index(Request $request)
     {
         //return Pedido::all();
-        //return Pedido::with(['produtos', 'cliente', 'vendedor', 'metodoPagamento'])->paginate(4); 
+        //return Pedido::with(['produtos', 'cliente', 'vendedor', 'metodoPagamento'])->paginate(4);
 
         $pedido = Pedido::with(['produtos', 'cliente', 'vendedor', 'metodoPagamento'])
         ->join('metodo_pagamentos', 'pedidos.metodo_pagamento_id', '=', 'metodo_pagamentos.id' )
@@ -84,7 +84,7 @@ class PedidoController extends Controller
      */
     public function store(Request $request)
     {
-        $pedido = Pedido::create($request->all()); 
+        $pedido = Pedido::create($request->all());
 
         $produtosSelecionados = $request->produtos;
 
@@ -95,6 +95,7 @@ class PedidoController extends Controller
                 'price_item' => $produtoSelecionado['price_item'],
             ]);
         }
+        return $pedido;
     }
 
     /**
@@ -145,6 +146,7 @@ class PedidoController extends Controller
                 'price_item' => $produtoSelecionado['price_item'],
             ]);
         }
+        return $pedido;
     }
 
     /**
@@ -157,6 +159,21 @@ class PedidoController extends Controller
     {
         //$obj = Pedido::findOrfail($id);
         $pedido->produtos()->detach();
-        $pedido->delete();
+        return $pedido->delete();
+    }
+
+    public function aprovarPedido(Request $request, Pedido $pedido)
+    {
+        return $pedido->update($request->only('approval_date'));
+    }
+
+    public function aprovarEntrega(Request $request, Pedido $pedido)
+    {
+        return $pedido->update($request->only('delivery_date'));
+    }
+
+    public function aprovarPagamento(Request $request, Pedido $pedido)
+    {
+        return $pedido->update($request->only('payday'));
     }
 }
