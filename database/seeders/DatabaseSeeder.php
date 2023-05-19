@@ -223,6 +223,11 @@ class DatabaseSeeder extends Seeder
                 ', 'password' => Hash::make('qwerasdf'), 'remember_token' => null,
             'created_at' => '2023-02-07 13:32:43', 'updated_at' => '2023-02-07 13:33:19'
         ]);
+        Administrador::create(['name' => 'Gabriel Admin'])->user()->create([
+            'email' => 'gabs@admingabs.com', 'email_verified_at' => '2023-02-07 13:33:19
+                ', 'password' => Hash::make('qwerasdf'), 'remember_token' => null,
+            'created_at' => '2023-02-07 13:32:43', 'updated_at' => '2023-02-07 13:33:19'
+        ]);
 
         DB::table('model_has_permissions')->insert(['permission_id' => 1, 'model_type' => 'App\Models\User', 'model_id' => 1]);
         DB::table('model_has_permissions')->insert(['permission_id' => 2, 'model_type' => 'App\Models\User', 'model_id' => 2]);
@@ -230,6 +235,8 @@ class DatabaseSeeder extends Seeder
         DB::table('model_has_permissions')->insert(['permission_id' => 1, 'model_type' => 'App\Models\User', 'model_id' => 4]);
         DB::table('model_has_permissions')->insert(['permission_id' => 1, 'model_type' => 'App\Models\User', 'model_id' => 5]);
         DB::table('model_has_permissions')->insert(['permission_id' => 1, 'model_type' => 'App\Models\User', 'model_id' => 6]);
+        DB::table('model_has_permissions')->insert(['permission_id' => 1, 'model_type' => 'App\Models\User', 'model_id' => 7]);
+
 
     }
 }
