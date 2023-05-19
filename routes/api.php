@@ -48,6 +48,11 @@ Route::apiResource('marca', MarcaController::class);
 Route::apiResource('metodo_pagamento', MetodoPagamentoController::class);
 Route::apiResource('pais', PaisController::class);
 Route::apiResource('pedido', PedidoController::class);
+
+Route::put('pedido_aprovacao', [PedidoController::class, 'aprovarPedido']);
+Route::put('pedido_entrega', [PedidoController::class, 'aprovarEntrega']);
+Route::put('pedido_pagamento', [PedidoController::class, 'aprovarPagamento']);
+
 Route::apiResource('produto', ProdutoController::class);
 Route::apiResource('vendedor', VendedorController::class);
 Route::apiResource('telefone', TelefoneController::class);

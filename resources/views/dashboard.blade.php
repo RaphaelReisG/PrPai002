@@ -226,7 +226,7 @@
                                     <div class="row"><hr></div>
                                     <div class="row">
                                         <div class="col">
-                                            <div v-if="paginacao == true">
+                                            <div v-if="temPaginacao == true">
                                                 <paginacao_produto ></paginacao_produto>
                                             </div>
                                         </div>
@@ -543,29 +543,52 @@
 
             <!-- Tabelas -->
                 <div v-if="titulo != ''">
-                    <!-- Tabela Pedido -->
-                    <div v-if="nomeObjeto == 'pedido' && objetos !== null" class="row">
-                        <table_acordion_pedidos
-                            :classe_atributos="[
-                                {titulo: 'Data solicitação', conteudo: 'created_at', ordenacao: 'pedidos.created_at'},
-                                {titulo: 'Total', conteudo: 'total_price', ordenacao: 'pedidos.total_price'},
-                                {titulo: 'Metodo de pagamento', conteudo: 'metodo_pagamento', conteudo2: 'name', ordenacao: 'metodo_pagamentos.name'},
-                                {titulo: 'Cliente', conteudo: 'cliente', conteudo2: 'name' , ordenacao: 'clientes.name'},
-                                {titulo: 'Vendedor',  conteudo: 'vendedor', conteudo2: 'name', ordenacao: 'vendedors.name'}
-                            ]"
-                            :objeto_imp="objetos"
-                            :obj_acordion="[
-                                {titulo: 'Pedido aprovado em', conteudo: 'approval_date'},
-                                {titulo: 'Data entrega', conteudo: 'delivery_date'},
-                                {titulo: 'Data pagamento', conteudo: 'payday'},
-                                {titulo: 'Descontos', conteudo: 'total_discount'},
-                                {titulo: 'Observação', conteudo: 'observation'}
-                            ]"
-                        >
-                        </table_acordion_pedidos>
-                    </div>
-
+                    @canAny('cliente', 'vendedor')
+                        <!-- Tabela Pedido -->
+                        <div v-if="nomeObjeto == 'pedido' && objetos !== null" class="row">
+                            <table_acordion_pedidos
+                                :classe_atributos="[
+                                    {titulo: 'Data solicitação', conteudo: 'created_at', ordenacao: 'pedidos.created_at'},
+                                    {titulo: 'Total', conteudo: 'total_price', ordenacao: 'pedidos.total_price'},
+                                    {titulo: 'Metodo de pagamento', conteudo: 'metodo_pagamento', conteudo2: 'name', ordenacao: 'metodo_pagamentos.name'},
+                                    {titulo: 'Cliente', conteudo: 'cliente', conteudo2: 'name' , ordenacao: 'clientes.name'},
+                                    {titulo: 'Vendedor',  conteudo: 'vendedor', conteudo2: 'name', ordenacao: 'vendedors.name'}
+                                ]"
+                                :objeto_imp="objetos"
+                                :obj_acordion="[
+                                    {titulo: 'Pedido aprovado em', conteudo: 'approval_date'},
+                                    {titulo: 'Data entrega', conteudo: 'delivery_date'},
+                                    {titulo: 'Data pagamento', conteudo: 'payday'},
+                                    {titulo: 'Descontos', conteudo: 'total_discount'},
+                                    {titulo: 'Observação', conteudo: 'observation'}
+                                ]"
+                            >
+                            </table_acordion_pedidos>
+                        </div>
+                    @endcan
                     @can('admin')
+                        <!-- Tabela Pedido -->
+                        <div v-if="nomeObjeto == 'pedido' && objetos !== null" class="row">
+                            <table_acordion_pedidos
+                                :classe_atributos="[
+                                    {titulo: 'Data solicitação', conteudo: 'created_at', ordenacao: 'pedidos.created_at'},
+                                    {titulo: 'Aprovado em', conteudo: 'approval_date', ordenacao: 'pedidos.approval_date'},
+                                    {titulo: 'Entrega', conteudo: 'delivery_date', ordenacao: 'pedidos.delivery_date'},
+                                    {titulo: 'Pagamento', conteudo: 'payday', ordenacao: 'pedidos.payday'},
+                                    {titulo: 'Total', conteudo: 'total_price', ordenacao: 'pedidos.total_price'},
+                                    {titulo: 'Cliente', conteudo: 'cliente', conteudo2: 'name' , ordenacao: 'clientes.name'},
+                                    {titulo: 'Vendedor',  conteudo: 'vendedor', conteudo2: 'name', ordenacao: 'vendedors.name'}
+                                ]"
+                                :objeto_imp="objetos"
+                                :obj_acordion="[
+                                    {titulo: 'Metodo de pagamento', conteudo: 'metodo_pagamento', conteudo2: 'name'},
+                                    {titulo: 'Descontos', conteudo: 'total_discount'},
+                                    {titulo: 'Observação', conteudo: 'observation'}
+                                ]"
+                            >
+                            </table_acordion_pedidos>
+                        </div>
+
                         <!-- Tabela Meus Dados Administradores -->
                         <div v-else-if="nomeObjeto == ('administrador/'+idUsuario) && objetos !== null" class="row">
                             <div class="card card-body">
@@ -1085,20 +1108,6 @@
                                                 >
                             </table_acordion>
                         </div>
-
-                        <!-- Tabela Telefone 
-                        <div v-else-if="nomeObjeto == 'telefone' && objetos !== null" class="row">
-                            <table_acordion2     :classe_atributos="[
-                                                        {titulo: 'Nº Telefone', conteudo: 'number_phone'}
-
-                                                    ]"
-                                                    :objeto_imp="objetos['data']['telefones']"
-                                                    :obj_acordion="[
-                                                        {titulo: 'Criado em', conteudo: 'created_at'}
-                                                    ]"
-                                                >
-                            </table_acordion2>
-                        </div> -->
 
                         <!-- Tabela Telefone -->
                         <div v-else-if="nomeObjeto == 'telefone' && objetos !== null" class="row">
