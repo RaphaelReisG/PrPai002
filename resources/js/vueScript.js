@@ -889,6 +889,86 @@ var app = new Vue({
             this.tipo_movimentacaos = [{}];
             this.metodo_pagamentos = [{}];
 
+            this.alertaCampo[0]['tipoPessoa'] = "";
+
+            this.alertaCampo[0]['name'] = "";
+            this.alertaCampo[0]['company_name'] = "";
+            this.alertaCampo[0]['email'] = "";
+            this.alertaCampo[0]['cnpj'] = "";
+            this.alertaCampo[0]['vendedor_id'] = "";
+
+            this.alertaCampo[0]['senha'] = "";
+            this.alertaCampo[0]['confirmaSenha'] = "";
+
+            //pais
+            this.alertaCampo[0]['name_country'] = "";
+
+            //estado
+            this.alertaCampo[0]['name_state'] = "";
+            this.alertaCampo[0]['pais_id'] = "";
+
+            //cidade
+            this.alertaCampo[0]['name_city'] = "";
+            this.alertaCampo[0]['estado_id'] = "";
+
+            //bairro
+            this.alertaCampo[0]['name_neighborhood'] = "";
+            this.alertaCampo[0]['cidade_id'] = "";
+
+            //endereco
+            this.alertaCampo[0]['street_name'] = "";
+            this.alertaCampo[0]['house_number'] = "";
+            this.alertaCampo[0]['cep'] = "";
+            this.alertaCampo[0]['complement'] = "";
+            this.alertaCampo[0]['tipoPessoa'] = "";
+            this.alertaCampo[0]['enderecoable_id'] = "";
+
+            //telefone
+            this.alertaCampo[0]['number_phone'] = "";
+            this.alertaCampo[0]['telefoneable_id'] = "";
+            this.alertaCampo[0]['telefoneable_type'] = "";
+
+            //marca
+            this.alertaCampo[0]['fornecedor_id'] = "";
+
+            //produto
+            this.alertaCampo[0]['name'] = "";
+            this.alertaCampo[0]['tipo_produto_id'] = "";
+            this.alertaCampo[0]['quantity'] = "";
+            this.alertaCampo[0]['weight'] = "";
+            this.alertaCampo[0]['cost_price'] = "";
+            this.alertaCampo[0]['sale_price'] = "";
+            this.alertaCampo[0]['marca_id'] = "";
+
+            //estoque
+            this.alertaCampo[0]['tipo_movimentacao_id'] = "";
+            this.alertaCampo[0]['produto_id'] = "";
+            this.alertaCampo[0]['qty_item'] = "";
+            this.alertaCampo[0]['observation'] = "";
+
+            //pedido
+            this.alertaCampo[0]['metodo_pagamento_id'] = "";
+            this.alertaCampo[0]['cliente_id'] = "";
+            this.alertaCampo[0]['payday'] = "";
+            this.alertaCampo[0]['delivery_date'] = "";
+            this.alertaCampo[0]['approval_date'] = "";
+            this.alertaCampo[0]['total_price'] = 0;
+            this.alertaCampo[0]['total_discount'] = 0;
+
+            this.paises = [{}];
+            this.estados =  [{}];
+            this.cidades = [{}];
+            this.bairros = [{}];
+            this.vendedores = [{}];
+            this.clientes = [{}];
+            this.fornecedores = [{}];
+            this.pessoas = [{}];
+            this.marcas = [{}];
+            this.produtos = [{}];
+            this.tipo_produtos = [{}];
+            this.tipo_movimentacaos = [{}];
+            this.metodo_pagamentos = [{}];
+
             this.meuProduto = [];
             this.meuCarrinho = [];
 
