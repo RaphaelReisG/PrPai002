@@ -27,6 +27,10 @@ class PaisController extends Controller
             $pais->orderBy($request->ordenacaoBusca);
         }
 
+        else{
+            $pais->orderBy('pais.name');
+        }
+
         if ($request->has('paginacao')) {
             return $pais->get();
             //error_log('passou aki');
