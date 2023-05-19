@@ -43,6 +43,10 @@ class BairroController extends Controller
             $bairro->orderBy($request->ordenacaoBusca);
         }
 
+        else{
+            $bairro->orderBy('bairros.name');
+        }
+
         if ($request->has('paginacao')) {
             return $bairro->get();
             //error_log('passou aki');
