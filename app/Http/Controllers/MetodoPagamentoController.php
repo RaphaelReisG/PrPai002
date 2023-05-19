@@ -27,6 +27,10 @@ class MetodoPagamentoController extends Controller
             $metodoPagamento->orderBy($request->ordenacaoBusca);
         }
 
+        else{
+            $metodoPagamento->orderBy('metodoPagamentos.name');
+        }
+
         if ($request->has('paginacao')) {
             return $metodoPagamento->get();
             //error_log('passou aki');
