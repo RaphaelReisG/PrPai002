@@ -45,6 +45,10 @@ class CidadeController extends Controller
             $cidade->orderBy($request->ordenacaoBusca);
         }
 
+        else{
+            $cidade->orderBy('cidades.name');
+        }
+
         if ($request->has('paginacao')) {
             return $cidade->get();
             //error_log('passou aki');
