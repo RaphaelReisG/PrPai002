@@ -29,6 +29,10 @@ class TipoProdutoController extends Controller
             $tipo_produto->orderBy($request->ordenacaoBusca);
         }
 
+        else{
+            $tipo_produto->orderBy('tipo_produtos.name');
+        }
+
         if ($request->has('paginacao')) {
             return $tipo_produto->get();
             //error_log('passou aki');
