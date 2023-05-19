@@ -43,6 +43,10 @@ class EstadoController extends Controller
             $estado->orderBy($request->ordenacaoBusca);
         }
 
+        else{
+            $estado->orderBy('estados.name');
+        }
+
         if ($request->has('paginacao')) {
             return $estado->get();
             //error_log('passou aki');
