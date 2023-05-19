@@ -1065,15 +1065,44 @@ var app = new Vue({
                 }
             }
             else if(classe == 'fornecedor'){
-                if(
-                    this.modelObjetos[0]['name'] == "" ||
-                    this.modelObjetos[0]['email'] == "" ||
-                    this.modelObjetos[0]['cnpj'] == "" ||
-                    this.modelObjetos[0]['company_name'] == ""
-                ){
-                    alert("Erro");
+                var error = false;
+                if(this.modelObjetos[0]['name'] == ""){
+                    this.alertaCampo[0]['name'] = "O nome do fornecedor é obrigatório";
+                    error = true
+                }
+                if(this.modelObjetos[0]['name'].length > 45) {
+                    this.alertaCampo[0]['name'] = "O nome do fornecedor deve ter no máximo 45 caracteres";
+                    error = true
+                } 
+                if(this.modelObjetos[0]['email'] == "") {
+                    this.alertaCampo[0]['email'] = "O e-mail do fornecedor é obrigatório";
+                    error = true
+                } 
+                if(this.modelObjetos[0]['email'].length > 45) {
+                    this.alertaCampo[0]['email'] = "O e-mail do fornecedor deve ter no máximo 45 caracteres";
+                    error = true
+                }
+                if(this.modelObjetos[0]['cnpj'] == "") {
+                    this.alertaCampo[0]['cnpj'] = "O CNPJ do fornecedor é obrigatório";
+                    error = true
+                } 
+                if(this.modelObjetos[0]['cnpj'].length > 14) {
+                    this.alertaCampo[0]['cnpj'] = "O CNPJ tem apenas 15 caracteres";
+                    error = true
+                }
+                if(this.modelObjetos[0]['company_name'] == "") {
+                    this.alertaCampo[0]['company_name'] = "A razão social é obrigatória";
+                    error = true
+                } 
+                if(this.modelObjetos[0]['company_name'].length > 45) {
+                    this.alertaCampo[0]['company_name'] = "A razão social deve ter no máximo 45 caracteres";
+                    error = true
+                }
+
+                if(error == true) {
                     return true;
                 }
+
                 else{
                     return false;
                 }
