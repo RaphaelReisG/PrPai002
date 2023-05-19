@@ -52,6 +52,10 @@ class ProdutoController extends Controller
             $produto->orderBy($request->ordenacaoBusca);
         }
 
+        else{
+            $produto->orderBy('produtos.name');
+        }
+
         if ($request->has('paginacao')) {
             return $produto->get();
             //error_log('passou aki');
