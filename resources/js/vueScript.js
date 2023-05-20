@@ -1336,10 +1336,7 @@ var app = new Vue({
                         this.modelObjetos[0]['telefoneable_id'] = this.idUsuario;
                         this.modelObjetos[0]['tipoPessoa'] = 'cliente';
                     }
-                    if(
-                        this.modelObjetos[0]['number_phone'] == "" ||
-                        this.modelObjetos[0]['telefoneable_id'] == ""
-                    ){
+                    if(this.modelObjetos[0]['number_phone'] == ""){
                         this.alertaCampo[0]['number_phone'] = "O número de telefone é obrigatório";
                         error = true
                     }
@@ -1401,12 +1398,26 @@ var app = new Vue({
                 }
             }
             else if(classe == 'estado'){
+                var error = false
                 if(
-                    this.modelObjetos[0]['name_state'] == "" || this.modelObjetos[0]['pais_id'] == ""
+                    this.modelObjetos[0]['name_state'] == "" 
                 ){
-                    alert("Erro");
-                    return true;
+                    this.alertaCampo[0]['name_state'] = "O nome do estado é obrigatório";
+                    error = true
                 }
+                if (this.modelObjetos[0]['name_state'].length > 45) {
+                    this.alertaCampo[0]['name_state'] = "Maximo de 45 caracteres";
+                    error = true
+                }
+                if (this.modelObjetos[0]['pais_id'] == "") {
+                    this.alertaCampo[0]['pais_id'] = "É obrigatório ter o país";
+                    error = true
+                }
+
+                if (error == true) {
+                    return true
+                }
+
                 else{
                     return false;
                 }
