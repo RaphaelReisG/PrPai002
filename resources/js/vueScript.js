@@ -1331,6 +1331,7 @@ var app = new Vue({
 
             }
             else if(classe == 'telefone'){
+                var error = false
                     if(this.tipoUsuario == 'AppModelsCliente'){
                         this.modelObjetos[0]['telefoneable_id'] = this.idUsuario;
                         this.modelObjetos[0]['tipoPessoa'] = 'cliente';
@@ -1339,9 +1340,22 @@ var app = new Vue({
                         this.modelObjetos[0]['number_phone'] == "" ||
                         this.modelObjetos[0]['telefoneable_id'] == ""
                     ){
-                        alert("Erro");
-                        return true;
+                        this.alertaCampo[0]['number_phone'] = "O número de telefone é obrigatório";
+                        error = true
                     }
+                    if(this.modelObjetos[0]['number_phone'].length > 15) {
+                        this.alertaCampo[0]['number_phone'] = "O número de dígitos não pode ser maior que 15 caracteres";
+                        error = true
+                    }
+                    if(this.modelObjetos[0]['telefoneable_id'] == ""){
+                        this.alertaCampo[0]['telefoneable_id'] = "É obrigatório informar o proprietário";
+                        error = true
+                    }
+
+                    if (error == true) {
+                        return true
+                    }
+                    
                     else{
                         return false;
                     }
