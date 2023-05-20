@@ -1355,18 +1355,26 @@ var app = new Vue({
                     if (error == true) {
                         return true
                     }
-                    
+
                     else{
                         return false;
                     }
             }
             else if(classe == "tipo_produto" || classe == "tipo_movimentacao" || classe == "metodo_pagamento"){
-                if(
-                    this.modelObjetos[0]['name'] == ""
-                ){
-                    alert("Erro");
+                var error = false
+                if(this.modelObjetos[0]['name'] == ""){
+                    this.alertaCampo[0]['name'] = "O nome é obrigatório";
+                    error = true
+                }
+                if (this.modelObjetos[0]['name'].length > 45) {
+                    this.alertaCampo[0]['name'] = "O nome deve ter no máximo 45 caracteres";
+                    error = true
+                }
+
+                if(error == true){
                     return true;
                 }
+
                 else{
                     return false;
                 }
