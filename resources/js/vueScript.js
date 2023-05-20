@@ -1176,19 +1176,41 @@ var app = new Vue({
             }
             else if(classe == 'administrador' || classe == 'vendedor'){
                 if(this.acaoObjeto == "Criar"){
-                    if(
-                        this.modelObjetos[0]['name'] == "" ||
-                        this.modelObjetos[0]['email'] == "" ||
-                        this.modelObjetos[0]['senha'] == "" ||
-                        this.modelObjetos[0]['confirmaSenha'] == ""
-                    ){
-                        alert("Erro");
-                        return true;
+                    var error = false
+                    if(this.modelObjetos[0]['name'] == ""){
+                        this.alertaCampo[0]['name'] = "O nome é obrigatório";
+                        error = true
                     }
-                    else if(this.modelObjetos[0]['senha'] !=  this.modelObjetos[0]['confirmaSenha']){
-                        alert("Erro: Senhas diferentes");
-                        return true;
+                    if (this.modelObjetos[0]['name'].length > 45) {
+                        this.alertaCampo[0]['name'] = "O nome deve ter no máximo 45 caracteres";
+                        error = true
                     }
+                    if (this.modelObjetos[0]['email'] == "") {
+                        this.alertaCampo[0]['email'] = "O e-mail é obrigatório";
+                        error = true
+                    }
+                    if (this.modelObjetos[0]['email'].length > 45) {
+                        this.alertaCampo[0]['email'] = "O e-mail deve ter no máximo 45 caracteres";
+                        error = true
+                    }
+                    if (this.modelObjetos[0]['senha'] == "") {
+                        this.alertaCampo[0]['senha'] = "A senha é obrigatória";
+                        error = true
+                    }
+                    if (this.modelObjetos[0]['confirmaSenha'] == "") {
+                        this.alertaCampo[0]['confirmaSenha'] = "É obrigatório confirmar a senha";
+                        error = true
+                    }
+
+                    if(this.modelObjetos[0]['senha'] !=  this.modelObjetos[0]['confirmaSenha']){
+                        this.alertaCampo[0]['confirmaSenha'] = "As senhas devem ser iguais";
+                        error = true
+                    }
+
+                    if (error == true) {
+                        return true
+                    }
+
                     else{
                         return false;
                     }
@@ -1212,18 +1234,34 @@ var app = new Vue({
 
             }
             else if(classe == 'administrador/'+this.idUsuario || classe == 'vendedor/'+this.idUsuario ){
-
+                var error = false
                     if(
-                        this.modelObjetos[0]['name'] == "" ||
-                        this.modelObjetos[0]['email'] == ""
+                        this.modelObjetos[0]['name'] == ""
                     ){
-                        if(this.modelObjetos[0]['senha'] !=  this.modelObjetos[0]['confirmaSenha']){
-                            alert("Erro: Senhas diferentes");
-                            return true;
-                        }
-                        alert("Erro");
-                        return true;
+                        this.alertaCampo[0]['name'] = "O nome é obrigatório";
+                        error = true
                     }
+                    if (this.modelObjetos[0]['name'].length > 45) {
+                        this.alertaCampo[0]['name'] = "O nome deve ter no máximo 45 caracteres";
+                        error = true
+                    }
+                    if (this.modelObjetos[0]['email'] == "") {
+                        this.alertaCampo[0]['name'] = "O e-mail é obrigatório";
+                        error = true
+                    }
+                    if (this.modelObjetos[0]['email'].length > 45) {
+                        this.alertaCampo[0]['email'] = "O e-mail deve ter no máximo 45 caracteres";
+                        error = true
+                    }
+                    if(this.modelObjetos[0]['senha'] !=  this.modelObjetos[0]['confirmaSenha']){
+                        this.alertaCampo[0]['confirmaSenha'] = "As senhas devem ser iguais";
+                        error = true
+                    }
+
+                    if (error == true) {
+                        return true
+                    }
+                    
                     else{
                         return false;
                     }
