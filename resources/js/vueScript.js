@@ -1380,18 +1380,22 @@ var app = new Vue({
                 }
             }
             else if(classe == 'pais'){
+                var error = false
                 if(
                     this.modelObjetos[0]['name_country'] == ""
                 ){
-                    this.alertaCampo[0]['name_country'] = "Nome do País é obrigatório";
-                    alert("Erro opa ta vazio"+this.alertaCampo[0]['name_country']);
-                    return true;
+                    this.alertaCampo[0]['name_country'] = "O nome do país é obrigatório";
+                    error = true
                 }
                 else if(this.modelObjetos[0]['name_country'].length > 45){
                     this.alertaCampo[0]['name_country'] = "Maximo de 45 caracteres";
-                    alert("Erro");
+                    error = true
+                }
+
+                if (error == true) {
                     return true;
                 }
+
                 else{
                     return false;
                 }
