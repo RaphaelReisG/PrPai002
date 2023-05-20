@@ -1087,7 +1087,7 @@ var app = new Vue({
                     error = true
                 } 
                 if(this.modelObjetos[0]['cnpj'].length > 14) {
-                    this.alertaCampo[0]['cnpj'] = "O CNPJ tem apenas 15 caracteres";
+                    this.alertaCampo[0]['cnpj'] = "O CNPJ tem apenas caracteres";
                     error = true
                 }
                 if(this.modelObjetos[0]['company_name'] == "") {
@@ -1117,8 +1117,8 @@ var app = new Vue({
                     this.alertaCampo[0]['name'] = "O nome da marca deve ter no máximo 45 caracteres";
                     error = true
                 }
-                if(this.modelObjetos[0]['fornecedor_id'] == "") {
-                    this.alertaCampo[0]['fornecedor_id'] = "É obrigatório ter um fornecedor";
+                if(this.modelObjetos[0]['fornecedor_id'] == ""){
+                    this.alertaCampo[0]['fornecedor'] = "É obrigatório ter um fornecedor";
                     error = true
                 }
 
@@ -1131,18 +1131,45 @@ var app = new Vue({
                 }
             }
             else if(classe == 'produto'){
-                if(
-                    this.modelObjetos[0]['name'] == "" ||
-                    this.modelObjetos[0]['type'] == "" ||
-                    this.modelObjetos[0]['quantity'] == "" ||
-                    this.modelObjetos[0]['weight'] == "" ||
-                    this.modelObjetos[0]['cost_price'] == "" ||
-                    this.modelObjetos[0]['sale_price'] == "" ||
-                    this.modelObjetos[0]['marca_id'] == ""
-                ){
-                    alert("Erro");
-                    return true;
+                var error = false
+
+                if(this.modelObjetos[0]['name'] == "" ){
+                    this.alertaCampo[0]['name'] = "O nome do produto é obrigatório";
+                    error = true
                 }
+                if(this.modelObjetos[0]['name'].length > 45) {
+                    this.alertaCampo[0]['name'] = "O nome do produto deve ter no máximo 45 caracteres";
+                    error = true
+                }
+                if (this.modelObjetos[0]['type'] == "") {
+                    this.alertaCampo[0]['type'] = "O tipo do produto é obrigatório";
+                    error = true
+                }
+                if(this.modelObjetos[0]['quantity'] == "") {
+                    this.alertaCampo[0]['quantity'] = "É obrigatório ter a quantidade";
+                    error = true
+                }
+                if(this.modelObjetos[0]['weight'] == "") {
+                    this.alertaCampo[0]['weight'] = "É obrigatório ter o peso";
+                    error = true
+                }
+                if(this.modelObjetos[0]['cost_price'] == "") {
+                    this.alertaCampo[0]['cost_price'] = "É obrigatório ter o preço de custo";
+                    error = true
+                }
+                if (this.modelObjetos[0]['sale_price'] == "") {
+                    this.alertaCampo[0]['sale_price'] = "É obrigatório ter o preço de venda";
+                    error = true
+                }
+                if (this.modelObjetos[0]['marca_id'] == "") {
+                    this.alertaCampo[0]['marca_id'] = "O obrigatório ter a marca";
+                    error = true
+                }
+
+                if (error == true) {
+                    return true
+                }
+
                 else{
                     return false;
                 }
