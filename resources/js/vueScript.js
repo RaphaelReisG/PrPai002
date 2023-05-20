@@ -1423,12 +1423,24 @@ var app = new Vue({
                 }
             }
             else if(classe == 'cidade'){
-                if(
-                    this.modelObjetos[0]['name_city'] == "" || this.modelObjetos[0]['estado_id'] == ""
-                ){
-                    alert("Erro");
-                    return true;
+                var error = false
+                if(this.modelObjetos[0]['name_city'] == ""){
+                    this.alertaCampo[0]['name_city'] = "O nome da cidade é obrigatório";
+                    error = true
                 }
+                if (this.modelObjetos[0]['name_city'].length > 45) {
+                    this.alertaCampo[0]['name_city'] = "Maximo de 45 caracteres";
+                    error = true
+                }
+                if (this.modelObjetos[0]['estado_id'] == "") {
+                    this.alertaCampo[0]['estado_id'] = "É obrigatório ter o estado";
+                    error = true
+                }
+
+                if (error == true) {
+                    return true
+                }
+
                 else{
                     return false;
                 }
