@@ -1108,12 +1108,24 @@ var app = new Vue({
                 }
             }
             else if(classe == 'marca'){
-                if(
-                    this.modelObjetos[0]['name'] == "" || this.modelObjetos[0]['fornecedor_id'] == ""
-                ){
-                    alert("Erro");
+                var error = false
+                if(this.modelObjetos[0]['name'] == ""){
+                    this.alertaCampo[0]['name'] = "O nome da marca é obrigatório";
+                    error = true
+                }
+                if(this.modelObjetos[0]['name'].length > 45) {
+                    this.alertaCampo[0]['name'] = "O nome da marca deve ter no máximo 45 caracteres";
+                    error = true
+                }
+                if(this.modelObjetos[0]['fornecedor_id'] == "") {
+                    this.alertaCampo[0]['fornecedor_id'] = "É obrigatório ter um fornecedor";
+                    error = true
+                }
+
+                if (error == true) {
                     return true;
                 }
+
                 else{
                     return false;
                 }
