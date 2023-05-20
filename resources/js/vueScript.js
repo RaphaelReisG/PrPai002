@@ -1446,12 +1446,24 @@ var app = new Vue({
                 }
             }
             else if(classe == 'bairro'){
-                if(
-                    this.modelObjetos[0]['name_neighborhood'] == "" || this.modelObjetos[0]['cidade_id'] == ""
-                ){
-                    alert("Erro");
-                    return true;
+                var error = false
+                if(this.modelObjetos[0]['name_neighborhood'] == ""){
+                    this.alertaCampo[0]['name_neighborhood'] = "O nome do bairro é obrigatório";
+                    error = true
                 }
+                if (this.modelObjetos[0]['name_neighborhood'].length > 45) {
+                    this.alertaCampo[0]['name_neighborhood'] = "Maximo de 45 caracteres";
+                    error = true
+                }
+                if (this.modelObjetos[0]['cidade_id'] == "") {
+                    this.alertaCampo[0]['cidade_id'] = "É obrigatório ter a cidade";
+                    error = true
+                }
+
+                if (error == true) {
+                    return true
+                }
+
                 else{
                     return false;
                 }
