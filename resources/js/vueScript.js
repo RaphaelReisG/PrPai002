@@ -1039,10 +1039,6 @@ var app = new Vue({
                     this.alertaCampo[0]['vendedor_id'] = "O ID do vendedor é obrigatório";
                     error = true
                 }
-                if(this.modelObjetos[0]['vendedor_id'].length > 45) {
-                    this.alertaCampo[0]['vendedor_id'] = "Maximo de 45 caracteres";
-                    error = true
-                }
                 if(this.modelObjetos[0]['senha'] == "") {
                     this.alertaCampo[0]['senha'] = "A senha é obrigatória";
                     error = true
@@ -1118,7 +1114,7 @@ var app = new Vue({
                     error = true
                 }
                 if(this.modelObjetos[0]['fornecedor_id'] == ""){
-                    this.alertaCampo[0]['fornecedor'] = "É obrigatório ter um fornecedor";
+                    this.alertaCampo[0]['fornecedor_id'] = "É obrigatório ter um fornecedor";
                     error = true
                 }
 
@@ -1250,9 +1246,7 @@ var app = new Vue({
             }
             else if(classe == 'administrador/'+this.idUsuario || classe == 'vendedor/'+this.idUsuario ){
                 var error = false
-                    if(
-                        this.modelObjetos[0]['name'] == ""
-                    ){
+                    if(this.modelObjetos[0]['name'] == ""){
                         this.alertaCampo[0]['name'] = "O nome é obrigatório";
                         error = true
                     }
@@ -1261,7 +1255,7 @@ var app = new Vue({
                         error = true
                     }
                     if (this.modelObjetos[0]['email'] == "") {
-                        this.alertaCampo[0]['name'] = "O e-mail é obrigatório";
+                        this.alertaCampo[0]['email'] = "O e-mail é obrigatório";
                         error = true
                     }
                     if (this.modelObjetos[0]['email'].length > 45) {
@@ -1284,21 +1278,52 @@ var app = new Vue({
 
             }
             else if(classe == 'cliente/'+this.idUsuario  ){
-
-                if(
-                    this.modelObjetos[0]['name'] == "" ||
-                    this.modelObjetos[0]['email'] == "" ||
-                    this.modelObjetos[0]['cnpj'] == "" ||
-                    this.modelObjetos[0]['company_name'] == "" ||
-                    this.modelObjetos[0]['vendedor_id'] == ""
-                ){
-                    if(this.modelObjetos[0]['senha'] !=  this.modelObjetos[0]['confirmaSenha']){
-                        alert("Erro: Senhas diferentes");
-                        return true;
-                    }
-                    alert("Erro");
-                    return true;
+                var error = false
+                if(this.modelObjetos[0]['name'] == ""){
+                    this.alertaCampo[0]['name'] = "O nome é obrigatório";
+                    error = true
                 }
+                if (this.modelObjetos[0]['name'].length > 45) {
+                    this.alertaCampo[0]['name'] = "O nome deve ter no máximo 45 caracteres";
+                    error = true
+                }
+                if (this.modelObjetos[0]['email'] == "") {
+                    this.alertaCampo[0]['email'] = "O e-mail é obrigatório";
+                    error = true
+                }
+                if (this.modelObjetos[0]['email'].length > 45) {
+                    this.alertaCampo[0]['email'] = "O e-mail deve ter no máximo 45 caracteres";
+                    error = true
+                }
+                if(this.modelObjetos[0]['cnpj'] == "") {
+                    this.alertaCampo[0]['cnpj'] = "O CNPJ do fornecedor é obrigatório";
+                    error = true
+                } 
+                if(this.modelObjetos[0]['cnpj'].length > 14) {
+                    this.alertaCampo[0]['cnpj'] = "O CNPJ tem apenas caracteres";
+                    error = true
+                }
+                if(this.modelObjetos[0]['company_name'] == "") {
+                    this.alertaCampo[0]['company_name'] = "A razão social é obrigatória";
+                    error = true
+                } 
+                if(this.modelObjetos[0]['company_name'].length > 45) {
+                    this.alertaCampo[0]['company_name'] = "A razão social deve ter no máximo 45 caracteres";
+                    error = true
+                }
+                if(this.modelObjetos[0]['vendedor_id'] == "") {
+                    this.alertaCampo[0]['vendedor_id'] = "O ID do vendedor é obrigatório";
+                    error = true
+                }
+                if(this.modelObjetos[0]['senha'] !=  this.modelObjetos[0]['confirmaSenha']){
+                    this.alertaCampo[0]['confirmaSenha'] = "As senhas devem ser iguais";
+                    error = true
+                }
+
+                if (error == true) {
+                    return true
+                }
+
                 else{
                     return false;
                 }
