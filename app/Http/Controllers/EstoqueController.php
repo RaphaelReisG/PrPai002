@@ -20,7 +20,7 @@ class EstoqueController extends Controller
     public function index(Request $request)
     {
         //return $estoque = Estoque::with(['produto', 'produto.marca', 'produto.marca.fornecedor', 'estoqueable', 'tipo_movimentacao'])->paginate(10);
-    
+
         $estoque = Estoque::with(['produto', 'produto.marca', 'produto.marca.fornecedor', 'estoqueable', 'tipo_movimentacao'])
             ->join('produtos', 'estoques.produto_id', '=', 'produtos.id' )
             ->join('marcas', 'produtos.marca_id', '=', 'marcas.id' )
@@ -55,9 +55,9 @@ class EstoqueController extends Controller
             $estoque->orderBy($request->ordenacaoBusca);
         }
 
-        else{
+       /* else{
             $estoque->orderBy('estoques.name');
-        }
+        }*/
 
         if ($request->has('paginacao')) {
             return $estoque->get();

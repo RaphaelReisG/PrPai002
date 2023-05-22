@@ -16,7 +16,7 @@ class Pedido extends Model
         'approval_date',
         'total_price',
         'total_discount',
-        'metodo_pagamento_id', 
+        'metodo_pagamento_id',
         'observation',
         'cliente_id',
         'vendedor_id'
@@ -41,4 +41,21 @@ class Pedido extends Model
     public function estoqueable(){
         return $this->morphMany(Estoque::class, 'estoqueable');
     }
+
+    public function criarMovimentacoesEstoque()
+{
+    foreach ($this->produtos as $produto) {
+        $quantidadeItem = $produto->pivot->qty_item;
+
+        $this->estoqueable()->delete();
+        error_log('criando saida estoque - '.$produto->id.' - '.$quantidadeItem);
+        $this->estoqueable()->create([
+            'produto_id' => $produto->id,
+            'qty_item' => $quantidadeItem * (-1),
+            'observation' => 'Saída: Pedido confirmado',
+            'tipo_movimentacao_id' => 2
+            // codigo 2-> venda para um cliente
+        ]);
+    }
+}
 }

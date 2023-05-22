@@ -7,6 +7,8 @@ use App\Models\Produto;
 use Illuminate\Http\Request;
 use App\Http\Requests\PedidoRequest;
 
+use Illuminate\Support\Facades\DB;
+
 use App\Http\Resources\TesteResource;
 
 class PedidoController extends Controller
@@ -58,9 +60,9 @@ class PedidoController extends Controller
             $pedido->orderBy($request->ordenacaoBusca);
         }
 
-        else{
+        /*else{
             $pedido->orderBy('pedidos.name');
-        }
+        }*/
 
         if ($request->has('paginacao')) {
             return $pedido->get();
@@ -166,9 +168,14 @@ class PedidoController extends Controller
         return $pedido->delete();
     }
 
-    public function aprovarPedido(Request $request, Pedido $pedido)
+    public function aprovarPedido(Request $request)
     {
-        return $pedido->update($request->only('approval_date'));
+        error_log('aprovacao '.$request->approval_date.$request->id);
+        //return $pedido = Pedido::findOrFail($request->id)->update($request->only('approval_date'));
+        $pedido = Pedido::findOrFail($request->id);
+        $pedido->criarMovimentacoesEstoque();
+        return $pedido->update(['approval_date' => DB::raw('NOW()')]);
+        //return $pedido->update($request->only('approval_date'));
     }
 
     public function aprovarEntrega(Request $request, Pedido $pedido)

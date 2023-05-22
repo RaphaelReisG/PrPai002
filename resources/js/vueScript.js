@@ -1006,31 +1006,31 @@ var app = new Vue({
                 ){
                     this.alertaCampo[0]['name'] = "Nome do Cliente é obrigatório";
                     error = true
-                } 
+                }
                 if(this.modelObjetos[0]['name'].length > 45) {
                     this.alertaCampo[0]['name'] = "Maximo de 45 caracteres";
                     error = true
-                } 
+                }
                 if(this.modelObjetos[0]['email'] == "") {
                     this.alertaCampo[0]['email'] = "Email do Cliente é obrigatório";
                     error = true
-                } 
+                }
                 if(this.modelObjetos[0]['email'].length > 45) {
                     this.alertaCampo[0]['email'] = "Maximo de 45 caracteres";
                     error = true
-                } 
+                }
                 if(this.modelObjetos[0]['cnpj'] == "") {
                     this.alertaCampo[0]['cnpj'] = "CPF ou CNPJ do Cliente é obrigatório";
                     error = true;
-                } 
+                }
                 if(this.modelObjetos[0]['cnpj'].length < 11 || this.modelObjetos[0]['cnpj'].length > 14 ) {
                     this.alertaCampo[0]['cnpj'] = "O CPF ou CNPJ deve estar entre 11 e 14 dígitos";
                     error = true
-                } 
+                }
                 if(this.modelObjetos[0]['company_name'] == "") {
                     this.alertaCampo[0]['company_name'] = "O nome da companhia é obrigatório";
                     error = true
-                } 
+                }
                 if(this.modelObjetos[0]['company_name'].length > 45) {
                     this.alertaCampo[0]['company_name'] = "Maximo de 45 caracteres";
                     error = true
@@ -1055,7 +1055,7 @@ var app = new Vue({
                 if(error == true) {
                     return true;
                 }
-               
+
                 else{
                     return false;
                 }
@@ -1069,11 +1069,11 @@ var app = new Vue({
                 if(this.modelObjetos[0]['name'].length > 45) {
                     this.alertaCampo[0]['name'] = "O nome do fornecedor deve ter no máximo 45 caracteres";
                     error = true
-                } 
+                }
                 if(this.modelObjetos[0]['email'] == "") {
                     this.alertaCampo[0]['email'] = "O e-mail do fornecedor é obrigatório";
                     error = true
-                } 
+                }
                 if(this.modelObjetos[0]['email'].length > 45) {
                     this.alertaCampo[0]['email'] = "O e-mail do fornecedor deve ter no máximo 45 caracteres";
                     error = true
@@ -1081,7 +1081,7 @@ var app = new Vue({
                 if(this.modelObjetos[0]['cnpj'] == "") {
                     this.alertaCampo[0]['cnpj'] = "O CNPJ do fornecedor é obrigatório";
                     error = true
-                } 
+                }
                 if(this.modelObjetos[0]['cnpj'].length > 14) {
                     this.alertaCampo[0]['cnpj'] = "O CNPJ tem apenas caracteres";
                     error = true
@@ -1089,7 +1089,7 @@ var app = new Vue({
                 if(this.modelObjetos[0]['company_name'] == "") {
                     this.alertaCampo[0]['company_name'] = "A razão social é obrigatória";
                     error = true
-                } 
+                }
                 if(this.modelObjetos[0]['company_name'].length > 45) {
                     this.alertaCampo[0]['company_name'] = "A razão social deve ter no máximo 45 caracteres";
                     error = true
@@ -1270,7 +1270,7 @@ var app = new Vue({
                     if (error == true) {
                         return true
                     }
-                    
+
                     else{
                         return false;
                     }
@@ -1298,7 +1298,7 @@ var app = new Vue({
                 if(this.modelObjetos[0]['cnpj'] == "") {
                     this.alertaCampo[0]['cnpj'] = "O CNPJ do fornecedor é obrigatório";
                     error = true
-                } 
+                }
                 if(this.modelObjetos[0]['cnpj'].length > 14) {
                     this.alertaCampo[0]['cnpj'] = "O CNPJ tem apenas caracteres";
                     error = true
@@ -1306,7 +1306,7 @@ var app = new Vue({
                 if(this.modelObjetos[0]['company_name'] == "") {
                     this.alertaCampo[0]['company_name'] = "A razão social é obrigatória";
                     error = true
-                } 
+                }
                 if(this.modelObjetos[0]['company_name'].length > 45) {
                     this.alertaCampo[0]['company_name'] = "A razão social deve ter no máximo 45 caracteres";
                     error = true
@@ -1400,7 +1400,7 @@ var app = new Vue({
             else if(classe == 'estado'){
                 var error = false
                 if(
-                    this.modelObjetos[0]['name_state'] == "" 
+                    this.modelObjetos[0]['name_state'] == ""
                 ){
                     this.alertaCampo[0]['name_state'] = "O nome do estado é obrigatório";
                     error = true
@@ -1929,11 +1929,11 @@ var app = new Vue({
                 alert("Cancelado");
             }
         },
-        confirmarEntrega(index){
+        confirmarEntrega: async function(index){
             alert('entrega');
 
         },
-        confirmarPagamento(index){
+        confirmarPagamento: async function(index){
             alert('pagamento');
         },
 

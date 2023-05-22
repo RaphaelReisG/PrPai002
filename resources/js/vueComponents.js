@@ -673,15 +673,15 @@ Vue.component('modal_sucesso', {
                                 <div v-if=" obj[valor.conteudo] == null">
                                     <div v-if=" valor.conteudo == 'approval_date' && valor.conteudo !== 'delivery_date' && valor.conteudo !== 'payday'">
                                         botao aprovação
-                                        <button_aprovacao :objindex="$root.objetos['data'][index]['id']"></button_aprovacao>
+                                        <button_aprovacao :objid="$root.objetos['data'][index]['id']"></button_aprovacao>
                                     </div>
                                     <div v-else-if=" valor.conteudo == 'delivery_date' ">
                                         botao entrega
-                                        <button_entrega :objindex="index"></button_entrega>
+                                        <button_entrega :objid="index"></button_entrega>
                                     </div>
                                     <div v-else-if=" valor.conteudo == 'payday' ">
                                         botao pagamento
-                                        <button_pagamento :objindex="index"></button_pagamento>
+                                        <button_pagamento :objid="index"></button_pagamento>
                                     </div>
                                     <div v-else>
                                         Pendente
