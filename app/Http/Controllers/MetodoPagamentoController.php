@@ -28,7 +28,7 @@ class MetodoPagamentoController extends Controller
         }
 
         else{
-            $metodoPagamento->orderBy('metodoPagamentos.name');
+            $metodoPagamento->orderBy('metodo_pagamentos.name');
         }
 
         if ($request->has('paginacao')) {

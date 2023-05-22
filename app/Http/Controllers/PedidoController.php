@@ -168,11 +168,11 @@ class PedidoController extends Controller
         return $pedido->delete();
     }
 
-    public function aprovarPedido(Request $request)
+    public function aprovarPedido(Request $request, Pedido $pedido)
     {
-        error_log('aprovacao '.$request->approval_date.$request->id);
+        error_log('aprovacao '.$request->approval_date.$request->id.$pedido->id);
         //return $pedido = Pedido::findOrFail($request->id)->update($request->only('approval_date'));
-        $pedido = Pedido::findOrFail($request->id);
+        //$pedido = Pedido::findOrFail($request->id);
         $pedido->criarMovimentacoesEstoque();
         return $pedido->update(['approval_date' => DB::raw('NOW()')]);
         //return $pedido->update($request->only('approval_date'));
@@ -180,11 +180,11 @@ class PedidoController extends Controller
 
     public function aprovarEntrega(Request $request, Pedido $pedido)
     {
-        return $pedido->update($request->only('delivery_date'));
+        return $pedido->update(['delivery_date' => DB::raw('NOW()')]);
     }
 
     public function aprovarPagamento(Request $request, Pedido $pedido)
     {
-        return $pedido->update($request->only('payday'));
+        return $pedido->update(['payday' => DB::raw('NOW()')]);
     }
 }

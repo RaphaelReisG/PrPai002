@@ -569,7 +569,7 @@
                     @can('admin')
                         <!-- Tabela Pedido -->
                         <div v-if="nomeObjeto == 'pedido' && objetos !== null" class="row">
-                            <table_acordion_pedidos
+                            <table_acordion_pedidos_restrito
                                 :classe_atributos="[
                                     {titulo: 'Data solicitação', conteudo: 'created_at', ordenacao: 'pedidos.created_at'},
                                     {titulo: 'Aprovado em', conteudo: 'approval_date', ordenacao: 'pedidos.approval_date'},
@@ -586,7 +586,7 @@
                                     {titulo: 'Observação', conteudo: 'observation'}
                                 ]"
                             >
-                            </table_acordion_pedidos>
+                            </table_acordion_pedidos_restrito>
                         </div>
 
                         <!-- Tabela Meus Dados Administradores -->

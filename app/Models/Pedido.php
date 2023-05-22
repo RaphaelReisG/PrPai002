@@ -43,11 +43,11 @@ class Pedido extends Model
     }
 
     public function criarMovimentacoesEstoque()
-{
+    {
+
+    $this->estoqueable()->delete();
     foreach ($this->produtos as $produto) {
         $quantidadeItem = $produto->pivot->qty_item;
-
-        $this->estoqueable()->delete();
         error_log('criando saida estoque - '.$produto->id.' - '.$quantidadeItem);
         $this->estoqueable()->create([
             'produto_id' => $produto->id,

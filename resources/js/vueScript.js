@@ -188,14 +188,14 @@ var app = new Vue({
                 alert("preencha os campos obrigatorios corretamente.");
             }
             else{
-                if(acao == "Criar" || acao == "AddAPI"){
+                if(acao == "Criar"){
                     this.addObjeto(classe);
                 }
                 else if(acao == "Alterar"){
                     this.updateObjeto(classe);
                 }
                 else{
-                    alert("deu ruim na escolha de acao");
+                    alert("Erro | ação desconhecida");
                 }
             }
         },
@@ -354,7 +354,7 @@ var app = new Vue({
                 .then(response => (this.respostaData = response.data, this.resposta = response))
                 .catch(error => (this.error = error));
 
-            alert(url);
+            //alert(url);
 
             if(this.error == null){
                 this.limparModal();
@@ -596,7 +596,7 @@ var app = new Vue({
             else if(classe == "cliente/"+this.idUsuario){
                 url = '/api/'+classe;
                 if(this.modelObjetos[0]['senha'] !== null && this.modelObjetos[0]['senha'] !== '' ){
-                    alert('aki ' +this.modelObjetos[0]['senha']);
+                    //alert('aki ' +this.modelObjetos[0]['senha']);
 
                     dados = {
                         name: this.modelObjetos[0]['name'],
@@ -760,7 +760,7 @@ var app = new Vue({
                 alert("Erro, Update |  Classe inexistente!");
             }
 
-            alert(url);
+            //alert(url);
 
             /*fetch(url, { method: 'PUT', headers: {"Content-type": "application/json"}} ).then((res) => res.json())
             .then((data) => this.resposta = data)
@@ -875,20 +875,6 @@ var app = new Vue({
             this.modelObjetos[0]['total_price'] = 0;
             this.modelObjetos[0]['total_discount'] = 0;
 
-            this.paises = [{}];
-            this.estados =  [{}];
-            this.cidades = [{}];
-            this.bairros = [{}];
-            this.vendedores = [{}];
-            this.clientes = [{}];
-            this.fornecedores = [{}];
-            this.pessoas = [{}];
-            this.marcas = [{}];
-            this.produtos = [{}];
-            this.tipo_produtos = [{}];
-            this.tipo_movimentacaos = [{}];
-            this.metodo_pagamentos = [{}];
-
             this.alertaCampo[0]['tipoPessoa'] = "";
 
             this.alertaCampo[0]['name'] = "";
@@ -972,8 +958,8 @@ var app = new Vue({
             this.meuProduto = [];
             this.meuCarrinho = [];
 
-
             this.error = null;
+            this.index = null;
             if(this.nomeObjeto == 'estado' || this.nomeObjeto == 'endereco') {this.buscaPaises();}
             if(this.nomeObjeto == 'cidade'){this.buscaEstados();}
             if(this.nomeObjeto == 'bairro'){this.buscaCidades();}
@@ -1239,7 +1225,7 @@ var app = new Vue({
                     }
                 }
                 else{
-                    alert("Erro inexplicavel");
+                    alert("Erro na verificação");
                     return true;
                 }
 
@@ -1530,7 +1516,7 @@ var app = new Vue({
             /*fetch(url).then((res) => res.json())
                     .then((data) => this.objetos = data).finally(this.carregandoGeral = false);
             */
-            alert(url);
+            //alert(url);
             this.objetos = null;
 
             if(this.variavelBusca !== ''){
@@ -1553,7 +1539,7 @@ var app = new Vue({
             /*fetch(url).then((res) => res.json())
                     .then((data) => this.objetos = data).finally(this.carregandoGeral = false);
             */
-            alert(url);
+            //alert(url);
             this.meuProduto = null;
 
             if(this.variavelBusca !== ''){
@@ -1573,7 +1559,7 @@ var app = new Vue({
             var url;
             var dados;
             if(this.modelObjetos[0]['buscarObjeto'] !== '' &&  this.modelObjetos[0]['ordenacaoBusca'] !== '' ){
-                alert('orde e busca');
+                //alert('orde e busca');
                 //this.objetos = null;
                 //this.carregandoGeral = true;
 
@@ -1588,15 +1574,15 @@ var app = new Vue({
 
             }
             else if(this.modelObjetos[0]['buscarObjeto'] !== '' &&  this.modelObjetos[0]['ordenacaoBusca'] == ''){
-                alert('busca');
+                //alert('busca');
                 url = '/api/'+classe+'?buscarObjeto='+this.modelObjetos[0]['buscarObjeto'];
             }
             else if(this.modelObjetos[0]['buscarObjeto'] == '' &&  this.modelObjetos[0]['ordenacaoBusca'] !== ''){
-                alert('orde');
+                //alert('orde');
                 url = '/api/' + classe + '?ordenacaoBusca=' + this.modelObjetos[0]['ordenacaoBusca'];
             }
             else{
-                alert("campos vazios, mas vc clicou em buscar mesmo assim, recarregando tudo.");
+                //alert("campos vazios, mas vc clicou em buscar mesmo assim, recarregando tudo.");
                 this.variavelBusca = '';
                 this.variavelOrdenacao = '';
                 this.carregarObjeto(classe);
@@ -1616,7 +1602,7 @@ var app = new Vue({
 
         },
         ordenacao: function(coluna){
-            alert('clicado ordenacao');
+            //alert('clicado ordenacao');
             var classe = this.nomeObjeto;
 
 
@@ -1707,12 +1693,12 @@ var app = new Vue({
             this.pessoas = null;
             this.carregandoGeral = true;
             var url;
-            alert(this.modelObjetos[0]['tipoPessoa']);
+            //alert(this.modelObjetos[0]['tipoPessoa']);
             url = '/api/'+this.modelObjetos[0]['tipoPessoa']+'?paginacao=false';
-            alert(url);
+            //alert(url);
 
             if(this.tipoUsuario == 'AppModelsVendedor'){
-                alert('opa, vendedor de novo');
+                //alert('opa, vendedor de novo');
                 if(this.nomeObjeto == 'endereco' || this.nomeObjeto == 'telefone'){
                     url = url + '&vendedor_id=' + this.idUsuario;
                 }
@@ -1789,7 +1775,7 @@ var app = new Vue({
             this.carregandoGeral = true;
             var url;
             //url = '/api/marca'+'?paginacao=false';
-            alert(this.modelObjetos[0]['marca_id'])
+            //alert(this.modelObjetos[0]['marca_id'])
             if(this.nomeObjeto == 'estoque'){
                 url = '/api/produto'+'?paginacao=false&marca_id='+this.modelObjetos[0]['marca_id'];
                 //alert('passou aki '+this.modelObjetos[0]['pais_id'])
@@ -1904,9 +1890,10 @@ var app = new Vue({
             }
         },
         aprovarPedido: async function(id){
-            alert('aprova'+ new Date());
+            //alert('aprova'+ new Date());
+            this.error = null;
             if( confirm("Tem certeza que deseja aprovar este pedido? "+id) == true){
-                    var url = '/api/pedido_aprovacao';
+                    var url = '/api/pedido_aprovacao/'+id;
                     //fetch(url, { method: 'DELETE'} ).catch((e) => this.error = e);
                     var dados;
                     dados = {
@@ -1918,7 +1905,7 @@ var app = new Vue({
                         .then(response => (this.respostaData = response.data, this.resposta = response))
                         .catch(error => (this.error = error));
                     if(this.error == null){
-                        alert("Alterado com sucesso");
+                        alert("Aprovado com sucesso");
                     }
                     else{
                         alert("Um erro foi encontrado:"+this.error);
@@ -1929,13 +1916,57 @@ var app = new Vue({
                 alert("Cancelado");
             }
         },
-        confirmarEntrega: async function(index){
-            alert('entrega');
-
+        confirmarEntrega: async function(id){
+            //alert('entrega');
+            this.error = null;
+            if( confirm("Tem certeza que deseja confirmar a entrega deste pedido? "+id) == true){
+                    var url = '/api/pedido_entrega/'+id;
+                    //fetch(url, { method: 'DELETE'} ).catch((e) => this.error = e);
+                    var dados;
+                    dados = {
+                        id: id
+                    }
+                    await axios
+                        .put(url, dados)
+                        .then(response => (this.respostaData = response.data, this.resposta = response))
+                        .catch(error => (this.error = error));
+                    if(this.error == null){
+                        alert("Entrega confirmada com sucesso");
+                    }
+                    else{
+                        alert("Um erro foi encontrado:"+this.error);
+                    }
+                    this.carregarObjeto('pedido');
+            }
+            else{
+                alert("Cancelado");
+            }
         },
-        confirmarPagamento: async function(index){
-            alert('pagamento');
+        confirmarPagamento: async function(id){
+            //alert('pagamento');
+            this.error = null;
+            if( confirm("Tem certeza que deseja confirmar o pagamento deste pedido? "+id) == true){
+                    var url = '/api/pedido_pagamento/'+id;
+                    //fetch(url, { method: 'DELETE'} ).catch((e) => this.error = e);
+                    var dados;
+                    dados = {
+                        id: id
+                    }
+                    await axios
+                        .put(url, dados)
+                        .then(response => (this.respostaData = response.data, this.resposta = response))
+                        .catch(error => (this.error = error));
+                    if(this.error == null){
+                        alert("Pagamento confirmado com sucesso");
+                    }
+                    else{
+                        alert("Um erro foi encontrado:"+this.error);
+                    }
+                    this.carregarObjeto('pedido');
+            }
+            else{
+                alert("Cancelado");
+            }
         },
-
     }
 })
