@@ -601,6 +601,7 @@
                                 :obj_acordion="[
                                     {titulo: 'Metodo de pagamento', conteudo: 'metodo_pagamento', conteudo2: 'name'},
                                     {titulo: 'Descontos', conteudo: 'total_discount'},
+                                    {titulo: 'Endereço', conteudo: 'endereco', conteudo2: 'name'},
                                     {titulo: 'Observação', conteudo: 'observation'}
                                 ]"
                             >

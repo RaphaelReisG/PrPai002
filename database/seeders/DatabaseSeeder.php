@@ -155,7 +155,8 @@ class DatabaseSeeder extends Seeder
             //'payment_method' => 'Dinheiro',
             'metodo_pagamento_id' => 1,
             'observation' => 'Tudo entregue junto',
-            'vendedor_id' => 1
+            'vendedor_id' => 1,
+            'endereco_id' => 3
         ])->produtos()->attach([
             1 => ['qty_item' => 1, 'price_item' => 22],
             2 => ['qty_item' => 1, 'price_item' => 30]

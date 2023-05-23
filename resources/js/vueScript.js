@@ -95,6 +95,7 @@ var app = new Vue({
         estados: [{}],
         cidades: [{}],
         bairros: [{}],
+        enderecos: [{}],
         vendedores: [{}],
         clientes: [{}],
         fornecedores: [{}],
@@ -1688,16 +1689,17 @@ var app = new Vue({
                 .then(response => (this.bairros = response.data))
                 .catch(error => (this.error = error));
         },
-        buscaFEnderecos: function() {
+        buscaEnderecos: function() {
+            alert('opa');
             this.enderecos = null;
             this.carregandoGeral = true;
             var url;
-            url = '/api/endereco'+'?paginacao=false'; //vc parou nessa linha
+            url = '/api/endereco'+'?paginacao=false&cliente_id='+this.modelObjetos[0]['cliente_id']; //vc parou nessa linha
             //alert(url);
 
             axios
                 .get(url)
-                .then(response => (this.fornecedores = response.data))
+                .then(response => (this.enderecos = response.data))
                 .catch(error => (this.error = error));
         },
         buscaPessoa: function() {
