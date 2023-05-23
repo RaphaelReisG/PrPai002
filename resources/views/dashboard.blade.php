@@ -207,7 +207,6 @@
                                             <div style="display: none">
                                                 {{ modelObjetos[0]['vendedor_id'] = "<?php echo Auth::user()->userable->vendedor_id;?>"  }}
                                                 {{ modelObjetos[0]['cliente_id'] = "<?php echo Auth::user()->userable->id;?>"  }}
-                                                {{buscaEnderecos(idUsuario)}}
                                             </div>
                                         @endcan
                                         @canAny(['admin', 'vendedor'])
@@ -914,6 +913,7 @@
                                     {titulo: 'Data entrega', conteudo: 'delivery_date'},
                                     {titulo: 'Data pagamento', conteudo: 'payday'},
                                     {titulo: 'Descontos', conteudo: 'total_discount'},
+                                    {titulo: 'Endereço', conteudo: 'endereco', conteudo2: 'name'},
                                     {titulo: 'Observação', conteudo: 'observation'}
                                 ]"
                             >
@@ -1182,6 +1182,7 @@
                                     {titulo: 'Data entrega', conteudo: 'delivery_date'},
                                     {titulo: 'Data pagamento', conteudo: 'payday'},
                                     {titulo: 'Descontos', conteudo: 'total_discount'},
+                                    {titulo: 'Endereço', conteudo: 'endereco', conteudo2: 'name'},
                                     {titulo: 'Observação', conteudo: 'observation'}
                                 ]"
                             >

@@ -916,6 +916,12 @@ var app = new Vue({
                     this.buscaClientes();
                 }
             }
+            if(this.tipoUsuario == 'AppModelsCliente'){
+                if(this.nomeObjeto == 'pedido'){
+                    this.modelObjetos[0]['cliente_id'] = this.idUsuario;
+                    this.buscaEnderecos();
+                }
+            }
             //if(this.nomeObjeto == 'estoque'){this.buscaProdutos();}
         },
         limparErroValidacao: function(){
