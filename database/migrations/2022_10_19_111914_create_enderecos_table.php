@@ -16,6 +16,8 @@ return new class extends Migration
         Schema::create('enderecos', function (Blueprint $table) {
             $table->id();
 
+            $table->string('name');
+
             $table->string('street_name');
             $table->string('complement');
             $table->integer('cep');
@@ -24,9 +26,6 @@ return new class extends Migration
             $table->foreignId('bairro_id')->constrained('bairros');
 
             $table->morphs('enderecoable');
-
-            //$table->foreignId('cliente_id')->constrained('clientes');
-
 
             $table->timestamps();
         });

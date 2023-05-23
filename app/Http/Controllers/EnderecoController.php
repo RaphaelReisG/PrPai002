@@ -37,7 +37,7 @@ class EnderecoController extends Controller
         //->join('clientes', 'enderecos.enderecoable_id', '=', 'clientes.id' )
         //->join('fornecedors', 'enderecos.enderecoable_id', '=', 'fornecedors.id' )
         ->select('enderecos.*')
-        ->groupBy('enderecos.id', 'enderecos.street_name', 'enderecos.complement',
+        ->groupBy('enderecos.id', 'enderecos.name', 'enderecos.street_name', 'enderecos.complement',
             'enderecos.cep','enderecos.house_number','enderecos.bairro_id',
             'enderecos.enderecoable_type','enderecos.enderecoable_id', 'enderecos.created_at', 'enderecos.updated_at');
 
@@ -46,6 +46,7 @@ class EnderecoController extends Controller
             $endereco->where(function ($query) use ($request) {
                 $query->where('enderecos.street_name', 'like', '%' . $request->buscarObjeto . '%')
                 ->orWhere('enderecos.complement', 'like', '%' . $request->buscarObjeto . '%')
+                ->orWhere('enderecos.name', 'like', '%' . $request->buscarObjeto . '%')
                 ->orWhere('enderecos.house_number', 'like', '%' . $request->buscarObjeto . '%')
                 ->orWhere('enderecos.cep', 'like', '%' . $request->buscarObjeto . '%')
 

@@ -23,15 +23,16 @@ class PedidoController extends Controller
         //return Pedido::all();
         //return Pedido::with(['produtos', 'cliente', 'vendedor', 'metodoPagamento'])->paginate(4);
 
-        $pedido = Pedido::with(['produtos', 'cliente', 'vendedor', 'metodoPagamento'])
+        $pedido = Pedido::with(['produtos', 'cliente', 'vendedor', 'metodoPagamento', 'endereco'])
         ->join('metodo_pagamentos', 'pedidos.metodo_pagamento_id', '=', 'metodo_pagamentos.id' )
         ->join('vendedors', 'pedidos.vendedor_id', '=', 'vendedors.id' )
         ->join('clientes', 'pedidos.cliente_id', '=', 'clientes.id' )
+        ->join('enderecos', 'pedidos.endereco_id', '=', 'enderecos.id' )
         ->select('pedidos.*')
         ->groupBy('pedidos.id', 'pedidos.payday', 'pedidos.delivery_date',
             'pedidos.approval_date','pedidos.total_price','pedidos.total_discount',
             'pedidos.metodo_pagamento_id','pedidos.observation',
-            'pedidos.cliente_id','pedidos.vendedor_id',
+            'pedidos.cliente_id','pedidos.vendedor_id', 'pedidos.endereco_id',
              'pedidos.created_at', 'pedidos.updated_at');
 
 

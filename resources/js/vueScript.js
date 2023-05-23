@@ -9,6 +9,7 @@ var app = new Vue({
         titulo: "",
         acaoObjeto: "",
         nomeObjeto: "",
+        meuDado: false,
 
         alterarSenha: false,
 
@@ -38,9 +39,9 @@ var app = new Vue({
 
             fornecedor_id: "", //marca
 
-            tipo_produto_id: "", quantity: "", weight: "", cost_price: "", sale_price: "", marca_id: "", //produto
+            tipo_produto_id: "", quantity: "", weight: "", cost_price: "", sale_price: "", marca_id: "",  //produto
 
-            metodo_pagamento_id: "", cliente_id: "", payday: "", delivery_date: "", approval_date: "", total_price: 0, total_discount: 0, //pedido
+            metodo_pagamento_id: "", cliente_id: "", payday: "", delivery_date: "", approval_date: "", total_price: 0, total_discount: 0, endereco_id: "",//pedido
 
             tipo_movimentacaos_id: "", qty_item: "", observation: "", produto_id: "", //estoque
 
@@ -71,7 +72,7 @@ var app = new Vue({
 
             tipo_produto_id: "", quantity: "", weight: "", cost_price: "", sale_price: "", marca_id: "", //produto
 
-            metodo_pagamento_id: "", cliente_id: "", payday: "", delivery_date: "", approval_date: "", total_price: 0, total_discount: 0, //pedido
+            metodo_pagamento_id: "", cliente_id: "", payday: "", delivery_date: "", approval_date: "", total_price: 0, total_discount: "", endereco_id: "", //pedido
 
             tipo_movimentacaos_id: "", qty_item: "", observation: "", produto_id: "", //estoque
 
@@ -269,6 +270,7 @@ var app = new Vue({
                 dados = {
                     vendedor_id: this.modelObjetos[0]['vendedor_id'],
                     cliente_id: this.modelObjetos[0]['cliente_id'],
+                    endereco_id: this.modelObjetos[0]['endereco_id'],
                     observation: this.modelObjetos[0]['observation'],
                     metodo_pagamento_id: this.modelObjetos[0]['metodo_pagamento_id'],
                     total_price: this.modelObjetos[0]['total_price'],
@@ -276,14 +278,6 @@ var app = new Vue({
                     produtos: this.meuCarrinho
                 }
             }
-            /*else if(classe == "telefone"){
-                url = '/api/'+classe;
-                dados = {
-                    number_phone: this.modelObjetos[0]['number_phone'],
-                    tipoUsuario: this.tipoUsuario,
-                    idUsuario: this.idUsuario
-                }
-            }*/
             else if(classe == "pais"){
                 url = '/api/'+classe;
                 dados = {
@@ -314,6 +308,7 @@ var app = new Vue({
             else if(classe == "endereco"){
                 url = '/api/'+classe;
                 dados = {
+                    name: this.modelObjetos[0]['name'],
                     name_neighborhood: this.modelObjetos[0]['name_neighborhood'],
                     street_name: this.modelObjetos[0]['street_name'],
                     house_number: this.modelObjetos[0]['house_number'],
@@ -409,6 +404,8 @@ var app = new Vue({
             }
             else if(this.nomeObjeto == "pedido"){
                 this.modelObjetos[0]['cliente_id'] = this.objetos['data'][index]['cliente_id'];
+                this.buscaEnderecos();
+                this.modelObjetos[0]['endereco_id'] = this.objetos['data'][index]['endereco_id'];
                 this.modelObjetos[0]['observation'] = this.objetos['data'][index]['observation'];
                 this.modelObjetos[0]['vendedor_id'] = this.objetos['data'][index]['vendedor_id'];
                 this.modelObjetos[0]['metodo_pagamento_id'] = this.objetos['data'][index]['metodo_pagamento_id'];
@@ -473,6 +470,7 @@ var app = new Vue({
                 this.modelObjetos[0]['enderecoable_type'] = this.objetos['data'][index]['enderecoable_type'];
                 this.modelObjetos[0]['enderecoable_id'] = this.objetos['data'][index]['enderecoable_id'];
                 this.buscaPessoa();
+                this.modelObjetos[0]['name'] = this.objetos['data'][index]['name'];
                 this.modelObjetos[0]['street_name'] = this.objetos['data'][index]['street_name'];
                 this.modelObjetos[0]['house_number'] = this.objetos['data'][index]['house_number'];
                 this.modelObjetos[0]['cep'] = this.objetos['data'][index]['cep'];
@@ -651,6 +649,7 @@ var app = new Vue({
                 url = '/api/'+classe+'/'+this.modelObjetos[0]['id'];
                 dados = {
                     vendedor_id: this.modelObjetos[0]['vendedor_id'],
+                    endereco_id: this.modelObjetos[0]['endereco_id'],
                     cliente_id: this.modelObjetos[0]['cliente_id'],
                     observation: this.modelObjetos[0]['observation'],
                     metodo_pagamento_id: this.modelObjetos[0]['metodo_pagamento_id'],
@@ -712,6 +711,7 @@ var app = new Vue({
                 }
 
                 dados = {
+                    name: this.modelObjetos[0]['name'],
                     name_neighborhood: this.modelObjetos[0]['name_neighborhood'],
                     street_name: this.modelObjetos[0]['street_name'],
                     house_number: this.modelObjetos[0]['house_number'],
@@ -806,6 +806,8 @@ var app = new Vue({
             }
         },
         limparModal: function(){
+            this.limparErroValidacao();
+
             this.temPaginacao = false;
             this.alterarSenha = false;
 
@@ -868,6 +870,7 @@ var app = new Vue({
 
             //pedido
             this.modelObjetos[0]['metodo_pagamento_id'] = "";
+            this.modelObjetos[0]['endereco_id'] = "";
             this.modelObjetos[0]['cliente_id'] = "";
             this.modelObjetos[0]['payday'] = "";
             this.modelObjetos[0]['delivery_date'] = "";
@@ -875,6 +878,46 @@ var app = new Vue({
             this.modelObjetos[0]['total_price'] = 0;
             this.modelObjetos[0]['total_discount'] = 0;
 
+
+
+            this.paises = [{}];
+            this.estados =  [{}];
+            this.cidades = [{}];
+            this.bairros = [{}];
+            this.vendedores = [{}];
+            this.clientes = [{}];
+            this.fornecedores = [{}];
+            this.pessoas = [{}];
+            this.marcas = [{}];
+            this.produtos = [{}];
+            this.tipo_produtos = [{}];
+            this.tipo_movimentacaos = [{}];
+            this.metodo_pagamentos = [{}];
+
+            this.meuProduto = [];
+            this.meuCarrinho = [];
+
+            this.error = null;
+            this.index = null;
+            if(this.nomeObjeto == 'estado' || this.nomeObjeto == 'endereco') {this.buscaPaises();}
+            if(this.nomeObjeto == 'cidade'){this.buscaEstados();}
+            if(this.nomeObjeto == 'bairro'){this.buscaCidades();}
+            if(this.nomeObjeto == 'cliente') { this.buscaVendedores();}
+            if(this.nomeObjeto == 'marca' || this.nomeObjeto == 'estoque'){this.buscaFornecedores();}
+            if(this.nomeObjeto == 'produto'){this.buscaMarcas();}
+            if(this.nomeObjeto == 'produto'){this.buscaTipo_produtos();}
+            if(this.nomeObjeto == 'estoque'){this.buscaTipo_movimentacaos();}
+            if(this.nomeObjeto == 'pedido'){this.buscaMetodo_pagamentos();}
+            if(this.nomeObjeto == 'pedido'){this.buscaVendedores();}
+            if(this.nomeObjeto == 'pedido'){this.buscaClientes();}
+            if(this.tipoUsuario == 'AppModelsVendedor'){
+                if(this.nomeObjeto == 'endereco' || this.nomeObjeto == 'telefone'){
+                    this.buscaClientes();
+                }
+            }
+            //if(this.nomeObjeto == 'estoque'){this.buscaProdutos();}
+        },
+        limparErroValidacao: function(){
             this.alertaCampo[0]['tipoPessoa'] = "";
 
             this.alertaCampo[0]['name'] = "";
@@ -934,49 +977,13 @@ var app = new Vue({
 
             //pedido
             this.alertaCampo[0]['metodo_pagamento_id'] = "";
+            this.alertaCampo[0]['endereco_id'] = "";
             this.alertaCampo[0]['cliente_id'] = "";
             this.alertaCampo[0]['payday'] = "";
             this.alertaCampo[0]['delivery_date'] = "";
             this.alertaCampo[0]['approval_date'] = "";
             this.alertaCampo[0]['total_price'] = 0;
-            this.alertaCampo[0]['total_discount'] = 0;
-
-            this.paises = [{}];
-            this.estados =  [{}];
-            this.cidades = [{}];
-            this.bairros = [{}];
-            this.vendedores = [{}];
-            this.clientes = [{}];
-            this.fornecedores = [{}];
-            this.pessoas = [{}];
-            this.marcas = [{}];
-            this.produtos = [{}];
-            this.tipo_produtos = [{}];
-            this.tipo_movimentacaos = [{}];
-            this.metodo_pagamentos = [{}];
-
-            this.meuProduto = [];
-            this.meuCarrinho = [];
-
-            this.error = null;
-            this.index = null;
-            if(this.nomeObjeto == 'estado' || this.nomeObjeto == 'endereco') {this.buscaPaises();}
-            if(this.nomeObjeto == 'cidade'){this.buscaEstados();}
-            if(this.nomeObjeto == 'bairro'){this.buscaCidades();}
-            if(this.nomeObjeto == 'cliente') { this.buscaVendedores();}
-            if(this.nomeObjeto == 'marca' || this.nomeObjeto == 'estoque'){this.buscaFornecedores();}
-            if(this.nomeObjeto == 'produto'){this.buscaMarcas();}
-            if(this.nomeObjeto == 'produto'){this.buscaTipo_produtos();}
-            if(this.nomeObjeto == 'estoque'){this.buscaTipo_movimentacaos();}
-            if(this.nomeObjeto == 'pedido'){this.buscaMetodo_pagamentos();}
-            if(this.nomeObjeto == 'pedido'){this.buscaVendedores();}
-            if(this.nomeObjeto == 'pedido'){this.buscaClientes();}
-            if(this.tipoUsuario == 'AppModelsVendedor'){
-                if(this.nomeObjeto == 'endereco' || this.nomeObjeto == 'telefone'){
-                    this.buscaClientes();
-                }
-            }
-            //if(this.nomeObjeto == 'estoque'){this.buscaProdutos();}
+            this.alertaCampo[0]['total_discount'] = "";
         },
         limparGeral: function(){
             this.objetos = null;
@@ -985,6 +992,7 @@ var app = new Vue({
             this.acaoObjeto = "";
         },
         verificaDados: function(classe){
+            this.limparErroValidacao();
             if(classe == 'cliente'){
                 var error = false;
                 if(
@@ -1455,11 +1463,12 @@ var app = new Vue({
                 }
             }
             else if(classe == 'endereco'){
-                if(this.tipoUsuario == 'AppModelsCliente'){
+                if(this.tipoUsuario == 'AppModelsCliente'){ //  <------ ATENÇÃO, não alterar neste IF ---
                     this.modelObjetos[0]['enderecoable_id'] = this.idUsuario;
                     this.modelObjetos[0]['tipoPessoa'] = 'cliente';
-                }
+                } //-------------------------------------------------------------------------------------
                 if(
+                    this.modelObjetos[0]['name'] == "" ||
                     this.modelObjetos[0]['street_name'] == "" ||
                     this.modelObjetos[0]['bairro_id'] == "" ||
                     this.modelObjetos[0]['enderecoable_id'] == "" ||
@@ -1490,6 +1499,7 @@ var app = new Vue({
             else if(classe == 'pedido'){
                 if(
                     this.modelObjetos[0]['cliente_id'] == "" ||
+                    this.modelObjetos[0]['endereco_id'] == "" ||
                     this.modelObjetos[0]['vendedor_id'] == "" ||
                     this.modelObjetos[0]['metodo_pagamento_id'] == "" ||
                     this.modelObjetos[0]['total_price'] <= 0
@@ -1501,22 +1511,12 @@ var app = new Vue({
                     return false;
                 }
             }
-
             else{
                 alert("Erro: VerificaDados | Classe não encontrada.");
                 return true;
             }
         },
         paginacao: function(url){
-            //this.objetos = null;
-            //this.carregandoGeral = true;
-            //var url;
-            //url = '/api/'+classe;
-
-            /*fetch(url).then((res) => res.json())
-                    .then((data) => this.objetos = data).finally(this.carregandoGeral = false);
-            */
-            //alert(url);
             this.objetos = null;
 
             if(this.variavelBusca !== ''){
@@ -1686,6 +1686,18 @@ var app = new Vue({
             axios
                 .get(url)
                 .then(response => (this.bairros = response.data))
+                .catch(error => (this.error = error));
+        },
+        buscaFEnderecos: function() {
+            this.enderecos = null;
+            this.carregandoGeral = true;
+            var url;
+            url = '/api/endereco'+'?paginacao=false'; //vc parou nessa linha
+            //alert(url);
+
+            axios
+                .get(url)
+                .then(response => (this.fornecedores = response.data))
                 .catch(error => (this.error = error));
         },
         buscaPessoa: function() {

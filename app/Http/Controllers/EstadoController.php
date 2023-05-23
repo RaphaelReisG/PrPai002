@@ -44,7 +44,7 @@ class EstadoController extends Controller
         }
 
         else{
-            $estado->orderBy('estados.name');
+            $estado->orderBy('estados.name_state');
         }
 
         if ($request->has('paginacao')) {

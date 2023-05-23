@@ -19,11 +19,16 @@ class Pedido extends Model
         'metodo_pagamento_id',
         'observation',
         'cliente_id',
-        'vendedor_id'
+        'vendedor_id',
+        'endereco_id'
     ];
 
     public function cliente(){
         return $this->belongsTo(Cliente::class);
+    }
+
+    public function endereco(){
+        return $this->belongsTo(Endereco::class);
     }
 
     public function metodoPagamento(){

@@ -31,6 +31,7 @@ return new class extends Migration
 
             $table->foreignId('cliente_id')->constrained('clientes');
             $table->foreignId('vendedor_id')->constrained('vendedors');
+            $table->foreignId('endereco_id')->constrained('enderecos');
 
             $table->timestamps();
         });

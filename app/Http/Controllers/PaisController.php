@@ -28,7 +28,7 @@ class PaisController extends Controller
         }
 
         else{
-            $pais->orderBy('pais.name');
+            $pais->orderBy('pais.name_country');
         }
 
         if ($request->has('paginacao')) {
