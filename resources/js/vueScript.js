@@ -1544,15 +1544,30 @@ var app = new Vue({
                 }
             }
             else if(classe == 'pedido'){
-                if(
-                    this.modelObjetos[0]['cliente_id'] == "" ||
-                    this.modelObjetos[0]['endereco_id'] == "" ||
-                    this.modelObjetos[0]['vendedor_id'] == "" ||
-                    this.modelObjetos[0]['metodo_pagamento_id'] == "" ||
-                    this.modelObjetos[0]['total_price'] <= 0
-                ){
-                    alert("Erro");
-                    return true;
+                var error = false
+                if(this.modelObjetos[0]['cliente_id'] == ""){
+                    this.alertaCampo[0]['cliente_id'] = "É obrigatório ter o cliente";
+                    error = true
+                }
+                if(this.modelObjetos[0]['endereco_id'] == ""){
+                    this.alertaCampo[0]['endereco_id'] = "É obrigatório ter o endereço";
+                    error = true
+                }
+                if(this.modelObjetos[0]['vendedor_id'] == ""){
+                    this.alertaCampo[0]['vendedor_id'] = "É obrigatório ter o vendedor";
+                    error = true
+                }
+                if(this.modelObjetos[0]['metodo_pagamento_id'] == ""){
+                    this.alertaCampo[0]['metodo_pagamento_id'] = "É obrigatório ter o método de pagamento";
+                    error = true
+                }
+                if(this.modelObjetos[0]['total_price'] <= 0){
+                    this.alertaCampo[0]['total_price'] = "É obrigatório ter o preço total";
+                    error = true
+                }
+
+                if (error == true) {
+                    return true
                 }
                 
                 else{
