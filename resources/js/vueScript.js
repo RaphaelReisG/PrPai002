@@ -1517,15 +1517,28 @@ var app = new Vue({
                 }
             }
             else if(classe == 'estoque'){
-                if(
-                    this.modelObjetos[0]['qty_item'] == "" ||
-                    this.modelObjetos[0]['tipo_movimentacao_id'] == "" ||
-                    this.modelObjetos[0]['produto_id'] == "" ||
-                    this.modelObjetos[0]['qty_item'] == ""
-                ){
-                    alert("Erro");
-                    return true;
+                var error = false
+                if(this.modelObjetos[0]['qty_item'] == ""){
+                    this.alertaCampo[0]['qty_item'] = "É obrigatório ter a quantidade";
+                    error = true
                 }
+                if(this.modelObjetos[0]['tipo_movimentacao_id'] == ""){
+                    this.alertaCampo[0]['tipo_movimentacao_id'] = "É obrigatório ter o tipo da movimentação";
+                    error = true
+                }
+                if(this.modelObjetos[0]['produto_id'] == ""){
+                    this.alertaCampo[0]['produto_id'] = "É obrigatório ter o produto";
+                    error = true
+                }
+                if(this.modelObjetos[0]['produto_id'] == ""){
+                    this.alertaCampo[0]['produto_id'] = "É obrigatório ter o produto";
+                    error = true
+                }
+
+                if (error == true) {
+                    return true
+                }
+
                 else{
                     return false;
                 }
@@ -1541,6 +1554,7 @@ var app = new Vue({
                     alert("Erro");
                     return true;
                 }
+                
                 else{
                     return false;
                 }
