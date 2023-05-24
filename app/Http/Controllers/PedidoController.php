@@ -207,7 +207,7 @@ class PedidoController extends Controller
             'pedidos.approval_date','pedidos.total_price','pedidos.total_discount',
             'pedidos.metodo_pagamento_id','pedidos.observation',
             'pedidos.cliente_id','pedidos.vendedor_id', 'pedidos.endereco_id',
-             'pedidos.created_at', 'pedidos.updated_at');
+             'pedidos.created_at', 'pedidos.updated_at', 'pedidos.deleted_at');
 
 
         if ($request->has('buscarObjeto')) {

@@ -32,7 +32,7 @@ class EstoqueController extends Controller
             ->select('estoques.*')
             ->groupBy('estoques.id', 'estoques.qty_item', 'estoques.observation',
                 'estoques.tipo_movimentacao_id', 'estoques.produto_id', 'estoques.estoqueable_type',
-                'estoques.estoqueable_id',  'estoques.created_at', 'estoques.updated_at');
+                'estoques.estoqueable_id',  'estoques.created_at', 'estoques.updated_at', 'estoques.deleted_at');
 
         if ($request->has('buscarObjeto')) {
             $estoque->where(function ($query) use ($request) {

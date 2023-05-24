@@ -27,7 +27,7 @@ class BairroController extends Controller
         ->join('pais', 'estados.pais_id', '=', 'pais.id' )
         //->join('vendedors', 'clientes.vendedor_id', '=', 'vendedors.id' )
         ->select('bairros.*')
-        ->groupBy('bairros.id', 'bairros.name_neighborhood', 'bairros.cidade_id', 'bairros.created_at', 'bairros.updated_at');
+        ->groupBy('bairros.id', 'bairros.name_neighborhood', 'bairros.cidade_id', 'bairros.created_at', 'bairros.updated_at', 'bairros.deleted_at');
 
 
         if ($request->has('buscarObjeto')) {

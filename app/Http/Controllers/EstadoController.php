@@ -25,7 +25,7 @@ class EstadoController extends Controller
         ->join('pais', 'estados.pais_id', '=', 'pais.id' )
         //->join('vendedors', 'clientes.vendedor_id', '=', 'vendedors.id' )
         ->select('estados.*')
-        ->groupBy('estados.id', 'estados.name_state', 'estados.pais_id', 'estados.created_at', 'estados.updated_at');
+        ->groupBy('estados.id', 'estados.name_state', 'estados.pais_id', 'estados.created_at', 'estados.updated_at', 'estados.deleted_at');
 
 
         if ($request->has('buscarObjeto')) {

@@ -24,7 +24,7 @@ class VendedorController extends Controller
         $vendedor = Vendedor::with(['user','enderecos', 'telefones'])
             ->join('users', 'vendedors.id', '=', 'users.userable_id' )
             ->select('vendedors.*')
-            ->groupBy('vendedors.id', 'vendedors.name', 'vendedors.created_at', 'vendedors.updated_at');;
+            ->groupBy('vendedors.id', 'vendedors.name', 'vendedors.created_at', 'vendedors.updated_at', 'vendedors.deleted_at');
 
         if ($request->has('buscarObjeto')) {
             $vendedor->where(function ($query) use ($request) {

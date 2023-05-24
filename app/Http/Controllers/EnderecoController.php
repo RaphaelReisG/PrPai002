@@ -39,7 +39,7 @@ class EnderecoController extends Controller
         ->select('enderecos.*')
         ->groupBy('enderecos.id', 'enderecos.name', 'enderecos.street_name', 'enderecos.complement',
             'enderecos.cep','enderecos.house_number','enderecos.bairro_id',
-            'enderecos.enderecoable_type','enderecos.enderecoable_id', 'enderecos.created_at', 'enderecos.updated_at');
+            'enderecos.enderecoable_type','enderecos.enderecoable_id', 'enderecos.created_at', 'enderecos.updated_at', 'enderecos.deleted_at');
 
 
         if ($request->has('buscarObjeto')) {

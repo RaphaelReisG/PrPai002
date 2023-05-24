@@ -27,7 +27,7 @@ class ProdutoController extends Controller
             ->select('produtos.*')
             ->groupBy('produtos.id', 'produtos.name', 'produtos.tipo_produto_id',
                 'produtos.quantity', 'produtos.weight', 'produtos.cost_price',
-                'produtos.sale_price', 'produtos.marca_id',  'produtos.created_at', 'produtos.updated_at');
+                'produtos.sale_price', 'produtos.marca_id',  'produtos.created_at', 'produtos.updated_at', 'produtos.deleted_at');
 
         if ($request->has('buscarObjeto')) {
             $produto->where(function ($query) use ($request) {

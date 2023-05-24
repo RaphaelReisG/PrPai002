@@ -26,7 +26,7 @@ class CidadeController extends Controller
         ->join('pais', 'estados.pais_id', '=', 'pais.id' )
         //->join('vendedors', 'clientes.vendedor_id', '=', 'vendedors.id' )
         ->select('cidades.*')
-        ->groupBy('cidades.id', 'cidades.name_city', 'cidades.estado_id', 'cidades.created_at', 'cidades.updated_at');
+        ->groupBy('cidades.id', 'cidades.name_city', 'cidades.estado_id', 'cidades.created_at', 'cidades.updated_at', 'cidades.deleted_at');
 
 
         if ($request->has('buscarObjeto')) {

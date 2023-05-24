@@ -23,7 +23,7 @@ class MarcaController extends Controller
         $marca = Marca::with(['fornecedor'])
             ->join('fornecedors', 'marcas.fornecedor_id', '=', 'fornecedors.id' )
             ->select('marcas.*')
-            ->groupBy('marcas.id', 'marcas.name', 'marcas.fornecedor_id', 'marcas.created_at', 'marcas.updated_at');
+            ->groupBy('marcas.id', 'marcas.name', 'marcas.fornecedor_id', 'marcas.created_at', 'marcas.updated_at', 'marcas.deleted_at');
 
         if ($request->has('buscarObjeto')) {
             $marca->where(function ($query) use ($request) {

@@ -34,7 +34,7 @@ class ClienteController extends Controller
             ->join('users', 'clientes.id', '=', 'users.userable_id' )
             //->join('vendedors', 'clientes.vendedor_id', '=', 'vendedors.id' )
             ->select('clientes.*')
-            ->groupBy('clientes.id', 'clientes.name', 'company_name', 'cnpj', 'clientes.vendedor_id', 'clientes.created_at', 'clientes.updated_at');
+            ->groupBy('clientes.id', 'clientes.name', 'company_name', 'cnpj', 'clientes.vendedor_id', 'clientes.created_at', 'clientes.updated_at', 'clientes.deleted_at');
 
         if ($request->has('buscarObjeto')) {
             $clientes->where(function ($query) use ($request) {
