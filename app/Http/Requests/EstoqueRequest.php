@@ -36,8 +36,8 @@ class EstoqueRequest extends FormRequest
     public function messages()
     {
         return [
-            'observation.required' => 'É obrigatório ter uma observação',
-            'observation.max' => 'A observação deve ter 45 caracteres',
+            'observation.required' => 'É obrigatório ter uma observação na movimentação do estoque',
+            'observation.max' => 'A observação deve ter no máximo 45 caracteres',
 
             'qty_item.required' => 'A quantidade é obrigatória',
             'qty_item.integer' => 'A quantidade deve ser inserida em numeros inteiros'
