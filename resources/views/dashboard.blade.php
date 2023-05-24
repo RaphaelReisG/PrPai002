@@ -29,7 +29,9 @@
             {{ nomeUsuario = "<?php echo Auth::user()->userable->name;?>"  }}
             {{ Auth::user()->userable->name }}
             {{ Auth::user()->userable->id }}
+            {{ tokenUsuario = "<?php echo session('data') ;?>" }}
         </div>
+       
         <!-- Menu -->
         <div >
             <nav class="navbar navbar-expand-lg bg-light">
@@ -128,6 +130,7 @@
 
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
+                            <input style="display: none" type="readonly" name="id" v-model="idUsuario">
 
                             <x-responsive-nav-link style="margin-left: 5px; " class="btn btn-secondary" :href="route('logout')"
                                     onclick="event.preventDefault();

@@ -36,7 +36,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::apiResource('administrador', AdministradorController::class);
+Route::apiResource('administrador', AdministradorController::class)->middleware('auth:sanctum');
 Route::apiResource('bairro', BairroController::class);
 Route::apiResource('cidade', CidadeController::class);
 Route::apiResource('cliente', ClienteController::class);

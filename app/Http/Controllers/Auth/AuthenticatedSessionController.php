@@ -8,6 +8,8 @@ use App\Providers\RouteServiceProvider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
+use App\Models\User;
+
 class AuthenticatedSessionController extends Controller
 {
     /**
@@ -32,6 +34,14 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
+        error_log('logado');
+        $user = User::where('email', $request->only('email'))->first();
+        $token = $user->createToken('auth_token');
+        $data = $token->plainTextToken;
+        error_log($data);
+
+        $request->session()->put('data', $data);
+
         return redirect()->intended(RouteServiceProvider::HOME);
     }
 
@@ -48,6 +58,8 @@ class AuthenticatedSessionController extends Controller
         $request->session()->invalidate();
 
         $request->session()->regenerateToken();
+
+        $user = User::find($request->id)->tokens()->delete();
 
         return redirect('/');
     }

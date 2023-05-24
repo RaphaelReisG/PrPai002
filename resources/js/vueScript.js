@@ -4,6 +4,7 @@ var app = new Vue({
     el: '#app',
     data: {
         idUsuario: "{{ Auth::user()->id }}",
+        tokenUsuario: "",
         tipoUsuario: '',
         nomeUsuario: '',
         titulo: "",
@@ -149,8 +150,16 @@ var app = new Vue({
                     .then((data) => this.objetos = data).finally(this.carregandoGeral = false);
             */
 
+           var header = {
+                Authorization: "Bearer "+this.tokenUsuario
+           }
+
             axios
-                .get(url)
+                .get(url, {
+                    headers: {
+                      Authorization: 'Bearer '+this.tokenUsuario
+                    }
+                  })
                 .then(response => (this.objetos = response.data, this.resposta = response))
                 .catch(error => (this.error = error));
 
@@ -176,7 +185,11 @@ var app = new Vue({
             */
 
             axios
-                .get(url)
+                .get(url, {
+                    headers: {
+                      Authorization: 'Bearer '+this.tokenUsuario
+                    }
+                  })
                 .then(response => (this.objetos = response.data, this.resposta = response))
                 .catch(error => (this.error = error));
 
@@ -346,7 +359,11 @@ var app = new Vue({
             //fetch(url, { method: 'POST'} ).catch((e) => this.error = e);
 
             await axios
-                .post(url, dados)
+                .post(url, dados, {
+                    headers: {
+                      Authorization: 'Bearer '+this.tokenUsuario
+                    }
+                  })
                 .then(response => (this.respostaData = response.data, this.resposta = response))
                 .catch(error => (this.error = error));
 
@@ -769,7 +786,11 @@ var app = new Vue({
             .catch((e) => this.error = e);*/
 
             await axios
-                .put(url, dados)
+                .put(url, dados, {
+                    headers: {
+                      Authorization: 'Bearer '+this.tokenUsuario
+                    }
+                  })
                 .then(response => (this.respostaData = response.data, this.resposta = response))
                 .catch(error => (this.error = error));
 
@@ -791,7 +812,11 @@ var app = new Vue({
                     var url = '/api/'+classe+'/'+id;
                     //fetch(url, { method: 'DELETE'} ).catch((e) => this.error = e);
                     await axios
-                        .delete(url)
+                        .delete(url, {
+                            headers: {
+                              Authorization: 'Bearer '+this.tokenUsuario
+                            }
+                          })
                         .then(response => (this.respostaData = response.data, this.resposta = response))
                         .catch(error => (this.error = error));
                     if(this.error == null){
@@ -1589,7 +1614,11 @@ var app = new Vue({
                 url = url + '&ordenacaoBusca=' + this.variavelOrdenacao;
             }
             axios
-                .get(url)
+                .get(url, {
+                    headers: {
+                      Authorization: 'Bearer '+this.tokenUsuario
+                    }
+                  })
                 .then(response => (this.objetos = response.data, this.resposta = response))
                 .catch(error => (this.error = error));
         },
@@ -1612,7 +1641,11 @@ var app = new Vue({
                 url = url + '&ordenacaoBusca=' + this.variavelOrdenacao;
             }
             axios
-                .get(url)
+                .get(url, {
+                    headers: {
+                      Authorization: 'Bearer '+this.tokenUsuario
+                    }
+                  })
                 .then(response => (this.meuProduto = response.data, this.resposta = response))
                 .catch(error => (this.error = error));
         },
@@ -1653,7 +1686,11 @@ var app = new Vue({
             }
 
             axios
-            .get(url)
+            .get(url, {
+                headers: {
+                  Authorization: 'Bearer '+this.tokenUsuario
+                }
+              })
             .then(response => (this.objetos = response.data, this.resposta = response))
             .catch(error => (this.error = error));
 
@@ -1676,7 +1713,11 @@ var app = new Vue({
                 url = '/api/'+classe+'?ordenacaoBusca='+coluna;
 
                 axios
-                    .get(url)
+                    .get(url, {
+                        headers: {
+                          Authorization: 'Bearer '+this.tokenUsuario
+                        }
+                      })
                     .then(response => (this.objetos = response.data, this.resposta = response))
                     .catch(error => (this.error = error));
 
@@ -1690,7 +1731,11 @@ var app = new Vue({
             url = '/api/pais'+paginacao;
 
             axios
-                .get(url)
+                .get(url, {
+                    headers: {
+                      Authorization: 'Bearer '+this.tokenUsuario
+                    }
+                  })
                 .then(response => (this.paises = response.data))
                 .catch(error => (this.error = error));
         },
@@ -1708,7 +1753,11 @@ var app = new Vue({
 
 
             axios
-                .get(url)
+                .get(url, {
+                    headers: {
+                      Authorization: 'Bearer '+this.tokenUsuario
+                    }
+                  })
                 .then(response => (this.estados = response.data))
                 .catch(error => (this.error = error));
         },
@@ -1727,7 +1776,11 @@ var app = new Vue({
             }
 
             axios
-                .get(url)
+                .get(url, {
+                    headers: {
+                      Authorization: 'Bearer '+this.tokenUsuario
+                    }
+                  })
                 .then(response => (this.cidades = response.data))
                 .catch(error => (this.error = error));
         },
@@ -1747,7 +1800,11 @@ var app = new Vue({
             }
 
             axios
-                .get(url)
+                .get(url, {
+                    headers: {
+                      Authorization: 'Bearer '+this.tokenUsuario
+                    }
+                  })
                 .then(response => (this.bairros = response.data))
                 .catch(error => (this.error = error));
         },
@@ -1760,7 +1817,11 @@ var app = new Vue({
             //alert(url);
 
             axios
-                .get(url)
+                .get(url, {
+                    headers: {
+                      Authorization: 'Bearer '+this.tokenUsuario
+                    }
+                  })
                 .then(response => (this.enderecos = response.data))
                 .catch(error => (this.error = error));
         },
@@ -1781,7 +1842,11 @@ var app = new Vue({
             }
 
             axios
-                .get(url)
+                .get(url, {
+                    headers: {
+                      Authorization: 'Bearer '+this.tokenUsuario
+                    }
+                  })
                 .then(response => (this.pessoas = response.data))
                 .catch(error => (this.error = error));
         },
@@ -1798,7 +1863,11 @@ var app = new Vue({
             //alert(url);
 
             axios
-                .get(url)
+                .get(url, {
+                    headers: {
+                      Authorization: 'Bearer '+this.tokenUsuario
+                    }
+                  })
                 .then(response => (this.clientes = response.data))
                 .catch(error => (this.error = error));
         },
@@ -1810,7 +1879,11 @@ var app = new Vue({
             //alert(url);
 
             axios
-                .get(url)
+                .get(url, {
+                    headers: {
+                      Authorization: 'Bearer '+this.tokenUsuario
+                    }
+                  })
                 .then(response => (this.vendedores = response.data))
                 .catch(error => (this.error = error));
         },
@@ -1822,7 +1895,11 @@ var app = new Vue({
             //alert(url);
 
             axios
-                .get(url)
+                .get(url, {
+                    headers: {
+                      Authorization: 'Bearer '+this.tokenUsuario
+                    }
+                  })
                 .then(response => (this.fornecedores = response.data))
                 .catch(error => (this.error = error));
         },
@@ -1842,7 +1919,11 @@ var app = new Vue({
             //alert(url);
 
             axios
-                .get(url)
+                .get(url, {
+                    headers: {
+                      Authorization: 'Bearer '+this.tokenUsuario
+                    }
+                  })
                 .then(response => (this.marcas = response.data))
                 .catch(error => (this.error = error));
         },
@@ -1862,7 +1943,11 @@ var app = new Vue({
             //alert(url);
 
             axios
-                .get(url)
+                .get(url, {
+                    headers: {
+                      Authorization: 'Bearer '+this.tokenUsuario
+                    }
+                  })
                 .then(response => (this.produtos = response.data))
                 .catch(error => (this.error = error));
         },
@@ -1878,7 +1963,11 @@ var app = new Vue({
             //alert(url);
 
             axios
-                .get(url)
+                .get(url, {
+                    headers: {
+                      Authorization: 'Bearer '+this.tokenUsuario
+                    }
+                  })
                 .then(response => (this.meuProduto = response.data))
                 .catch(error => (this.error = error));
         },
@@ -1890,7 +1979,11 @@ var app = new Vue({
             //alert(url);
 
             axios
-                .get(url)
+                .get(url, {
+                    headers: {
+                      Authorization: 'Bearer '+this.tokenUsuario
+                    }
+                  })
                 .then(response => (this.tipo_produtos = response.data))
                 .catch(error => (this.error = error));
         },
@@ -1903,7 +1996,11 @@ var app = new Vue({
             //alert(url);
 
             axios
-                .get(url)
+                .get(url, {
+                    headers: {
+                      Authorization: 'Bearer '+this.tokenUsuario
+                    }
+                  })
                 .then(response => (this.tipo_movimentacaos = response.data))
                 .catch(error => (this.error = error));
         },
@@ -1916,7 +2013,11 @@ var app = new Vue({
             //alert(url);
 
             axios
-                .get(url)
+                .get(url, {
+                    headers: {
+                      Authorization: 'Bearer '+this.tokenUsuario
+                    }
+                  })
                 .then(response => (this.metodo_pagamentos = response.data))
                 .catch(error => (this.error = error));
         },
@@ -1977,7 +2078,11 @@ var app = new Vue({
                         approval_date: new Date()
                     }
                     await axios
-                        .put(url, dados)
+                        .put(url, dados, {
+                            headers: {
+                              Authorization: 'Bearer '+this.tokenUsuario
+                            }
+                          })
                         .then(response => (this.respostaData = response.data, this.resposta = response))
                         .catch(error => (this.error = error));
                     if(this.error == null){
@@ -2003,7 +2108,11 @@ var app = new Vue({
                         id: id
                     }
                     await axios
-                        .put(url, dados)
+                        .put(url, dados, {
+                            headers: {
+                              Authorization: 'Bearer '+this.tokenUsuario
+                            }
+                          })
                         .then(response => (this.respostaData = response.data, this.resposta = response))
                         .catch(error => (this.error = error));
                     if(this.error == null){
@@ -2029,7 +2138,11 @@ var app = new Vue({
                         id: id
                     }
                     await axios
-                        .put(url, dados)
+                        .put(url, dados, {
+                            headers: {
+                              Authorization: 'Bearer '+this.tokenUsuario
+                            }
+                          })
                         .then(response => (this.respostaData = response.data, this.resposta = response))
                         .catch(error => (this.error = error));
                     if(this.error == null){
