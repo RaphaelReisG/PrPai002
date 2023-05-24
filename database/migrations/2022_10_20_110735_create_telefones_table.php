@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('number_phone');
 
             $table->morphs('telefoneable');
+            $table->softDeletes();
 
             $table->timestamps();
         });

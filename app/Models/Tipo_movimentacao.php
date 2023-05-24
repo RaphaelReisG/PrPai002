@@ -4,10 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+
 
 class Tipo_movimentacao extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $fillable = [
         'name'
@@ -16,4 +18,4 @@ class Tipo_movimentacao extends Model
     public function estoques(){
         return $this->hasMany(Estoque::class);
     }
-} 
+}

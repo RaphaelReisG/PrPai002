@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
 
             $table->string('name');
+            $table->softDeletes();
 
             //$table->foreignId('endereco_id')->constrained('enderecos');
             //$table->foreignId('telefone_id')->constrained('telefones');

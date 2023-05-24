@@ -25,6 +25,7 @@ return new class extends Migration
             $table->foreignId('produto_id')->constrained('produtos');
 
             $table->morphs('estoqueable');
+            $table->softDeletes();
 
             $table->timestamps();
         });

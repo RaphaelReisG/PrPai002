@@ -20,6 +20,7 @@ return new class extends Migration
             $table->unsignedBigInteger('cnpj');
             $table->string('company_name', 45);
             $table->string('name', 45);
+            $table->softDeletes();
 
             //$table->integer('number_phone');
             //$table->integer('number_cellphone');

@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('complement');
             $table->integer('cep');
             $table->integer('house_number');
-
+            $table->softDeletes();
             $table->foreignId('bairro_id')->constrained('bairros');
 
             $table->morphs('enderecoable');
