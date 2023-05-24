@@ -1469,20 +1469,48 @@ var app = new Vue({
                 }
             }
             else if(classe == 'endereco'){
+                var error = false
                 if(this.tipoUsuario == 'AppModelsCliente'){
                     this.modelObjetos[0]['enderecoable_id'] = this.idUsuario;
                     this.modelObjetos[0]['tipoPessoa'] = 'cliente';
                 }
-                if(
-                    this.modelObjetos[0]['street_name'] == "" ||
-                    this.modelObjetos[0]['bairro_id'] == "" ||
-                    this.modelObjetos[0]['enderecoable_id'] == "" ||
-                    this.modelObjetos[0]['house_number'] == "" ||
-                    this.modelObjetos[0]['cep'] == ""
-                ){
-                    alert("Erro");
-                    return true;
+                if(this.modelObjetos[0]['street_name'] == ""){
+                    this.alertaCampo[0]['street_name'] = "O nome da rua é obrigatório";
+                    error = true
                 }
+                if (this.modelObjetos[0]['street_name'].length > 45) {
+                    this.alertaCampo[0]['street_name'] = "Maximo de 45 caracteres";
+                    error = true
+                }
+                if(this.modelObjetos[0]['bairro_id'] == ""){
+                    this.alertaCampo[0]['bairro_id'] = "O nome do bairro é obrigatório";
+                    error = true
+                }
+                if(this.modelObjetos[0]['enderecoable_id'] == ""){
+                    this.alertaCampo[0]['enderecoable_id'] = "É obrigatório ter p endereço";
+                    error = true
+                }
+                if(this.modelObjetos[0]['enderecoable_id'] == ""){
+                    this.alertaCampo[0]['enderecoable_id'] = "É obrigatório ter p endereço";
+                    error = true
+                }
+                if(this.modelObjetos[0]['house_number'] == ""){
+                    this.alertaCampo[0]['house_number'] = "É obrigatório ter o número";
+                    error = true
+                }
+                if(this.modelObjetos[0]['cep'] == ""){
+                    this.alertaCampo[0]['cep'] = "É obrigatório ter o CEP";
+                    error = true
+                }
+                if (this.modelObjetos[0]['cep'].length > 10) {
+                    this.alertaCampo[0]['cep'] = "Maximo de 10 caracteres";
+                    error = true
+                }
+
+                if (error == true) {
+                    return true
+                }
+
                 else{
                     return false;
                 }
