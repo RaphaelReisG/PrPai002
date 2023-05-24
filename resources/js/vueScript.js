@@ -1470,50 +1470,106 @@ var app = new Vue({
                 }
             }
             else if(classe == 'endereco'){
-                if(this.tipoUsuario == 'AppModelsCliente'){ //  <------ ATENÇÃO, não alterar neste IF ---
+                var error = false
+                if(this.tipoUsuario == 'AppModelsCliente'){
                     this.modelObjetos[0]['enderecoable_id'] = this.idUsuario;
                     this.modelObjetos[0]['tipoPessoa'] = 'cliente';
-                } //-------------------------------------------------------------------------------------
-                if(
-                    this.modelObjetos[0]['name'] == "" ||
-                    this.modelObjetos[0]['street_name'] == "" ||
-                    this.modelObjetos[0]['bairro_id'] == "" ||
-                    this.modelObjetos[0]['enderecoable_id'] == "" ||
-                    this.modelObjetos[0]['house_number'] == "" ||
-                    this.modelObjetos[0]['cep'] == ""
-                ){
-                    alert("Erro");
-                    return true;
                 }
+                if(this.modelObjetos[0]['street_name'] == ""){
+                    this.alertaCampo[0]['street_name'] = "O nome da rua é obrigatório";
+                    error = true
+                }
+                if (this.modelObjetos[0]['street_name'].length > 45) {
+                    this.alertaCampo[0]['street_name'] = "Maximo de 45 caracteres";
+                    error = true
+                }
+                if(this.modelObjetos[0]['bairro_id'] == ""){
+                    this.alertaCampo[0]['bairro_id'] = "O nome do bairro é obrigatório";
+                    error = true
+                }
+                if(this.modelObjetos[0]['enderecoable_id'] == ""){
+                    this.alertaCampo[0]['enderecoable_id'] = "É obrigatório ter p endereço";
+                    error = true
+                }
+                if(this.modelObjetos[0]['enderecoable_id'] == ""){
+                    this.alertaCampo[0]['enderecoable_id'] = "É obrigatório ter p endereço";
+                    error = true
+                }
+                if(this.modelObjetos[0]['house_number'] == ""){
+                    this.alertaCampo[0]['house_number'] = "É obrigatório ter o número";
+                    error = true
+                }
+                if(this.modelObjetos[0]['cep'] == ""){
+                    this.alertaCampo[0]['cep'] = "É obrigatório ter o CEP";
+                    error = true
+                }
+                if (this.modelObjetos[0]['cep'].length > 10) {
+                    this.alertaCampo[0]['cep'] = "Maximo de 10 caracteres";
+                    error = true
+                }
+
+                if (error == true) {
+                    return true
+                }
+
                 else{
                     return false;
                 }
             }
             else if(classe == 'estoque'){
-                if(
-                    this.modelObjetos[0]['qty_item'] == "" ||
-                    this.modelObjetos[0]['tipo_movimentacao_id'] == "" ||
-                    this.modelObjetos[0]['produto_id'] == "" ||
-                    this.modelObjetos[0]['qty_item'] == ""
-                ){
-                    alert("Erro");
-                    return true;
+                var error = false
+                if(this.modelObjetos[0]['qty_item'] == ""){
+                    this.alertaCampo[0]['qty_item'] = "É obrigatório ter a quantidade";
+                    error = true
                 }
+                if(this.modelObjetos[0]['tipo_movimentacao_id'] == ""){
+                    this.alertaCampo[0]['tipo_movimentacao_id'] = "É obrigatório ter o tipo da movimentação";
+                    error = true
+                }
+                if(this.modelObjetos[0]['produto_id'] == ""){
+                    this.alertaCampo[0]['produto_id'] = "É obrigatório ter o produto";
+                    error = true
+                }
+                if(this.modelObjetos[0]['produto_id'] == ""){
+                    this.alertaCampo[0]['produto_id'] = "É obrigatório ter o produto";
+                    error = true
+                }
+
+                if (error == true) {
+                    return true
+                }
+
                 else{
                     return false;
                 }
             }
             else if(classe == 'pedido'){
-                if(
-                    this.modelObjetos[0]['cliente_id'] == "" ||
-                    this.modelObjetos[0]['endereco_id'] == "" ||
-                    this.modelObjetos[0]['vendedor_id'] == "" ||
-                    this.modelObjetos[0]['metodo_pagamento_id'] == "" ||
-                    this.modelObjetos[0]['total_price'] <= 0
-                ){
-                    alert("Erro");
-                    return true;
+                var error = false
+                if(this.modelObjetos[0]['cliente_id'] == ""){
+                    this.alertaCampo[0]['cliente_id'] = "É obrigatório ter o cliente";
+                    error = true
                 }
+                if(this.modelObjetos[0]['endereco_id'] == ""){
+                    this.alertaCampo[0]['endereco_id'] = "É obrigatório ter o endereço";
+                    error = true
+                }
+                if(this.modelObjetos[0]['vendedor_id'] == ""){
+                    this.alertaCampo[0]['vendedor_id'] = "É obrigatório ter o vendedor";
+                    error = true
+                }
+                if(this.modelObjetos[0]['metodo_pagamento_id'] == ""){
+                    this.alertaCampo[0]['metodo_pagamento_id'] = "É obrigatório ter o método de pagamento";
+                    error = true
+                }
+                if(this.modelObjetos[0]['total_price'] <= 0){
+                    this.alertaCampo[0]['total_price'] = "É obrigatório ter o preço total";
+                    error = true
+                }
+
+                if (error == true) {
+                    return true
+                }
+                
                 else{
                     return false;
                 }
