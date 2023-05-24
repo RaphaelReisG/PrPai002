@@ -39,12 +39,16 @@ class BairroController extends Controller
             });
         }
 
+        if ($request->has('cidade_id')) {
+            $bairro->where('bairros.cidade_id', '=', $request->cidade_id);
+        }
+
         if ($request->has('ordenacaoBusca')) {
             $bairro->orderBy($request->ordenacaoBusca);
         }
 
         else{
-            $bairro->orderBy('bairros.name');
+            $bairro->orderBy('bairros.name_neighborhood');
         }
 
         if ($request->has('paginacao')) {

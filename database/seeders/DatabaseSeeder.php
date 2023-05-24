@@ -69,11 +69,11 @@ class DatabaseSeeder extends Seeder
 
         Fornecedor::create(['name' => 'Fulano Dono da Mineirão', 'company_name' => 'Mineirão', 'cnpj' => 1234567890, 'email' => 'mineirão@mineirão.com'])
             ->enderecos()->create(
-                ['street_name' => 'Rua Dagruta', 'cep' => 11740000, 'house_number' => 10, 'complement' => 'Casa', 'bairro_id' => 2],
-                ['street_name' => 'Av. graça', 'cep' => 11740000, 'house_number' => 10, 'complement' => 'Casa', 'bairro_id' => 1]
+                ['name' => 'Casa 5', 'street_name' => 'Rua Dagruta', 'cep' => 11740000, 'house_number' => 10, 'complement' => 'Casa', 'bairro_id' => 2],
+                ['name' => 'Casa 6', 'street_name' => 'Av. graça', 'cep' => 11740000, 'house_number' => 10, 'complement' => 'Casa', 'bairro_id' => 1]
             );
         Fornecedor::create(['name' => 'Ciclano vendedor da Denise Salgados', 'company_name' => 'Denise Salgados', 'cnpj' => 1234567891, 'email' => 'denise@mdenise.com'])
-            ->enderecos()->create(['street_name' => 'Rua Pernambuco', 'cep' => 11740000, 'house_number' => 10, 'complement' => 'Casa', 'bairro_id' => 3]);
+            ->enderecos()->create(['name' => 'Casa 3', 'street_name' => 'Rua Pernambuco', 'cep' => 11740000, 'house_number' => 10, 'complement' => 'Casa', 'bairro_id' => 3]);
 
         Fornecedor::find(1)->marcas()->create(['name' => 'Mineirão']);
         Fornecedor::find(1)->marcas()->create(['name' => 'Vovó Natalia']);
@@ -141,8 +141,8 @@ class DatabaseSeeder extends Seeder
         ', 'password' => Hash::make('qwerasdf'), 'remember_token' => null,
             'created_at' => '2023-02-07 13:32:43', 'updated_at' => '2023-02-07 13:33:19'
         ]);
-        $cliente1->enderecos()->create(['street_name' => 'Rua Bahia', 'cep' => 11740000, 'house_number' => 10, 'complement' => 'Casa', 'bairro_id' => 1]);
-        $cliente1->enderecos()->create(['street_name' => 'Rua Alexandre', 'cep' => 11740000, 'house_number' => 10, 'complement' => 'Casa', 'bairro_id' => 3]);
+        $cliente1->enderecos()->create(['name' => 'Casa 1', 'street_name' => 'Rua Bahia', 'cep' => 11740000, 'house_number' => 10, 'complement' => 'Casa', 'bairro_id' => 1]);
+        $cliente1->enderecos()->create(['name' => 'Casa 2', 'street_name' => 'Rua Alexandre', 'cep' => 11740000, 'house_number' => 10, 'complement' => 'Casa', 'bairro_id' => 3]);
         $cliente1->telefones()->create(['number_phone' => '(13)3426-5255']);
         $cliente1->telefones()->create(['number_phone' => '(13)91234-5678']);
         $cliente1->pedidos()->create([
@@ -155,7 +155,8 @@ class DatabaseSeeder extends Seeder
             //'payment_method' => 'Dinheiro',
             'metodo_pagamento_id' => 1,
             'observation' => 'Tudo entregue junto',
-            'vendedor_id' => 1
+            'vendedor_id' => 1,
+            'endereco_id' => 3
         ])->produtos()->attach([
             1 => ['qty_item' => 1, 'price_item' => 22],
             2 => ['qty_item' => 1, 'price_item' => 30]

@@ -102,7 +102,7 @@
                                         <li><a class="dropdown-item" href="#" v-on:click="defineClasse('marca', 'Marcas')">Marcas</a></li>
                                         <li><a class="dropdown-item" href="#" v-on:click="defineClasse('produto', 'Produto')">Produtos</a></li>
                                         <li><hr class="dropdown-divider"></li>
-                                        <li><a class="dropdown-item" href="#" v-on:click="defineClasse('estoque', 'Movimentações do Estoque')">Estoque</a></li>
+                                        <li><a class="dropdown-item" href="#" v-on:click="defineClasse('estoque', 'Movimentações do Estoque')">Mov Estoque</a></li>
                                         <li><a class="dropdown-item" href="#" v-on:click="defineClasse('pedido', 'Pedidos')">Pedidos</a></li>
                                     </ul>
                                 </li>
@@ -189,7 +189,6 @@
             <div class="modal fade" id="modalObjeto" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered modal-xl">
                     <div class="modal-content">
-
                         <div v-if="modalErro == false"> <!-- conteudo-->
                             <modal_header></modal_header> <!-- Cabecalho modal-->
                             <div v-if="modalSucesso == false"> <!-- conteudo modal -->
@@ -212,14 +211,28 @@
                                         @endcan
                                         @canAny(['admin', 'vendedor'])
                                             <div class="col">
-                                                <select_geral nome_model="cliente_id" :obj_dropdown="clientes" nome_atributo="name" id_atributo="id" nome="Defina um cliente"></select_geral>
+                                                <div class="form-floating mb-3">
+                                                    <select id="floatingInput" class="form-select" aria-label="Selecione" v-model="modelObjetos[0]['cliente_id']" v-on:change="buscaEnderecos()" required>
+                                                        <option v-for="(obj, index) in clientes" v-bind:value="obj.id" > @{{obj.name}}</option>
+                                                    </select>
+                                                    <label for="floatingInput">Defina um cliente</label>
+                                                </div>
+                                                <!-- <select_geral nome_model="cliente_id" :obj_dropdown="clientes" nome_atributo="name" id_atributo="id" nome="Defina um cliente"></select_geral> -->
                                             </div>
                                         @endcan
                                         <div class="col">
                                             <select_geral nome_model="metodo_pagamento_id" :obj_dropdown="metodo_pagamentos" nome_atributo="name" id_atributo="id" nome="Qual a forma de pagamento"></select_geral>
                                         </div>
+                                        @can('admin')
+                                            <div class="col">
+                                                <input_geral nome="Descontos" tipo="number" nome_model="total_discount"></input_geral>
+                                            </div>
+                                        @endcan
                                         <div class="col">
-                                             <input_geral nome="Observações" tipo="text" nome_model="observation"></input_geral>
+                                            <select_geral nome_model="endereco_id" :obj_dropdown="enderecos" nome_atributo="name" id_atributo="id" nome="Endereço"></select_geral>
+                                        </div>
+                                        <div class="col">
+                                            <input_geral nome="Observações" tipo="text" nome_model="observation"></input_geral>
                                         </div>
                                     </div>
                                     <div class="row"><h5>Encontrar produtos</h5></div>
@@ -442,10 +455,23 @@
                                             <select_geral nome_model="enderecoable_id" :obj_dropdown="pessoas" nome_atributo="name" id_atributo="id" nome="Escolha o proprietario" ></select_geral>
                                         @endcan
                                         @can('vendedor')
-                                            <div style="display: none">
-                                                @{{ modelObjetos[0]['tipoPessoa'] = "cliente"  }}
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked" v-model="meuDado" >
+                                                <label class="form-check-label" for="flexSwitchCheckChecked">Meu endereço</label>
                                             </div>
-                                            <select_geral nome_model="enderecoable_id" :obj_dropdown="clientes" nome_atributo="name" id_atributo="id" nome="Escolha o cliente" ></select_geral>
+                                            <br>
+                                            <div v-if="meuDado == true">
+                                                <div style="display: none">
+                                                    @{{ modelObjetos[0]['tipoPessoa'] = "vendedor"  }}
+                                                    @{{ modelObjetos[0]['enderecoable_id'] = idUsuario  }}
+                                                </div>
+                                            </div>
+                                            <div v-else>
+                                                <div style="display: none">
+                                                    @{{ modelObjetos[0]['tipoPessoa'] = "cliente"  }}
+                                                </div>
+                                                <select_geral nome_model="enderecoable_id" :obj_dropdown="clientes" nome_atributo="name" id_atributo="id" nome="Escolha o cliente" ></select_geral>
+                                            </div>
                                         @endcan
                                         @can('cliente')
                                             <div style="display: none">
@@ -453,6 +479,7 @@
                                                 @{{ modelObjetos[0]['enderecoable_id'] = idUsuario  }}
                                             </div>
                                         @endcan
+                                        <input_geral nome="Nome do endereço" tipo="text" nome_model="name"></input_geral>
                                         <input_geral nome="Logradouro" tipo="text" nome_model="street_name"></input_geral>
                                         <input_geral nome="Numero" tipo="number" nome_model="house_number"></input_geral>
                                         <input_geral nome="CEP" tipo="text" nome_model="cep"></input_geral>
@@ -474,10 +501,23 @@
                                             <select_geral nome_model="telefoneable_id" :obj_dropdown="pessoas" nome_atributo="name" id_atributo="id" nome="Escolha o proprietario" ></select_geral>
                                         @endcan
                                         @can('vendedor')
-                                            <div style="display: none">
-                                                @{{ modelObjetos[0]['tipoPessoa'] = "cliente"  }}
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked" v-model="meuDado" >
+                                                <label class="form-check-label" for="flexSwitchCheckChecked">Meu endereço</label>
                                             </div>
-                                            <select_geral nome_model="telefoneable_id" :obj_dropdown="clientes" nome_atributo="name" id_atributo="id" nome="Escolha o cliente" ></select_geral>
+                                            <br>
+                                            <div v-if="meuDado == true">
+                                                <div style="display: none">
+                                                    @{{ modelObjetos[0]['tipoPessoa'] = "vendedor"  }}
+                                                    @{{ modelObjetos[0]['telefoneable_id'] = idUsuario  }}
+                                                </div>
+                                            </div>
+                                            <div v-else>
+                                                <div style="display: none">
+                                                    @{{ modelObjetos[0]['tipoPessoa'] = "cliente"  }}
+                                                </div>
+                                                <select_geral nome_model="telefoneable_id" :obj_dropdown="clientes" nome_atributo="name" id_atributo="id" nome="Escolha o cliente" ></select_geral>
+                                            </div>
                                         @endcan
                                         @can('cliente')
                                             <div style="display: none">
@@ -543,29 +583,6 @@
 
             <!-- Tabelas -->
                 <div v-if="titulo != ''">
-                    @canAny('cliente', 'vendedor')
-                        <!-- Tabela Pedido -->
-                        <div v-if="nomeObjeto == 'pedido' && objetos !== null" class="row">
-                            <table_acordion_pedidos
-                                :classe_atributos="[
-                                    {titulo: 'Data solicitação', conteudo: 'created_at', ordenacao: 'pedidos.created_at'},
-                                    {titulo: 'Total', conteudo: 'total_price', ordenacao: 'pedidos.total_price'},
-                                    {titulo: 'Metodo de pagamento', conteudo: 'metodo_pagamento', conteudo2: 'name', ordenacao: 'metodo_pagamentos.name'},
-                                    {titulo: 'Cliente', conteudo: 'cliente', conteudo2: 'name' , ordenacao: 'clientes.name'},
-                                    {titulo: 'Vendedor',  conteudo: 'vendedor', conteudo2: 'name', ordenacao: 'vendedors.name'}
-                                ]"
-                                :objeto_imp="objetos"
-                                :obj_acordion="[
-                                    {titulo: 'Pedido aprovado em', conteudo: 'approval_date'},
-                                    {titulo: 'Data entrega', conteudo: 'delivery_date'},
-                                    {titulo: 'Data pagamento', conteudo: 'payday'},
-                                    {titulo: 'Descontos', conteudo: 'total_discount'},
-                                    {titulo: 'Observação', conteudo: 'observation'}
-                                ]"
-                            >
-                            </table_acordion_pedidos>
-                        </div>
-                    @endcan
                     @can('admin')
                         <!-- Tabela Pedido -->
                         <div v-if="nomeObjeto == 'pedido' && objetos !== null" class="row">
@@ -583,6 +600,7 @@
                                 :obj_acordion="[
                                     {titulo: 'Metodo de pagamento', conteudo: 'metodo_pagamento', conteudo2: 'name'},
                                     {titulo: 'Descontos', conteudo: 'total_discount'},
+                                    {titulo: 'Endereço', conteudo: 'endereco', conteudo2: 'name'},
                                     {titulo: 'Observação', conteudo: 'observation'}
                                 ]"
                             >
@@ -758,6 +776,7 @@
                         <!-- Tabela Endereco -->
                         <div v-else-if="nomeObjeto == 'endereco' && objetos !== null" class="row">
                             <table_acordion     :classe_atributos="[
+                                                        {titulo: 'Nome', conteudo: 'name', ordenacao: 'enderecos.name'},
                                                         {titulo: 'Logradouro', conteudo: 'street_name', ordenacao: 'enderecos.street_name'},
                                                         {titulo: 'Bairro', conteudo: 'bairro', conteudo2: 'name_neighborhood', ordenacao: 'bairros.name_neighborhood'},
                                                         {titulo: 'Cidade', conteudo: 'bairro', conteudo2: 'cidade', conteudo3: 'name_city', ordenacao: 'cidades.name_city'},
@@ -878,6 +897,28 @@
                         </div>
 
                     @elsecan('vendedor')
+                        <!-- Tabela Pedido -->
+                        <div v-if="nomeObjeto == 'pedido' && objetos !== null" class="row">
+                            <table_acordion_pedidos_restrito
+                                :classe_atributos="[
+                                    {titulo: 'Data solicitação', conteudo: 'created_at', ordenacao: 'pedidos.created_at'},
+                                    {titulo: 'Total', conteudo: 'total_price', ordenacao: 'pedidos.total_price'},
+                                    {titulo: 'Metodo de pagamento', conteudo: 'metodo_pagamento', conteudo2: 'name', ordenacao: 'metodo_pagamentos.name'},
+                                    {titulo: 'Cliente', conteudo: 'cliente', conteudo2: 'name' , ordenacao: 'clientes.name'},
+                                    {titulo: 'Vendedor',  conteudo: 'vendedor', conteudo2: 'name', ordenacao: 'vendedors.name'}
+                                ]"
+                                :objeto_imp="objetos"
+                                :obj_acordion="[
+                                    {titulo: 'Pedido aprovado em', conteudo: 'approval_date'},
+                                    {titulo: 'Data entrega', conteudo: 'delivery_date'},
+                                    {titulo: 'Data pagamento', conteudo: 'payday'},
+                                    {titulo: 'Descontos', conteudo: 'total_discount'},
+                                    {titulo: 'Endereço', conteudo: 'endereco', conteudo2: 'name'},
+                                    {titulo: 'Observação', conteudo: 'observation'}
+                                ]"
+                            >
+                            </table_acordion_pedidos_restrito>
+                        </div>
                         <!-- Tabela Meus Dados VENDEDOR -->
                         <div v-else-if="nomeObjeto == ('vendedor/'+idUsuario) && objetos !== null" class="row">
                             <div class="card card-body">
@@ -963,6 +1004,7 @@
                         <!-- Tabela Endereco -->
                         <div v-else-if="nomeObjeto == 'endereco' && objetos !== null" class="row">
                             <table_acordion     :classe_atributos="[
+                                                        {titulo: 'Nome', conteudo: 'name', ordenacao: 'enderecos.name'},
                                                         {titulo: 'Logradouro', conteudo: 'street_name', ordenacao: 'enderecos.street_name'},
                                                         {titulo: 'Bairro', conteudo: 'bairro', conteudo2: 'name_neighborhood', ordenacao: 'bairros.name_neighborhood'},
                                                         {titulo: 'Cidade', conteudo: 'bairro', conteudo2: 'cidade', conteudo3: 'name_city', ordenacao: 'cidades.name_city'},
@@ -1000,7 +1042,7 @@
                         </div>
                     @elsecan('cliente')
                         <!-- Tabela Meus dados Cliente -->
-                        <div v-else-if="nomeObjeto == ('cliente/'+idUsuario) && objetos !== null" class="row">
+                        <div v-if="nomeObjeto == ('cliente/'+idUsuario) && objetos !== null" class="row">
                             <div class="card card-body">
                                 <div class="row">
                                     <div class="col">
@@ -1090,6 +1132,7 @@
                         <!-- Tabela Endereco -->
                         <div v-else-if="nomeObjeto == 'endereco' && objetos !== null" class="row">
                             <table_acordion     :classe_atributos="[
+                                                        {titulo: 'Nome', conteudo: 'name', ordenacao: 'enderecos.name'},
                                                         {titulo: 'Logradouro', conteudo: 'street_name'},
                                                         {titulo: 'Bairro', conteudo: 'bairro', conteudo2: 'name_neighborhood'},
                                                         {titulo: 'Cidade', conteudo: 'bairro', conteudo2: 'cidade', conteudo3: 'name_city'},
@@ -1122,6 +1165,29 @@
                                                 >
                             </table_acordion>
                         </div>
+
+                        <!-- Tabela Pedido -->
+                        <div v-else-if="nomeObjeto == 'pedido' && objetos !== null" class="row">
+                            <table_acordion_pedidos_restrito
+                                :classe_atributos="[
+                                    {titulo: 'Data solicitação', conteudo: 'created_at', ordenacao: 'pedidos.created_at'},
+                                    {titulo: 'Total', conteudo: 'total_price', ordenacao: 'pedidos.total_price'},
+                                    {titulo: 'Metodo de pagamento', conteudo: 'metodo_pagamento', conteudo2: 'name', ordenacao: 'metodo_pagamentos.name'},
+                                    {titulo: 'Cliente', conteudo: 'cliente', conteudo2: 'name' , ordenacao: 'clientes.name'},
+                                    {titulo: 'Vendedor',  conteudo: 'vendedor', conteudo2: 'name', ordenacao: 'vendedors.name'}
+                                ]"
+                                :objeto_imp="objetos"
+                                :obj_acordion="[
+                                    {titulo: 'Pedido aprovado em', conteudo: 'approval_date'},
+                                    {titulo: 'Data entrega', conteudo: 'delivery_date'},
+                                    {titulo: 'Data pagamento', conteudo: 'payday'},
+                                    {titulo: 'Descontos', conteudo: 'total_discount'},
+                                    {titulo: 'Endereço', conteudo: 'endereco', conteudo2: 'name'},
+                                    {titulo: 'Observação', conteudo: 'observation'}
+                                ]"
+                            >
+                            </table_acordion_pedidos_restrito>
+                        </div>
                     @endcan
 
 
@@ -1132,9 +1198,6 @@
                         <h3>Carregando...</h3>
                     </div>
                 </div>
-
-
-
         </div>
     </div>
 </body>

@@ -10,6 +10,7 @@ class Endereco extends Model
     use HasFactory;
 
     protected $fillable = [
+        'name',
         'street_name',
         'cep',
         'house_number',
@@ -25,5 +26,9 @@ class Endereco extends Model
 
     public function enderecoable(){
         return $this->morphTo();
+    }
+
+    public function pedidos(){
+        return $this->hasMany(Pedido::class);
     }
 }

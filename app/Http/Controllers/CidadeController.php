@@ -46,7 +46,7 @@ class CidadeController extends Controller
         }
 
         else{
-            $cidade->orderBy('cidades.name');
+            $cidade->orderBy('cidades.name_city');
         }
 
         if ($request->has('paginacao')) {

@@ -24,23 +24,20 @@ class EnderecoRequest extends FormRequest
     public function rules()
     {
         return [
+            'name' => 'required|max: 45',
             'street_name' => 'required|max: 45',
             'complement' => 'required|max: 45',
             'cep' => 'required|integer',
-            'house_number' => 'required|integer',
-            
-
-
-            /*'modelo' => 'required|max:50',
-            'ano' => 'required|integer|min:1900',
-            'km' => 'required|integer',
-            'placa' => 'required|max:7'*/
+            'house_number' => 'required|integer'
         ];
     }
 
     public function messages()
     {
         return [
+            'name.required' => 'Nome é obrigatório',
+            'name.max' => 'Máximo 45 caracteres para o nome',
+
             'street_name.required' => 'Nome da rua é obrigatório',
             'street_name.max' => 'Máximo 45 caracteres para o nome da rua',
 
@@ -55,8 +52,8 @@ class EnderecoRequest extends FormRequest
             'house_number.required' => 'O número da casa é obrigatório',
             'house_number.integer' => 'O número da casa deve ser inteiro',
 
-            
-            
+
+
 
 
             /*'modelo.required' => 'Mdelo é obrigatório',

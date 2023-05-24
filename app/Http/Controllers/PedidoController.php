@@ -7,6 +7,8 @@ use App\Models\Produto;
 use Illuminate\Http\Request;
 use App\Http\Requests\PedidoRequest;
 
+use Illuminate\Support\Facades\DB;
+
 use App\Http\Resources\TesteResource;
 
 class PedidoController extends Controller
@@ -21,15 +23,16 @@ class PedidoController extends Controller
         //return Pedido::all();
         //return Pedido::with(['produtos', 'cliente', 'vendedor', 'metodoPagamento'])->paginate(4);
 
-        $pedido = Pedido::with(['produtos', 'cliente', 'vendedor', 'metodoPagamento'])
+        $pedido = Pedido::with(['produtos', 'cliente', 'vendedor', 'metodoPagamento', 'endereco'])
         ->join('metodo_pagamentos', 'pedidos.metodo_pagamento_id', '=', 'metodo_pagamentos.id' )
         ->join('vendedors', 'pedidos.vendedor_id', '=', 'vendedors.id' )
         ->join('clientes', 'pedidos.cliente_id', '=', 'clientes.id' )
+        ->join('enderecos', 'pedidos.endereco_id', '=', 'enderecos.id' )
         ->select('pedidos.*')
         ->groupBy('pedidos.id', 'pedidos.payday', 'pedidos.delivery_date',
             'pedidos.approval_date','pedidos.total_price','pedidos.total_discount',
             'pedidos.metodo_pagamento_id','pedidos.observation',
-            'pedidos.cliente_id','pedidos.vendedor_id',
+            'pedidos.cliente_id','pedidos.vendedor_id', 'pedidos.endereco_id',
              'pedidos.created_at', 'pedidos.updated_at');
 
 
@@ -58,9 +61,9 @@ class PedidoController extends Controller
             $pedido->orderBy($request->ordenacaoBusca);
         }
 
-        else{
+        /*else{
             $pedido->orderBy('pedidos.name');
-        }
+        }*/
 
         if ($request->has('paginacao')) {
             return $pedido->get();
@@ -168,16 +171,21 @@ class PedidoController extends Controller
 
     public function aprovarPedido(Request $request, Pedido $pedido)
     {
-        return $pedido->update($request->only('approval_date'));
+        error_log('aprovacao '.$request->approval_date.$request->id.$pedido->id);
+        //return $pedido = Pedido::findOrFail($request->id)->update($request->only('approval_date'));
+        //$pedido = Pedido::findOrFail($request->id);
+        $pedido->criarMovimentacoesEstoque();
+        return $pedido->update(['approval_date' => DB::raw('NOW()')]);
+        //return $pedido->update($request->only('approval_date'));
     }
 
     public function aprovarEntrega(Request $request, Pedido $pedido)
     {
-        return $pedido->update($request->only('delivery_date'));
+        return $pedido->update(['delivery_date' => DB::raw('NOW()')]);
     }
 
     public function aprovarPagamento(Request $request, Pedido $pedido)
     {
-        return $pedido->update($request->only('payday'));
+        return $pedido->update(['payday' => DB::raw('NOW()')]);
     }
 }
