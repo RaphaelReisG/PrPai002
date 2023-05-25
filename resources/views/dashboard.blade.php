@@ -1624,7 +1624,7 @@
                             <td colspan="3">Total: R$ @{{ pedidoImpressao['data']['total_price']}}</td>
                         </tr>
                         <tr>
-                            <td colspan="3">Data emissão: @{{ pedidoImpressao['data']['created_at']}}</td>
+                            <td colspan="3">Data emissão: @{{ new Date(pedidoImpressao['data']['created_at']).toLocaleString()}}</td>
                             <td colspan="7">Observações: @{{ pedidoImpressao['data']['observation']}}</td>
                         </tr>
                         <tr>
