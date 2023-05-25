@@ -14,6 +14,8 @@
     <!-- Fonts -->
     <link href="https://fonts.bunny.net/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
 
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
     <!-- Styles -->
     <style>
         /*! normalize.css v8.0.1 | MIT License | github.com/necolas/normalize.css */
@@ -406,7 +408,23 @@
         body {
             font-family: 'Nunito', sans-serif;
         }
+
+        .underline {
+            font-weight: bold;
+            font-size: 20px;
+            color: hsl(0, 90%, 58%);
+        }
+
+        .underline:hover {
+            color: white;
+        }
+
+        .Salg {
+            margin-top: 80px;
+        }
     </style>
+
+
 </head>
 
 <body class="antialiased">
@@ -416,7 +434,7 @@
             <div class="hidden fixed top-0 right-0 px-6 py-4 sm:block">
                 @auth
                     <a href="{{ url('/dashboard') }}"
-                        class="text-sm text-gray-700 dark:text-gray-500 underline">Dashboard</a>
+                        class="text-sm text-gray-700 dark:text-gray-500 underline">Dashboar</a>
                 @else
                     <a href="{{ route('login') }}" class="text-sm text-gray-700 dark:text-gray-500 underline">Entrar</a>
 
@@ -430,8 +448,8 @@
 
         <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
             <div class="flex justify-center pt-8 sm:justify-start sm:pt-0">
-                <h1 style="color: red;">SALGADOS ZILLA</h1>
-                <img src="./logo.png" width="130" height="130">
+                <h1 class="Salg" style="color: red; font-size: 3.5rem">SALGADOS ZILLA</h1>
+                <img src="./logo.png" width="250" height="250">
             </div>
 
             <!-- <div class="mt-8 bg-white dark:bg-gray-800 overflow-hidden shadow sm:rounded-lg">
@@ -446,11 +464,12 @@
                         <h2>Feito por Raphael, Rafael, Murilo, Emily e Gabriel</h2>
                     </div>
                 </div>
-
-
             </div>
+
         </div>
+
     </div>
+
 </body>
 
 </html>
