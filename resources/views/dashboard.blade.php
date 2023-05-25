@@ -23,6 +23,7 @@
         .btn-red {
             background-color: hsl(0, 70%, 65%);
             color: white;
+            width: 70px;
         }
 
         /*Barra de navegação*/
@@ -31,8 +32,6 @@
             font-weight: bold;
             font-size: 20px;
         }
-
-
 
         /*opções da barra de navegação*/
         .nav-link {
@@ -1597,13 +1596,13 @@
                             <td colspan="7">SALGADOS ZILLA</td>
                         </tr>
                         <tr>
-                            <td colspan="7">Vendedor: @{{ objetos['data'][index]['vendedor']['name']}}</td>
-                            <td colspan="3">Contato vendedor: @{{ objetos['data'][index]['vendedor']['telefones'][0]['number_phone']}}</td>
+                            <td colspan="7">Vendedor: @{{ objetos['data'][index]['vendedor']['name'] }}</td>
+                            <td colspan="3">Contato vendedor: @{{ objetos['data'][index]['vendedor']['telefones'][0]['number_phone'] }}</td>
                         </tr>
                         <tr>
-                            <td colspan="4">Cliente:  @{{ objetos['data'][index]['cliente']['name']}}</td>
-                            <td colspan="3">Razão Social:  @{{ objetos['data'][index]['vendedor']['company_name']}}</td>
-                            <td colspan="3">Contato cliente:  @{{ objetos['data'][index]['cliente']['telefones'][0]['number_phone']}}</td>
+                            <td colspan="4">Cliente: @{{ objetos['data'][index]['cliente']['name'] }}</td>
+                            <td colspan="3">Razão Social: @{{ objetos['data'][index]['vendedor']['company_name'] }}</td>
+                            <td colspan="3">Contato cliente: @{{ objetos['data'][index]['cliente']['telefones'][0]['number_phone'] }}</td>
                         </tr>
                         <tr>
                             <td colspan="4">CIDADE</td>
@@ -1629,11 +1628,13 @@
                             <td colspan="10"> itens</td>
                         </tr>
                         <tr>
-                            <td colspan="8">Declaro que recebi os produtos descritos neste pedido <br> Observações adicionais</td>
+                            <td colspan="8">Declaro que recebi os produtos descritos neste pedido <br> Observações
+                                adicionais</td>
                             <td colspan="2">Pedido Nº <br> Cliente: <br> TOTAL</td>
                         </tr>
                         <tr>
-                            <td colspan="10">Data: ___/___/___ Assinatura: ________________________________________________________________</td>
+                            <td colspan="10">Data: ___/___/___ Assinatura:
+                                ________________________________________________________________</td>
                         </tr>
                     </tbody>
                 </table>
