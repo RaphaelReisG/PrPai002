@@ -12,6 +12,8 @@ var app = new Vue({
         nomeObjeto: "",
         meuDado: false,
 
+        impressao: false,
+
         alterarSenha: false,
 
         tiposPessoa: [
@@ -1594,7 +1596,7 @@ var app = new Vue({
                 if (error == true) {
                     return true
                 }
-                
+
                 else{
                     return false;
                 }

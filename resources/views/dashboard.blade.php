@@ -1589,7 +1589,57 @@
                     <h3>Carregando...</h3>
                 </div>
             </div>
+            <div v-if="impressao == true">
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <td colspan="3"><img src="./logo.png" width="50" height="50"></td>
+                            <td colspan="7">SALGADOS ZILLA</td>
+                        </tr>
+                        <tr>
+                            <td colspan="7">Vendedor: @{{ objetos['data'][index]['vendedor']['name']}}</td>
+                            <td colspan="3">Contato vendedor: @{{ objetos['data'][index]['vendedor']['telefones'][0]['number_phone']}}</td>
+                        </tr>
+                        <tr>
+                            <td colspan="4">Cliente:  @{{ objetos['data'][index]['cliente']['name']}}</td>
+                            <td colspan="3">Razão Social:  @{{ objetos['data'][index]['vendedor']['company_name']}}</td>
+                            <td colspan="3">Contato cliente:  @{{ objetos['data'][index]['cliente']['telefones'][0]['number_phone']}}</td>
+                        </tr>
+                        <tr>
+                            <td colspan="4">CIDADE</td>
+                            <td colspan="4">BAIRRO</td>
+                            <td colspan="2">CEP</td>
+                        </tr>
+                        <tr>
+                            <td colspan="5">LOGRADOURO</td>
+                            <td colspan="1">NUMERO</td>
+                            <td colspan="4">COMPLEMENTO</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">Nº Pedido </td>
+                            <td colspan="3">Forma de pagamento</td>
+                            <td colspan="2">Descontos</td>
+                            <td colspan="3">Total com desconto</td>
+                        </tr>
+                        <tr>
+                            <td colspan="3">Data emissão </td>
+                            <td colspan="7">Observações</td>
+                        </tr>
+                        <tr>
+                            <td colspan="10"> itens</td>
+                        </tr>
+                        <tr>
+                            <td colspan="8">Declaro que recebi os produtos descritos neste pedido <br> Observações adicionais</td>
+                            <td colspan="2">Pedido Nº <br> Cliente: <br> TOTAL</td>
+                        </tr>
+                        <tr>
+                            <td colspan="10">Data: ___/___/___ Assinatura: ________________________________________________________________</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
+
     </div>
 </body>
 
