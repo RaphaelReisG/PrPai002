@@ -19,11 +19,37 @@
     <!-- <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script> -->
 
     <style>
+        /*Cor do botão sair*/
         .btn-red {
             background-color: hsl(0, 70%, 65%);
             color: white;
         }
+
+        /*Barra de navegação*/
+        /*Título na barra de navegação*/
+        .navbar-brand {
+            font-weight: bold;
+            font-size: 20px;
+        }
+
+
+
+        /*opções da barra de navegação*/
+        .nav-link {
+            font-weight: bold;
+            font-size: 20px;
+        }
+
+        .nav-link:hover {
+            color: hsl(0, 70%, 65%);
+        }
+
+        .ola {
+            font-weight: bold;
+            font-size: 20px;
+        }
     </style>
+
 </head>
 
 <body>
@@ -232,7 +258,7 @@
                 <hr>
             </div>
             <div class="row">
-                <div v-if="titulo == ''">
+                <div v-if="titulo == ''" class="ola">
                     @can('cliente')
                         Olá cliente seja bem vindo ao sistema.
                     @elsecan('admin')
