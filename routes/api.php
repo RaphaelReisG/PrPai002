@@ -37,24 +37,24 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::apiResource('administrador', AdministradorController::class)->middleware('auth:sanctum');
-Route::apiResource('bairro', BairroController::class);
-Route::apiResource('cidade', CidadeController::class);
-Route::apiResource('cliente', ClienteController::class);
-Route::apiResource('endereco', EnderecoController::class);
-Route::apiResource('estado', EstadoController::class);
-Route::apiResource('estoque', EstoqueController::class);
-Route::apiResource('fornecedor', FornecedorController::class);
-Route::apiResource('marca', MarcaController::class);
-Route::apiResource('metodo_pagamento', MetodoPagamentoController::class);
-Route::apiResource('pais', PaisController::class);
-Route::apiResource('pedido', PedidoController::class);
+Route::apiResource('bairro', BairroController::class)->middleware('auth:sanctum');
+Route::apiResource('cidade', CidadeController::class)->middleware('auth:sanctum');
+Route::apiResource('cliente', ClienteController::class)->middleware('auth:sanctum');
+Route::apiResource('endereco', EnderecoController::class)->middleware('auth:sanctum');
+Route::apiResource('estado', EstadoController::class)->middleware('auth:sanctum');
+Route::apiResource('estoque', EstoqueController::class)->middleware('auth:sanctum');
+Route::apiResource('fornecedor', FornecedorController::class)->middleware('auth:sanctum');
+Route::apiResource('marca', MarcaController::class)->middleware('auth:sanctum');
+Route::apiResource('metodo_pagamento', MetodoPagamentoController::class)->middleware('auth:sanctum');
+Route::apiResource('pais', PaisController::class)->middleware('auth:sanctum');
+Route::apiResource('pedido', PedidoController::class)->middleware('auth:sanctum');
 
-Route::put('pedido_aprovacao/{pedido}', [PedidoController::class, 'aprovarPedido']);
-Route::put('pedido_entrega/{pedido}', [PedidoController::class, 'aprovarEntrega']);
-Route::put('pedido_pagamento/{pedido}', [PedidoController::class, 'aprovarPagamento']); 
+Route::put('pedido_aprovacao/{pedido}', [PedidoController::class, 'aprovarPedido'])->middleware('auth:sanctum');
+Route::put('pedido_entrega/{pedido}', [PedidoController::class, 'aprovarEntrega'])->middleware('auth:sanctum');
+Route::put('pedido_pagamento/{pedido}', [PedidoController::class, 'aprovarPagamento'])->middleware('auth:sanctum');
 
-Route::apiResource('produto', ProdutoController::class);
-Route::apiResource('vendedor', VendedorController::class);
-Route::apiResource('telefone', TelefoneController::class);
-Route::apiResource('tipo_movimentacao', TipoMovimentacaoController::class);
-Route::apiResource('tipo_produto', TipoProdutoController::class);
+Route::apiResource('produto', ProdutoController::class)->middleware('auth:sanctum');
+Route::apiResource('vendedor', VendedorController::class)->middleware('auth:sanctum');
+Route::apiResource('telefone', TelefoneController::class)->middleware('auth:sanctum');
+Route::apiResource('tipo_movimentacao', TipoMovimentacaoController::class)->middleware('auth:sanctum');
+Route::apiResource('tipo_produto', TipoProdutoController::class)->middleware('auth:sanctum');
