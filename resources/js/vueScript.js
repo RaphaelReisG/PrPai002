@@ -840,6 +840,8 @@ var app = new Vue({
             this.temPaginacao = false;
             this.alterarSenha = false;
 
+            this.modelObjetos[0]['buscarObjetoProduto'] = "",
+
             this.modelObjetos[0]['tipoPessoa'] = "";
 
             this.modelObjetos[0]['name'] = "";
@@ -1954,9 +1956,9 @@ var app = new Vue({
                 .then(response => (this.produtos = response.data))
                 .catch(error => (this.error = error));
         },
-        buscarMeuProduto: function() {
-            this.temPaginacao = true;
-            this.meuProduto = null;
+        buscarMeuProduto: async function() {
+
+            //this.meuProduto = null;
             this.carregandoGeral = true;
             var url;
             //url = '/api/marca'+'?paginacao=false';
@@ -1965,7 +1967,7 @@ var app = new Vue({
 
             //alert(url);
 
-            axios
+            await axios
                 .get(url, {
                     headers: {
                       Authorization: 'Bearer '+this.tokenUsuario
@@ -1973,6 +1975,8 @@ var app = new Vue({
                   })
                 .then(response => (this.meuProduto = response.data))
                 .catch(error => (this.error = error));
+
+            this.temPaginacao = true;
         },
         buscaTipo_produtos: function() {
             this.tipo_produtos = null;
@@ -2161,7 +2165,7 @@ var app = new Vue({
             }
         },
         imprimePedido: async function(id){
-            alert('opa');
+            //alert('opa');
             this.pedidoImpressao = null;
 
             this.carregandoGeral = true;
@@ -2180,7 +2184,7 @@ var app = new Vue({
                 .catch(error => (this.error = error));
 
             this.impressao = true;
-            alert('opa2');
+            //alert('opa2');
         },
     }
 })

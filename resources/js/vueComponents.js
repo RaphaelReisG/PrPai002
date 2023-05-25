@@ -283,8 +283,8 @@ Vue.component('modal_sucesso', {
                         <th scope="col">Opções</th>
                     </tr>
                 </thead>
-                <tbody class="table-group-divider" v-for="(obj, index) in objeto_imp">
-                    <tr data-bs-toggle="collapse" v-bind:data-bs-target="'#collapseExample'+obj.id" data-bs-target="#collapseExample" aria-expanded="false" v-bind:aria-controls="'collapseExample'+obj.id" aria-controls="collapseExample">
+                <tbody class="table-group-divider" >
+                    <tr v-for="(obj, index) in objeto_imp">
                         <td v-for="valor in classe_atributos">{{ obj[valor.conteudo] }}</td>
                         <td v-if="obj.user_id == $root.idUsuario">
                             <button_alter :objindex="index"></button_alter>
@@ -309,8 +309,8 @@ Vue.component('modal_sucesso', {
                         <th scope="col">Opções</th>
                     </tr>
                 </thead>
-                <tbody class="table-group-divider" v-for="(obj, index) in objeto_imp">
-                    <tr data-bs-toggle="collapse" v-bind:data-bs-target="'#collapseExample'+obj.id" data-bs-target="#collapseExample" aria-expanded="false" v-bind:aria-controls="'collapseExample'+obj.id" aria-controls="collapseExample">
+                <tbody class="table-group-divider" >
+                    <tr v-for="(obj, index) in objeto_imp">
                         <td>{{ index+1 }}</td>
                         <td v-for="valor in classe_atributos">{{ obj[valor.conteudo] }}</td>
                         <td>
@@ -364,8 +364,8 @@ Vue.component('modal_sucesso', {
                         <th scope="col" v-for="atributo in classe_atributos">{{atributo.titulo}}</th>
                     </tr>
                 </thead>
-                <tbody class="table-group-divider" v-for="(obj, index) in objeto_imp">
-                    <tr>
+                <tbody class="table-group-divider" >
+                    <tr v-for="(obj, index) in objeto_imp">
                         <td>
                             <button_add_produto :objindex="index"></button_add_produto>
                         </td>
@@ -400,8 +400,8 @@ Vue.component('modal_sucesso', {
                         <th scope="col" v-for="atributo in classe_atributos">{{atributo.titulo}}</th>
                     </tr>
                 </thead>
-                <tbody class="table-group-divider" v-for="(obj, index) in objeto_imp">
-                    <tr>
+                <tbody class="table-group-divider" >
+                    <tr v-for="(obj, index) in objeto_imp">
                         <td>
                             <button_remover_produto :objindex="index"></button_remover_produto>
                         </td>
@@ -1007,7 +1007,10 @@ Vue.component('button_imprimir', {
     props: ['objid'],
     template: `
         <button type="button" class="btn btn-outline-warning" v-on:click="$root.imprimePedido(objid)">
-            print
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-printer" viewBox="0 0 16 16">
+                <path d="M2.5 8a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z"/>
+                <path d="M5 1a2 2 0 0 0-2 2v2H2a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h1v1a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-1h1a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-1V3a2 2 0 0 0-2-2H5zM4 3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2H4V3zm1 5a2 2 0 0 0-2 2v1H2a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v-1a2 2 0 0 0-2-2H5zm7 2v3a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1z"/>
+            </svg>
         </button>
     `
 });

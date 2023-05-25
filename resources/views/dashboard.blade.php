@@ -367,7 +367,7 @@
                                             <button_buscar_produto></button_buscar_produto>
                                         </div>
                                     </div>
-                                    <div class="row">
+                                    <div class="row" v-if="temPaginacao == true">
                                         <table_comum_busca_produtos
                                             :classe_atributos="[
                                                 { titulo: 'Nome', conteudo: 'name' },
