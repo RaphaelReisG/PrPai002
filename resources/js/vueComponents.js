@@ -323,6 +323,37 @@ Vue.component('modal_sucesso', {
         `
     });
 
+    Vue.component('table_comum_sem_opcoes', {
+        props: ['classe_atributos','objeto_imp'],
+        template: `
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col" v-for="atributo in classe_atributos">{{atributo.titulo}}</th>
+                    </tr>
+                </thead>
+                <tbody class="table-group-divider" >
+                    <tr v-for="(obj, index) in objeto_imp">
+                        <td v-for="valor in classe_atributos">
+                            <div v-if="valor.conteudo !== 'created_at' && valor.conteudo2 == null ">
+                                {{ obj[valor.conteudo]  }}
+                            </div>
+                            <div v-else-if="valor.conteudo2 != null && valor.conteudo3 == null">
+                                {{ obj[valor.conteudo][valor.conteudo2]  }}
+                            </div>
+                            <div v-else-if="valor.conteudo3 != null">
+                                {{ obj[valor.conteudo][valor.conteudo2][valor.conteudo3]  }}
+                            </div>
+                            <div v-else>
+                                {{ new Date(obj[valor.conteudo]).toLocaleString() }}
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        `
+    });
+
     Vue.component('table_comum_busca_produtos', {
         props: ['classe_atributos','objeto_imp'],
         template: `
@@ -721,10 +752,12 @@ Vue.component('modal_sucesso', {
                         <td>
                             <div v-if="obj['approval_date'] !== null">
                                 <button_delete :objid= "obj.id"></button_delete>
+                                <button_imprimir :objid= "obj.id"></button_imprimir>
                             </div>
                             <div v-else>
                                 <button_alter :objindex="index"></button_alter>
                                 <button_delete :objid= "obj.id"></button_delete>
+                                <button_imprimir :objid= "obj.id"></button_imprimir>
                             </div>
 
                         </td>
@@ -782,7 +815,6 @@ Vue.component('modal_sucesso', {
                 </thead>
                 <tbody class="table-group-divider" v-for="(obj, index) in objeto_imp['data']">
                     <tr data-bs-toggle="collapse" v-bind:data-bs-target="'#collapseExample' + obj.id"  aria-expanded="false" v-bind:aria-controls="'collapseExample'+obj.id" aria-controls="collapseExample">
-
                         <td v-for="valor in classe_atributos">
                             <div v-if="valor.conteudo !== 'created_at' && valor.conteudo !== 'approval_date' && valor.conteudo !== 'delivery_date' && valor.conteudo !== 'payday' && valor.conteudo2 == null ">
                                 {{ obj[valor.conteudo]  }}
@@ -804,11 +836,12 @@ Vue.component('modal_sucesso', {
                         </td>
                         <td>
                             <div v-if="obj['approval_date'] !== null">
-                                -
+                                <button_imprimir :objid= "obj.id"></button_imprimir>
                             </div>
                             <div v-else>
                                 <button_alter :objindex="index"></button_alter>
                                 <button_delete :objid= "obj.id"></button_delete>
+                                <button_imprimir :objid= "obj.id"></button_imprimir>
                             </div>
                         </td>
                     </tr>
@@ -966,6 +999,15 @@ Vue.component('button_alter', {
                 <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
                 <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
             </svg>
+        </button>
+    `
+});
+
+Vue.component('button_imprimir', {
+    props: ['objid'],
+    template: `
+        <button type="button" class="btn btn-outline-warning" v-on:click="$root.imprimePedido(objid)">
+            print
         </button>
     `
 });

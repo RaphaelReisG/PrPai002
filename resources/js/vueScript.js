@@ -108,6 +108,7 @@ var app = new Vue({
         tipo_produtos: [{}],
         tipo_movimentacaos: [{}],
         metodo_pagamentos: [{}],
+        pedidoImpressao: [{}],
 
         meuProduto: [],
         meuCarrinho: [],
@@ -2158,6 +2159,28 @@ var app = new Vue({
             else{
                 alert("Cancelado");
             }
+        },
+        imprimePedido: async function(id){
+            alert('opa');
+            this.pedidoImpressao = null;
+
+            this.carregandoGeral = true;
+
+            var url = '/api/pedido/'+id;
+
+            //alert(url);
+
+            await axios
+                .get(url, {
+                    headers: {
+                      Authorization: 'Bearer '+this.tokenUsuario
+                    }
+                  })
+                .then(response => (this.pedidoImpressao = response.data))
+                .catch(error => (this.error = error));
+
+            this.impressao = true;
+            alert('opa2');
         },
     }
 })

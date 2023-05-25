@@ -40,7 +40,7 @@
         </div>
 
         <!-- Menu -->
-        <div>
+        <div v-if="impressao == false">
             <nav class="navbar navbar-expand-lg bg-light">
                 <div class="container-fluid">
                     <img src="./logo.png" width="50" height="50">
@@ -225,38 +225,40 @@
         </div>
         <!-- Conteudo Geral CRUDs -->
         <div class="container-lg">
-            <div class="row">
-                <h1>@{{ titulo }}</h1>
-            </div>
-            <div class="row">
-                <hr>
-            </div>
-            <div class="row">
-                <div v-if="titulo == ''">
-                    @can('cliente')
-                        Olá cliente seja bem vindo ao sistema.
-                    @elsecan('admin')
-                        Olá Administrador, seja bem vindo ao sistema.
-                    @elsecan('vendedor')
-                        Olá Vendedor, seja bem vindo ao sistema.
-                    @else
-                        Você não tem nenhuma permissão.
-                    @endcan
+            <div v-if="impressao == false">
+                <div class="row">
+                    <h1>@{{ titulo }}</h1>
                 </div>
+                <div class="row">
+                    <hr>
+                </div>
+                <div class="row">
+                    <div v-if="titulo == ''">
+                        @can('cliente')
+                            Olá cliente seja bem vindo ao sistema.
+                        @elsecan('admin')
+                            Olá Administrador, seja bem vindo ao sistema.
+                        @elsecan('vendedor')
+                            Olá Vendedor, seja bem vindo ao sistema.
+                        @else
+                            Você não tem nenhuma permissão.
+                        @endcan
+                    </div>
 
-                <div v-if="titulo !== '' && titulo !== 'Meus dados'">
-                    <!-- cabecalho geral -->
-                    <div class="row">
-                        <div class="col">
-                            <h2>
-                                Novo
-                                <button_add></button_add>
-                            </h2>
+                    <div v-if="titulo !== '' && titulo !== 'Meus dados'">
+                        <!-- cabecalho geral -->
+                        <div class="row">
+                            <div class="col">
+                                <h2>
+                                    Novo
+                                    <button_add></button_add>
+                                </h2>
+                            </div>
+                            <div class="col">
+                                <button_buscar></button_buscar>
+                            </div>
+                            <paginacao v-if="nomeObjeto !== '' && objetos !== null"></paginacao>
                         </div>
-                        <div class="col">
-                            <button_buscar></button_buscar>
-                        </div>
-                        <paginacao v-if="nomeObjeto !== '' && objetos !== null"></paginacao>
                     </div>
                 </div>
             </div>
@@ -758,7 +760,7 @@
 
 
             <!-- Tabelas -->
-            <div v-if="titulo != ''">
+            <div v-if="titulo != '' && impressao == false">
                 @can('admin')
                     <!-- Tabela Pedido -->
                     <div v-if="nomeObjeto == 'pedido' && objetos !== null" class="row">
@@ -1564,6 +1566,7 @@
                 </div>
             </div>
             <div v-if="impressao == true">
+                <p v-on:click="impressao = false"><-</p>
                 <table class="table table-bordered">
                     <tbody>
                         <tr>
@@ -1571,40 +1574,58 @@
                             <td colspan="7">SALGADOS ZILLA</td>
                         </tr>
                         <tr>
-                            <td colspan="7">Vendedor: @{{ objetos['data'][index]['vendedor']['name']}}</td>
-                            <td colspan="3">Contato vendedor: @{{ objetos['data'][index]['vendedor']['telefones'][0]['number_phone']}}</td>
+                            <td colspan="7">Vendedor: @{{ pedidoImpressao['data']['vendedor']['name']}}</td>
+                            <td colspan="3">Contato vendedor: @{{ pedidoImpressao['data']['vendedor']['telefones'][0]['number_phone']}}</td>
                         </tr>
                         <tr>
-                            <td colspan="4">Cliente:  @{{ objetos['data'][index]['cliente']['name']}}</td>
-                            <td colspan="3">Razão Social:  @{{ objetos['data'][index]['vendedor']['company_name']}}</td>
-                            <td colspan="3">Contato cliente:  @{{ objetos['data'][index]['cliente']['telefones'][0]['number_phone']}}</td>
+                            <td colspan="4">Cliente:  @{{ pedidoImpressao['data']['cliente']['name']}}</td>
+                            <td colspan="3">Razão Social:  @{{ pedidoImpressao['data']['cliente']['company_name']}}</td>
+                            <td colspan="3">Contato cliente:  @{{ pedidoImpressao['data']['cliente']['telefones'][0]['number_phone']}}</td>
                         </tr>
                         <tr>
-                            <td colspan="4">CIDADE</td>
-                            <td colspan="4">BAIRRO</td>
-                            <td colspan="2">CEP</td>
+                            <td colspan="4">Cidade: @{{ pedidoImpressao['data']['endereco']['bairro']['cidade']['name_city']}}</td>
+                            <td colspan="4">Bairro: @{{ pedidoImpressao['data']['endereco']['bairro']['name_neighborhood']}}</td>
+                            <td colspan="2">CEP: @{{ pedidoImpressao['data']['endereco']['cep']}}</td>
                         </tr>
                         <tr>
-                            <td colspan="5">LOGRADOURO</td>
-                            <td colspan="1">NUMERO</td>
-                            <td colspan="4">COMPLEMENTO</td>
+                            <td colspan="5">Logradouro: @{{ pedidoImpressao['data']['endereco']['street_name']}}</td>
+                            <td colspan="1">Nº @{{ pedidoImpressao['data']['endereco']['house_number']}}</td>
+                            <td colspan="4">Complemento: @{{ pedidoImpressao['data']['endereco']['complement']}}</td>
                         </tr>
                         <tr>
-                            <td colspan="2">Nº Pedido </td>
-                            <td colspan="3">Forma de pagamento</td>
-                            <td colspan="2">Descontos</td>
-                            <td colspan="3">Total com desconto</td>
+                            <td colspan="2">Nº Pedido: @{{ pedidoImpressao['data']['id']}}</td>
+                            <td colspan="3">Forma de pagamento: @{{ pedidoImpressao['data']['metodo_pagamento']['name']}}</td>
+                            <td colspan="2">Descontos: R$ @{{ pedidoImpressao['data']['total_discount']}}</td>
+                            <td colspan="3">Total: R$ @{{ pedidoImpressao['data']['total_price']}}</td>
                         </tr>
                         <tr>
-                            <td colspan="3">Data emissão </td>
-                            <td colspan="7">Observações</td>
+                            <td colspan="3">Data emissão: @{{ pedidoImpressao['data']['created_at']}}</td>
+                            <td colspan="7">Observações: @{{ pedidoImpressao['data']['observation']}}</td>
                         </tr>
                         <tr>
-                            <td colspan="10"> itens</td>
+                            <td colspan="10">
+                                itens
+                                <table_comum_sem_opcoes
+                                    :classe_atributos="[
+                                        { titulo: 'Nome', conteudo: 'name'},
+                                        { titulo: 'Tipo',conteudo: 'tipo_produto', conteudo2: 'name'},
+                                        { titulo: 'Marca', conteudo: 'marca', conteudo2: 'name' },
+                                        { titulo: 'Quantidade por Pacote', conteudo: 'quantity' },
+                                        { titulo: 'Peso por pacote ', conteudo: 'weight' },
+                                        { titulo: 'Valor de Venda', conteudo: 'sale_price'}
+                                    ]"
+                                    :objeto_imp="pedidoImpressao['data']['produtos']"
+                                >
+                                </table_comum_sem_opcoes>
+                            </td>
                         </tr>
                         <tr>
                             <td colspan="8">Declaro que recebi os produtos descritos neste pedido <br> Observações adicionais</td>
-                            <td colspan="2">Pedido Nº <br> Cliente: <br> TOTAL</td>
+                            <td colspan="2"
+                                >Nº Pedido:  @{{ pedidoImpressao['data']['id']}}<br>
+                                Cliente: @{{ pedidoImpressao['data']['cliente']['name']}}<br>
+                                TOTAL: R$ @{{ pedidoImpressao['data']['total_price']}}
+                            </td>
                         </tr>
                         <tr>
                             <td colspan="10">Data: ___/___/___ Assinatura: ________________________________________________________________</td>

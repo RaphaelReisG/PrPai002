@@ -114,11 +114,11 @@ class PedidoController extends Controller
     public function show(Pedido $pedido)
     {
         //return Pedido::with('produtos')->findOrfail($id);
-        return new TesteResource($pedido, $pedido->produtos);
+        return new TesteResource($pedido, $pedido->produtos, $pedido->cliente->telefones, $pedido->vendedor->telefones, $pedido->metodoPagamento, $pedido->endereco->bairro->cidade->estado->pais  );
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Show the form for editing the specified resource. 'cliente', 'vendedor', 'metodoPagamento', 'endereco'
      *
      * @param  \App\Models\Pedido  $administrador
      * @return \Illuminate\Http\Response
