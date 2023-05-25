@@ -19,11 +19,36 @@
     <!-- <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script> -->
 
     <style>
+        /*Cor do botão sair*/
         .btn-red {
             background-color: hsl(0, 70%, 65%);
             color: white;
+            width: 70px;
+        }
+
+        /*Barra de navegação*/
+        /*Título na barra de navegação*/
+        .navbar-brand {
+            font-weight: bold;
+            font-size: 20px;
+        }
+
+        /*opções da barra de navegação*/
+        .nav-link {
+            font-weight: bold;
+            font-size: 20px;
+        }
+
+        .nav-link:hover {
+            color: hsl(0, 70%, 65%);
+        }
+
+        .ola {
+            font-weight: bold;
+            font-size: 20px;
         }
     </style>
+
 </head>
 
 <body>
@@ -225,25 +250,24 @@
         </div>
         <!-- Conteudo Geral CRUDs -->
         <div class="container-lg">
-            <div v-if="impressao == false">
-                <div class="row">
-                    <h1>@{{ titulo }}</h1>
+            <div class="row">
+                <h1>@{{ titulo }}</h1>
+            </div>
+            <div class="row">
+                <hr>
+            </div>
+            <div class="row">
+                <div v-if="titulo == ''">
+                    @can('cliente')
+                        Olá cliente seja bem vindo ao sistema.
+                    @elsecan('admin')
+                        Olá Administrador, seja bem vindo ao sistema.
+                    @elsecan('vendedor')
+                        Olá Vendedor, seja bem vindo ao sistema.
+                    @else
+                        Você não tem nenhuma permissão.
+                    @endcan
                 </div>
-                <div class="row">
-                    <hr>
-                </div>
-                <div class="row">
-                    <div v-if="titulo == ''">
-                        @can('cliente')
-                            Olá cliente seja bem vindo ao sistema.
-                        @elsecan('admin')
-                            Olá Administrador, seja bem vindo ao sistema.
-                        @elsecan('vendedor')
-                            Olá Vendedor, seja bem vindo ao sistema.
-                        @else
-                            Você não tem nenhuma permissão.
-                        @endcan
-                    </div>
 
                     <div v-if="titulo !== '' && titulo !== 'Meus dados'">
                         <!-- cabecalho geral -->
@@ -1574,13 +1598,13 @@
                             <td colspan="7">SALGADOS ZILLA</td>
                         </tr>
                         <tr>
-                            <td colspan="7">Vendedor: @{{ pedidoImpressao['data']['vendedor']['name']}}</td>
-                            <td colspan="3">Contato vendedor: @{{ pedidoImpressao['data']['vendedor']['telefones'][0]['number_phone']}}</td>
+                            <td colspan="7">Vendedor: @{{ objetos['data'][index]['vendedor']['name']}}</td>
+                            <td colspan="3">Contato vendedor: @{{ objetos['data'][index]['vendedor']['telefones'][0]['number_phone']}}</td>
                         </tr>
                         <tr>
-                            <td colspan="4">Cliente:  @{{ pedidoImpressao['data']['cliente']['name']}}</td>
-                            <td colspan="3">Razão Social:  @{{ pedidoImpressao['data']['cliente']['company_name']}}</td>
-                            <td colspan="3">Contato cliente:  @{{ pedidoImpressao['data']['cliente']['telefones'][0]['number_phone']}}</td>
+                            <td colspan="4">Cliente:  @{{ objetos['data'][index]['cliente']['name']}}</td>
+                            <td colspan="3">Razão Social:  @{{ objetos['data'][index]['vendedor']['company_name']}}</td>
+                            <td colspan="3">Contato cliente:  @{{ objetos['data'][index]['cliente']['telefones'][0]['number_phone']}}</td>
                         </tr>
                         <tr>
                             <td colspan="4">Cidade: @{{ pedidoImpressao['data']['endereco']['bairro']['cidade']['name_city']}}</td>
@@ -1621,14 +1645,11 @@
                         </tr>
                         <tr>
                             <td colspan="8">Declaro que recebi os produtos descritos neste pedido <br> Observações adicionais</td>
-                            <td colspan="2"
-                                >Nº Pedido:  @{{ pedidoImpressao['data']['id']}}<br>
-                                Cliente: @{{ pedidoImpressao['data']['cliente']['name']}}<br>
-                                TOTAL: R$ @{{ pedidoImpressao['data']['total_price']}}
-                            </td>
+                            <td colspan="2">Pedido Nº <br> Cliente: <br> TOTAL</td>
                         </tr>
                         <tr>
-                            <td colspan="10">Data: ___/___/___ Assinatura: ________________________________________________________________</td>
+                            <td colspan="10">Data: ___/___/___ Assinatura:
+                                ________________________________________________________________</td>
                         </tr>
                     </tbody>
                 </table>
