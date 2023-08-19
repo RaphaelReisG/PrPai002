@@ -7,7 +7,7 @@
 
     <link rel="icon" href="./logo.ico" type="image/x-icon">
     <title>
-        Salgado Zilla
+        Salgados Zilla
     </title>
 
 
@@ -461,7 +461,7 @@
             <div class="flex justify-center mt-4 sm:items-center sm:justify-between">
                 <div class="text-center text-sm text-gray-500 sm:text-left">
                     <div class="flex items-center">
-                        <h2>Feito por Raphael, Rafael, Murilo, Emily e Gabriel</h2>
+                        <h2>Feito por Raphael, Rafael e Gabriel</h2>
                     </div>
                 </div>
             </div>
