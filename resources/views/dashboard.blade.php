@@ -696,7 +696,7 @@
                                                 <input class="form-check-input" type="checkbox" role="switch"
                                                     id="flexSwitchCheckChecked" v-model="meuDado">
                                                 <label class="form-check-label" for="flexSwitchCheckChecked">Meu
-                                                    endereço</label>
+                                                    telefone</label>
                                             </div>
                                             <br>
                                             <div v-if="meuDado == true">
