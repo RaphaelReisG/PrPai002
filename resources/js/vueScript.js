@@ -117,7 +117,24 @@ var app = new Vue({
         resposta: '',
         respostaData: '',
         variavelBusca: '',
-        variavelOrdenacao: ''
+        variavelOrdenacao: '',
+
+        total_pedidos: '',
+        total_produtos: '',
+        total_valor: '',
+
+    },
+    mounted: async function(){
+        var url =  '/api/analise_cliente_total_pedidos/?id='+this.idUsuario;
+
+        await axios
+            .get(url)
+                .then(response => (
+                    this.total_pedidos = response.data.numero_total_pedidos,
+                    this.total_produtos = response.data.numero_total_produtos,
+                    this.total_valor = response.data.valor_total_pedidos
+                ))
+                .catch(error => (this.error = error));
     },
     methods: {
         defineClasse: function(classe, titulo ){
@@ -170,6 +187,9 @@ var app = new Vue({
             this.variavelOrdenacao = '';
             this.modelObjetos[0]['buscarObjeto'] = '';
             this.modelObjetos[0]['ordenacaoBusca'] = '';
+        },
+        carregarApi: async function(){
+
         },
         carregaMeusTelefones: function(classe, titulo, tipo){
             this.nomeObjeto = classe;
@@ -2185,6 +2205,6 @@ var app = new Vue({
 
             this.impressao = true;
             //alert('opa2');
-        },
+        }
     }
 })

@@ -26,7 +26,4 @@ class Cliente extends Usuario_sistema
     public function pedidos(){
         return $this->hasMany(Pedido::class)->with(['produtos']);
     }
-
-
-
 }

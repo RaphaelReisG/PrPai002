@@ -11,6 +11,8 @@ use App\Models\Estado;
 use Illuminate\Http\Request;
 use App\Http\Requests\ClienteRequest;
 
+use Illuminate\Support\Facades\DB;
+
 use Illuminate\Support\Facades\Hash;
 
 use App\Models\Endereco;
@@ -224,5 +226,159 @@ class ClienteController extends Controller
         else{
             error_log("deu ruim");
         }
+    }
+
+    public function numeroParaMes($numero) {
+        $meses = [
+          1 => "Janeiro",
+          2 => "Fevereiro",
+          3 => "Março",
+          4 => "Abril",
+          5 => "Maio",
+          6 => "Junho",
+          7 => "Julho",
+          8 => "Agosto",
+          9 => "Setembro",
+          10 => "Outubro",
+          11 => "Novembro",
+          12 => "Dezembro"
+        ];
+
+        // Verifica se o número está dentro do intervalo válido (1 a 12)
+        if ($numero >= 1 && $numero <= 12) {
+          return $meses[$numero];
+        } else {
+          return "Número de mês inválido";
+        }
+    }
+
+    public function analiseClienteTopProdutos(Request $request){
+        //error_log("deu ruim");
+        $cliente = Cliente::findOrfail($request['id']);
+        $topProdutos = $cliente->pedidos()
+            ->join('pedido_produto', 'pedidos.id', '=', 'pedido_produto.pedido_id')
+            ->join('produtos', 'pedido_produto.produto_id', '=', 'produtos.id')
+            ->select('produtos.id', 'produtos.name',
+                DB::raw('SUM(pedido_produto.qty_item) as quantidade_total'),
+                DB::raw('SUM(pedido_produto.qty_item * pedido_produto.price_item) as valor_total') )
+            ->groupBy('produtos.id', 'produtos.name')
+            ->get();
+
+        $topMarcas = $cliente->pedidos()
+            ->join('pedido_produto', 'pedidos.id', '=', 'pedido_produto.pedido_id')
+            ->join('produtos', 'pedido_produto.produto_id', '=', 'produtos.id')
+            ->join('marcas', 'marca_id', '=', 'marcas.id')
+            ->select('marcas.id', 'marcas.name',
+                DB::raw('SUM(pedido_produto.qty_item) as quantidade_total'),
+                DB::raw('SUM(pedido_produto.qty_item * pedido_produto.price_item) as valor_total') )
+            ->groupBy('marcas.id', 'marcas.name')
+            ->get();
+
+        //return new TesteResource($topMarcas);
+
+
+
+        $resultado = [
+            'top_produtos' => $topProdutos,
+            'top_marcas' => $topMarcas
+        ];
+
+        return json_encode($resultado);
+    }
+
+    public function analiseClienteTotalPedidos(Request $request){
+        //error_log("deu ruim");
+        $cliente = Cliente::findOrfail($request['id']);
+        // total de pedidos
+        $totalPedidos = $cliente->pedidos()->count();
+        //total de pedidos periodico
+        $totalPedidosArray = $cliente->pedidos()->select([
+            DB::raw('YEAR(pedidos.created_at) as ano'),
+            DB::raw('MONTH(created_at) as mes'),
+            DB::raw('COUNT(*) as total')
+        ])
+        ->groupBy('ano')->groupBy('mes')->orderBy('ano', 'asc')->orderBy('mes', 'asc')->get();
+
+        foreach($totalPedidosArray as $p){
+            $mes_totalPedidosArray[] = $this->numeroParaMes($p->mes)."/".$p->ano;
+            $valor_totalPedidosArray[] = $p->total;
+        }
+
+        //valor $$ total dos pedidos
+        $valorTotalPedidos_price = $cliente->pedidos()->sum('total_price');
+        $valorTotalPedidos_discount = $cliente->pedidos()->sum('total_discount');
+        $valorTotalPedidos_total = $valorTotalPedidos_price - $valorTotalPedidos_discount;
+
+        $valorTotalPedidosPeriodico = $cliente->pedidos()
+            ->select([
+                DB::raw('YEAR(pedidos.created_at) as ano'),
+                DB::raw('MONTH(pedidos.created_at) as mes'),
+                DB::raw('SUM(pedidos.total_price - pedidos.total_discount) as total')
+            ])
+            ->groupBy('ano')->groupBy('mes')->orderBy('ano', 'asc')->orderBy('mes', 'asc')->get();
+
+            foreach($valorTotalPedidosPeriodico as $p){
+                $mes_valorTotalPedidosArray[] = $this->numeroParaMes($p->mes)."/".$p->ano;
+                $valor_valorTotalPedidosArray[] = $p->total;
+            }
+
+        //total de pacotes
+        $totalProdutos = $cliente->pedidos()
+            ->join('pedido_produto', 'pedidos.id', '=', 'pedido_produto.pedido_id')
+            ->join('produtos', 'pedido_produto.produto_id', '=', 'produtos.id')
+            ->sum('pedido_produto.qty_item');
+        //total de periodico
+        $totalProdutosPeriodico = $cliente->pedidos()
+            ->join('pedido_produto', 'pedidos.id', '=', 'pedido_produto.pedido_id')
+            ->join('produtos', 'pedido_produto.produto_id', '=', 'produtos.id')
+            ->select([
+                DB::raw('YEAR(pedidos.created_at) as ano'),
+                DB::raw('MONTH(pedidos.created_at) as mes'),
+                DB::raw('SUM(pedido_produto.qty_item) as total')
+            ])
+            ->groupBy('ano')->groupBy('mes')->orderBy('ano', 'asc')->orderBy('mes', 'asc')->get();
+
+        foreach($totalProdutosPeriodico as $p){
+            //$ano_totalProdutosPeriodico[] = $p->ano;
+            $mes_totalProdutosPeriodico[] = $this->numeroParaMes($p->mes)."/".$p->ano;
+            $valor_totalProdutosPeriodico[] = $p->total;
+        }
+
+        //cria json
+        $resultado = [
+            'numero_total_pedidos' => $totalPedidos,
+            'numero_total_pedidos_periodico_json' => $totalPedidosArray,
+            'numero_total_pedidos_periodico_coluna_mes' => $mes_totalPedidosArray,
+            'numero_total_pedidos_periodico_coluna_total' => $valor_totalPedidosArray,
+
+            'numero_total_produtos' => $totalProdutos,
+            'numero_total_produtos_periodico_json' => $totalProdutosPeriodico,
+            //'numero_total_produtos_periodico_coluna_ano' => $ano_totalProdutosPeriodico,
+            'numero_total_produtos_periodico_coluna_mes' => $mes_totalProdutosPeriodico,
+            'numero_total_produtos_periodico_coluna_total' => $valor_totalProdutosPeriodico,
+
+            'valor_total_pedidos' => $valorTotalPedidos_total,
+            //'valor_total_price' => $valorTotalPedidos_price,
+            //'valor_total_discount' => $valorTotalPedidos_discount,
+            'valor_total_pedidos_periodico_coluna_mes' => $mes_valorTotalPedidosArray,
+            'valor_total_pedidos_periodico_coluna_total' => $valor_valorTotalPedidosArray,
+        ];
+
+        return json_encode($resultado);
+    }
+
+    public function analiseClienteTotalProdutos(Request $request){
+        //error_log("deu ruim");
+        $cliente = Cliente::findOrfail($request['id']);
+        $obj = $cliente->pedidos()
+            ->join('pedido_produto', 'pedidos.id', '=', 'pedido_produto.pedido_id')
+            ->join('produtos', 'pedido_produto.produto_id', '=', 'produtos.id')
+            ->sum('pedido_produto.qty_item');
+
+        $resultado = [
+            'numero_total_produtos' => $obj,
+        ];
+
+        return json_encode($resultado);
     }
 }

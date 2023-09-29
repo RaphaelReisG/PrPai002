@@ -1,7 +1,81 @@
+//cards
+
+Vue.component('card_01', {
+    props: ['titulocard', 'urlg', 'usuario', 'parametro', 'valorjson'],
+    mounted: async function(){
+        //alert(this.titulo);
+
+        var url =  '/api/'+this.urlg+'/?id='+this.usuario;
+
+        await axios
+            .get(url)
+                .then(response => (
+                    this.valorjson = response.data[this.parametro]
+                ))
+                .catch(error => (this.error = error));
+                //alert(this.valor1);
+    },
+    template: `
+        <div class="card border-secondary mb-3" style="max-width: 10rem;">
+            <div class="card-header">{{titulocard}}</div>
+            <div class="card-body">
+                <p class="card-text" style="text-align: center;">{{valorjson}}</p>
+            </div>
+        </div>
+    `
+});
+
+Vue.component('graf_line_01', {
+    props: ['titulo', 'c1', 'c2', 'urlg', 'graficoid', 'usuario'],
+    mounted: async function(){
+        //alert(this.titulo);
+        var coluna1 = [];
+        var coluna2 = [];
+
+        var url =  '/api/'+this.urlg+'/?id='+this.usuario;
+
+        await axios
+            .get(url)
+                .then(response => (
+                    coluna1 = response.data[this.c1],
+                    coluna2 = response.data[this.c2]
+                ))
+                .catch(error => (this.error = error));
+
+        const ctx = document.getElementById(this.graficoid);
+
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: coluna1,
+                datasets: [{
+                    label: this.titulo,
+                    data: coluna2,
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    },
+    template: `
+        <div style="max-width: 300px; margin-top: 20px;">
+            <canvas :id="graficoid"></canvas>
+        </div>
+    `
+});
+
+
+
 // paaginação
 
-    Vue.component('paginacao', {
-        template: `
+Vue.component('paginacao', {
+    template: `
             <div>
                 <nav aria-label="...">
                     <ul class="pagination">
@@ -52,10 +126,10 @@
                 <p>Maximo por Pagina: {{$root.objetos['per_page']}} | Total: {{$root.objetos['total']}}</p>
             </div>
         `
-    });
+});
 
-    Vue.component('paginacao_produto', {
-        template: `
+Vue.component('paginacao_produto', {
+    template: `
             <div>
                 <nav aria-label="...">
                     <ul class="pagination">
@@ -106,7 +180,7 @@
                 <p>Maximo por Pagina: {{$root.meuProduto['per_page']}} | Total: {{$root.meuProduto['total']}}</p>
             </div>
         `
-    });
+});
 
 // -------
 //menu superior
@@ -117,6 +191,9 @@ Vue.component('menu_titulo', {
 
     `
 });
+
+
+
 
 Vue.component('menu_item', {
     props: ['label', 'classe', 'titulo'],
@@ -177,9 +254,9 @@ Vue.component('modal_sucesso', {
 //--------
 //entrada de forms
 
-    Vue.component('input_geral', {
-        props: ['nome_model', 'tipo', 'nome'],
-        template: `
+Vue.component('input_geral', {
+    props: ['nome_model', 'tipo', 'nome'],
+    template: `
         <div>
             <div class="row">
                 <div class="form-floating mb-3">
@@ -192,11 +269,11 @@ Vue.component('modal_sucesso', {
             </div>
         </div>
         `
-    });
+});
 
-    Vue.component('select_geral', {
-        props: ['nome_model','obj_dropdown', 'nome_atributo', 'nome', 'id_atributo'],
-        template: `
+Vue.component('select_geral', {
+    props: ['nome_model', 'obj_dropdown', 'nome_atributo', 'nome', 'id_atributo'],
+    template: `
         <div>
             <div class="row">
                 <div class="form-floating mb-3">
@@ -211,11 +288,11 @@ Vue.component('modal_sucesso', {
             </div>
         </div>
         `
-    });
+});
 
-    Vue.component('select_define', {
-        props: ['nome_model','obj_dropdown', 'nome_atributo', 'nome', 'id_atributo', 'chamaFuncao'],
-        template: `
+Vue.component('select_define', {
+    props: ['nome_model', 'obj_dropdown', 'nome_atributo', 'nome', 'id_atributo', 'chamaFuncao'],
+    template: `
         <div>
             <div class="row">
                 <div class="form-floating mb-3">
@@ -230,11 +307,11 @@ Vue.component('modal_sucesso', {
             </div>
         </div>
         `
-    });
+});
 
-    Vue.component('textarea_geral', {
-        props: ['nome_model', 'nome'],
-        template: `
+Vue.component('textarea_geral', {
+    props: ['nome_model', 'nome'],
+    template: `
         <div>
             <div class="row">
                 <div class="form-floating mb-3">
@@ -247,11 +324,11 @@ Vue.component('modal_sucesso', {
             </div>
         </div>
         `
-    });
+});
 
-    Vue.component('senha_geral', {
-        props: ['nome_model', 'nome'],
-        template: `
+Vue.component('senha_geral', {
+    props: ['nome_model', 'nome'],
+    template: `
         <div>
             <div class="row">
                 <div class="input-group mb-3">
@@ -267,15 +344,15 @@ Vue.component('modal_sucesso', {
 
 
         `
-    });
+});
 
 
 //-------
 // Tabelas -----------------------------------------------------------------
 
-    Vue.component('table_config', {
-        props: ['classe_atributos', 'objeto_imp'],
-        template: `
+Vue.component('table_config', {
+    props: ['classe_atributos', 'objeto_imp'],
+    template: `
             <table class="table">
                 <thead>
                     <tr>
@@ -297,11 +374,11 @@ Vue.component('modal_sucesso', {
                 </tbody>
             </table>
         `
-    });
+});
 
-    Vue.component('table_comum', {
-        props: ['classe_atributos','objeto_imp'],
-        template: `
+Vue.component('table_comum', {
+    props: ['classe_atributos', 'objeto_imp'],
+    template: `
             <table class="table">
                 <thead>
                     <tr>
@@ -321,11 +398,11 @@ Vue.component('modal_sucesso', {
                 </tbody>
             </table>
         `
-    });
+});
 
-    Vue.component('table_comum_sem_opcoes', {
-        props: ['classe_atributos','objeto_imp'],
-        template: `
+Vue.component('table_comum_sem_opcoes', {
+    props: ['classe_atributos', 'objeto_imp'],
+    template: `
             <table class="table">
                 <thead>
                     <tr>
@@ -352,11 +429,11 @@ Vue.component('modal_sucesso', {
                 </tbody>
             </table>
         `
-    });
+});
 
-    Vue.component('table_comum_busca_produtos', {
-        props: ['classe_atributos','objeto_imp'],
-        template: `
+Vue.component('table_comum_busca_produtos', {
+    props: ['classe_atributos', 'objeto_imp'],
+    template: `
             <table class="table">
                 <thead>
                     <tr>
@@ -388,11 +465,11 @@ Vue.component('modal_sucesso', {
                 </tbody>
             </table>
         `
-    });
+});
 
-    Vue.component('table_comum_meu_carrinho', {
-        props: ['classe_atributos','objeto_imp'],
-        template: `
+Vue.component('table_comum_meu_carrinho', {
+    props: ['classe_atributos', 'objeto_imp'],
+    template: `
             <table class="table">
                 <thead>
                     <tr>
@@ -433,11 +510,11 @@ Vue.component('modal_sucesso', {
                 </tbody>
             </table>
         `
-    });
+});
 
-    Vue.component('table_acordion', {
-        props: ['classe_atributos', 'objeto_imp', 'obj_acordion'],
-        template: `
+Vue.component('table_acordion', {
+    props: ['classe_atributos', 'objeto_imp', 'obj_acordion'],
+    template: `
             <table class="table">
                 <thead>
                     <tr>
@@ -498,11 +575,11 @@ Vue.component('modal_sucesso', {
                 </tbody>
             </table>
         `
-    });
+});
 
-    Vue.component('table_acordion_estoque', {
-        props: ['classe_atributos', 'objeto_imp', 'obj_acordion'],
-        template: `
+Vue.component('table_acordion_estoque', {
+    props: ['classe_atributos', 'objeto_imp', 'obj_acordion'],
+    template: `
             <table class="table">
                 <thead>
                     <tr>
@@ -564,11 +641,11 @@ Vue.component('modal_sucesso', {
                 </tbody>
             </table>
         `
-    });
+});
 
-    Vue.component('table_acordion_cliente_restricao', {
-        props: ['classe_atributos', 'objeto_imp', 'obj_acordion'],
-        template: `
+Vue.component('table_acordion_cliente_restricao', {
+    props: ['classe_atributos', 'objeto_imp', 'obj_acordion'],
+    template: `
             <table class="table">
                 <thead>
                     <tr>
@@ -632,11 +709,11 @@ Vue.component('modal_sucesso', {
                 </tbody>
             </table>
         `
-    });
+});
 
-    Vue.component('table_acordion_endereco_restricao', {
-        props: ['classe_atributos', 'objeto_imp', 'obj_acordion'],
-        template: `
+Vue.component('table_acordion_endereco_restricao', {
+    props: ['classe_atributos', 'objeto_imp', 'obj_acordion'],
+    template: `
             <table class="table">
                 <thead>
                     <tr>
@@ -700,11 +777,11 @@ Vue.component('modal_sucesso', {
                 </tbody>
             </table>
         `
-    });
+});
 
-    Vue.component('table_acordion_pedidos', {
-        props: ['classe_atributos', 'objeto_imp', 'obj_acordion'],
-        template: `
+Vue.component('table_acordion_pedidos', {
+    props: ['classe_atributos', 'objeto_imp', 'obj_acordion'],
+    template: `
             <table class="table">
                 <thead>
                     <tr>
@@ -797,11 +874,11 @@ Vue.component('modal_sucesso', {
                 </tbody>
             </table>
         `
-    });
+});
 
-    Vue.component('table_acordion_pedidos_restrito', {
-        props: ['classe_atributos', 'objeto_imp', 'obj_acordion'],
-        template: `
+Vue.component('table_acordion_pedidos_restrito', {
+    props: ['classe_atributos', 'objeto_imp', 'obj_acordion'],
+    template: `
             <table class="table">
                 <thead>
                     <tr>
@@ -880,11 +957,11 @@ Vue.component('modal_sucesso', {
                 </tbody>
             </table>
         `
-    });
+});
 
-    Vue.component('table_acordion2', {
-        props: ['classe_atributos', 'objeto_imp', 'obj_acordion'],
-        template: `
+Vue.component('table_acordion2', {
+    props: ['classe_atributos', 'objeto_imp', 'obj_acordion'],
+    template: `
             <table class="table">
                 <thead>
                     <tr>
@@ -938,11 +1015,11 @@ Vue.component('modal_sucesso', {
                 </tbody>
             </table>
         `
-    });
+});
 
-    Vue.component('table_acordion_api', {
-        props: ['classe_atributos', 'objeto_imp', 'obj_acordion'],
-        template: `
+Vue.component('table_acordion_api', {
+    props: ['classe_atributos', 'objeto_imp', 'obj_acordion'],
+    template: `
             <table class="table">
                 <thead>
                     <tr>
@@ -981,7 +1058,42 @@ Vue.component('modal_sucesso', {
                 </tbody>
             </table>
         `
-    });
+});
+
+Vue.component('table_comum_top', {
+    props: ['classe_atributos', 'urlg', 'usuario', 'v1', 'titulo', 'valorjson'],
+    mounted: async function(){
+        //alert(this.titulo);
+
+        var url =  '/api/'+this.urlg+'/?id='+this.usuario;
+
+        await axios
+            .get(url)
+                .then(response => (
+                    this.valorjson = response.data[this.v1]
+                ))
+                .catch(error => (this.error = error));
+    },
+    template: `
+            <div>
+                <h5>{{titulo}}</h5>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col" v-for="atributo in classe_atributos">{{atributo.titulo}}</th>
+                        </tr>
+                    </thead>
+                    <tbody class="table-group-divider" >
+                        <tr v-for="(obj, index) in valorjson">
+                            <td>{{ index+1 }}</td>
+                            <td v-for="valor in classe_atributos">{{ obj[valor.conteudo] }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        `
+});
 
 // ----------
 // Meus dados

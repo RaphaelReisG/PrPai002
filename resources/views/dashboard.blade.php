@@ -16,6 +16,7 @@
     </script>
 
     <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script> -->
 
     <style>
@@ -260,11 +261,156 @@
                 <div class="row">
                     <div v-if="titulo == ''">
                         @can('cliente')
-                            Olá cliente seja bem vindo ao sistema.
+                            <div class="row">
+                                <div class="col"><card_01 valorjson = "" titulocard= "Pedidos" urlg = "analise_cliente_total_pedidos" :usuario = "idUsuario" parametro = "numero_total_pedidos"></card_01></div>
+                                <div class="col"><card_01 valorjson = "" titulocard= "Produtos" urlg = "analise_cliente_total_pedidos" :usuario = "idUsuario" parametro = "numero_total_produtos"></card_01></div>
+                                <div class="col"><card_01 valorjson = "" titulocard= "Total Gasto R$" urlg = "analise_cliente_total_pedidos" :usuario = "idUsuario" parametro = "valor_total_pedidos"></card_01></div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <graf_line_01 titulo="QTD Pedidos mensais (uni)"
+                                        c1 = "numero_total_pedidos_periodico_coluna_mes"
+                                        c2 = "numero_total_pedidos_periodico_coluna_total"
+                                        urlg = "analise_cliente_total_pedidos"
+                                        :usuario = "idUsuario"
+                                        graficoid = "pedidomensal"
+                                    ></graf_line_01>
+                                </div>
+                                <div class="col">
+                                    <graf_line_01 titulo="QTD Produtos mensais (pacotes)"
+                                        c1 = "numero_total_produtos_periodico_coluna_mes"
+                                        c2 = "numero_total_produtos_periodico_coluna_total"
+                                        urlg = "analise_cliente_total_pedidos"
+                                        :usuario = "idUsuario"
+                                        graficoid = "produtomensal"
+
+                                    ></graf_line_01>
+                                </div>
+                                <div class="col">
+                                    <graf_line_01 titulo="Valor gasto mensal (R$)"
+                                        c1 = "valor_total_pedidos_periodico_coluna_mes"
+                                        c2 = "valor_total_pedidos_periodico_coluna_total"
+                                        urlg = "analise_cliente_total_pedidos"
+                                        :usuario = "idUsuario"
+                                        graficoid = "valormensal"
+
+                                    ></graf_line_01>
+                                </div>
+                            </div>
+                            <div class="row"><br><br></div>
+                            <div class="row">
+                                <div class="col">
+                                    <table_comum_top
+                                        :classe_atributos="[
+                                            { titulo: 'Nome', conteudo: 'name'},
+                                            { titulo: 'qtd (pc)',conteudo: 'quantidade_total'}
+                                        ]"
+                                        urlg="analise_cliente_top_produtos"
+                                        :usuario = "idUsuario"
+                                        v1 = "top_produtos"
+                                        titulo = "TOP Produtos"
+                                        :valorjson = "[{}]"
+                                        >
+                                    </table_comum_top>
+                                </div>
+                                <div class="col">
+                                    <table_comum_top
+                                        :classe_atributos="[
+                                            { titulo: 'Nome', conteudo: 'name'},
+                                            { titulo: 'qtd (pc)',conteudo: 'quantidade_total'}
+                                        ]"
+                                        urlg="analise_cliente_top_produtos"
+                                        :usuario = "idUsuario"
+                                        v1 = "top_marcas"
+                                        titulo = "TOP Marcas"
+                                        :valorjson = "[{}]"
+                                        >
+                                    </table_comum_top>
+                                </div>
+                            </div>
                         @elsecan('admin')
                             Olá Administrador, seja bem vindo ao sistema.
                         @elsecan('vendedor')
-                            Olá Vendedor, seja bem vindo ao sistema.
+                            <div class="row">
+                                <div class="col"><card_01 valorjson = "" titulocard= "Meus CLientes" urlg = "analise_vendedor_total_pedidos" :usuario = "idUsuario" parametro = "valor_total_clientes"></card_01></div>
+                                <div class="col"><card_01 valorjson = "" titulocard= "Pedidos" urlg = "analise_vendedor_total_pedidos" :usuario = "idUsuario" parametro = "numero_total_pedidos"></card_01></div>
+                                <div class="col"><card_01 valorjson = "" titulocard= "Produtos" urlg = "analise_vendedor_total_pedidos" :usuario = "idUsuario" parametro = "numero_total_produtos"></card_01></div>
+                                <div class="col"><card_01 valorjson = "" titulocard= "Total Gasto R$" urlg = "analise_vendedor_total_pedidos" :usuario = "idUsuario" parametro = "valor_total_pedidos"></card_01></div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <graf_line_01 titulo="QTD Pedidos mensais (uni)"
+                                        c1 = "numero_total_pedidos_periodico_coluna_mes"
+                                        c2 = "numero_total_pedidos_periodico_coluna_total"
+                                        urlg = "analise_vendedor_total_pedidos"
+                                        :usuario = "idUsuario"
+                                        graficoid = "pedidomensal"
+                                    ></graf_line_01>
+                                </div>
+                                <div class="col">
+                                    <graf_line_01 titulo="QTD Produtos mensais (pacotes)"
+                                        c1 = "numero_total_produtos_periodico_coluna_mes"
+                                        c2 = "numero_total_produtos_periodico_coluna_total"
+                                        urlg = "analise_vendedor_total_pedidos"
+                                        :usuario = "idUsuario"
+                                        graficoid = "produtomensal"
+                                    ></graf_line_01>
+                                </div>
+                                <div class="col">
+                                    <graf_line_01 titulo="Valor gasto mensal (R$)"
+                                        c1 = "valor_total_pedidos_periodico_coluna_mes"
+                                        c2 = "valor_total_pedidos_periodico_coluna_total"
+                                        urlg = "analise_vendedor_total_pedidos"
+                                        :usuario = "idUsuario"
+                                        graficoid = "valormensal"
+                                    ></graf_line_01>
+                                </div>
+                            </div>
+                            <div class="row"><br><br></div>
+                            <div class="row">
+                                <div class="col">
+                                    <table_comum_top
+                                        :classe_atributos="[
+                                            { titulo: 'Nome', conteudo: 'name'},
+                                            { titulo: 'qtd (pc)',conteudo: 'quantidade_total'}
+                                        ]"
+                                        urlg="analise_vendedor_top_produtos"
+                                        :usuario = "idUsuario"
+                                        v1 = "top_produtos"
+                                        titulo = "TOP Produtos"
+                                        :valorjson = "[{}]"
+                                        >
+                                    </table_comum_top>
+                                </div>
+                                <div class="col">
+                                    <table_comum_top
+                                        :classe_atributos="[
+                                            { titulo: 'Nome', conteudo: 'name'},
+                                            { titulo: 'qtd (pc)',conteudo: 'quantidade_total'}
+                                        ]"
+                                        urlg="analise_vendedor_top_produtos"
+                                        :usuario = "idUsuario"
+                                        v1 = "top_marcas"
+                                        titulo = "TOP Marcas"
+                                        :valorjson = "[{}]"
+                                        >
+                                    </table_comum_top>
+                                </div>
+                                <div class="col">
+                                    <table_comum_top
+                                        :classe_atributos="[
+                                            { titulo: 'Nome', conteudo: 'name'},
+                                            { titulo: 'qtd', conteudo: 'quantidade_total'}
+                                        ]"
+                                        urlg="analise_vendedor_top_produtos"
+                                        :usuario = "idUsuario"
+                                        v1 = "top_clientes"
+                                        titulo = "TOP Clientes"
+                                        :valorjson = "[{}]"
+                                        >
+                                    </table_comum_top>
+                                </div>
+                            </div>
                         @else
                             Você não tem nenhuma permissão.
                         @endcan

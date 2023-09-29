@@ -58,3 +58,11 @@ Route::apiResource('vendedor', VendedorController::class)->middleware('auth:sanc
 Route::apiResource('telefone', TelefoneController::class)->middleware('auth:sanctum');
 Route::apiResource('tipo_movimentacao', TipoMovimentacaoController::class)->middleware('auth:sanctum');
 Route::apiResource('tipo_produto', TipoProdutoController::class)->middleware('auth:sanctum');
+
+Route::get('analise_cliente_top_produtos', [ClienteController::class, 'analiseClienteTopProdutos']);
+Route::get('analise_cliente_total_pedidos', [ClienteController::class, 'analiseClienteTotalPedidos']);
+Route::get('analise_cliente_total_produtos', [ClienteController::class, 'analiseClienteTotalProdutos']);
+
+Route::get('analise_vendedor_top_produtos', [VendedorController::class, 'analiseVendedorTopProdutos']);
+Route::get('analise_vendedor_total_pedidos', [VendedorController::class, 'analiseVendedorTotalPedidos']);
+Route::get('analise_vendedor_total_produtos', [VendedorController::class, 'analiseVendedorTotalProdutos']);
