@@ -366,19 +366,4 @@ class ClienteController extends Controller
 
         return json_encode($resultado);
     }
-
-    public function analiseClienteTotalProdutos(Request $request){
-        //error_log("deu ruim");
-        $cliente = Cliente::findOrfail($request['id']);
-        $obj = $cliente->pedidos()
-            ->join('pedido_produto', 'pedidos.id', '=', 'pedido_produto.pedido_id')
-            ->join('produtos', 'pedido_produto.produto_id', '=', 'produtos.id')
-            ->sum('pedido_produto.qty_item');
-
-        $resultado = [
-            'numero_total_produtos' => $obj,
-        ];
-
-        return json_encode($resultado);
-    }
 }

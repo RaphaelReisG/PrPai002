@@ -329,7 +329,122 @@
                                 </div>
                             </div>
                         @elsecan('admin')
-                            Olá Administrador, seja bem vindo ao sistema.
+                            <div class="row">
+                                <div class="col"><card_01 valorjson = "" titulocard= "Clientes" urlg = "analise_total_pedidos" :usuario = "idUsuario" parametro = "valor_total_clientes"></card_01></div>
+                                <div class="col"><card_01 valorjson = "" titulocard= "Pedidos" urlg = "analise_total_pedidos" :usuario = "idUsuario" parametro = "numero_total_pedidos"></card_01></div>
+                                <div class="col"><card_01 valorjson = "" titulocard= "Produtos" urlg = "analise_total_pedidos" :usuario = "idUsuario" parametro = "numero_total_produtos"></card_01></div>
+                                <div class="col"><card_01 valorjson = "" titulocard= "Total Gasto R$" urlg = "analise_total_pedidos" :usuario = "idUsuario" parametro = "valor_total_pedidos"></card_01></div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <graf_line_01 titulo="QTD Pedidos mensais (uni)"
+                                        c1 = "numero_total_pedidos_periodico_coluna_mes"
+                                        c2 = "numero_total_pedidos_periodico_coluna_total"
+                                        urlg = "analise_total_pedidos"
+                                        :usuario = "idUsuario"
+                                        graficoid = "pedidomensal"
+                                    ></graf_line_01>
+                                </div>
+                                <div class="col">
+                                    <graf_line_01 titulo="QTD Produtos mensais (pacotes)"
+                                        c1 = "numero_total_produtos_periodico_coluna_mes"
+                                        c2 = "numero_total_produtos_periodico_coluna_total"
+                                        urlg = "analise_total_pedidos"
+                                        :usuario = "idUsuario"
+                                        graficoid = "produtomensal"
+                                    ></graf_line_01>
+                                </div>
+                                <div class="col">
+                                    <graf_line_01 titulo="Valor gasto mensal (R$)"
+                                        c1 = "valor_total_pedidos_periodico_coluna_mes"
+                                        c2 = "valor_total_pedidos_periodico_coluna_total"
+                                        urlg = "analise_total_pedidos"
+                                        :usuario = "idUsuario"
+                                        graficoid = "valormensal"
+                                    ></graf_line_01>
+                                </div>
+                                <div class="col">
+                                    <graf_donut_01 titulo="Top Bairros"
+                                        c1 = "top_bairros_nome_bairros"
+                                        c2 = "top_bairros_valor_total_bairros"
+                                        urlg = "analise_top_produtos"
+                                        :usuario = "idUsuario"
+                                        graficoid = "topbairros"
+                                    ></graf_donut_01>
+                                </div>
+                                <div class="col">
+                                    <graf_donut_01 titulo="Top Cidades"
+                                        c1 = "top_cidades_nome_cidades"
+                                        c2 = "top_cidades_valor_total_cidades"
+                                        urlg = "analise_top_produtos"
+                                        :usuario = "idUsuario"
+                                        graficoid = "topcidades"
+                                    ></graf_donut_01>
+                                </div>
+                                <div class="col">
+                                    <graf_donut_01 titulo="Top Estados"
+                                        c1 = "top_estados_nome_estados"
+                                        c2 = "top_estados_valor_total_estados"
+                                        urlg = "analise_top_produtos"
+                                        :usuario = "idUsuario"
+                                        graficoid = "topestados"
+                                    ></graf_donut_01>
+                                </div>
+                                <div class="col">
+                                    <graf_donut_01 titulo="Top Pais"
+                                        c1 = "top_pais_nome_pais"
+                                        c2 = "top_pais_valor_total_pais"
+                                        urlg = "analise_top_produtos"
+                                        :usuario = "idUsuario"
+                                        graficoid = "toppais"
+                                    ></graf_donut_01>
+                                </div>
+                            </div>
+                            <div class="row"><br><br></div>
+                            <div class="row">
+                                <div class="col">
+                                    <table_comum_top
+                                        :classe_atributos="[
+                                            { titulo: 'Nome', conteudo: 'name'},
+                                            { titulo: 'qtd (pc)',conteudo: 'quantidade_total'}
+                                        ]"
+                                        urlg="analise_top_produtos"
+                                        :usuario = "idUsuario"
+                                        v1 = "top_produtos"
+                                        titulo = "TOP Produtos"
+                                        :valorjson = "[{}]"
+                                        >
+                                    </table_comum_top>
+                                </div>
+                                <div class="col">
+                                    <table_comum_top
+                                        :classe_atributos="[
+                                            { titulo: 'Nome', conteudo: 'name'},
+                                            { titulo: 'qtd (pc)',conteudo: 'quantidade_total'}
+                                        ]"
+                                        urlg="analise_top_produtos"
+                                        :usuario = "idUsuario"
+                                        v1 = "top_marcas"
+                                        titulo = "TOP Marcas"
+                                        :valorjson = "[{}]"
+                                        >
+                                    </table_comum_top>
+                                </div>
+                                <div class="col">
+                                    <table_comum_top
+                                        :classe_atributos="[
+                                            { titulo: 'Nome', conteudo: 'name'},
+                                            { titulo: 'qtd', conteudo: 'quantidade_total'}
+                                        ]"
+                                        urlg="analise_top_produtos"
+                                        :usuario = "idUsuario"
+                                        v1 = "top_clientes"
+                                        titulo = "TOP Clientes"
+                                        :valorjson = "[{}]"
+                                        >
+                                    </table_comum_top>
+                                </div>
+                            </div>
                         @elsecan('vendedor')
                             <div class="row">
                                 <div class="col"><card_01 valorjson = "" titulocard= "Meus CLientes" urlg = "analise_vendedor_total_pedidos" :usuario = "idUsuario" parametro = "valor_total_clientes"></card_01></div>
@@ -364,6 +479,42 @@
                                         :usuario = "idUsuario"
                                         graficoid = "valormensal"
                                     ></graf_line_01>
+                                </div>
+                                <div class="col">
+                                    <graf_donut_01 titulo="Top Bairros"
+                                        c1 = "top_bairros_nome_bairros"
+                                        c2 = "top_bairros_valor_total_bairros"
+                                        urlg = "analise_vendedor_top_produtos"
+                                        :usuario = "idUsuario"
+                                        graficoid = "topbairros"
+                                    ></graf_donut_01>
+                                </div>
+                                <div class="col">
+                                    <graf_donut_01 titulo="Top Cidades"
+                                        c1 = "top_cidades_nome_cidades"
+                                        c2 = "top_cidades_valor_total_cidades"
+                                        urlg = "analise_vendedor_top_produtos"
+                                        :usuario = "idUsuario"
+                                        graficoid = "topcidades"
+                                    ></graf_donut_01>
+                                </div>
+                                <div class="col">
+                                    <graf_donut_01 titulo="Top Estados"
+                                        c1 = "top_estados_nome_estados"
+                                        c2 = "top_estados_valor_total_estados"
+                                        urlg = "analise_vendedor_top_produtos"
+                                        :usuario = "idUsuario"
+                                        graficoid = "topestados"
+                                    ></graf_donut_01>
+                                </div>
+                                <div class="col">
+                                    <graf_donut_01 titulo="Top Pais"
+                                        c1 = "top_pais_nome_pais"
+                                        c2 = "top_pais_valor_total_pais"
+                                        urlg = "analise_vendedor_top_produtos"
+                                        :usuario = "idUsuario"
+                                        graficoid = "toppais"
+                                    ></graf_donut_01>
                                 </div>
                             </div>
                             <div class="row"><br><br></div>

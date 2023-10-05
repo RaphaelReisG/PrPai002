@@ -2,12 +2,12 @@
 
 Vue.component('card_01', {
     props: ['titulocard', 'urlg', 'usuario', 'parametro', 'valorjson'],
-    mounted: async function(){
+    mounted: function(){
         //alert(this.titulo);
 
         var url =  '/api/'+this.urlg+'/?id='+this.usuario;
 
-        await axios
+        axios
             .get(url)
                 .then(response => (
                     this.valorjson = response.data[this.parametro]
@@ -65,6 +65,50 @@ Vue.component('graf_line_01', {
     },
     template: `
         <div style="max-width: 300px; margin-top: 20px;">
+            <canvas :id="graficoid"></canvas>
+        </div>
+    `
+});
+
+Vue.component('graf_donut_01', {
+    props: ['titulo', 'c1', 'c2', 'urlg', 'graficoid', 'usuario'],
+    mounted: async function(){
+        //alert(this.titulo);
+        var coluna1 = [];
+        var coluna2 = [];
+
+        var url =  '/api/'+this.urlg+'/?id='+this.usuario;
+
+        await axios
+            .get(url)
+                .then(response => (
+                    coluna1 = response.data[this.c1],
+                    coluna2 = response.data[this.c2]
+                ))
+                .catch(error => (this.error = error));
+
+        const ctx = document.getElementById(this.graficoid);
+
+        new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: coluna1,
+                datasets: [{
+                    label: this.titulo,
+                    data: coluna2,
+                    backgroundColor: [
+                        'rgb(255, 99, 132)',
+                        'rgb(54, 162, 235)',
+                        'rgb(255, 205, 86)'
+                    ],
+                    hoverOffset: 4
+                }]
+            }
+        });
+    },
+    template: `
+        <div style="max-width: 300px; margin-top: 20px;">
+            <p>{{titulo}}</p>
             <canvas :id="graficoid"></canvas>
         </div>
     `

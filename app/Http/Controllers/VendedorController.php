@@ -191,10 +191,102 @@ class VendedorController extends Controller
             ->groupBy('clientes.id', 'clientes.name')
             ->get();
 
+        $topCidades = $vendedor->pedidos()
+            ->join('pedido_produto', 'pedidos.id', '=', 'pedido_produto.pedido_id')
+            ->join('produtos', 'pedido_produto.produto_id', '=', 'produtos.id')
+            ->join('enderecos', 'pedidos.endereco_id', '=', 'enderecos.id')
+            ->join('bairros', 'enderecos.bairro_id', '=', 'bairros.id')
+            ->join('cidades', 'bairros.cidade_id', '=', 'cidades.id')
+            ->join('estados', 'cidades.estado_id', '=', 'estados.id')
+            ->join('pais', 'estados.pais_id', '=', 'pais.id')
+            ->select('cidades.id', 'cidades.name_city', 'estados.name_state', 'pais.name_country',
+                DB::raw('SUM(pedido_produto.qty_item) as quantidade_total'),
+                DB::raw('SUM(pedido_produto.qty_item * pedido_produto.price_item) as valor_total') )
+            ->groupBy('cidades.id', 'cidades.name_city', 'estados.name_state', 'pais.name_country')
+            ->get();
+
+        foreach($topCidades as $p){
+            $nome_cidades[] = $p->name_city.' - '.$p->name_state.' - '.$p->name_country;
+            $valor_totalCidades[] = $p->valor_total;
+        }
+
+        $topBairros = $vendedor->pedidos()
+            ->join('pedido_produto', 'pedidos.id', '=', 'pedido_produto.pedido_id')
+            ->join('produtos', 'pedido_produto.produto_id', '=', 'produtos.id')
+            ->join('enderecos', 'pedidos.endereco_id', '=', 'enderecos.id')
+            ->join('bairros', 'enderecos.bairro_id', '=', 'bairros.id')
+            ->join('cidades', 'bairros.cidade_id', '=', 'cidades.id')
+            ->join('estados', 'cidades.estado_id', '=', 'estados.id')
+            ->join('pais', 'estados.pais_id', '=', 'pais.id')
+            ->select('bairros.id', 'bairros.name_neighborhood','cidades.name_city', 'estados.name_state', 'pais.name_country',
+                DB::raw('SUM(pedido_produto.qty_item) as quantidade_total'),
+                DB::raw('SUM(pedido_produto.qty_item * pedido_produto.price_item) as valor_total') )
+            ->groupBy('bairros.id', 'bairros.name_neighborhood','cidades.name_city', 'estados.name_state', 'pais.name_country')
+            ->get();
+
+        foreach($topBairros as $p){
+            $nome_bairros[] = $p->name_neighborhood.' - '.$p->name_city.' - '.$p->name_state.' - '.$p->name_country;
+            $valor_totalBairros[] = $p->valor_total;
+        }
+
+        $topEstados = $vendedor->pedidos()
+            ->join('pedido_produto', 'pedidos.id', '=', 'pedido_produto.pedido_id')
+            ->join('produtos', 'pedido_produto.produto_id', '=', 'produtos.id')
+            ->join('enderecos', 'pedidos.endereco_id', '=', 'enderecos.id')
+            ->join('bairros', 'enderecos.bairro_id', '=', 'bairros.id')
+            ->join('cidades', 'bairros.cidade_id', '=', 'cidades.id')
+            ->join('estados', 'cidades.estado_id', '=', 'estados.id')
+            ->join('pais', 'estados.pais_id', '=', 'pais.id')
+            ->select('estados.id', 'estados.name_state', 'pais.name_country',
+                DB::raw('SUM(pedido_produto.qty_item) as quantidade_total'),
+                DB::raw('SUM(pedido_produto.qty_item * pedido_produto.price_item) as valor_total') )
+            ->groupBy('estados.id', 'estados.name_state', 'pais.name_country')
+            ->get();
+
+        foreach($topEstados as $p){
+            $nome_estados[] = $p->name_state.' - '.$p->name_country;
+            $valor_totalEstados[] = $p->valor_total;
+        }
+
+        $topPais = $vendedor->pedidos()
+            ->join('pedido_produto', 'pedidos.id', '=', 'pedido_produto.pedido_id')
+            ->join('produtos', 'pedido_produto.produto_id', '=', 'produtos.id')
+            ->join('enderecos', 'pedidos.endereco_id', '=', 'enderecos.id')
+            ->join('bairros', 'enderecos.bairro_id', '=', 'bairros.id')
+            ->join('cidades', 'bairros.cidade_id', '=', 'cidades.id')
+            ->join('estados', 'cidades.estado_id', '=', 'estados.id')
+            ->join('pais', 'estados.pais_id', '=', 'pais.id')
+            ->select('pais.id', 'pais.name_country',
+                DB::raw('SUM(pedido_produto.qty_item) as quantidade_total'),
+                DB::raw('SUM(pedido_produto.qty_item * pedido_produto.price_item) as valor_total') )
+            ->groupBy('pais.id', 'pais.name_country')
+            ->get();
+
+        foreach($topPais as $p){
+            $nome_pais[] = $p->name_country;
+            $valor_totalPais[] = $p->valor_total;
+        }
+
         $resultado = [
             'top_produtos' => $topProdutos,
             'top_marcas' => $topMarcas,
-            'top_clientes' => $topClientes
+            'top_clientes' => $topClientes,
+
+            'top_bairros_json' => $topBairros,
+            'top_bairros_nome_bairros' => $nome_bairros,
+            'top_bairros_valor_total_bairros' => $valor_totalBairros,
+
+            'top_cidades_json' => $topCidades,
+            'top_cidades_nome_cidades' => $nome_cidades,
+            'top_cidades_valor_total_cidades' => $valor_totalCidades,
+
+            'top_estados_json' => $topEstados,
+            'top_estados_nome_estados' => $nome_estados,
+            'top_estados_valor_total_estados' => $valor_totalEstados,
+
+            'top_pais_json' => $topPais,
+            'top_pais_nome_pais' => $nome_pais,
+            'top_pais_valor_total_pais' => $valor_totalPais,
         ];
 
         return json_encode($resultado);
@@ -281,21 +373,6 @@ class VendedorController extends Controller
             'valor_total_pedidos_periodico_coluna_total' => $valor_valorTotalPedidosArray,
 
             'valor_total_clientes' => $totalClientes
-        ];
-
-        return json_encode($resultado);
-    }
-
-    public function analiseVendedorTotalProdutos(Request $request){
-        //error_log("deu ruim");
-        $cliente = Vendedor::findOrfail($request['id']);
-        $obj = $cliente->pedidos()
-            ->join('pedido_produto', 'pedidos.id', '=', 'pedido_produto.pedido_id')
-            ->join('produtos', 'pedido_produto.produto_id', '=', 'produtos.id')
-            ->sum('pedido_produto.qty_item');
-
-        $resultado = [
-            'numero_total_produtos' => $obj,
         ];
 
         return json_encode($resultado);
