@@ -15,4 +15,10 @@ class Administrador extends Usuario_sistema
     public function estoqueable(){
         return $this->morphMany(Estoque::class, 'estoqueable');
     }
+
+    public function total(){
+        return $this->count();
+    }
+
+
 }

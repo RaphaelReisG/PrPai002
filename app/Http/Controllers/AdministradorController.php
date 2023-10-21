@@ -19,7 +19,17 @@ use App\Models\Vendedor;
 use App\Models\Fornecedor;
 use App\Models\Marca;
 use App\Models\Produto;
+use App\Models\Estoque;
+use App\Models\Tipo_produto;
 use App\Models\Telefone;
+
+use App\Models\Pais;
+use App\Models\Estado;
+use App\Models\Cidade;
+use App\Models\Bairro;
+use App\Models\Endereco;
+use App\Models\MetodoPagamento;
+use App\Models\Tipo_movimentacao;
 
 class AdministradorController extends Controller
 {
@@ -297,99 +307,311 @@ class AdministradorController extends Controller
     }
 
     public function analiseTotalPedidos(Request $request){
-        // total de pedidos - em aberto - aprovado - entregue -pago
-        $totalPedidos = Pedido::count();
-        //total de pedidos periodico
-        $totalPedidosArray = Pedido::select([
-            DB::raw('YEAR(pedidos.created_at) as ano'),
-            DB::raw('MONTH(created_at) as mes'),
-            DB::raw('COUNT(*) as total')
-        ])
-        ->groupBy('ano')->groupBy('mes')->orderBy('ano', 'asc')->orderBy('mes', 'asc')->get();
+        //Administradores
+            // total de Administradores
+            $totalAdministradores = Administrador::count();
+            // total de Administradores excluidos
+            $totalAdministradoresExcluidos = Administrador::onlyTrashed()->count();
+        //--------------
+        //Clientes
+            // total de clientes
+            $totalClientes = Cliente::count();
+            // total de Clientes excluidos
+            $totalClientesExcluidos = Cliente::onlyTrashed()->count();
+        //--------
+        //Enderecos
+            // total de Endereços - pais - estado - cidade - bairro
+            //Pais
+                // total
+                $totalPaises = Pais::count();
+                // total excluidos
+                $totalPaisesExcluidos = Pais::onlyTrashed()->count();
+            //----
+            //Estado
+                // total
+                $totalEstados = Estado::count();
+                // total excluidos
+                $totalEstadosExcluidos = Estado::onlyTrashed()->count();
+            //------
+            //Cidade
+                // total
+                $totalCidades = Cidade::count();
+                // total excluidos
+                $totalCidadesExcluidos = Cidade::onlyTrashed()->count();
+            //------
+            //Bairro
+                // total
+                $totalBairros = Bairro::count();
+                // total excluidos
+                $totalBairrosExcluidos = Bairro::onlyTrashed()->count();
+            //------
+            //Endereco
+                // total
+                $totalEnderecos = Endereco::count();
+                // total excluidos
+                $totalEnderecosExcluidos = Endereco::onlyTrashed()->count();
+            //------
+        //----------
+        //Fornecedores
+            // total de Fornecedores
+                $totalFornecedores = Fornecedor::count();
+            // total de Fornecedores excluidos
+                $totalFornecedoresExcluidos = Fornecedor::onlyTrashed()->count();
+            //Marcas
+                // total de Marcas
+                    $totalMarcas = Marca::count();
+                // total de Marcaa excluidos
+                    $totalMarcasExcluidos = Marca::onlyTrashed()->count();
+                //Produtos
+                    //total de Produto (variedades)
+                        $totalProdutoVariedade = Produto::count();
+                    //total de Produto (variedades)
+                        $totalProdutosExcluidos = Produto::onlyTrashed()->count();
+                    //total de pacotes (entregues)
+                        $totalProdutos = Pedido::
+                        join('pedido_produto', 'pedidos.id', '=', 'pedido_produto.pedido_id')
+                        ->join('produtos', 'pedido_produto.produto_id', '=', 'produtos.id')
+                        ->whereNotNull('pedidos.delivery_date')
+                        ->sum('pedido_produto.qty_item');
+                    //-----------------
+                    //total de pacotes (entregues) (periodico)
+                        $totalProdutosPeriodico = Pedido::
+                            join('pedido_produto', 'pedidos.id', '=', 'pedido_produto.pedido_id')
+                            ->join('produtos', 'pedido_produto.produto_id', '=', 'produtos.id')
+                            ->select([
+                                DB::raw('YEAR(pedidos.created_at) as ano'),
+                                DB::raw('MONTH(pedidos.created_at) as mes'),
+                                DB::raw('SUM(pedido_produto.qty_item) as total')
+                            ])
+                            ->whereNotNull('pedidos.delivery_date')
+                            ->groupBy('ano')->groupBy('mes')->orderBy('ano', 'asc')->orderBy('mes', 'asc')->get();
 
-        foreach($totalPedidosArray as $p){
-            $mes_totalPedidosArray[] = $this->numeroParaMes($p->mes)."/".$p->ano;
-            $valor_totalPedidosArray[] = $p->total;
-        }
+                        foreach($totalProdutosPeriodico as $p){
+                            //$ano_totalProdutosPeriodico[] = $p->ano;
+                            $mes_totalProdutosPeriodico[] = $this->numeroParaMes($p->mes)."/".$p->ano;
+                            $valor_totalProdutosPeriodico[] = $p->total;
+                        }
+                    //------
+                    //tipos de produtos
+                        //total de Produto (variedades)
+                            $totalTipo_produtos = Tipo_produto::count();
+                        //total de Produto (variedades)
+                            $totalTipo_produtosExcluidos = Tipo_produto::onlyTrashed()->count();
+                    //-----------------
+                //---------
+            //------
+        //-----------
+        //Mov. Estoque
+            // total de Movimentações de estoque
+                $totalMovEstoque = Estoque::count();
+            // total de Movimentações de estoque excluidos
+                $totalMovEstoqueExcluidos = Estoque::onlyTrashed()->count();
+            // total de Movimentações de estoque - ENTRADA
+                $totalMovEstoqueEntrada = Estoque::where('qty_item', '>', 0)->sum('qty_item');
+            // total de Movimentações de estoque - SAIDA
+                $totalMovEstoqueSaida = Estoque::where('qty_item', '<', 0)->sum('qty_item');
+            //tipo_movimentacao
+                // total
+                    $totalTipoMovEstoque = Tipo_movimentacao::count();
+                // total de excluidos
+                    $totalTipoMovEstoqueExcluidos = Tipo_movimentacao::onlyTrashed()->count();
+            //-----------------
+        //------------
+        //Pedidos
+            // total
+                $totalPedidos = Pedido::count();
+            //--------
+            // total de excluidos
+                $totalPedidosExcluidos = Pedido::onlyTrashed()->count();
+            //--------
+            // total de em aberto
+                $totalPedidosAberto = Pedido::where('approval_date', null)->count();
+            //--------
+            // total de aprovado
+                $totalPedidosAprovado = Pedido::where('approval_date', '!=', null)->where('delivery_date', null)->where('payday', null)->count();
+            //--------
+            // total de entregue
+                $totalPedidosEntregue = Pedido::where('delivery_date', null)->count();
+            //--------
+            // total de pago
+                $totalPedidosPago = Pedido::where('payday', null)->count();
+            //--------
+            //total de pedidos periodico
+                $totalPedidosArray = Pedido::select([
+                    DB::raw('YEAR(pedidos.created_at) as ano'),
+                    DB::raw('MONTH(created_at) as mes'),
+                    DB::raw('COUNT(*) as total')
+                ])
+                ->groupBy('ano')->groupBy('mes')->orderBy('ano', 'asc')->orderBy('mes', 'asc')->get();
 
-        //valor $$ total dos pedidos
-        $valorTotalPedidos_price = Pedido::sum('total_price');
-        $valorTotalPedidos_discount = Pedido::sum('total_discount');
-        $valorTotalPedidos_total = $valorTotalPedidos_price - $valorTotalPedidos_discount;
+                foreach($totalPedidosArray as $p){
+                    $mes_totalPedidosArray[] = $this->numeroParaMes($p->mes)."/".$p->ano;
+                    $valor_totalPedidosArray[] = $p->total;
+                }
+            //-------------
+            //valor $$ total dos pedidos
+                $valorTotalPedidos_price = Pedido::sum('total_price');
+                $valorTotalPedidos_discount = Pedido::sum('total_discount');
+                $valorTotalPedidos_total = $valorTotalPedidos_price - $valorTotalPedidos_discount;
 
-        $valorTotalPedidosPeriodico = Pedido::select([
-                DB::raw('YEAR(pedidos.created_at) as ano'),
-                DB::raw('MONTH(pedidos.created_at) as mes'),
-                DB::raw('SUM(pedidos.total_price - pedidos.total_discount) as total')
-            ])
-            ->groupBy('ano')->groupBy('mes')->orderBy('ano', 'asc')->orderBy('mes', 'asc')->get();
+                $valorTotalPedidosPeriodico = Pedido::select([
+                        DB::raw('YEAR(pedidos.created_at) as ano'),
+                        DB::raw('MONTH(pedidos.created_at) as mes'),
+                        DB::raw('SUM(pedidos.total_price - pedidos.total_discount) as total')
+                    ])
+                    ->groupBy('ano')->groupBy('mes')->orderBy('ano', 'asc')->orderBy('mes', 'asc')->get();
 
-            foreach($valorTotalPedidosPeriodico as $p){
-                $mes_valorTotalPedidosArray[] = $this->numeroParaMes($p->mes)."/".$p->ano;
-                $valor_valorTotalPedidosArray[] = $p->total;
-            }
+                    foreach($valorTotalPedidosPeriodico as $p){
+                        $mes_valorTotalPedidosArray[] = $this->numeroParaMes($p->mes)."/".$p->ano;
+                        $valor_valorTotalPedidosArray[] = $p->total;
+                    }
+            //-----------
+            //Metodo_pagamento
+                // total
+                    $totalMetodoPagamento = MetodoPagamento::count();
+                //--------
+                // total de excluidos
+                    $totalMetodoPagamentoExcluido = MetodoPagamento::onlyTrashed()->count();
+                //--------
+            //----------------
+        //--------
+        //Telefones
+            //total
+                $totalTelefones = Telefone::count();
+            //-----
+            //total excluido
+                $totalTelefonesExcluidos = Telefone::onlyTrashed()->count();
+            //-----
+            //total tel cliente
+                $totalTelefonesCliente = Telefone::where('telefoneable_type', '=', 'App\Models\Cliente')->count();
+            //-----
+            //total tel vendedor
+                $totalTelefonesVendedor = Telefone::where('telefoneable_type', '=', 'App\Models\Vendedor')->count();
+            //-----
+            //total tel fornecedor
+                $totalTelefonesFornecedor = Telefone::where('telefoneable_type', '=', 'App\Models\Fornecedor')->count();
+            //-----
+        //---------
+        //Vendedores
+            // total de Vendedores
+                $totalVendedores = Vendedor::count();
+            // total de excluidos
+                $totalVendedoresExcluidos = Vendedor::onlyTrashed()->count();
+        //----------
 
-        //total de pacotes
-        $totalProdutos = Pedido::
-            join('pedido_produto', 'pedidos.id', '=', 'pedido_produto.pedido_id')
-            ->join('produtos', 'pedido_produto.produto_id', '=', 'produtos.id')
-            ->sum('pedido_produto.qty_item');
-        //total de periodico
-        $totalProdutosPeriodico = Pedido::
-            join('pedido_produto', 'pedidos.id', '=', 'pedido_produto.pedido_id')
-            ->join('produtos', 'pedido_produto.produto_id', '=', 'produtos.id')
-            ->select([
-                DB::raw('YEAR(pedidos.created_at) as ano'),
-                DB::raw('MONTH(pedidos.created_at) as mes'),
-                DB::raw('SUM(pedido_produto.qty_item) as total')
-            ])
-            ->groupBy('ano')->groupBy('mes')->orderBy('ano', 'asc')->orderBy('mes', 'asc')->get();
-
-        foreach($totalProdutosPeriodico as $p){
-            //$ano_totalProdutosPeriodico[] = $p->ano;
-            $mes_totalProdutosPeriodico[] = $this->numeroParaMes($p->mes)."/".$p->ano;
-            $valor_totalProdutosPeriodico[] = $p->total;
-        }
-
-        // total de clientes
-        $totalClientes = Cliente::count();
-        // total de Vendedores
-        $totalVendedores = Vendedor::count();
-        // total de Fornecedores
-        $totalFornecedores = Fornecedor::count();
-        // total de Marcas
-        $totalMarcas = Marca::count();
-        // total de Produto variedade
-        $totalProdutoVariedade = Produto::count();
-        // total de Mov.Estoque - entrada - saida
-        // total de Administradores
-        $totalAdministradores = Administrador::count();
-        // total de Telefones - de clientes - de vendedores
-        $totalTelefones = Telefone::count();
-        // total de Endereços - pais - estado - cidade - bairro
 
         //cria json
-        $resultado = [
-            'numero_total_pedidos' => $totalPedidos,
-            'numero_total_pedidos_periodico_json' => $totalPedidosArray,
-            'numero_total_pedidos_periodico_coluna_mes' => $mes_totalPedidosArray,
-            'numero_total_pedidos_periodico_coluna_total' => $valor_totalPedidosArray,
+            $resultado = [
+                'numero_total_pedidos' => $totalPedidos,
+                'numero_total_pedidos_periodico_json' => $totalPedidosArray,
+                'numero_total_pedidos_periodico_coluna_mes' => $mes_totalPedidosArray,
+                'numero_total_pedidos_periodico_coluna_total' => $valor_totalPedidosArray,
 
-            'numero_total_produtos' => $totalProdutos,
-            'numero_total_produtos_periodico_json' => $totalProdutosPeriodico,
-            //'numero_total_produtos_periodico_coluna_ano' => $ano_totalProdutosPeriodico,
-            'numero_total_produtos_periodico_coluna_mes' => $mes_totalProdutosPeriodico,
-            'numero_total_produtos_periodico_coluna_total' => $valor_totalProdutosPeriodico,
+                'numero_total_produtos' => $totalProdutos,
+                'numero_total_produtos_periodico_json' => $totalProdutosPeriodico,
+                //'numero_total_produtos_periodico_coluna_ano' => $ano_totalProdutosPeriodico,
+                'numero_total_produtos_periodico_coluna_mes' => $mes_totalProdutosPeriodico,
+                'numero_total_produtos_periodico_coluna_total' => $valor_totalProdutosPeriodico,
 
-            'valor_total_pedidos' => $valorTotalPedidos_total,
-            //'valor_total_price' => $valorTotalPedidos_price,
-            //'valor_total_discount' => $valorTotalPedidos_discount,
-            'valor_total_pedidos_periodico_coluna_mes' => $mes_valorTotalPedidosArray,
-            'valor_total_pedidos_periodico_coluna_total' => $valor_valorTotalPedidosArray,
+                'valor_total_pedidos' => $valorTotalPedidos_total,
+                //'valor_total_price' => $valorTotalPedidos_price,
+                //'valor_total_discount' => $valorTotalPedidos_discount,
+                'valor_total_pedidos_periodico_coluna_mes' => $mes_valorTotalPedidosArray,
+                'valor_total_pedidos_periodico_coluna_total' => $valor_valorTotalPedidosArray,
 
-            'valor_total_clientes' => $totalClientes
-        ];
+                'valor_total_clientes' => $totalClientes,
 
+                'administrador' => [
+                    'total' => $totalAdministradores,
+                    'total_excluido' => $totalAdministradoresExcluidos
+                ],
+                'bairro' => [
+                    'total' => $totalBairros,
+                    'total_excluido' => $totalBairrosExcluidos
+                ],
+                'cidade' => [
+                    'total' => $totalCidades,
+                    'total_excluido' => $totalCidadesExcluidos
+                ],
+                'cliente' => [
+                    'total' => $totalClientes,
+                    'total_excluido' => $totalClientesExcluidos
+                ],
+                'endereco' => [
+                    'total' => $totalEnderecos,
+                    'total_excluido' => $totalEnderecosExcluidos
+                ],
+                'estado' => [
+                    'total' => $totalEstados,
+                    'total_excluido' => $totalEstadosExcluidos
+                ],
+                'estoque' => [
+                    'total' => $totalMovEstoque,
+                    'total_excluido' => $totalMovEstoqueExcluidos,
+                    'total_entrada' => $totalMovEstoqueEntrada,
+                    'total_saida' => $totalMovEstoqueSaida
+                ],
+                'fornecedor' => [
+                    'total' => $totalFornecedores,
+                    'total_excluido' => $totalFornecedoresExcluidos
+                ],
+                'marca' => [
+                    'total' => $totalMarcas,
+                    'total_excluido' => $totalMarcasExcluidos
+                ],
+                'metodo_pagamento' => [
+                    'total' => $totalMetodoPagamento,
+                    'total_excluido' => $totalMetodoPagamentoExcluido
+                ],
+                'pais' => [
+                    'total' => $totalPaises,
+                    'total_excluido' => $totalPaisesExcluidos
+                ],
+                'pedido' => [
+                    'total' => $totalPedidos,
+                    'total_excluido' => $totalPedidosExcluidos,
+                    'total_em_aberto' => $totalPedidosAberto,
+                    'total_aprovado' => $totalPedidosAprovado,
+                    'total_entregue' => $totalPedidosEntregue,
+                    'total_pago' => $totalPedidosPago,
+                    //'numero_total_pedidos_periodico_json' => $totalPedidosArray,
+                    'numero_total_pedidos_periodico_coluna_mes' => $mes_totalPedidosArray,
+                    'numero_total_pedidos_periodico_coluna_total' => $valor_totalPedidosArray,
+                    'valor_total_pedidos' => $valorTotalPedidos_total,
+                    //'valor_total_price' => $valorTotalPedidos_price,
+                    //'valor_total_discount' => $valorTotalPedidos_discount,
+                    'valor_total_pedidos_periodico_coluna_mes' => $mes_valorTotalPedidosArray,
+                    'valor_total_pedidos_periodico_coluna_total' => $valor_valorTotalPedidosArray,
+                ],
+                'produto' => [
+                    'total' => $totalProdutoVariedade,
+                    'total_excluido' => $totalProdutosExcluidos,
+                    'total_pacotes_entregues' => $totalProdutos,
+                    //'numero_total_produtos_periodico_json' => $totalProdutosPeriodico,
+                    'numero_total_produtos_periodico_coluna_mes' => $mes_totalProdutosPeriodico,
+                    'numero_total_produtos_periodico_coluna_total' => $valor_totalProdutosPeriodico,
+                ],
+                'telefone' => [
+                    'total' => $totalTelefones,
+                    'total_excluido' => $totalTelefonesExcluidos,
+                    'total_tel_cliente' => $totalTelefonesCliente,
+                    'total_tel_vendedor' => $totalTelefonesVendedor,
+                    'total_tel_fornecedor' => $totalTelefonesFornecedor
+                ],
+                'tipo_movimentacao' => [
+                    'total' => $totalTipoMovEstoque,
+                    'total_excluido' => $totalTipoMovEstoqueExcluidos
+                ],
+                'tipo_produto' => [
+                    'total' => $totalTipo_produtos,
+                    'total_excluido' => $totalTipo_produtosExcluidos
+                ],
+                'vendedor' => [
+                    'total' => $totalVendedores,
+                    'total_excluido' => $totalVendedoresExcluidos
+                ]
+            ];
+        //-----
         return json_encode($resultado);
     }
 }

@@ -123,18 +123,42 @@ var app = new Vue({
         total_produtos: '',
         total_valor: '',
 
+        dash_rank:[{}],
+        dash_contagem:[{}],
+
     },
     mounted: async function(){
-        var url =  '/api/analise_cliente_total_pedidos/?id='+this.idUsuario;
+        var url_rank = null;
+        var url_contagem = null;
+
+        if(this.tipoUsuario == 'AppModelsAdministrador'){
+            url_rank =  '/api/analise_top_produtos/?id='+this.idUsuario;
+            url_contagem =  '/api/analise_total_pedidos/?id='+this.idUsuario;
+        }
+        else if(this.tipoUsuario == 'AppModelsVendedor'){
+            url_rank =  '/api/analise_vendedor_top_produtos/?id='+this.idUsuario;
+            url_contagem =  '/api/analise_vendedor_total_pedidos/?id='+this.idUsuario;
+        }
+        else{
+            url_rank =  '/api/analise_cliente_top_produtos/?id='+this.idUsuario;
+            url_contagem =  '/api/analise_cliente_total_pedidos/?id='+this.idUsuario;
+        }
 
         await axios
-            .get(url)
+            .get(url_rank)
                 .then(response => (
-                    this.total_pedidos = response.data.numero_total_pedidos,
-                    this.total_produtos = response.data.numero_total_produtos,
-                    this.total_valor = response.data.valor_total_pedidos
+                    this.dash_rank = response.data
                 ))
-                .catch(error => (this.error = error));
+                .catch(error => (alert('Falha ao carregar itens: '+error)));
+
+        await axios
+            .get(url_contagem)
+                .then(response => (
+                    this.dash_contagem = response.data
+                ))
+                .catch(error => (alert('Falha ao carregar itens: '+error)));
+
+
     },
     methods: {
         defineClasse: function(classe, titulo ){
