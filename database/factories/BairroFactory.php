@@ -17,7 +17,8 @@ class BairroFactory extends Factory
     public function definition()
     {
         return [
-            //
+            "name_neighborhood" => $this->faker->unique()->city,
+            "cidade_id" => $this->faker->unique()->numberBetween(1, 5)
         ];
     }
 }

@@ -17,7 +17,10 @@ class ClienteFactory extends Factory
     public function definition()
     {
         return [
-            //
+            "name" => $this->faker->unique()->name,
+            "company_name" => $this->faker->unique()->company,
+            "cnpj" => $this->faker->unique()->numberBetween(1, 10000),
+            "vendedor_id" => $this->faker->unique()->numberBetween(1, 5)
         ];
     }
 }

@@ -17,7 +17,7 @@ class PaisFactory extends Factory
     public function definition()
     {
         return [
-            //
+            "name_country" => $this->faker->unique()->country
         ];
     }
 }

@@ -17,7 +17,8 @@ class EstadoFactory extends Factory
     public function definition()
     {
         return [
-            //
+            "name_state" => $this->faker->unique()->state,
+            "pais_id" => $this->faker->unique()->numberBetween(1, 5)
         ];
     }
 }

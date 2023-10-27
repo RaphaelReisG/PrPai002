@@ -17,7 +17,7 @@ class AdministradorFactory extends Factory
     public function definition()
     {
         return [
-            //
+
         ];
     }
 }

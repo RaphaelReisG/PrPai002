@@ -17,7 +17,8 @@ class CidadeFactory extends Factory
     public function definition()
     {
         return [
-            //
+            "name_city" => $this->faker->unique()->city,
+            "estado_id" => $this->faker->unique()->numberBetween(1, 5)
         ];
     }
 }

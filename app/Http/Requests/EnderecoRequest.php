@@ -26,7 +26,7 @@ class EnderecoRequest extends FormRequest
         return [
             'name' => 'required|max: 45',
             'street_name' => 'required|max: 45',
-            'complement' => 'required|max: 45',
+            'complement' => 'max: 45',
             'cep' => 'required|integer',
             'house_number' => 'required|integer'
         ];

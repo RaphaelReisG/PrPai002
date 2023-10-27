@@ -17,7 +17,10 @@ class FornecedorFactory extends Factory
     public function definition()
     {
         return [
-            //
+            "name" => $this->faker->unique()->name,
+            "company_name" => $this->faker->unique()->company,
+            "email" => $this->faker->unique()->safeEmail,
+            "cnpj" => $this->faker->unique()->numberBetween(1, 10000)
         ];
     }
 }

@@ -460,6 +460,16 @@
                                 </div>
                             </div>
                             <div class="row">
+                                <iframe
+                                    title="dash012"
+                                    width="600"
+                                    height="600"
+                                    src="https://app.powerbi.com/view?r=eyJrIjoiM2Y2Mzc0MzAtZWJmNi00M2U5LWI5NWEtOTRkNGRlNWU0MTY5IiwidCI6ImNmNzJlMmJkLTdhMmItNDc4My1iZGViLTM5ZDU3YjA3Zjc2ZiIsImMiOjR9"
+                                    frameborder="0"
+                                    allowFullScreen="true">
+                                </iframe>
+                            </div>
+                            <div class="row">
                                 <div class="col"> <!-- Total - produto -->
                                     <card_02  :valorjson = "dash_contagem.produto.total" descricao="Total de Produtos Ativos no Catalogo">
                                         <template v-slot:icone>
