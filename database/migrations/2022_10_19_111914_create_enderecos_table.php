@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('name');
 
             $table->string('street_name');
-            $table->string('complement');
+            $table->string('complement')->nullable();
             $table->integer('cep');
             $table->integer('house_number');
             $table->softDeletes();

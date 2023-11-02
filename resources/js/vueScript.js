@@ -27,6 +27,8 @@ var app = new Vue({
         error: null,
         carregando: false,
         carregandoGeral: false,
+        carregandoModal: false,
+        carregandoImpressao: false,
         objetos: [{}],
         modalErro: false,
         modalSucesso: false,
@@ -157,6 +159,120 @@ var app = new Vue({
                     this.dash_contagem = response.data
                 ))
                 .catch(error => (alert('Falha ao carregar itens: '+error)));
+
+        /* chamadas de graficos e top 10 do admin que foi substituido pelo dash bi
+            <div class="row">
+                                <div class="col">
+                                    <graf_line_01 titulo="QTD Pedidos mensais (uni)"
+                                        c1 = "numero_total_pedidos_periodico_coluna_mes"
+                                        c2 = "numero_total_pedidos_periodico_coluna_total"
+                                        urlg = "analise_total_pedidos"
+                                        :usuario = "idUsuario"
+                                        graficoid = "pedidomensal"
+                                    ></graf_line_01>
+                                </div>
+                                <div class="col">
+                                    <graf_line_01 titulo="QTD Produtos mensais (pacotes)"
+                                        c1 = "numero_total_produtos_periodico_coluna_mes"
+                                        c2 = "numero_total_produtos_periodico_coluna_total"
+                                        urlg = "analise_total_pedidos"
+                                        :usuario = "idUsuario"
+                                        graficoid = "produtomensal"
+                                    ></graf_line_01>
+                                </div>
+                                <div class="col">
+                                    <graf_line_01 titulo="Valor gasto mensal (R$)"
+                                        c1 = "valor_total_pedidos_periodico_coluna_mes"
+                                        c2 = "valor_total_pedidos_periodico_coluna_total"
+                                        urlg = "analise_total_pedidos"
+                                        :usuario = "idUsuario"
+                                        graficoid = "valormensal"
+                                    ></graf_line_01>
+                                </div>
+                                <div class="col">
+                                    <graf_donut_01 titulo="Top Bairros"
+                                        c1 = "top_bairros_nome_bairros"
+                                        c2 = "top_bairros_valor_total_bairros"
+                                        urlg = "analise_top_produtos"
+                                        :usuario = "idUsuario"
+                                        graficoid = "topbairros"
+                                    ></graf_donut_01>
+                                </div>
+                                <div class="col">
+                                    <graf_donut_01 titulo="Top Cidades"
+                                        c1 = "top_cidades_nome_cidades"
+                                        c2 = "top_cidades_valor_total_cidades"
+                                        urlg = "analise_top_produtos"
+                                        :usuario = "idUsuario"
+                                        graficoid = "topcidades"
+                                    ></graf_donut_01>
+                                </div>
+                                <div class="col">
+                                    <graf_donut_01 titulo="Top Estados"
+                                        c1 = "top_estados_nome_estados"
+                                        c2 = "top_estados_valor_total_estados"
+                                        urlg = "analise_top_produtos"
+                                        :usuario = "idUsuario"
+                                        graficoid = "topestados"
+                                    ></graf_donut_01>
+                                </div>
+                                <div class="col">
+                                    <graf_donut_01 titulo="Top Pais"
+                                        c1 = "top_pais_nome_pais"
+                                        c2 = "top_pais_valor_total_pais"
+                                        urlg = "analise_top_produtos"
+                                        :usuario = "idUsuario"
+                                        graficoid = "toppais"
+                                    ></graf_donut_01>
+                                </div>
+                            </div>
+                            <div class="row"><br><br></div>
+                            <div class="row">
+                                <div class="col">
+                                    <table_comum_top
+                                        :classe_atributos="[
+                                            { titulo: 'Nome', conteudo: 'name'},
+                                            { titulo: 'qtd (pc)',conteudo: 'quantidade_total'}
+                                        ]"
+                                        urlg="analise_top_produtos"
+                                        :usuario = "idUsuario"
+                                        v1 = "top_produtos"
+                                        titulo = "TOP Produtos"
+                                        :valorjson = "[{}]"
+                                        >
+                                    </table_comum_top>
+                                </div>
+                                <div class="col">
+                                    <table_comum_top
+                                        :classe_atributos="[
+                                            { titulo: 'Nome', conteudo: 'name'},
+                                            { titulo: 'qtd (pc)',conteudo: 'quantidade_total'}
+                                        ]"
+                                        urlg="analise_top_produtos"
+                                        :usuario = "idUsuario"
+                                        v1 = "top_marcas"
+                                        titulo = "TOP Marcas"
+                                        :valorjson = "[{}]"
+                                        >
+                                    </table_comum_top>
+                                </div>
+                                <div class="col">
+                                    <table_comum_top
+                                        :classe_atributos="[
+                                            { titulo: 'Nome', conteudo: 'name'},
+                                            { titulo: 'qtd', conteudo: 'quantidade_total'}
+                                        ]"
+                                        urlg="analise_top_produtos"
+                                        :usuario = "idUsuario"
+                                        v1 = "top_clientes"
+                                        titulo = "TOP Clientes"
+                                        :valorjson = "[{}]"
+                                        >
+                                    </table_comum_top>
+                                </div>
+                            </div>
+
+        */
 
 
     },
@@ -317,7 +433,8 @@ var app = new Vue({
                     weight: this.modelObjetos[0]['weight'],
                     cost_price: this.modelObjetos[0]['cost_price'],
                     sale_price: this.modelObjetos[0]['sale_price'],
-                    marca_id: this.modelObjetos[0]['marca_id']
+                    marca_id: this.modelObjetos[0]['marca_id'],
+                    fornecedor_id: this.modelObjetos[0]['fornecedor_id']
                 }
             }
             else if(classe == "tipo_produto" || classe == "tipo_movimentacao" || classe == "metodo_pagamento"){
@@ -466,6 +583,7 @@ var app = new Vue({
                 this.modelObjetos[0]['cost_price'] = this.objetos['data'][index]['cost_price'];
                 this.modelObjetos[0]['sale_price'] = this.objetos['data'][index]['sale_price'];
                 this.modelObjetos[0]['marca_id'] = this.objetos['data'][index]['marca_id'];
+                this.modelObjetos[0]['fornecedor_id'] = this.objetos['data'][index]['marca']['fornecedor_id'];
             }
             else if(this.nomeObjeto == "pedido"){
                 this.modelObjetos[0]['cliente_id'] = this.objetos['data'][index]['cliente_id'];
@@ -580,7 +698,7 @@ var app = new Vue({
             if(this.nomeObjeto == 'bairro'){this.buscaCidades();}
             if(this.nomeObjeto == 'cliente') { this.buscaVendedores();}
             if(this.nomeObjeto == 'marca'){this.buscaFornecedores();}
-            if(this.nomeObjeto == 'produto'){this.buscaMarcas();}
+            if(this.nomeObjeto == 'produto'){this.buscaFornecedores();}
             if(this.nomeObjeto == 'produto'){this.buscaTipo_produtos();}
             if(this.nomeObjeto == 'estoque'){this.buscaTipo_movimentacaos();}
             if(this.nomeObjeto == 'pedido'){this.buscaMetodo_pagamentos();}
@@ -979,7 +1097,7 @@ var app = new Vue({
             if(this.nomeObjeto == 'bairro'){this.buscaCidades();}
             if(this.nomeObjeto == 'cliente') { this.buscaVendedores();}
             if(this.nomeObjeto == 'marca' || this.nomeObjeto == 'estoque'){this.buscaFornecedores();}
-            if(this.nomeObjeto == 'produto'){this.buscaMarcas();}
+            if(this.nomeObjeto == 'produto'){this.buscaFornecedores();}
             if(this.nomeObjeto == 'produto'){this.buscaTipo_produtos();}
             if(this.nomeObjeto == 'estoque'){this.buscaTipo_movimentacaos();}
             if(this.nomeObjeto == 'pedido'){this.buscaMetodo_pagamentos();}
@@ -1771,15 +1889,16 @@ var app = new Vue({
                     .catch(error => (this.error = error));
 
         },
-        buscaPaises: function() {
+        buscaPaises: async function() {
             this.paises = null;
             this.carregandoGeral = true;
+            this.carregandoModal = true;
             var url;
             const paginacao = '?paginacao=false';
             //if() {var where = '&atributo='+atributo+'&valor='+valor;}
             url = '/api/pais'+paginacao;
 
-            axios
+            await axios
                 .get(url, {
                     headers: {
                       Authorization: 'Bearer '+this.tokenUsuario
@@ -1787,10 +1906,12 @@ var app = new Vue({
                   })
                 .then(response => (this.paises = response.data))
                 .catch(error => (this.error = error));
+            this.carregandoModal = false;
         },
-        buscaEstados: function() {
+        buscaEstados: async function() {
             this.estados = null;
             this.carregandoGeral = true;
+            this.carregandoModal = true;
             var url;
             if(this.nomeObjeto == 'endereco'){
                 url = '/api/estado'+'?paginacao=false&pais_id='+this.modelObjetos[0]['pais_id'];
@@ -1801,7 +1922,7 @@ var app = new Vue({
             }
 
 
-            axios
+            await axios
                 .get(url, {
                     headers: {
                       Authorization: 'Bearer '+this.tokenUsuario
@@ -1809,10 +1930,13 @@ var app = new Vue({
                   })
                 .then(response => (this.estados = response.data))
                 .catch(error => (this.error = error));
+            //alert('opa');
+            this.carregandoModal = false;
         },
-        buscaCidades: function() {
+        buscaCidades: async function() {
             this.cidades = null;
             this.carregandoGeral = true;
+            this.carregandoModal = true;
             var url;
             //url = '/api/cidade'+'?paginacao=false';
 
@@ -1824,7 +1948,7 @@ var app = new Vue({
                 url = '/api/cidade'+'?paginacao=false';
             }
 
-            axios
+            await axios
                 .get(url, {
                     headers: {
                       Authorization: 'Bearer '+this.tokenUsuario
@@ -1832,11 +1956,13 @@ var app = new Vue({
                   })
                 .then(response => (this.cidades = response.data))
                 .catch(error => (this.error = error));
+            this.carregandoModal = false;
         },
-        buscaBairros: function() {
+        buscaBairros: async function() {
 
             this.bairros = null;
             this.carregandoGeral = true;
+            this.carregandoModal = true;
             var url;
             //url = '/api/bairro'+'?paginacao=false';
 
@@ -1848,7 +1974,7 @@ var app = new Vue({
                 url = '/api/bairro'+'?paginacao=false';
             }
 
-            axios
+            await axios
                 .get(url, {
                     headers: {
                       Authorization: 'Bearer '+this.tokenUsuario
@@ -1856,16 +1982,18 @@ var app = new Vue({
                   })
                 .then(response => (this.bairros = response.data))
                 .catch(error => (this.error = error));
+            this.carregandoModal = false;
         },
-        buscaEnderecos: function() {
-            alert('opa');
+        buscaEnderecos: async function() {
+            //alert('opa');
+            this.carregandoModal = true;
             this.enderecos = null;
             this.carregandoGeral = true;
             var url;
             url = '/api/endereco'+'?paginacao=false&cliente_id='+this.modelObjetos[0]['cliente_id']; //vc parou nessa linha
             //alert(url);
 
-            axios
+            await axios
                 .get(url, {
                     headers: {
                       Authorization: 'Bearer '+this.tokenUsuario
@@ -1873,11 +2001,13 @@ var app = new Vue({
                   })
                 .then(response => (this.enderecos = response.data))
                 .catch(error => (this.error = error));
+            this.carregandoModal = false;
         },
-        buscaPessoa: function() {
+        buscaPessoa: async function() {
             //alert('opa')
             this.pessoas = null;
             this.carregandoGeral = true;
+            this.carregandoModal = true;
             var url;
             //alert(this.modelObjetos[0]['tipoPessoa']);
             url = '/api/'+this.modelObjetos[0]['tipoPessoa']+'?paginacao=false';
@@ -1890,7 +2020,7 @@ var app = new Vue({
                 }
             }
 
-            axios
+            await axios
                 .get(url, {
                     headers: {
                       Authorization: 'Bearer '+this.tokenUsuario
@@ -1898,8 +2028,10 @@ var app = new Vue({
                   })
                 .then(response => (this.pessoas = response.data))
                 .catch(error => (this.error = error));
+            this.carregandoModal = false;
         },
-        buscaClientes: function() {
+        buscaClientes: async function() {
+            this.carregandoModal = true;
             this.clientes = null;
             this.carregandoGeral = true;
             var url;
@@ -1911,7 +2043,7 @@ var app = new Vue({
             }
             //alert(url);
 
-            axios
+            await axios
                 .get(url, {
                     headers: {
                       Authorization: 'Bearer '+this.tokenUsuario
@@ -1919,15 +2051,17 @@ var app = new Vue({
                   })
                 .then(response => (this.clientes = response.data))
                 .catch(error => (this.error = error));
+            this.carregandoModal = false;
         },
-        buscaVendedores: function() {
+        buscaVendedores: async function() {
+            this.carregandoModal = true;
             this.vendedores = null;
             this.carregandoGeral = true;
             var url;
             url = '/api/vendedor'+'?paginacao=false';
             //alert(url);
 
-            axios
+            await axios
                 .get(url, {
                     headers: {
                       Authorization: 'Bearer '+this.tokenUsuario
@@ -1935,15 +2069,17 @@ var app = new Vue({
                   })
                 .then(response => (this.vendedores = response.data))
                 .catch(error => (this.error = error));
+            this.carregandoModal = false;
         },
-        buscaFornecedores: function() {
+        buscaFornecedores: async function() {
+            this.carregandoModal = true;
             this.fornecedores = null;
             this.carregandoGeral = true;
             var url;
             url = '/api/fornecedor'+'?paginacao=false';
             //alert(url);
 
-            axios
+            await axios
                 .get(url, {
                     headers: {
                       Authorization: 'Bearer '+this.tokenUsuario
@@ -1951,8 +2087,10 @@ var app = new Vue({
                   })
                 .then(response => (this.fornecedores = response.data))
                 .catch(error => (this.error = error));
+            this.carregandoModal = false;
         },
-        buscaMarcas: function() {
+        buscaMarcas: async function() {
+            this.carregandoModal = true;
             this.marcas = null;
             this.carregandoGeral = true;
             var url;
@@ -1967,7 +2105,7 @@ var app = new Vue({
             }
             //alert(url);
 
-            axios
+            await axios
                 .get(url, {
                     headers: {
                       Authorization: 'Bearer '+this.tokenUsuario
@@ -1975,8 +2113,10 @@ var app = new Vue({
                   })
                 .then(response => (this.marcas = response.data))
                 .catch(error => (this.error = error));
+            this.carregandoModal = false;
         },
-        buscaProdutos: function() {
+        buscaProdutos: async function() {
+            this.carregandoModal = true;
             this.produtos = null;
             this.carregandoGeral = true;
             var url;
@@ -1991,7 +2131,7 @@ var app = new Vue({
             }
             //alert(url);
 
-            axios
+            await axios
                 .get(url, {
                     headers: {
                       Authorization: 'Bearer '+this.tokenUsuario
@@ -1999,9 +2139,10 @@ var app = new Vue({
                   })
                 .then(response => (this.produtos = response.data))
                 .catch(error => (this.error = error));
+            this.carregandoModal = false;
         },
         buscarMeuProduto: async function() {
-
+            this.carregandoModal = true;
             //this.meuProduto = null;
             this.carregandoGeral = true;
             var url;
@@ -2021,15 +2162,17 @@ var app = new Vue({
                 .catch(error => (this.error = error));
 
             this.temPaginacao = true;
+            this.carregandoModal = false;
         },
-        buscaTipo_produtos: function() {
+        buscaTipo_produtos: async function() {
+            this.carregandoModal = true;
             this.tipo_produtos = null;
             this.carregandoGeral = true;
             var url;
             url = '/api/tipo_produto'+'?paginacao=false';
             //alert(url);
 
-            axios
+            await axios
                 .get(url, {
                     headers: {
                       Authorization: 'Bearer '+this.tokenUsuario
@@ -2037,8 +2180,10 @@ var app = new Vue({
                   })
                 .then(response => (this.tipo_produtos = response.data))
                 .catch(error => (this.error = error));
+            this.carregandoModal = false;
         },
-        buscaTipo_movimentacaos: function() {
+        buscaTipo_movimentacaos: async function() {
+            this.carregandoModal = true;
             this.tipo_movimentacaos = null;
             this.carregandoGeral = true;
             var url;
@@ -2046,7 +2191,7 @@ var app = new Vue({
             url = '/api/tipo_movimentacao'+'?paginacao=false';
             //alert(url);
 
-            axios
+            await axios
                 .get(url, {
                     headers: {
                       Authorization: 'Bearer '+this.tokenUsuario
@@ -2054,8 +2199,10 @@ var app = new Vue({
                   })
                 .then(response => (this.tipo_movimentacaos = response.data))
                 .catch(error => (this.error = error));
+            this.carregandoModal = false;
         },
-        buscaMetodo_pagamentos: function() {
+        buscaMetodo_pagamentos: async function() {
+            this.carregandoModal = true;
             this.metodo_pagamentos = null;
             this.carregandoGeral = true;
             var url;
@@ -2063,7 +2210,7 @@ var app = new Vue({
             url = '/api/metodo_pagamento'+'?paginacao=false';
             //alert(url);
 
-            axios
+            await axios
                 .get(url, {
                     headers: {
                       Authorization: 'Bearer '+this.tokenUsuario
@@ -2071,6 +2218,7 @@ var app = new Vue({
                   })
                 .then(response => (this.metodo_pagamentos = response.data))
                 .catch(error => (this.error = error));
+            this.carregandoModal = false;
         },
         addProdutoCarrinho: function(index){
             if(this.meuCarrinho.find(item => item.id === this.meuProduto['data'][index]['id'])){
@@ -2209,7 +2357,7 @@ var app = new Vue({
             }
         },
         imprimePedido: async function(id){
-            //alert('opa');
+            this.carregandoImpressao = true;
             this.pedidoImpressao = null;
 
             this.carregandoGeral = true;
@@ -2229,6 +2377,7 @@ var app = new Vue({
 
             this.impressao = true;
             //alert('opa2');
+            this.carregandoImpressao = false;
         }
     }
 })
