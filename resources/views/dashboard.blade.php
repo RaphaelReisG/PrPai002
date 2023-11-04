@@ -15,6 +15,8 @@
         integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous">
     </script>
 
+
+
     <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script> -->
@@ -2149,8 +2151,7 @@
     </div>
 </body>
 
-
-
 @vite(['resources/js/app.js'])
+
 
 </html>

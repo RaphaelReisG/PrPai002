@@ -2378,6 +2378,15 @@ var app = new Vue({
             this.impressao = true;
             //alert('opa2');
             this.carregandoImpressao = false;
+
+                /*
+                const pdf = new jsPDF();
+                pdf.html(document.body, {
+                  callback: function (pdf) {
+                    pdf.save("pagina.pdf");
+                  },
+                });*/
+
         }
     }
 })

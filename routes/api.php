@@ -4,6 +4,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\AdministradorController;
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\Auth\LoginMobileController;
 use App\Http\Controllers\BairroController;
 use App\Http\Controllers\CidadeController;
 use App\Http\Controllers\ClienteController;
@@ -35,6 +37,11 @@ use App\Http\Controllers\TipoProdutoController;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+
+Route::post('login_mobile', [LoginMobileController::class, 'auth']);
+Route::post('logout_mobile', [LoginMobileController::class, 'logout'])->middleware('auth:sanctum');
+
 
 Route::apiResource('administrador', AdministradorController::class)->middleware('auth:sanctum');
 Route::apiResource('bairro', BairroController::class)->middleware('auth:sanctum');
