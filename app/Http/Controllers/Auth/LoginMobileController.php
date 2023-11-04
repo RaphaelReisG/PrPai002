@@ -20,7 +20,8 @@ class LoginMobileController extends Controller
         $user = User::where('email', $request->email)->first();
         if (! $user || ! Hash::check($request->password, $user->password)){
             throw ValidationValidationException::withMessages([
-                'email' => ['Credenciais invalidas']
+                'email' => ['Credenciais invalidas'],
+                'erro' => true
             ]);
         }
 
@@ -30,7 +31,8 @@ class LoginMobileController extends Controller
 
         return response()->json([
             'token' => $token,
-            'dados' => $user->userable
+            'dados' => $user->userable,
+             'errors' => ['erro' => false ]
         ]);
 
     }
@@ -40,6 +42,7 @@ class LoginMobileController extends Controller
 
         return response()->json([
             'message' => "Logout com sucesso",
+
         ]);
 
     }
