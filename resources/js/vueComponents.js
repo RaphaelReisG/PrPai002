@@ -40,21 +40,11 @@
     });
 
     Vue.component('graf_line_01', {
-        props: ['titulo', 'c1', 'c2', 'urlg', 'graficoid', 'usuario'],
-        mounted: async function(){
+        props: ['titulo', 'c1', 'c2', 'graficoid'],
+        mounted: function(){
             //alert(this.titulo);
-            var coluna1 = [];
-            var coluna2 = [];
-
-            var url =  '/api/'+this.urlg+'/?id='+this.usuario;
-
-            await axios
-                .get(url)
-                    .then(response => (
-                        coluna1 = response.data[this.c1],
-                        coluna2 = response.data[this.c2]
-                    ))
-                    .catch(error => (this.error = error));
+            var coluna1 = this.c1;
+            var coluna2 = this.c2;
 
             const ctx = document.getElementById(this.graficoid);
 
@@ -85,21 +75,11 @@
     });
 
     Vue.component('graf_donut_01', {
-        props: ['titulo', 'c1', 'c2', 'urlg', 'graficoid', 'usuario'],
-        mounted: async function(){
+        props: ['titulo', 'c1', 'c2', 'graficoid'],
+        mounted: function(){
             //alert(this.titulo);
-            var coluna1 = [];
-            var coluna2 = [];
-
-            var url =  '/api/'+this.urlg+'/?id='+this.usuario;
-
-            await axios
-                .get(url)
-                    .then(response => (
-                        coluna1 = response.data[this.c1],
-                        coluna2 = response.data[this.c2]
-                    ))
-                    .catch(error => (this.error = error));
+            var coluna1 = this.c1;
+            var coluna2 = this.c2;
 
             const ctx = document.getElementById(this.graficoid);
 
@@ -1312,19 +1292,7 @@ Vue.component('table_acordion_api', {
 });
 
 Vue.component('table_comum_top', {
-    props: ['classe_atributos', 'urlg', 'usuario', 'v1', 'titulo', 'valorjson'],
-    mounted: async function(){
-        //alert(this.titulo);
-
-        var url =  '/api/'+this.urlg+'/?id='+this.usuario;
-
-        await axios
-            .get(url)
-                .then(response => (
-                    this.valorjson = response.data[this.v1]
-                ))
-                .catch(error => (this.error = error));
-    },
+    props: ['classe_atributos', 'titulo', 'valorjson'],
     template: `
             <div>
                 <h5>{{titulo}}</h5>

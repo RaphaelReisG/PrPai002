@@ -32,7 +32,7 @@ class LoginMobileController extends Controller
         return response()->json([
             'token' => $token,
             'dados' => $user->userable,
-             'errors' => ['erro' => false ]
+            'errors' => ['erro' => false ]
         ]);
 
     }

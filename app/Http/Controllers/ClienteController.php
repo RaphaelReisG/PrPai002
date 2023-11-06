@@ -291,6 +291,11 @@ class ClienteController extends Controller
         $cliente = Cliente::findOrfail($request['id']);
         // total de pedidos
         $totalPedidos = $cliente->pedidos()->count();
+        $totalPedidosAberto = $cliente->pedidos()->where('approval_date', null)->count();
+        $totalPedidosAprovado = $cliente->pedidos()->where('approval_date', '!=', null)->where('delivery_date', null)->where('payday', null)->count();
+        $totalPedidosEntregue = $cliente->pedidos()->where('delivery_date', null)->count();
+        $totalPedidosPago = $cliente->pedidos()->where('payday', null)->count();
+
         //total de pedidos periodico
         $totalPedidosArray = $cliente->pedidos()->select([
             DB::raw('YEAR(pedidos.created_at) as ano'),
@@ -323,9 +328,15 @@ class ClienteController extends Controller
             }
 
         //total de pacotes
+        /*$totalProdutos = $cliente->pedidos()
+            ->join('pedido_produto', 'pedidos.id', '=', 'pedido_produto.pedido_id')
+            ->join('produtos', 'pedido_produto.produto_id', '=', 'produtos.id')
+            ->sum('pedido_produto.qty_item');*/
+
         $totalProdutos = $cliente->pedidos()
             ->join('pedido_produto', 'pedidos.id', '=', 'pedido_produto.pedido_id')
             ->join('produtos', 'pedido_produto.produto_id', '=', 'produtos.id')
+            ->whereNotNull('pedidos.delivery_date')
             ->sum('pedido_produto.qty_item');
         //total de periodico
         $totalProdutosPeriodico = $cliente->pedidos()
@@ -362,6 +373,30 @@ class ClienteController extends Controller
             //'valor_total_discount' => $valorTotalPedidos_discount,
             'valor_total_pedidos_periodico_coluna_mes' => $mes_valorTotalPedidosArray,
             'valor_total_pedidos_periodico_coluna_total' => $valor_valorTotalPedidosArray,
+
+            'pedido' => [
+                'total' => $totalPedidos,
+                'total_em_aberto' => $totalPedidosAberto,
+                'total_aprovado' => $totalPedidosAprovado,
+                'total_entregue' => $totalPedidosEntregue,
+                'total_pago' => $totalPedidosPago,
+                //'numero_total_pedidos_periodico_json' => $totalPedidosArray,
+                'numero_total_pedidos_periodico_coluna_mes' => $mes_totalPedidosArray,
+                'numero_total_pedidos_periodico_coluna_total' => $valor_totalPedidosArray,
+
+                'valor_total_pedidos' => $valorTotalPedidos_total,
+                'valor_total_pedidos_periodico_coluna_mes' => $mes_valorTotalPedidosArray,
+                'valor_total_pedidos_periodico_coluna_total' => $valor_valorTotalPedidosArray,
+            ],
+
+            'produto' => [
+                'total_pacotes_entregues' => $totalProdutos,
+
+                //'numero_total_produtos_periodico_json' => $totalProdutosPeriodico,
+                'numero_total_produtos_periodico_coluna_mes' => $mes_totalProdutosPeriodico,
+                'numero_total_produtos_periodico_coluna_total' => $valor_totalProdutosPeriodico,
+
+            ],
         ];
 
         return json_encode($resultado);

@@ -9,11 +9,12 @@
     <link rel="icon" href="./logo.ico" type="image/x-icon">
     <title>Ambiente - Salgados</title>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous">
-    </script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
 
 
 
@@ -262,10 +263,6 @@
                     <div v-if="titulo == ''"> <!-- Dashboard -->
                         @can('cliente')
                             <div class="row">
-                                <div class="col"><card_01 valorjson = "" titulocard= "Pedidos" urlg = "analise_cliente_total_pedidos" :usuario = "idUsuario" parametro = "numero_total_pedidos"></card_01></div>
-                                <div class="col"><card_01 valorjson = "" titulocard= "Produtos" urlg = "analise_cliente_total_pedidos" :usuario = "idUsuario" parametro = "numero_total_produtos"></card_01></div>
-                                <div class="col"><card_01 valorjson = "" titulocard= "Total Gasto R$" urlg = "analise_cliente_total_pedidos" :usuario = "idUsuario" parametro = "valor_total_pedidos"></card_01></div>
-
                                 <div class="col"> <!-- Total - pacotes - entregue -->
                                     <card_02  :valorjson = "dash_contagem.produto.total_pacotes_entregues" descricao="Total de Pacotes Entregues">
                                         <template v-slot:icone>
@@ -277,13 +274,6 @@
                                     <card_02  :valorjson = "dash_contagem.pedido.total" descricao="Total de Pedidos realizados">
                                         <template v-slot:icone>
                                             <icone_pedido></icone_pedido>
-                                        </template>
-                                    </card_02>
-                                </div>
-                                <div class="col"> <!-- Total - pedido - Excluido -->
-                                    <card_02  :valorjson = "dash_contagem.pedido.total_excluido" descricao="Total de Pedidos Excluidos">
-                                        <template v-slot:icone>
-                                            <icone_pedido></icone_pedido><icone_deletar></icone_deletar>
                                         </template>
                                     </card_02>
                                 </div>
@@ -326,31 +316,23 @@
                             <div class="row">
                                 <div class="col">
                                     <graf_line_01 titulo="QTD Pedidos mensais (uni)"
-                                        c1 = "numero_total_pedidos_periodico_coluna_mes"
-                                        c2 = "numero_total_pedidos_periodico_coluna_total"
-                                        urlg = "analise_cliente_total_pedidos"
-                                        :usuario = "idUsuario"
+                                        :c1 = "dash_contagem.pedido.numero_total_pedidos_periodico_coluna_mes"
+                                        :c2 = "dash_contagem.pedido.numero_total_pedidos_periodico_coluna_total"
                                         graficoid = "pedidomensal"
                                     ></graf_line_01>
                                 </div>
                                 <div class="col">
                                     <graf_line_01 titulo="QTD Produtos mensais (pacotes)"
-                                        c1 = "numero_total_produtos_periodico_coluna_mes"
-                                        c2 = "numero_total_produtos_periodico_coluna_total"
-                                        urlg = "analise_cliente_total_pedidos"
-                                        :usuario = "idUsuario"
+                                        :c1 = "dash_contagem.produto.numero_total_produtos_periodico_coluna_mes"
+                                        :c2 = "dash_contagem.produto.numero_total_produtos_periodico_coluna_total"
                                         graficoid = "produtomensal"
-
                                     ></graf_line_01>
                                 </div>
                                 <div class="col">
                                     <graf_line_01 titulo="Valor gasto mensal (R$)"
-                                        c1 = "valor_total_pedidos_periodico_coluna_mes"
-                                        c2 = "valor_total_pedidos_periodico_coluna_total"
-                                        urlg = "analise_cliente_total_pedidos"
-                                        :usuario = "idUsuario"
+                                        :c1 = "dash_contagem.pedido.valor_total_pedidos_periodico_coluna_mes"
+                                        :c2 = "dash_contagem.pedido.valor_total_pedidos_periodico_coluna_total"
                                         graficoid = "valormensal"
-
                                     ></graf_line_01>
                                 </div>
                             </div>
@@ -362,11 +344,8 @@
                                             { titulo: 'Nome', conteudo: 'name'},
                                             { titulo: 'qtd (pc)',conteudo: 'quantidade_total'}
                                         ]"
-                                        urlg="analise_cliente_top_produtos"
-                                        :usuario = "idUsuario"
-                                        v1 = "top_produtos"
                                         titulo = "TOP Produtos"
-                                        :valorjson = "[{}]"
+                                        :valorjson = "dash_rank.top_produtos"
                                         >
                                     </table_comum_top>
                                 </div>
@@ -376,11 +355,8 @@
                                             { titulo: 'Nome', conteudo: 'name'},
                                             { titulo: 'qtd (pc)',conteudo: 'quantidade_total'}
                                         ]"
-                                        urlg="analise_cliente_top_produtos"
-                                        :usuario = "idUsuario"
-                                        v1 = "top_marcas"
                                         titulo = "TOP Marcas"
-                                        :valorjson = "[{}]"
+                                        :valorjson = "dash_rank.top_marcas"
                                         >
                                     </table_comum_top>
                                 </div>
@@ -544,22 +520,10 @@
 
                         @elsecan('vendedor')
                             <div class="row">
-                                <div class="col"><card_01 valorjson = "" titulocard= "Meus CLientes" urlg = "analise_vendedor_total_pedidos" :usuario = "idUsuario" parametro = "valor_total_clientes"></card_01></div>
-                                <div class="col"><card_01 valorjson = "" titulocard= "Pedidos" urlg = "analise_vendedor_total_pedidos" :usuario = "idUsuario" parametro = "numero_total_pedidos"></card_01></div>
-                                <div class="col"><card_01 valorjson = "" titulocard= "Produtos" urlg = "analise_vendedor_total_pedidos" :usuario = "idUsuario" parametro = "numero_total_produtos"></card_01></div>
-                                <div class="col"><card_01 valorjson = "" titulocard= "Total Gasto R$" urlg = "analise_vendedor_total_pedidos" :usuario = "idUsuario" parametro = "valor_total_pedidos"></card_01></div>
-
                                 <div class="col"> <!-- Total - Cliente -->
                                     <card_02  :valorjson = "dash_contagem.cliente.total" descricao="Total de Clientes Ativos">
                                         <template v-slot:icone>
                                             <icone_cliente></icone_cliente>
-                                        </template>
-                                    </card_02>
-                                </div>
-                                <div class="col"> <!-- Total - Cliente - Excluido -->
-                                    <card_02  :valorjson = "dash_contagem.cliente.total_excluido" descricao="Total de Clientes Excluidos">
-                                        <template v-slot:icone>
-                                            <icone_cliente></icone_cliente><icone_deletar></icone_deletar>
                                         </template>
                                     </card_02>
                                 </div>
@@ -574,13 +538,6 @@
                                     <card_02  :valorjson = "dash_contagem.pedido.total" descricao="Total de Pedidos realizados">
                                         <template v-slot:icone>
                                             <icone_pedido></icone_pedido>
-                                        </template>
-                                    </card_02>
-                                </div>
-                                <div class="col"> <!-- Total - pedido - Excluido -->
-                                    <card_02  :valorjson = "dash_contagem.pedido.total_excluido" descricao="Total de Pedidos Excluidos">
-                                        <template v-slot:icone>
-                                            <icone_pedido></icone_pedido><icone_deletar></icone_deletar>
                                         </template>
                                     </card_02>
                                 </div>
@@ -621,67 +578,73 @@
                                 </div>
 
                             </div>
+                            <div class="row" style="color:black;">
+
+                                    <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+                                        <div class="carousel-inner">
+                                            <div class="col d-flex align-items-center justify-content-center">
+                                            <div class="carousel-item active">
+
+                                                    <graf_line_01 titulo="QTD Pedidos mensais (uni)"
+                                                        :c1 = "dash_contagem.pedido.numero_total_pedidos_periodico_coluna_mes"
+                                                        :c2 = "dash_contagem.pedido.numero_total_pedidos_periodico_coluna_total"
+                                                        graficoid = "pedidomensal"
+                                                    ></graf_line_01>
+
+                                            </div>
+                                            <div class="carousel-item">
+                                                <graf_line_01 titulo="QTD Produtos mensais (pacotes)"
+                                                    :c1 = "dash_contagem.produto.numero_total_produtos_periodico_coluna_mes"
+                                                    :c2 = "dash_contagem.produto.numero_total_produtos_periodico_coluna_total"
+                                                    graficoid = "produtomensal"
+                                                ></graf_line_01>
+                                            </div>
+                                            <div class="carousel-item">
+                                                <graf_line_01 titulo="Valor gasto mensal (R$)"
+                                                    :c1 = "dash_contagem.pedido.valor_total_pedidos_periodico_coluna_mes"
+                                                    :c2 = "dash_contagem.pedido.valor_total_pedidos_periodico_coluna_total"
+                                                    graficoid = "valormensal"
+                                                ></graf_line_01>
+                                            </div>
+                                        </div>
+                                        </div>
+                                        <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+                                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                            <span class="sr-only" style="color:black; margin-right: 100px;">Previous</span>
+                                        </a>
+                                        <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+                                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                            <span class="sr-only" style="color:black;">Next</span>
+                                        </a>
+                                    </div>
+
+                            </div>
                             <div class="row">
                                 <div class="col">
-                                    <graf_line_01 titulo="QTD Pedidos mensais (uni)"
-                                        c1 = "numero_total_pedidos_periodico_coluna_mes"
-                                        c2 = "numero_total_pedidos_periodico_coluna_total"
-                                        urlg = "analise_vendedor_total_pedidos"
-                                        :usuario = "idUsuario"
-                                        graficoid = "pedidomensal"
-                                    ></graf_line_01>
-                                </div>
-                                <div class="col">
-                                    <graf_line_01 titulo="QTD Produtos mensais (pacotes)"
-                                        c1 = "numero_total_produtos_periodico_coluna_mes"
-                                        c2 = "numero_total_produtos_periodico_coluna_total"
-                                        urlg = "analise_vendedor_total_pedidos"
-                                        :usuario = "idUsuario"
-                                        graficoid = "produtomensal"
-                                    ></graf_line_01>
-                                </div>
-                                <div class="col">
-                                    <graf_line_01 titulo="Valor gasto mensal (R$)"
-                                        c1 = "valor_total_pedidos_periodico_coluna_mes"
-                                        c2 = "valor_total_pedidos_periodico_coluna_total"
-                                        urlg = "analise_vendedor_total_pedidos"
-                                        :usuario = "idUsuario"
-                                        graficoid = "valormensal"
-                                    ></graf_line_01>
-                                </div>
-                                <div class="col">
                                     <graf_donut_01 titulo="Top Bairros"
-                                        c1 = "top_bairros_nome_bairros"
-                                        c2 = "top_bairros_valor_total_bairros"
-                                        urlg = "analise_vendedor_top_produtos"
-                                        :usuario = "idUsuario"
+                                        :c1 = "dash_rank.top_bairros_nome_bairros"
+                                        :c2 = "dash_rank.top_bairros_valor_total_bairros"
                                         graficoid = "topbairros"
                                     ></graf_donut_01>
                                 </div>
                                 <div class="col">
                                     <graf_donut_01 titulo="Top Cidades"
-                                        c1 = "top_cidades_nome_cidades"
-                                        c2 = "top_cidades_valor_total_cidades"
-                                        urlg = "analise_vendedor_top_produtos"
-                                        :usuario = "idUsuario"
+                                        :c1 = "dash_rank.top_cidades_nome_cidades"
+                                        :c2 = "dash_rank.top_cidades_valor_total_cidades"
                                         graficoid = "topcidades"
                                     ></graf_donut_01>
                                 </div>
                                 <div class="col">
                                     <graf_donut_01 titulo="Top Estados"
-                                        c1 = "top_estados_nome_estados"
-                                        c2 = "top_estados_valor_total_estados"
-                                        urlg = "analise_vendedor_top_produtos"
-                                        :usuario = "idUsuario"
+                                        :c1 = "dash_rank.top_estados_nome_estados"
+                                        :c2 = "dash_rank.top_estados_valor_total_estados"
                                         graficoid = "topestados"
                                     ></graf_donut_01>
                                 </div>
                                 <div class="col">
                                     <graf_donut_01 titulo="Top Pais"
-                                        c1 = "top_pais_nome_pais"
-                                        c2 = "top_pais_valor_total_pais"
-                                        urlg = "analise_vendedor_top_produtos"
-                                        :usuario = "idUsuario"
+                                        :c1 = "dash_rank.top_pais_nome_pais"
+                                        :c2 = "dash_rank.top_pais_valor_total_pais"
                                         graficoid = "toppais"
                                     ></graf_donut_01>
                                 </div>
@@ -694,11 +657,8 @@
                                             { titulo: 'Nome', conteudo: 'name'},
                                             { titulo: 'qtd (pc)',conteudo: 'quantidade_total'}
                                         ]"
-                                        urlg="analise_vendedor_top_produtos"
-                                        :usuario = "idUsuario"
-                                        v1 = "top_produtos"
                                         titulo = "TOP Produtos"
-                                        :valorjson = "[{}]"
+                                        :valorjson = "dash_rank.top_produtos"
                                         >
                                     </table_comum_top>
                                 </div>
@@ -708,11 +668,8 @@
                                             { titulo: 'Nome', conteudo: 'name'},
                                             { titulo: 'qtd (pc)',conteudo: 'quantidade_total'}
                                         ]"
-                                        urlg="analise_vendedor_top_produtos"
-                                        :usuario = "idUsuario"
-                                        v1 = "top_marcas"
                                         titulo = "TOP Marcas"
-                                        :valorjson = "[{}]"
+                                        :valorjson = "dash_rank.top_marcas"
                                         >
                                     </table_comum_top>
                                 </div>
@@ -722,11 +679,8 @@
                                             { titulo: 'Nome', conteudo: 'name'},
                                             { titulo: 'qtd', conteudo: 'quantidade_total'}
                                         ]"
-                                        urlg="analise_vendedor_top_produtos"
-                                        :usuario = "idUsuario"
-                                        v1 = "top_clientes"
                                         titulo = "TOP Clientes"
-                                        :valorjson = "[{}]"
+                                        :valorjson = "dash_rank.top_clientes"
                                         >
                                     </table_comum_top>
                                 </div>
