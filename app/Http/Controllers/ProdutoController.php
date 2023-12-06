@@ -9,6 +9,8 @@ use App\Http\Requests\ProdutoRequest;
 use App\Http\Resources\TesteResource;
 use App\Models\Marca;
 
+use Illuminate\Support\Facades\Storage;
+
 class ProdutoController extends Controller
 {
     /**
@@ -61,7 +63,7 @@ class ProdutoController extends Controller
             //error_log('passou aki');
         }
 
-        return $produto->withSum('estoques', 'qty_item')->paginate(4);
+        return $produto->withSum('estoques', 'qty_item')->paginate(10);
 
         //return Produto::with(['marca', 'marca.fornecedor', 'estoques' ])->withSum('estoques', 'qty_item')->paginate(10);
     }
@@ -84,7 +86,24 @@ class ProdutoController extends Controller
      */
     public function store(ProdutoRequest $request)
     {
-        return $produto = Marca::findOrfail($request->marca_id)->produtos()->create($request->all());
+        $produto = Marca::findOrfail($request->marca_id)->produtos()->create($request->all());
+
+        if($request->hasFile('file_image')){
+            error_log('tem arquivo');
+            $idProduto = $produto->id;
+            error_log('id: '.$idProduto);
+            $nomeProduto = $produto->name;
+            error_log('nome: '.$nomeProduto);
+
+            $nomeArquivo = $idProduto . '_' . str_replace(' ', '_', $nomeProduto) . '.' . $request->file('file_image')->getClientOriginalExtension();
+            error_log('nome arquivo: '.$nomeArquivo);
+            $path = $request->file('file_image')->storeAs('uploads', $nomeArquivo, 'public');
+
+            $produto->image_name = $path;
+            $produto->save();
+        }
+        error_log('NÂO tem arquivo');
+        return $produto;
     }
 
     /**
@@ -121,8 +140,74 @@ class ProdutoController extends Controller
     public function update(ProdutoRequest $request, Produto $produto)
     {
         //$obj = Produto::findOrfail($id);
-        return $produto->update($request->all());
+        $produto->update($request->all());
         //$produto->marca()->update($request->all());
+
+        if($request->hasFile('file_image')){
+
+            if($produto->image_name !== null){
+                error_log('já tinha um arquivo');
+                $caminhoDoArquivo = "storage/".$produto->image_name;
+                Storage::delete($caminhoDoArquivo);
+            }
+
+            error_log('tem arquivo');
+            $idProduto = $produto->id;
+            error_log('id: '.$idProduto);
+            $nomeProduto = $produto->name;
+            error_log('nome: '.$nomeProduto);
+
+            $nomeArquivo = $idProduto . '_' . str_replace(' ', '_', $nomeProduto) . '.' . $request->file('file_image')->getClientOriginalExtension();
+            error_log('nome arquivo: '.$nomeArquivo);
+            $path = $request->file('file_image')->storeAs('uploads', $nomeArquivo, 'public');
+
+            $produto->image_name = $path;
+            $produto->save();
+        }
+        error_log('NÂO tem arquivo');
+        return $produto;
+
+
+
+
+    }
+
+
+
+    public function updatei(ProdutoRequest $request, Produto $produto)
+    {
+        error_log('updatei');
+        //$obj = Produto::findOrfail($id);
+        $produto->update($request->all());
+        //$produto->marca()->update($request->all());
+
+        if($request->hasFile('file_image')){
+
+            if($produto->image_name !== null){
+                error_log('já tinha um arquivo');
+                $caminhoDoArquivo = "storage/".$produto->image_name;
+                Storage::delete($caminhoDoArquivo);
+            }
+
+            error_log('tem arquivo');
+            $idProduto = $produto->id;
+            error_log('id: '.$idProduto);
+            $nomeProduto = $produto->name;
+            error_log('nome: '.$nomeProduto);
+
+            $nomeArquivo = $idProduto . '_' . str_replace(' ', '_', $nomeProduto) . '.' . $request->file('file_image')->getClientOriginalExtension();
+            error_log('nome arquivo: '.$nomeArquivo);
+            $path = $request->file('file_image')->storeAs('uploads', $nomeArquivo, 'public');
+
+            $produto->image_name = $path;
+            $produto->save();
+        }
+        error_log('NÂO tem arquivo');
+        return $produto;
+
+
+
+
     }
 
     /**

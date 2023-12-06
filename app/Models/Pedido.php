@@ -55,7 +55,7 @@ class Pedido extends Model
     $this->estoqueable()->delete();
     foreach ($this->produtos as $produto) {
         $quantidadeItem = $produto->pivot->qty_item;
-        error_log('criando saida estoque - '.$produto->id.' - '.$quantidadeItem);
+        //error_log('criando saida estoque - '.$produto->id.' - '.$quantidadeItem);
         $this->estoqueable()->create([
             'produto_id' => $produto->id,
             'qty_item' => $quantidadeItem * (-1),

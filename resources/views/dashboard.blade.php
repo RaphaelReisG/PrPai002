@@ -51,6 +51,37 @@
             font-weight: bold;
             font-size: 20px;
         }
+
+
+        /* Tooltip container */
+        .tooltip2 {
+        position: relative;
+        display: inline-block;
+        border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
+        }
+
+        /* Tooltip text */
+        .tooltip2 .tooltiptext2 {
+        visibility: hidden;
+        width: 200px;
+        color: #fff;
+        text-align: center;
+        padding: 5px 0;
+        border-radius: 6px;
+
+        /* Position the tooltip text - see examples below! */
+        position: absolute;
+        z-index: 1;
+        }
+
+        /* Show the tooltip text when you mouse over the tooltip container */
+        .tooltip2:hover .tooltiptext2 {
+        visibility: visible;
+        }
+
+
+
+
     </style>
 
 </head>
@@ -903,6 +934,25 @@
                                         </input_geral>
                                         <input_geral nome="Preço de venda" tipo="number" nome_model="sale_price">
                                         </input_geral>
+                                        <input_geral nome="Descrição" tipo="text" nome_model="description">
+                                        </input_geral>
+
+
+                                        <div class="row">
+                                            <div class="col" v-if="acaoObjeto == 'Alterar' && modelObjetos[0]['image_name'] !== '' && modelObjetos[0]['image_name'] !== null">
+                                                <div style="max-width: 200px;">
+                                                    <img :src="'storage/'+modelObjetos[0]['image_name']" alt="Imagem" width="200" height="200" >
+                                                </div>
+                                            </div>
+                                            <div class="col">
+                                                <div class="custom-file">
+                                                    <input type="file" class="custom-file-input" id="fileInput">
+                                                    <label class="custom-file-label" for="fileInput">Choose file...</label>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
                                     </div>
                                     <!-- formulario TIPO_PRODUTO-->
                                     <div v-else-if="nomeObjeto == 'tipo_produto'" class="modal-body">
@@ -1098,6 +1148,10 @@
                                         <input_geral nome="CEP" tipo="number" nome_model="cep"></input_geral>
                                         <input_geral nome="Complemento" tipo="text" nome_model="complement">
                                         </input_geral>
+                                        <input_geral nome="Latitude" tipo="number" nome_model="latitude">
+                                        </input_geral>
+                                        <input_geral nome="Longitude" tipo="number" nome_model="longitude">
+                                        </input_geral>
                                     </div>
 
                                     <!-- formulario TELEFONE-->
@@ -1224,6 +1278,7 @@
                         <div v-if="nomeObjeto == 'pedido' && objetos !== null" class="row">
                             <table_acordion_pedidos
                                 :classe_atributos="[
+                                    { titulo: 'Nº', conteudo: 'id', ordenacao: 'pedidos.id' },
                                     { titulo: 'Data solicitação', conteudo: 'created_at', ordenacao: 'pedidos.created_at' },
                                     {
                                         titulo: 'Aprovado em',
@@ -1376,6 +1431,7 @@
                             <table_acordion
                                 :classe_atributos="[
                                     { titulo: 'Nome', conteudo: 'name', ordenacao: 'produtos.name' },
+                                    { titulo: 'Estoque', conteudo: 'estoques_sum_qty_item', ordenacao: 'produtos.name' },
                                     {
                                         titulo: 'Tipo',
                                         conteudo: 'tipo_produto',
@@ -1399,7 +1455,8 @@
                                     { titulo: 'Quantidade por Pacote', conteudo: 'quantity' },
                                     { titulo: 'Peso por pacote ', conteudo: 'weight' },
                                     { titulo: 'Preço de custo', conteudo: 'cost_price' },
-                                    { titulo: 'Estoque', conteudo: 'estoques_sum_qty_item' }
+                                    { titulo: 'Descrição', conteudo: 'description' },
+                                    { titulo: 'Imagem nome', conteudo: 'image_name' }
                                 ]">
                             </table_acordion>
                         </div>
@@ -1489,7 +1546,9 @@
                                     { titulo: 'Criado em', conteudo: 'created_at' },
                                     { titulo: 'Nº', conteudo: 'house_number' },
                                     { titulo: 'Complemento', conteudo: 'complement' },
-                                    { titulo: 'CEP', conteudo: 'cep' }
+                                    { titulo: 'CEP', conteudo: 'cep' },
+                                    { titulo: 'Latitude', conteudo: 'latitude' },
+                                    { titulo: 'Longitude', conteudo: 'longitude' }
                                 ]">
                             </table_acordion>
                         </div>
@@ -1640,9 +1699,7 @@
                                 ]"
                                 :objeto_imp="objetos"
                                 :obj_acordion="[
-                                    { titulo: 'Entrada/Saida', conteudo: 'estoqueable_type' },
                                     { titulo: 'Responsavel', conteudo: 'estoqueable', conteudo2: 'name' },
-
                                     { titulo: 'Observação', conteudo: 'observation' }
                                 ]">
                             </table_acordion_estoque>
@@ -1822,7 +1879,9 @@
                                     { titulo: 'Criado em', conteudo: 'created_at' },
                                     { titulo: 'Nº', conteudo: 'house_number' },
                                     { titulo: 'Complemento', conteudo: 'complement' },
-                                    { titulo: 'CEP', conteudo: 'cep' }
+                                    { titulo: 'CEP', conteudo: 'cep' },
+                                    { titulo: 'Latitude', conteudo: 'latitude' },
+                                    { titulo: 'Longitude', conteudo: 'longitude' }
                                 ]">
                             </table_acordion>
                         </div>
@@ -1959,7 +2018,9 @@
                                     { titulo: 'Criado em', conteudo: 'created_at' },
                                     { titulo: 'Nº', conteudo: 'house_number' },
                                     { titulo: 'Complemento', conteudo: 'complement' },
-                                    { titulo: 'CEP', conteudo: 'cep' }
+                                    { titulo: 'CEP', conteudo: 'cep' },
+                                    { titulo: 'Latitude', conteudo: 'latitude' },
+                                    { titulo: 'Longitude', conteudo: 'longitude' }
                                 ]">
                             </table_acordion>
                         </div>

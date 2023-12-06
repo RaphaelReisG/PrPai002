@@ -26,8 +26,8 @@ class EstoqueController extends Controller
             ->join('marcas', 'produtos.marca_id', '=', 'marcas.id' )
             ->join('fornecedors', 'marcas.fornecedor_id', '=', 'fornecedors.id' )
             ->join('tipo_movimentacaos', 'estoques.tipo_movimentacao_id', '=', 'tipo_movimentacaos.id' )
-            ->join('administradors', 'estoques.estoqueable_id', '=', 'administradors.id' )
-            //->join('pedidos', 'estoques.estoqueable_id', '=', 'administradors.id' )
+            //->join('administradors', 'estoques.estoqueable_id', '=', 'administradors.id' )
+           // ->join('pedidos', 'estoques.estoqueable_id', '=', 'pedidos.id' )
             //->join('tipo_produtos', 'produtos.tipo_produto_id', '=', 'tipo_produtos.id' )
             ->select('estoques.*')
             ->groupBy('estoques.id', 'estoques.qty_item', 'estoques.observation',

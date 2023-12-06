@@ -64,7 +64,7 @@ class ClienteController extends Controller
             //error_log('passou aki');
         }
 
-        return $clientes->paginate(4);
+        return $clientes->paginate(10);
 
 
 

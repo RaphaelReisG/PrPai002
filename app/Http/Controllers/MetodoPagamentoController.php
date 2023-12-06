@@ -36,7 +36,7 @@ class MetodoPagamentoController extends Controller
             //error_log('passou aki');
         }
 
-        return $metodoPagamento->paginate(4);
+        return $metodoPagamento->paginate(10);
     }
 
     /**

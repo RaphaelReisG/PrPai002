@@ -23,7 +23,7 @@ class PedidoController extends Controller
         //return Pedido::all();
         //return Pedido::with(['produtos', 'cliente', 'vendedor', 'metodoPagamento'])->paginate(4);
 
-        $pedido = Pedido::with(['produtos', 'cliente', 'vendedor', 'metodoPagamento', 'endereco'])
+        $pedido = Pedido::with(['produtos', 'produtos.estoques', 'cliente', 'vendedor', 'metodoPagamento', 'endereco'])
         ->join('metodo_pagamentos', 'pedidos.metodo_pagamento_id', '=', 'metodo_pagamentos.id' )
         ->join('vendedors', 'pedidos.vendedor_id', '=', 'vendedors.id' )
         ->join('clientes', 'pedidos.cliente_id', '=', 'clientes.id' )
@@ -59,6 +59,8 @@ class PedidoController extends Controller
 
         if ($request->has('ordenacaoBusca')) {
             $pedido->orderBy($request->ordenacaoBusca);
+        }else{
+            $pedido->orderByDesc('created_at');
         }
 
         /*else{

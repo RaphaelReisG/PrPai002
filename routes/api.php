@@ -60,6 +60,8 @@ Route::put('pedido_aprovacao/{pedido}', [PedidoController::class, 'aprovarPedido
 Route::put('pedido_entrega/{pedido}', [PedidoController::class, 'aprovarEntrega'])->middleware('auth:sanctum');
 Route::put('pedido_pagamento/{pedido}', [PedidoController::class, 'aprovarPagamento'])->middleware('auth:sanctum');
 
+Route::post('produtoi/{produto}', [ProdutoController::class, 'updatei'])->middleware('auth:sanctum');
+
 Route::apiResource('produto', ProdutoController::class)->middleware('auth:sanctum');
 Route::apiResource('vendedor', VendedorController::class)->middleware('auth:sanctum');
 Route::apiResource('telefone', TelefoneController::class)->middleware('auth:sanctum');

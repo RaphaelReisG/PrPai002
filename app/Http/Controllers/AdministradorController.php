@@ -57,10 +57,10 @@ class AdministradorController extends Controller
 
         if ($request->has('paginacao')) {
             return $administrador->get();
-            error_log('passou aki');
+            //error_log('passou aki');
         }
 
-        return $administrador->paginate(4);
+        return $administrador->paginate(10);
             /*
         if(isset($request->buscarObjeto)){
             if(isset($request->ordenacaoBusca)){

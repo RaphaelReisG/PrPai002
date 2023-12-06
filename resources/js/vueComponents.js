@@ -121,6 +121,17 @@ Vue.component('icone_add_pessoa', {
     `
 });
 
+Vue.component('icone_imagem', {
+    props: ['texto'],
+
+    template: `
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-card-image" viewBox="0 0 16 16">
+            <path d="M6.002 5.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0"/>
+            <path d="M1.5 2A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2zm13 1a.5.5 0 0 1 .5.5v6l-3.775-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062L1.002 12v.54A.505.505 0 0 1 1 12.5v-9a.5.5 0 0 1 .5-.5z"/>
+        </svg>
+    `
+});
+
 Vue.component('icone_add_produto', {
     props: ['texto'],
 
@@ -675,7 +686,21 @@ Vue.component('table_comum_busca_produtos', {
                 <tbody class="table-group-divider" >
                     <tr v-for="(obj, index) in objeto_imp">
                         <td>
-                            <button_add_produto :objindex="index"></button_add_produto>
+                            <div class="row">
+                                <div class="col">
+                                    <button_add_produto :objindex="index"></button_add_produto>
+                                </div>
+                                <div class="col">
+                                    <div v-if="obj['image_name'] !== null && obj['image_name'] !== ''  ">
+                                        <div class="tooltip2">
+                                            <icone_imagem></icone_imagem>
+                                            <div style="max-width: 200px;" class="tooltiptext2">
+                                                <img :src="'storage/'+obj['image_name']" alt="Imagem" width="200" height="200" >
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </td>
                         <td v-for="valor in classe_atributos">
 
@@ -784,10 +809,17 @@ Vue.component('table_acordion', {
                             <div class="collapse" v-bind:id="'collapseExample' + obj.id" >
                                 <div class="card card-body">
                                     <div v-for="acord in obj_acordion">
-
-
-                                        <div v-if="acord.conteudo !== 'created_at' && acord.conteudo !== 'dtEntrada' && acord.conteudo !== 'dtSaida' && acord.conteudo2 == null ">
+                                        <div v-if="acord.conteudo !== 'created_at' && acord.conteudo !== 'image_name' && acord.conteudo !== 'dtEntrada' && acord.conteudo !== 'dtSaida' && acord.conteudo2 == null ">
                                             {{acord.titulo}}: {{obj[acord.conteudo] }}
+                                        </div>
+                                        <div v-else-if="acord.conteudo === 'image_name' && obj[acord.conteudo] != null && obj[acord.conteudo] != ''">
+                                            imagem do Produto:
+                                            <div  style="max-width: 200px;">
+                                                <img :src="'storage/'+obj[acord.conteudo]" alt="Imagem" width="200" height="200" >
+                                            </div>
+                                            <div v-else>
+                                                ---
+                                            </div>
                                         </div>
                                         <div v-else-if="acord.conteudo2 != null && acord.conteudo3 == null">
                                             {{acord.titulo}}: {{ obj[acord.conteudo][acord.conteudo2]  }}
@@ -795,8 +827,11 @@ Vue.component('table_acordion', {
                                         <div v-else-if="acord.conteudo3 != null">
                                             {{acord.titulo}}: {{ obj[acord.conteudo][acord.conteudo2][acord.conteudo3]  }}
                                         </div>
-                                        <div v-else>
+                                        <div v-else-if="acord.conteudo === 'created_at' || acord.conteudo === 'dtEntrada' || acord.conteudo === 'dtSaida' ">
                                             {{acord.titulo }}: {{ new Date(obj[acord.conteudo]).toLocaleString() }}
+                                        </div>
+                                        <div v-else>
+
                                         </div>
                                     </div>
                                 </div>
@@ -855,11 +890,19 @@ Vue.component('table_acordion_estoque', {
                                         <div v-if="acord.conteudo !== 'created_at' && acord.conteudo2 == null ">
                                             {{acord.titulo}}: {{obj[acord.conteudo] }}
                                         </div>
-                                        <div v-else-if="acord.conteudo2 != null && acord.conteudo3 == null">
+                                        <div v-else-if="acord.conteudo != 'estoqueable' && acord.conteudo2 != null && acord.conteudo3 == null">
                                             {{acord.titulo}}: {{ obj[acord.conteudo][acord.conteudo2]  }}
                                         </div>
                                         <div v-else-if="acord.conteudo3 != null">
                                             {{acord.titulo}}: {{ obj[acord.conteudo][acord.conteudo2][acord.conteudo3]  }}
+                                        </div>
+                                        <div v-else-if="acord.conteudo === 'estoqueable' && acord.conteudo2 != null && acord.conteudo3 == null">
+                                            <div v-if="obj[acord.conteudo][acord.conteudo2]">
+                                                {{acord.titulo}}: Administrador {{ obj[acord.conteudo][acord.conteudo2]  }}
+                                            </div>
+                                            <div v-else>
+                                                {{acord.titulo}}: Pedido nº {{ obj['estoqueable']['id']  }}
+                                            </div>
                                         </div>
                                         <div v-else>
                                             {{acord.titulo }}: {{ new Date(obj[acord.conteudo]).toLocaleString() }}
@@ -1096,7 +1139,7 @@ Vue.component('table_acordion_pedidos', {
                                     <hr>
                                     <h5>Itens do pedido</h5>
                                     <div v-for="item in objeto_imp['data'][index]['produtos']">
-                                        nome: {{item.name}} marca: {{item.marca.name}} qtd: {{item.pivot.qty_item}} preço R$ {{item.pivot.price_item}}
+                                        nome: {{item.name}} marca: {{item.marca.name}} qtd: {{item.pivot.qty_item}} preço R$ {{item.pivot.price_item}} estoque
                                     </div>
                                 </div>
                             </div>

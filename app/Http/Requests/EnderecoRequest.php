@@ -41,7 +41,6 @@ class EnderecoRequest extends FormRequest
             'street_name.required' => 'Nome da rua é obrigatório',
             'street_name.max' => 'Máximo 45 caracteres para o nome da rua',
 
-            'complement.required' => 'O complemento é obrigatório',
             'complement.max' => 'Máximo 45 caracteres para o complemento',
 
             'cep.required' => 'O CEP é obrigatório',

@@ -22,6 +22,10 @@ return new class extends Migration
             $table->string('complement')->nullable();
             $table->integer('cep');
             $table->integer('house_number');
+
+            $table->double('latitude')->nullable();
+            $table->double('longitude')->nullable();
+
             $table->softDeletes();
             $table->foreignId('bairro_id')->constrained('bairros');
 

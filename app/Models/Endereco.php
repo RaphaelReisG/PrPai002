@@ -18,7 +18,9 @@ class Endereco extends Model
         'complement',
         'bairro_id',
         'enderecoable_id',
-        'enderecoable_type'
+        'enderecoable_type',
+        'latitude',
+        'longitude'
     ];
 
     public function bairro(){

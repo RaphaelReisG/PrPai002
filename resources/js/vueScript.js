@@ -44,7 +44,7 @@ var app = new Vue({
 
             fornecedor_id: "", //marca
 
-            tipo_produto_id: "", quantity: "", weight: "", cost_price: "", sale_price: "", marca_id: "",  //produto
+            tipo_produto_id: "", quantity: "", weight: "", cost_price: "", sale_price: "", marca_id: "", description: "", image_name:"", file_image: null,  //produto
 
             metodo_pagamento_id: "", cliente_id: "", payday: "", delivery_date: "", approval_date: "", total_price: 0, total_discount: 0, endereco_id: "",//pedido
 
@@ -58,7 +58,7 @@ var app = new Vue({
 
             name_neighborhood: "", cidade_id: "", //bairro
 
-            street_name: "", house_number: "", cep: "", complement: "", enderecoable_id: "", enderecoable_type: "",
+            street_name: "", house_number: "", cep: "", complement: "", enderecoable_id: "", enderecoable_type: "", latitude: "", longitude: "",
 
             buscarObjeto: "", ordenacaoBusca: "", tipoPessoa: "", buscarObjetoProduto: "",
 
@@ -75,7 +75,7 @@ var app = new Vue({
 
             fornecedor_id: "", //marca
 
-            tipo_produto_id: "", quantity: "", weight: "", cost_price: "", sale_price: "", marca_id: "", //produto
+            tipo_produto_id: "", quantity: "", weight: "", cost_price: "", sale_price: "", marca_id: "", description: "",  image_name:"", file_image: null, //produto
 
             metodo_pagamento_id: "", cliente_id: "", payday: "", delivery_date: "", approval_date: "", total_price: 0, total_discount: "", endereco_id: "", //pedido
 
@@ -431,11 +431,51 @@ var app = new Vue({
                     tipo_produto_id: this.modelObjetos[0]['tipo_produto_id'],
                     quantity: this.modelObjetos[0]['quantity'],
                     weight: this.modelObjetos[0]['weight'],
+                    description: this.modelObjetos[0]['description'],
+                    //file_image: this.modelObjetos[0]['file_image'],
+                    //image_name: this.modelObjetos[0]['image_name'],
                     cost_price: this.modelObjetos[0]['cost_price'],
                     sale_price: this.modelObjetos[0]['sale_price'],
                     marca_id: this.modelObjetos[0]['marca_id'],
                     fornecedor_id: this.modelObjetos[0]['fornecedor_id']
                 }
+
+                let fileInput = document.getElementById('fileInput');
+                let file = fileInput.files[0];
+
+                var temImagem = false;
+
+                if(file){
+                    temImagem = true;
+
+                    var formData = new FormData();
+                    formData.append('name', this.modelObjetos[0]['name']);
+                    formData.append('tipo_produto_id', this.modelObjetos[0]['tipo_produto_id']);
+                    formData.append('quantity', this.modelObjetos[0]['quantity']);
+                    formData.append('weight', this.modelObjetos[0]['weight']);
+                    formData.append('description', this.modelObjetos[0]['description']);
+                    formData.append('file_image', file); // Aqui está a modificação para incluir o arquivo
+                    formData.append('cost_price', this.modelObjetos[0]['cost_price']);
+                    formData.append('sale_price', this.modelObjetos[0]['sale_price']);
+                    formData.append('marca_id', this.modelObjetos[0]['marca_id']);
+                    formData.append('fornecedor_id', this.modelObjetos[0]['fornecedor_id']);
+
+                    console.log("o q ta no form: ", formData);
+
+
+                    // ... Seu código para adicionar dados ao FormData
+
+                    // Itera sobre o FormData para visualizar os dados
+                    for (let pair of formData.entries()) {
+                        console.log(pair[0] + ', ' + pair[1]); // Exibe a chave e o valor de cada par
+                    }
+
+                    // Ou usando forEach
+                    formData.forEach((value, key) => {
+                        console.log("formadata valor "+key + ', ' + value); // Exibe a chave e o valor de cada par
+                    });
+                }
+
             }
             else if(classe == "tipo_produto" || classe == "tipo_movimentacao" || classe == "metodo_pagamento"){
                 url = '/api/'+classe;
@@ -492,6 +532,8 @@ var app = new Vue({
                     house_number: this.modelObjetos[0]['house_number'],
                     cep: this.modelObjetos[0]['cep'],
                     complement: this.modelObjetos[0]['complement'],
+                    latitude: this.modelObjetos[0]['latitude'],
+                    longitude: this.modelObjetos[0]['longitude'],
                     tipoUsuario: this.modelObjetos[0]['tipoPessoa'],
                     enderecoable_id: this.modelObjetos[0]['enderecoable_id'],
                     cidade_id: this.modelObjetos[0]['cidade_id'],
@@ -522,14 +564,44 @@ var app = new Vue({
 
             //fetch(url, { method: 'POST'} ).catch((e) => this.error = e);
 
-            await axios
-                .post(url, dados, {
+
+
+            if(classe == "produto" && temImagem == true){
+
+                await axios.post(url, formData, {
                     headers: {
-                      Authorization: 'Bearer '+this.tokenUsuario
-                    }
-                  })
-                .then(response => (this.respostaData = response.data, this.resposta = response))
-                .catch(error => (this.error = error));
+                        'Content-Type': 'multipart/form-data', // Importante: defina o Content-Type como multipart/form-data
+                        Authorization: 'Bearer ' + this.tokenUsuario,
+                    },
+                })
+                .then(response => {
+                    this.respostaData = response.data;
+                    this.resposta = response;
+                })
+                .catch(error => {
+                    this.error = error;
+                });
+
+
+            }else{
+
+
+
+                await axios
+                    .post(url, dados, {
+                        headers: {
+                        Authorization: 'Bearer '+this.tokenUsuario
+                        }
+                    })
+                    .then(response => (this.respostaData = response.data, this.resposta = response))
+                    .catch(error => (this.error = error));
+
+
+            }
+
+            temImagem = false;
+
+
 
             //alert(url);
 
@@ -580,6 +652,9 @@ var app = new Vue({
                 this.modelObjetos[0]['tipo_produto_id'] = this.objetos['data'][index]['tipo_produto_id'];
                 this.modelObjetos[0]['quantity'] = this.objetos['data'][index]['quantity'];
                 this.modelObjetos[0]['weight'] = this.objetos['data'][index]['weight'];
+                this.modelObjetos[0]['description'] = this.objetos['data'][index]['description'];
+                this.modelObjetos[0]['file_image'] = this.objetos['data'][index]['file_image'];
+                this.modelObjetos[0]['image_name'] = this.objetos['data'][index]['image_name'];
                 this.modelObjetos[0]['cost_price'] = this.objetos['data'][index]['cost_price'];
                 this.modelObjetos[0]['sale_price'] = this.objetos['data'][index]['sale_price'];
                 this.modelObjetos[0]['marca_id'] = this.objetos['data'][index]['marca_id'];
@@ -657,6 +732,8 @@ var app = new Vue({
                 this.modelObjetos[0]['street_name'] = this.objetos['data'][index]['street_name'];
                 this.modelObjetos[0]['house_number'] = this.objetos['data'][index]['house_number'];
                 this.modelObjetos[0]['cep'] = this.objetos['data'][index]['cep'];
+                this.modelObjetos[0]['latitude'] = this.objetos['data'][index]['latitude'];
+                this.modelObjetos[0]['longitude'] = this.objetos['data'][index]['longitude'];
                 this.modelObjetos[0]['complement'] = this.objetos['data'][index]['complement'];
             }
             else if(this.nomeObjeto == "telefone"){
@@ -699,6 +776,7 @@ var app = new Vue({
             if(this.nomeObjeto == 'cliente') { this.buscaVendedores();}
             if(this.nomeObjeto == 'marca'){this.buscaFornecedores();}
             if(this.nomeObjeto == 'produto'){this.buscaFornecedores();}
+            if(this.nomeObjeto == 'produto'){this.buscaMarcas();}
             if(this.nomeObjeto == 'produto'){this.buscaTipo_produtos();}
             if(this.nomeObjeto == 'estoque'){this.buscaTipo_movimentacaos();}
             if(this.nomeObjeto == 'pedido'){this.buscaMetodo_pagamentos();}
@@ -823,10 +901,47 @@ var app = new Vue({
                     tipo_produto_id: this.modelObjetos[0]['tipo_produto_id'],
                     quantity: this.modelObjetos[0]['quantity'],
                     weight: this.modelObjetos[0]['weight'],
+                    description: this.modelObjetos[0]['description'],
+                    file_image: this.modelObjetos[0]['file_image'],
+                    //image_name: this.modelObjetos[0]['image_name'],
                     cost_price: this.modelObjetos[0]['cost_price'],
                     sale_price: this.modelObjetos[0]['sale_price'],
                     marca_id: this.modelObjetos[0]['marca_id']
                 }
+
+                let fileInput = document.getElementById('fileInput');
+                let file = fileInput.files[0];
+
+                var temImagem2= false;
+
+                if(file){
+                    url = '/api/'+classe+'i/'+this.modelObjetos[0]['id'];
+                    temImagem2 = true;
+
+                    var formData2 = new FormData();
+                    formData2.append('name', this.modelObjetos[0]['name']);
+                    formData2.append('tipo_produto_id', this.modelObjetos[0]['tipo_produto_id']);
+                    formData2.append('quantity', this.modelObjetos[0]['quantity']);
+                    formData2.append('weight', this.modelObjetos[0]['weight']);
+                    formData2.append('description', this.modelObjetos[0]['description']);
+                    formData2.append('file_image', file); // Aqui está a modificação para incluir o arquivo
+                    formData2.append('cost_price', this.modelObjetos[0]['cost_price']);
+                    formData2.append('sale_price', this.modelObjetos[0]['sale_price']);
+                    formData2.append('marca_id', this.modelObjetos[0]['marca_id']);
+                    formData2.append('fornecedor_id', this.modelObjetos[0]['fornecedor_id']);
+
+                    console.log("o q ta no form: ", formData2);
+
+                    for (let pair of formData2.entries()) {
+                        console.log(pair[0] + ', ' + pair[1]); // Exibe a chave e o valor de cada par
+                    }
+
+                    // Ou usando forEach
+                    formData2.forEach((value, key) => {
+                        console.log("formadata valor "+key + ', ' + value); // Exibe a chave e o valor de cada par
+                    });
+                }
+
             }
             else if(classe == "pedido"){
                 url = '/api/'+classe+'/'+this.modelObjetos[0]['id'];
@@ -899,6 +1014,8 @@ var app = new Vue({
                     street_name: this.modelObjetos[0]['street_name'],
                     house_number: this.modelObjetos[0]['house_number'],
                     cep: this.modelObjetos[0]['cep'],
+                    latitude: this.modelObjetos[0]['latitude'],
+                    longitude: this.modelObjetos[0]['longitude'],
                     complement: this.modelObjetos[0]['complement'],
                     tipoUsuario: this.modelObjetos[0]['tipoPessoa'],
                     enderecoable_id: this.modelObjetos[0]['enderecoable_id'],
@@ -950,15 +1067,38 @@ var app = new Vue({
             .then(json => console.log(json))
             .catch((e) => this.error = e);*/
 
-            await axios
-                .put(url, dados, {
-                    headers: {
-                      Authorization: 'Bearer '+this.tokenUsuario
-                    }
-                  })
-                .then(response => (this.respostaData = response.data, this.resposta = response))
-                .catch(error => (this.error = error));
 
+            if(classe == "produto" && temImagem2 == true){
+                //alert("passou aki");
+                await axios.post(url, formData2, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                        Authorization: 'Bearer '+ this.tokenUsuario,
+                    },
+                })
+                .then(response => {
+                    this.respostaData = response.data;
+                    this.resposta = response;
+                })
+                .catch(error => {
+                    this.error = error;
+                });
+
+
+            }else{
+
+
+                await axios
+                    .put(url, dados, {
+                        headers: {
+                        Authorization: 'Bearer '+this.tokenUsuario
+                        }
+                    })
+                    .then(response => (this.respostaData = response.data, this.resposta = response))
+                    .catch(error => (this.error = error));
+            }
+
+            temImagem2 = false;
 
             if(this.error == null){
                 this.limparModal();
@@ -1034,6 +1174,8 @@ var app = new Vue({
             this.modelObjetos[0]['street_name'] = "";
             this.modelObjetos[0]['house_number'] = "";
             this.modelObjetos[0]['cep'] = "";
+            this.modelObjetos[0]['latitude'] = "";
+            this.modelObjetos[0]['longitude'] = "";
             this.modelObjetos[0]['complement'] = "";
             this.modelObjetos[0]['tipoPessoa'] = "";
             this.modelObjetos[0]['enderecoable_id'] = "";
@@ -1051,6 +1193,9 @@ var app = new Vue({
             this.modelObjetos[0]['tipo_produto_id'] = "";
             this.modelObjetos[0]['quantity'] = "";
             this.modelObjetos[0]['weight'] = "";
+            this.modelObjetos[0]['description'] = "";
+            this.modelObjetos[0]['file_image'] = null;
+            this.modelObjetos[0]['image_name'] = "";
             this.modelObjetos[0]['cost_price'] = "";
             this.modelObjetos[0]['sale_price'] = "";
             this.modelObjetos[0]['marca_id'] = "";
@@ -1147,6 +1292,8 @@ var app = new Vue({
             this.alertaCampo[0]['street_name'] = "";
             this.alertaCampo[0]['house_number'] = "";
             this.alertaCampo[0]['cep'] = "";
+            this.alertaCampo[0]['latitude'] = "";
+            this.alertaCampo[0]['longitude'] = "";
             this.alertaCampo[0]['complement'] = "";
             this.alertaCampo[0]['tipoPessoa'] = "";
             this.alertaCampo[0]['enderecoable_id'] = "";
@@ -1164,6 +1311,9 @@ var app = new Vue({
             this.alertaCampo[0]['tipo_produto_id'] = "";
             this.alertaCampo[0]['quantity'] = "";
             this.alertaCampo[0]['weight'] = "";
+            this.alertaCampo[0]['description'] = "";
+            this.alertaCampo[0]['file_image'] = null;
+            this.alertaCampo[0]['image_name'] = "";
             this.alertaCampo[0]['cost_price'] = "";
             this.alertaCampo[0]['sale_price'] = "";
             this.alertaCampo[0]['marca_id'] = "";
@@ -1352,6 +1502,10 @@ var app = new Vue({
                 }
                 if (this.modelObjetos[0]['marca_id'] == "") {
                     this.alertaCampo[0]['marca_id'] = "O obrigatório ter a marca";
+                    error = true
+                }
+                if(this.modelObjetos[0]['description'].length > 200) {
+                    this.alertaCampo[0]['description'] = "A descrição do produto deve ter no máximo 200 caracteres";
                     error = true
                 }
 
@@ -2096,7 +2250,7 @@ var app = new Vue({
             var url;
             //url = '/api/marca'+'?paginacao=false';
 
-            if(this.nomeObjeto == 'estoque'){
+            if(this.nomeObjeto == 'estoque' || this.nomeObjeto == 'produto' ){
                 url = '/api/marca'+'?paginacao=false&fornecedor_id='+this.modelObjetos[0]['fornecedor_id'];
                 //alert('passou aki '+this.modelObjetos[0]['pais_id'])
             }

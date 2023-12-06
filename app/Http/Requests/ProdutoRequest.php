@@ -25,11 +25,13 @@ class ProdutoRequest extends FormRequest
     {
         return [
             'name' => 'required|max: 45',
+            'description' => 'max: 200',
             'tipo_produto_id' => 'required|integer',
             'quantity' => 'required|integer|max:1000',
             'weight' => 'required|numeric|max:100',
             'cost_price' => 'required|numeric|max:10000',
             'sale_price' => 'required|numeric|max:10000',
+            'file_image' => 'nullable|file|max:10240',
         ];
     }
 
@@ -38,6 +40,8 @@ class ProdutoRequest extends FormRequest
         return [
             'name.required' => 'O nome do produto é obrigatório',
             'name.max' => 'Máximo 45 caracteres no nome',
+
+            'description.max' => 'Máximo 200 caracteres para descrição',
 
             'tipo_produto_id.required' => 'O tipo de produto é obrigatório',
             'tipo_produto_id.integer' => 'O tipo de produto deve ser inteiro',
@@ -53,6 +57,8 @@ class ProdutoRequest extends FormRequest
 
             'sale_price.required' => 'O preço é obrigatório',
             'sale_price.decimal' => 'O preço do produto deve estar no formato decimal',
+
+            'file_image.max' => 'O tamanho máximo do arquivo é de 10 MB.',
         ];
     }
 }
