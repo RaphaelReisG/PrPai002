@@ -16,8 +16,6 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
 
-
-
     <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script> -->
@@ -394,7 +392,16 @@
                             </div> --}}
 
                             <div class="row"> <!-- Dash Power BI -->
-                                <iframe title="Report Section" width="800" height="636" src="https://app.powerbi.com/view?r=eyJrIjoiMWM1MzFjNTMtYzE5Ny00YjMxLWE1ZTgtNzc5MGI3ZDI0ZTE1IiwidCI6ImNmNzJlMmJkLTdhMmItNDc4My1iZGViLTM5ZDU3YjA3Zjc2ZiIsImMiOjR9" frameborder="0" allowFullScreen="true"></iframe>
+                                    <iframe v-if="idUsuario<=44" title="Report Section" width="800" height="636" src="https://app.powerbi.com/view?r=eyJrIjoiMWM1MzFjNTMtYzE5Ny00YjMxLWE1ZTgtNzc5MGI3ZDI0ZTE1IiwidCI6ImNmNzJlMmJkLTdhMmItNDc4My1iZGViLTM5ZDU3YjA3Zjc2ZiIsImMiOjR9&filter=vendedors/id eq'idUsuario'" frameborder="0" allowFullScreen="true"></iframe>
+
+
+
+
+
+
+
+                                    <iframe v-else title="Report Section" width="800" height="636" src="https://app.powerbi.com/view?r=eyJrIjoiY2I2NDAyYjAtNzJhNC00YjFkLThlMWMtMjM2OWQwOTc0NThmIiwidCI6ImNmNzJlMmJkLTdhMmItNDc4My1iZGViLTM5ZDU3YjA3Zjc2ZiIsImMiOjR9" frameborder="0" allowFullScreen="true"></iframe>
+
                             </div>
                         @elsecan('admin')
                             <!-- Contagens ou Totais-->
@@ -714,7 +721,16 @@
                                 </div>
                             </div> --}}
                             <div class="row">
-                                <iframe title="dashVanna" width="800" height="636" src="https://app.powerbi.com/view?r=eyJrIjoiNzJmMmNiYzAtN2E3OS00ZjU2LTgzM2UtNzc0MzNiOTkzNTc3IiwidCI6ImNmNzJlMmJkLTdhMmItNDc4My1iZGViLTM5ZDU3YjA3Zjc2ZiIsImMiOjR9" frameborder="0" allowFullScreen="true"></iframe>
+                                <iframe v-if="idUsuario<=13" title="dashVanna" width="800" height="636" src="https://app.powerbi.com/view?r=eyJrIjoiNzJmMmNiYzAtN2E3OS00ZjU2LTgzM2UtNzc0MzNiOTkzNTc3IiwidCI6ImNmNzJlMmJkLTdhMmItNDc4My1iZGViLTM5ZDU3YjA3Zjc2ZiIsImMiOjR9&filter=vendedors/id eq'idUsuario'" frameborder="0" allowFullScreen="true"></iframe>
+
+
+
+
+
+
+
+
+                                <iframe v-else title="Report Section" width="800" height="636" src="https://app.powerbi.com/view?r=eyJrIjoiNGVjNDY4M2QtNDNkMS00ZDczLTg5MTUtZDExMjlhMjM3OWRjIiwidCI6ImNmNzJlMmJkLTdhMmItNDc4My1iZGViLTM5ZDU3YjA3Zjc2ZiIsImMiOjR9" frameborder="0" allowFullScreen="true"></iframe>
                             </div>
                         @else
                             Você não tem nenhuma permissão.
@@ -1148,10 +1164,10 @@
                                         <input_geral nome="CEP" tipo="number" nome_model="cep"></input_geral>
                                         <input_geral nome="Complemento" tipo="text" nome_model="complement">
                                         </input_geral>
-                                        <input_geral nome="Latitude" tipo="number" nome_model="latitude">
-                                        </input_geral>
-                                        <input_geral nome="Longitude" tipo="number" nome_model="longitude">
-                                        </input_geral>
+                                        <input_geral2 nome="Latitude" tipo="number" nome_model="latitude">
+                                        </input_geral2>
+                                        <input_geral2 nome="Longitude" tipo="number" nome_model="longitude">
+                                        </input_geral2>
                                     </div>
 
                                     <!-- formulario TELEFONE-->

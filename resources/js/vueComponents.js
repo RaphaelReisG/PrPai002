@@ -514,6 +514,19 @@ Vue.component('input_geral', {
         </div>
         `
 });
+Vue.component('input_geral2', {
+    props: ['nome_model', 'tipo', 'nome'],
+    template: `
+        <div>
+            <div class="row">
+                <div class="form-floating mb-3">
+                    <input :type="tipo" class="form-control" id="floatingInput"  v-model="$root.modelObjetos[0][nome_model]" required>
+                    <label for="floatingInput">{{nome}}</label>
+                </div>
+            </div>
+        </div>
+        `
+});
 
 Vue.component('select_geral', {
     props: ['nome_model', 'obj_dropdown', 'nome_atributo', 'nome', 'id_atributo'],

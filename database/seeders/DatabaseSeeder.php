@@ -3001,7 +3001,7 @@ class DatabaseSeeder extends Seeder
         }
 
         for($f=15; $f<=58; $f++){
-            DB::table('model_has_permissions')->insert(['permission_id' => 2, 'model_type' => 'App\Models\User', 'model_id' => $f]);
+            DB::table('model_has_permissions')->insert(['permission_id' => 3, 'model_type' => 'App\Models\User', 'model_id' => $f]);
         }
 
         for($g=1; $g<=61; $g++){
