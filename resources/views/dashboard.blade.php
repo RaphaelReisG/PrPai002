@@ -293,7 +293,7 @@
                 <div class="row">
                     <div v-if="titulo == ''"> <!-- Dashboard -->
                         @can('cliente')
-                            <div class="row">
+                            {{-- <div class="row">
                                 <div class="col"> <!-- Total - pacotes - entregue -->
                                     <card_02  :valorjson = "dash_contagem.produto.total_pacotes_entregues" descricao="Total de Pacotes Entregues">
                                         <template v-slot:icone>
@@ -391,174 +391,172 @@
                                         >
                                     </table_comum_top>
                                 </div>
+                            </div> --}}
+
+                            <div class="row"> <!-- Dash Power BI -->
+                                <iframe title="Report Section" width="800" height="636" src="https://app.powerbi.com/view?r=eyJrIjoiMWM1MzFjNTMtYzE5Ny00YjMxLWE1ZTgtNzc5MGI3ZDI0ZTE1IiwidCI6ImNmNzJlMmJkLTdhMmItNDc4My1iZGViLTM5ZDU3YjA3Zjc2ZiIsImMiOjR9" frameborder="0" allowFullScreen="true"></iframe>
                             </div>
                         @elsecan('admin')
                             <!-- Contagens ou Totais-->
-                            <div class="row">
-                                <div class="col"> <!-- Total - administrador -->
+                            <!-- <div class="row">
+                                <div class="col">
                                     <card_02 :valorjson = "dash_contagem.administrador.total" descricao="Total de Administradores Ativos">
                                         <template v-slot:icone>
                                             <icone_administrador></icone_administrador>
                                         </template>
                                     </card_02>
                                 </div>
-                                <div class="col"> <!-- Total - administrador - Excluido -->
+                                <div class="col">
                                     <card_02 :valorjson = "dash_contagem.administrador.total_excluido" descricao="Total de Administradores Excluidos">
                                         <template v-slot:icone>
                                             <icone_administrador></icone_administrador><icone_deletar></icone_deletar>
                                         </template>
                                     </card_02>
                                 </div>
-                                <div class="col"> <!-- Total - Vendedor -->
+                                <div class="col">
                                     <card_02  :valorjson = "dash_contagem.vendedor.total" descricao="Total de Vendedores Ativos">
                                         <template v-slot:icone>
                                             <icone_vendedor></icone_vendedor>
                                         </template>
                                     </card_02>
                                 </div>
-                                <div class="col"> <!-- Total - Vendedor - Excluido -->
+                                <div class="col">
                                     <card_02  :valorjson = "dash_contagem.vendedor.total_excluido" descricao="Total de Vendedores Excluidos">
                                         <template v-slot:icone>
                                             <icone_vendedor></icone_vendedor><icone_deletar></icone_deletar>
                                         </template>
                                     </card_02>
                                 </div>
-                                <div class="col"> <!-- Total - Cliente -->
+                                <div class="col">
                                     <card_02  :valorjson = "dash_contagem.cliente.total" descricao="Total de Clientes Ativos">
                                         <template v-slot:icone>
                                             <icone_cliente></icone_cliente>
                                         </template>
                                     </card_02>
                                 </div>
-                                <div class="col"> <!-- Total - Cliente - Excluido -->
+                                <div class="col">
                                     <card_02  :valorjson = "dash_contagem.cliente.total_excluido" descricao="Total de Clientes Excluidos">
                                         <template v-slot:icone>
                                             <icone_cliente></icone_cliente><icone_deletar></icone_deletar>
                                         </template>
                                     </card_02>
                                 </div>
-                                <div class="col"> <!-- Total - fornecedor -->
+                                <div class="col">
                                     <card_02  :valorjson = "dash_contagem.fornecedor.total" descricao="Total de Fornecedores Ativos">
                                         <template v-slot:icone>
                                             <icone_fornecedor></icone_fornecedor>
                                         </template>
                                     </card_02>
                                 </div>
-                                <div class="col"> <!-- Total - fornecedor - Excluido -->
+                                <div class="col">
                                     <card_02  :valorjson = "dash_contagem.fornecedor.total_excluido" descricao="Total de Fornecedores Excluidos">
                                         <template v-slot:icone>
                                             <icone_fornecedor></icone_fornecedor><icone_deletar></icone_deletar>
                                         </template>
                                     </card_02>
                                 </div>
-                                <div class="col"> <!-- Total - marca -->
+                                <div class="col">
                                     <card_02  :valorjson = "dash_contagem.marca.total" descricao="Total de Marcas Ativos">
                                         <template v-slot:icone>
                                             <icone_fornecedor></icone_fornecedor><icone_produto></icone_produto>
                                         </template>
                                     </card_02>
                                 </div>
-                                <div class="col"> <!-- Total - marca - Excluido -->
+                                <div class="col">
                                     <card_02  :valorjson = "dash_contagem.marca.total_excluido" descricao="Total de Marcas Excluidos">
                                         <template v-slot:icone>
                                             <icone_fornecedor></icone_fornecedor><icone_produto></icone_produto><icone_deletar></icone_deletar>
                                         </template>
                                     </card_02>
                                 </div>
-                            </div>
-                            <div class="row">
-                                <div class="col"> <!-- Total - produto -->
+                            </div> -->
+                            <!-- <div class="row">
+                                <div class="col">
                                     <card_02  :valorjson = "dash_contagem.produto.total" descricao="Total de Produtos Ativos no Catalogo">
                                         <template v-slot:icone>
                                             <icone_produto></icone_produto>
                                         </template>
                                     </card_02>
                                 </div>
-                                <div class="col"> <!-- Total - produto - Excluido -->
+                                <div class="col">
                                     <card_02  :valorjson = "dash_contagem.produto.total_excluido" descricao="Total de Produtos Excluidos">
                                         <template v-slot:icone>
                                             <icone_produto></icone_produto><icone_deletar></icone_deletar>
                                         </template>
                                     </card_02>
                                 </div>
-                                <div class="col"> <!-- Total - pacotes - entregue -->
+                                <div class="col">
                                     <card_02  :valorjson = "dash_contagem.produto.total_pacotes_entregues" descricao="Total de Pacotes Entregues">
                                         <template v-slot:icone>
                                             <icone_produto></icone_produto><icone_entrega></icone_entrega>
                                         </template>
                                     </card_02>
                                 </div>
-                                <div class="col"> <!-- Total - pedido -->
+                                <div class="col">
                                     <card_02  :valorjson = "dash_contagem.pedido.total" descricao="Total de Pedidos realizados">
                                         <template v-slot:icone>
                                             <icone_pedido></icone_pedido>
                                         </template>
                                     </card_02>
                                 </div>
-                                <div class="col"> <!-- Total - pedido - Excluido -->
+                                <div class="col">
                                     <card_02  :valorjson = "dash_contagem.pedido.total_excluido" descricao="Total de Pedidos Excluidos">
                                         <template v-slot:icone>
                                             <icone_pedido></icone_pedido><icone_deletar></icone_deletar>
                                         </template>
                                     </card_02>
                                 </div>
-                                <div class="col"> <!-- Total - pedido - em aberto -->
+                                <div class="col">
                                     <card_02  :valorjson = "dash_contagem.pedido.total_em_aberto" descricao="Total de Pedidos em Aberto">
                                         <template v-slot:icone>
                                             <icone_pedido_aberto></icone_pedido_aberto>
                                         </template>
                                     </card_02>
                                 </div>
-                                <div class="col"> <!-- Total - pedido - aprovado -->
+                                <div class="col">
                                     <card_02  :valorjson = "dash_contagem.pedido.total_aprovado" descricao="Total de Pedidos Aprovados">
                                         <template v-slot:icone>
                                             <icone_pedido_aprovado></icone_pedido_aprovado>
                                         </template>
                                     </card_02>
                                 </div>
-                                <div class="col"> <!-- Total - pedido - entregue -->
+                                <div class="col">
                                     <card_02  :valorjson = "dash_contagem.pedido.total_entregue" descricao="Total de Pedidos Entregues">
                                         <template v-slot:icone>
                                             <icone_pedido_aprovado></icone_pedido_aprovado><icone_entrega></icone_entrega>
                                         </template>
                                     </card_02>
                                 </div>
-                                <div class="col"> <!-- Total - pedido - pago -->
+                                <div class="col">
                                     <card_02  :valorjson = "dash_contagem.pedido.total_pago" descricao="Total de Pedidos Pagos">
                                         <template v-slot:icone>
                                             <icone_pedido_aprovado></icone_pedido_aprovado><icone_pagamento></icone_pagamento>
                                         </template>
                                     </card_02>
                                 </div>
-                                <div class="col"> <!-- Total - pedido - Valor R$ -->
+                                <div class="col">
                                     <card_02  :valorjson = "dash_contagem.pedido.valor_total_pedidos" descricao="Total de Pagamento Recebido">
                                         <template v-slot:icone>
                                             <icone_pagamento></icone_pagamento>
                                         </template>
                                     </card_02>
                                 </div>
-                            </div>
+                            </div> -->
                             <div class="row"> <!-- Dash Power BI -->
-                                <iframe
-                                    title="dash012"
-                                    width="600"
-                                    height="600"
-                                    src="https://app.powerbi.com/view?r=eyJrIjoiM2Y2Mzc0MzAtZWJmNi00M2U5LWI5NWEtOTRkNGRlNWU0MTY5IiwidCI6ImNmNzJlMmJkLTdhMmItNDc4My1iZGViLTM5ZDU3YjA3Zjc2ZiIsImMiOjR9"
-                                    frameborder="0"
-                                    allowFullScreen="true">
-                                </iframe>
+                                <iframe title="dashPrototipo01" width="800" height="636" src="https://app.powerbi.com/view?r=eyJrIjoiNmFmZTMyODAtNjBlZi00ODY4LWJhZmEtNGU0M2RmODQ3ZTZiIiwidCI6ImNmNzJlMmJkLTdhMmItNDc4My1iZGViLTM5ZDU3YjA3Zjc2ZiIsImMiOjR9" frameborder="0" allowFullScreen="true"></iframe>
                             </div>
 
+
                         @elsecan('vendedor')
-                            <div class="row">
-                                <div class="col"> <!-- Total - Cliente -->
+                            {{-- <div class="row">
+                                <div class="col">
                                     <card_02  :valorjson = "dash_contagem.cliente.total" descricao="Total de Clientes Ativos">
                                         <template v-slot:icone>
                                             <icone_cliente></icone_cliente>
                                         </template>
                                     </card_02>
                                 </div>
-                                <div class="col"> <!-- Total - pacotes - entregue -->
+                                <div class="col">
                                     <card_02  :valorjson = "dash_contagem.produto.total_pacotes_entregues" descricao="Total de Pacotes Entregues">
                                         <template v-slot:icone>
                                             <icone_produto></icone_produto><icone_entrega></icone_entrega>
@@ -607,7 +605,6 @@
                                         </template>
                                     </card_02>
                                 </div>
-
                             </div>
                             <div class="row" style="color:black;">
 
@@ -715,6 +712,9 @@
                                         >
                                     </table_comum_top>
                                 </div>
+                            </div> --}}
+                            <div class="row">
+                                <iframe title="dashVanna" width="800" height="636" src="https://app.powerbi.com/view?r=eyJrIjoiNzJmMmNiYzAtN2E3OS00ZjU2LTgzM2UtNzc0MzNiOTkzNTc3IiwidCI6ImNmNzJlMmJkLTdhMmItNDc4My1iZGViLTM5ZDU3YjA3Zjc2ZiIsImMiOjR9" frameborder="0" allowFullScreen="true"></iframe>
                             </div>
                         @else
                             Você não tem nenhuma permissão.

@@ -17,6 +17,8 @@ use Spatie\Permission\Models\Permission;
 use App\Models\User;
 use App\Models\Pais;
 
+use App\Models\Endereco;
+
 use App\Models\Fornecedor;
 use App\Models\Vendedor;
 use App\Models\Cliente;
@@ -1446,7 +1448,7 @@ class DatabaseSeeder extends Seeder
                 ]);
 
 
-            //---
+        //---
 
         Fornecedor::find(1)->marcas()->find(1)->produtos()->create([
             'name' => 'Pão de Queijo 90g',
@@ -1717,33 +1719,33 @@ class DatabaseSeeder extends Seeder
         //---
 
         // CLiente GPT
-        $cliente0 = Cliente::create([
-            'name' => 'Felipe Soares',
-            'company_name' => 'Lanchonete pimavera',
-            'cnpj' => 12345678901234, //somente numeros
-            'vendedor_id' => 1
-        ]);
-        $cliente0->user()->create([
-            'email' => 'raphael@cliente.com', // manter o dominio cliente.com
-            'email_verified_at' => '2023-02-07 13:33:19', // manter igual
-            'password' => Hash::make('qwerasdf'), // manter igual
-            'remember_token' => null, // manter igual
-            'created_at' => '2023-02-07 13:32:43', // manter igual
-            'updated_at' => '2023-02-07 13:33:19' // manter igual
-        ]);
-        $cliente0->enderecos()->create([
-            'name' => 'Casa',
-            'street_name' => 'Rua Bahia',
-            'cep' => 11740000, // somente numeros
-            'house_number' => 100,
-            'complement' => 'Casa',
-            'bairro_id' => 1
-        ]);
-        $cliente0->telefones()->create(['number_phone' => '(13)91234-5678']);
+            $cliente0 = Cliente::create([
+                'name' => 'Felipe Soares',
+                'company_name' => 'Lanchonete pimavera',
+                'cnpj' => 12345678901234, //somente numeros
+                'vendedor_id' => 1
+            ]);
+            $cliente0->user()->create([
+                'email' => 'raphael@cliente.com', // manter o dominio cliente.com
+                'email_verified_at' => '2023-02-07 13:33:19', // manter igual
+                'password' => Hash::make('qwerasdf'), // manter igual
+                'remember_token' => null, // manter igual
+                'created_at' => '2023-02-07 13:32:43', // manter igual
+                'updated_at' => '2023-02-07 13:33:19' // manter igual
+            ]);
+            $cliente0->enderecos()->create([
+                'name' => 'Casa',
+                'street_name' => 'Rua Bahia',
+                'cep' => 11740000, // somente numeros
+                'house_number' => 100,
+                'complement' => 'Casa',
+                'bairro_id' => 1
+            ]);
+            $cliente0->telefones()->create(['number_phone' => '(13)91234-5678']);
 
 
 
-        // Cliente 1 - Vendedor 2
+            // Cliente 1 - Vendedor 2
             $cliente1_vendedor2 = Cliente::create([
                 'name' => 'Mariana Oliveira',
                 'company_name' => 'Restaurante Sabores',
@@ -2903,22 +2905,12 @@ class DatabaseSeeder extends Seeder
         Permission::create(['name' => 'vendedor', 'guard_name' => 'web']);
         Permission::create(['name' => 'cliente', 'guard_name' => 'web']);
 
-        Administrador::create(['name' => 'Murillo Admin'])->user()->create([
-            'email' => 'murillo@adminmurillo.com', 'email_verified_at' => '2023-02-07 13:33:19
-                ', 'password' => Hash::make('qwerasdf'), 'remember_token' => null,
-            'created_at' => '2023-02-07 13:32:43', 'updated_at' => '2023-02-07 13:33:19'
-        ]);
-
         Administrador::create(['name' => 'Rafael Admin'])->user()->create([
             'email' => 'rafael@adminrafael.com', 'email_verified_at' => '2023-02-07 13:33:19
                 ', 'password' => Hash::make('qwerasdf'), 'remember_token' => null,
             'created_at' => '2023-02-07 13:32:43', 'updated_at' => '2023-02-07 13:33:19'
         ]);
-        Administrador::create(['name' => 'Emily Admin'])->user()->create([
-            'email' => 'emilyl@adminemily.com', 'email_verified_at' => '2023-02-07 13:33:19
-                ', 'password' => Hash::make('qwerasdf'), 'remember_token' => null,
-            'created_at' => '2023-02-07 13:32:43', 'updated_at' => '2023-02-07 13:33:19'
-        ]);
+
         Administrador::create(['name' => 'Gabriel Admin'])->user()->create([
             'email' => 'gabs@admingabs.com', 'email_verified_at' => '2023-02-07 13:33:19
                 ', 'password' => Hash::make('qwerasdf'), 'remember_token' => null,
@@ -2926,12 +2918,9 @@ class DatabaseSeeder extends Seeder
         ]);
 
         DB::table('model_has_permissions')->insert(['permission_id' => 1, 'model_type' => 'App\Models\User', 'model_id' => 1]);
-        DB::table('model_has_permissions')->insert(['permission_id' => 2, 'model_type' => 'App\Models\User', 'model_id' => 2]);
-        DB::table('model_has_permissions')->insert(['permission_id' => 3, 'model_type' => 'App\Models\User', 'model_id' => 3]);
-        DB::table('model_has_permissions')->insert(['permission_id' => 1, 'model_type' => 'App\Models\User', 'model_id' => 4]);
-        DB::table('model_has_permissions')->insert(['permission_id' => 1, 'model_type' => 'App\Models\User', 'model_id' => 5]);
-        DB::table('model_has_permissions')->insert(['permission_id' => 1, 'model_type' => 'App\Models\User', 'model_id' => 6]);
-        DB::table('model_has_permissions')->insert(['permission_id' => 1, 'model_type' => 'App\Models\User', 'model_id' => 7]);
+
+        DB::table('model_has_permissions')->insert(['permission_id' => 1, 'model_type' => 'App\Models\User', 'model_id' => 59]); //rafael
+        DB::table('model_has_permissions')->insert(['permission_id' => 1, 'model_type' => 'App\Models\User', 'model_id' => 60]); //gabriel
 
 
 
@@ -2987,11 +2976,41 @@ class DatabaseSeeder extends Seeder
             return "Pedido aleatório gerado com sucesso para o cliente {$cliente->name}";
         }
 
+        function addLatitudeLongitude($enderecoId){
+            $endereco = Endereco::find($enderecoId);
+            $latitude = -33.75 + mt_rand() / mt_getrandmax() * (5.25 - (-33.75));
+            $longitude = -73.98 + mt_rand() / mt_getrandmax() * (-34.79 - (-73.98));
+
+            $endereco->latitude = $latitude;
+            $endereco->longitude = $longitude;
+            $endereco->save();
+        }
 
         for($a=1; $a<=3; $a++){
             for($b=1; $b<=44; $b++){
                 criarPedidoAleatorio($b);
             }
+        }
+
+        for($d=1; $d<=71; $d++){
+            addLatitudeLongitude($d);
+        }
+
+        for($e=2; $e<=14; $e++){
+            DB::table('model_has_permissions')->insert(['permission_id' => 2, 'model_type' => 'App\Models\User', 'model_id' => $e]);
+        }
+
+        for($f=15; $f<=58; $f++){
+            DB::table('model_has_permissions')->insert(['permission_id' => 2, 'model_type' => 'App\Models\User', 'model_id' => $f]);
+        }
+
+        for($g=1; $g<=61; $g++){
+            Administrador::find(1)->estoqueable()->create([
+                'qty_item' => 1000,
+                'produto_id' => $g,
+                'observation' => 'Compra fornecedor',
+                'tipo_movimentacao_id' => 1
+            ]);
         }
     }
 }

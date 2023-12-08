@@ -296,7 +296,7 @@
             grid-template-columns: repeat(1, minmax(0, 1fr))
         }
 
-        @media (min-width:640px) {
+        @media (min-width:340px) {
             .sm\:rounded-lg {
                 border-radius: .5rem
             }
@@ -364,7 +364,7 @@
             }
         }
 
-        @media (prefers-color-scheme:dark) {
+        /* @media (prefers-color-scheme:dark) {
             .dark\:bg-gray-800 {
                 --bg-opacity: 1;
                 background-color: #2d3748;
@@ -400,7 +400,7 @@
                 color: #6b7280;
                 color: rgba(107, 114, 128, var(--tw-text-opacity))
             }
-        }
+        } */
     </style>
 
     <style>
@@ -416,7 +416,7 @@
         }
 
         .underline:hover {
-            color: white;
+            color: gray;
         }
 
         .Salg {
@@ -434,7 +434,7 @@
             <div class="hidden fixed top-0 right-0 px-6 py-4 sm:block">
                 @auth
                     <a href="{{ url('/dashboard') }}"
-                        class="text-sm text-gray-700 dark:text-gray-500 underline">Dashboar</a>
+                        class="text-sm text-gray-700 dark:text-gray-500 underline">Dashboard</a>
                 @else
                     <a href="{{ route('login') }}" class="text-sm text-gray-700 dark:text-gray-500 underline">Entrar</a>
 
@@ -446,26 +446,84 @@
             </div>
         @endif
 
-        <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
-            <div class="flex justify-center pt-8 sm:justify-start sm:pt-0">
-                <h1 class="Salg" style="color: red; font-size: 3.5rem">SALGADOS ZILLA</h1>
-                <img src="./logo.png" width="250" height="250">
-            </div>
-
-            <!-- <div class="mt-8 bg-white dark:bg-gray-800 overflow-hidden shadow sm:rounded-lg">
-                    <div class="grid grid-cols-1 md:grid-cols-2">
-                        <h3>Sistema de gerenciamento de uma empresa de Salgados!</h3>
+        <div class="card" style="margin-top: 100px;">
+            <div class="card-body">
+                <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
+                    <div class="flex justify-center pt-8 sm:justify-start sm:pt-0">
+                        <h1 class="Salg" style="color: red; font-size: 3.5rem">SISTEMA SALGADOS ZILLA</h1>
+                        <img src="./logo.png" width="250" height="250">
                     </div>
-                </div> -->
+                    <br><br><br><br>
+                    <!-- <div class="mt-8 bg-white dark:bg-gray-800 overflow-hidden shadow sm:rounded-lg">
+                            <div class="grid grid-cols-1 md:grid-cols-2">
+                                <h3>Sistema de gerenciamento de uma empresa de Salgados!</h3>
+                            </div>
+                        </div> -->
 
-            <div class="flex justify-center mt-4 sm:items-center sm:justify-between">
-                <div class="text-center text-sm text-gray-500 sm:text-left">
-                    <div class="flex items-center">
-                        <h2>Feito por Raphael, Rafael e Gabriel</h2>
+                    <div class="flex justify-center pt-8 sm:justify-start sm:pt-0">
+                        <h2 style="color: Black;">Sobre o software</h1>
+                    </div>
+
+                    <div class="flex justify-center pt-8 sm:justify-start sm:pt-0">
+                        <p>
+                            Este trabalho é o resultado do desenvolvimento de um software para a venda de
+                            salgados congelados de uma distribuidora, visando aprimorar a eficiência do
+                            processo de vendas e controle de estoque. Utilizando PHP como linguagem principal,
+                            integrado aos frameworks Laravel e também ao Vue.js para interações mais precisas,
+                            além do Power BI para gerar relatórios e dashboards dinâmicas e interativas, o sistema é projetado
+                            para garantir uma experiência de usuário consistente.
+
+                        </p>
+                    </div>
+
+                    <div class="flex justify-center pt-8 sm:justify-start sm:pt-0">
+                        <figure>
+                            <img src="./imagem1.png" width="900" alt="Print da tela de Produto">
+                            <figcaption>Console Web - Produto</figcaption>
+                        </figure>
+                    </div>
+
+                    <br><br>
+                    <div class="flex justify-center pt-8 sm:justify-start sm:pt-0">
+                        <figure>
+                            <img src="./imagem2.png" width="900" alt="Print da tela de relatório de BI">
+                            <figcaption>Relatório de BI</figcaption>
+                        </figure>
+                    </div>
+
+                    <br><br>
+                    <div class="flex justify-center pt-8 sm:justify-start sm:pt-0">
+                        <figure>
+                            <img src="./imagem3.png" width="900" alt="Print da tela de relatório de BI">
+                            <figcaption>Mapa de BI</figcaption>
+                        </figure>
+                    </div>
+                    <br><br>
+
+                    <div class="flex justify-center pt-8 sm:justify-start sm:pt-0">
+                        <p>
+                            Além disso, adota-se o React Native para a versão mobile, possibilitando a criação de uma aplicação
+                            nativa tanto para Android quanto iOS.
+                        </p>
+                    </div>
+
+                    <div class="flex justify-center pt-8 sm:justify-start sm:pt-0">
+                        <figure>
+                            <img src="./imagemCelular.png" width="900" alt="Print da tela da aplicação mobile">
+                            <figcaption>Aplicação mobile</figcaption>
+                        </figure>
+                    </div>
+                    <br><br>
+
+                    <div class="flex justify-center mt-4 sm:items-center sm:justify-between">
+                        <div class="text-center text-sm text-gray-500 sm:text-left">
+                            <div class="flex items-center">
+                                <h2>Desenvolvedores: Raphael, Rafael e Gabriel</h2>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-
         </div>
 
     </div>
