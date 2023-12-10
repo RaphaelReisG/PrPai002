@@ -963,7 +963,7 @@
                                             <div class="col">
                                                 <div class="custom-file">
                                                     <input type="file" class="custom-file-input" id="fileInput">
-                                                    <label class="custom-file-label" for="fileInput">Choose file...</label>
+                                                    <label class="custom-file-label" for="fileInput">Escolha uma imagem...</label>
                                                 </div>
                                             </div>
                                         </div>

@@ -1113,7 +1113,7 @@ var app = new Vue({
         },
         desativarObjeto: async function(classe, id){
             this.error = null;
-            if( confirm("Tem certeza que deseja deletar? "+id) == true){
+            if( confirm("Tem certeza que deseja deletar? ") == true){
                     var url = '/api/'+classe+'/'+id;
                     //fetch(url, { method: 'DELETE'} ).catch((e) => this.error = e);
                     await axios
